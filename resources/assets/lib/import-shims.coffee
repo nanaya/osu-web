@@ -9,6 +9,7 @@ import Enchant from 'enchant'
 import ForumPoll from 'forum-poll'
 import * as laroute from 'laroute'
 import Localtime from 'localtime'
+import MiddleClickInput from 'middle-click-input'
 import MobileToggle from 'mobile-toggle'
 import OsuAudio from 'osu-audio/main'
 import { StoreCheckout } from 'store-checkout'
@@ -49,3 +50,4 @@ window._styles =
 
 window.StoreCheckout = StoreCheckout
 window.TextareaAutosize = TextareaAutosize
+window.middleClickInput = new MiddleClickInput
