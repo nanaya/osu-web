@@ -19,6 +19,7 @@ use App\Models\Log;
 use App\Models\User;
 use App\Models\UserAccountHistory;
 use App\Models\UserNotFound;
+use App\Transformers\UserTransformer;
 use Auth;
 use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Illuminate\Cache\RateLimiter;
@@ -447,9 +448,11 @@ class UsersController extends Controller
             abort(404);
         }
 
+        $transformer = new UserTransformer($currentMode);
+
         $userIncludes = [
-            "scores_first_count:mode({$currentMode})",
-            "statistics:mode({$currentMode})",
+            'scores_first_count',
+            'statistics',
             'account_history',
             'active_tournament_banner',
             'badges',
@@ -462,7 +465,7 @@ class UsersController extends Controller
             'page',
             'previous_usernames',
             'ranked_and_approved_beatmapset_count',
-            "rankHistory:mode({$currentMode})",
+            'rankHistory',
             'replays_watched_counts',
             'statistics.rank',
             'statistics.variants',
@@ -476,11 +479,7 @@ class UsersController extends Controller
             $userIncludes[] = 'account_history.supporting_url';
         }
 
-        $userArray = json_item(
-            $user,
-            'User',
-            $userIncludes
-        );
+        $userArray = json_item($user, $transformer, $userIncludes);
 
         if (is_api_request()) {
             return $userArray;
