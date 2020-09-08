@@ -28,11 +28,8 @@ desktop.ini
 /public/mix-manifest.json
 
 # Compiled/copied assets
+/public/assets
 /public/docs
-/public/fonts/vendor
-/public/js
-/public/css
-/public/vendor
 /public/uploads
 /public/uploads-avatar
 /public/uploads-replay

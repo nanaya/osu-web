@@ -11,6 +11,7 @@ const SentryPlugin = require('webpack-sentry-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 //#endregion
 
@@ -30,73 +31,8 @@ const paymentSandbox = !(process.env.PAYMENT_SANDBOX === '0'
 //#endregion
 
 //#region helpers
-function outputFilename(name, ext = 'js', hashType = 'contenthash:8') {
-  return `${name}.${ext}?id=[${hashType}]`;
-  // return `${name}.[${hashType}].${ext}`;
-}
-
 function resolvePath(...segments) {
   return path.resolve(__dirname, ...segments);
-}
-
-//#endregion
-
-//#region Custom plugins
-// Custom manifest dumper
-// Dumps a manifest file and:
-// Strip the hashes out - the problem is when adding assets via additionalAssets, as the copy and concat plugins do,
-// we currently don't have the option to change th asset name to be different from the file name.
-// Prefix the manifest keys with / - the existing php mix helper doesn't work properly without them.
-class Manifest {
-  constructor(options = {}) {
-    this.fileName = options.fileName;
-  }
-
-  apply(compiler) {
-    compiler.hooks.afterEmit.tap({ name: 'Manifest' }, (compilation) => {
-      const json = compilation.getStats().toJson({
-        // Disable data generation of everything we don't use
-        all: false,
-        // Add asset Information
-        assets: true,
-        // Show cached assets (setting this to `false` only shows emitted files)
-        cachedAssets: true,
-      });
-
-      const manifest = {};
-      json.assets.forEach((asset) => {
-        let assetName = asset.name;
-        // ensure lookup name starts with / because mix helper is dumb.
-        // also ensure assets are relative to root.
-        if (!assetName.startsWith('/')) {
-          assetName = `/${assetName}`;
-        }
-
-        let name = assetName;
-        // remove hash from name.
-        if (name.lastIndexOf('?') > 0) {
-          // querystring version
-          name = name.substring(0, name.lastIndexOf('?'));
-        } else {
-          // hash in filename version
-          let extname = path.extname(name);
-          let basename = name.substring(0, name.lastIndexOf(extname));
-          if (extname === '.map') {
-            extname = `${path.extname(basename)}.map`;
-          }
-
-          basename = name.substring(0, name.lastIndexOf(extname));
-          basename = basename.substring(0, basename.lastIndexOf('.'));
-
-          name = `${basename}${extname}`;
-        }
-
-        manifest[name] = assetName;
-      });
-
-      fs.writeFileSync(this.fileName, JSON.stringify(manifest, null, 2));
-    });
-  }
 }
 
 //#endregion
@@ -148,9 +84,9 @@ for (const name of tsReactComponents) {
 }
 
 const output = {
-  chunkFilename: outputFilename('js/[name]'),
-  filename: outputFilename('js/[name]'),
-  path: resolvePath('public'),
+  filename: 'js/[name].[contenthash].js',
+  path: resolvePath('public/assets'),
+  publicPath: '/assets/',
 };
 
 //#endregion
@@ -176,18 +112,21 @@ const plugins = [
   }),
   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), // don't add moment locales to bundle.
   new MiniCssExtractPlugin({
-    chunkFilename: outputFilename('css/[name]', 'css'),
-    filename: outputFilename('css/[name]', 'css'),
+    filename: 'css/[name].[contenthash].css',
   }),
   new CopyPlugin({
     patterns: [
-      { from: 'resources/assets/build/locales', to: outputFilename('js/locales/[name]', '[ext]') },
-      { from: 'node_modules/@fortawesome/fontawesome-free/webfonts', to: outputFilename('vendor/fonts/font-awesome/[name]', '[ext]') },
-      { from: 'node_modules/photoswipe/dist/default-skin', to: outputFilename('vendor/_photoswipe-default-skin/[name]', '[ext]') },
-      { from: 'node_modules/moment/locale', to: outputFilename('vendor/js/moment-locales/[name]', '[ext]') },
+      { from: 'resources/assets/build/locales', to: 'copy/locales/[name].[contenthash].[ext]' },
+      { from: 'node_modules/moment/locale', to: 'copy/moment-locales/[name].[contenthash].[ext]' },
     ],
   }),
-  new Manifest({ fileName: 'public/mix-manifest.json'}),
+  new ManifestPlugin({
+    map: (file) => {
+      file.name = file.name.replace(/^(copy\/.*\.)[a-f0-9]{32}\.([^.]+)$/, '$1$2');
+
+      return file;
+    },
+  }),
 ];
 
 if (process.env.SENTRY_RELEASE === '1') {
@@ -300,43 +239,16 @@ const rules = [
     ],
   },
   {
-    loaders: [
-      {
-        loader: 'file-loader',
-        options: {
-          name: (filepath) => {
-            if (!/node_modules|bower_components/.test(filepath)) {
-              return '/images/[name].[ext]?[hash]';
-            }
-
-            const cleanPath = filepath
-              .replace(/\\/g, '/')
-              .replace(/((.*(node_modules|bower_components))|images|image|img|assets)\//g, '');
-
-            return `/images/vendor/${cleanPath}?[hash]`;
-          },
-        },
-      },
-      {
-        loader: 'img-loader',
-      },
-    ],
+    loader: 'file-loader',
+    options: {
+      name: 'images/[name].[contenthash].[ext]',
+    },
     test: /(\.(png|jpe?g|gif|webp)$|^((?!font).)*\.svg$)/,
   },
   {
     loader: 'file-loader',
     options: {
-      name: (filepath) => {
-        if (!/node_modules|bower_components/.test(filepath)) {
-          return '/fonts/[name].[ext]?[hash]';
-        }
-
-        const cleanPath = filepath
-          .replace(/\\/g, '/')
-          .replace(/((.*(node_modules|bower_components))|fonts|font|assets)\//g, '');
-
-        return `/fonts/vendor/${cleanPath}?[hash]`;
-      },
+      name: 'fonts/[name].[contenthash].[ext]',
     },
     test: /(\.(woff2?|ttf|eot|otf)$|font.*\.svg$)/,
   },

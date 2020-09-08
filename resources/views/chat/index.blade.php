@@ -21,5 +21,5 @@
         {!! json_encode($presence) !!}
     </script>
 
-    @include('layout._extra_js', ['src' => 'js/react/chat.js'])
+    @include('layout._extra_js', ['src' => 'react/chat.js'])
 @endsection

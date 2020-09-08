@@ -129,5 +129,5 @@
         </script>
     @endforeach
 
-    @include('layout._extra_js', ['src' => 'js/react/beatmap-discussions-history.js'])
+    @include('layout._extra_js', ['src' => 'react/beatmap-discussions-history.js'])
 @endsection

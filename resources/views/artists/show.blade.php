@@ -128,5 +128,5 @@
 @section("script")
   @parent
 
-  @include('layout._extra_js', ['src' => 'js/react/artist-page.js'])
+  @include('layout._extra_js', ['src' => 'react/artist-page.js'])
 @stop

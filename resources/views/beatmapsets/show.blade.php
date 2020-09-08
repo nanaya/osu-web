@@ -38,5 +38,5 @@
         {!! json_encode($languages) !!}
     </script>
 
-    @include('layout._extra_js', ['src' => 'js/react/beatmapset-page.js'])
+    @include('layout._extra_js', ['src' => 'react/beatmapset-page.js'])
 @endsection

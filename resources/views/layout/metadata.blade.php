@@ -61,16 +61,15 @@
     </style>
 @endif
 
-<link rel="stylesheet" media="all" href="{{ mix('vendor/_photoswipe-default-skin/default-skin.css') }}">
-<link rel="stylesheet" media="all" href="{{ mix('css/app.css') }}" data-turbolinks-track="reload">
+<link rel="stylesheet" media="all" href="{{ mix('app.css') }}" data-turbolinks-track="reload">
 
 <script>
     var currentLocale = {!! json_encode(App::getLocale()) !!};
     var fallbackLocale = {!! json_encode(config('app.fallback_locale')) !!};
 </script>
 
-<script src="{{ mix('js/runtime.js') }}" data-turbolinks-track="reload"></script>
-<script src="{{ mix('js/vendor.js') }}" data-turbolinks-track="reload"></script>
+<script src="{{ mix('runtime.js') }}" data-turbolinks-track="reload"></script>
+<script src="{{ mix('vendor.js') }}" data-turbolinks-track="reload"></script>
 
 @if(config('services.sentry.public_dsn') !== '')
     <script src="https://browser.sentry-cdn.com/5.1.0/bundle.min.js" crossorigin="anonymous"></script>
@@ -97,16 +96,16 @@
     </script>
 @endif
 
-<script src="{{ mix('/js/locales/'.app()->getLocale().'.js') }}" data-turbolinks-track="reload"></script>
+<script src="{{ mix('copy/locales/'.app()->getLocale().'.js') }}" data-turbolinks-track="reload"></script>
 @if (config('app.fallback_locale') !== app()->getLocale())
-    <script src="{{ mix('/js/locales/'.config('app.fallback_locale').'.js') }}" data-turbolinks-track="reload"></script>
+    <script src="{{ mix('copy/locales/'.config('app.fallback_locale').'.js') }}" data-turbolinks-track="reload"></script>
 @endif
 
-<script src="{{ mix('js/commons.js') }}" data-turbolinks-track="reload"></script>
-<script src="{{ mix('js/app.js') }}" data-turbolinks-track="reload"></script>
+<script src="{{ mix('commons.js') }}" data-turbolinks-track="reload"></script>
+<script src="{{ mix('app.js') }}" data-turbolinks-track="reload"></script>
 
 @if (($momentLocale = locale_for_moment(Lang::getLocale())) !== null)
-    <script src="/vendor/js/moment-locales/{{ $momentLocale }}.js" data-turbolinks-track="reload"></script>
+    <script src="{{ mix("copy/moment-locales/{$momentLocale}.js") }}" data-turbolinks-track="reload"></script>
 @endif
 
 @if (isset($atom))

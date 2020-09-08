@@ -28,5 +28,5 @@
         </script>
     @endforeach
 
-    @include('layout._extra_js', ['src' => 'js/react/modding-profile.js'])
+    @include('layout._extra_js', ['src' => 'react/modding-profile.js'])
 @endsection

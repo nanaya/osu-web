@@ -20,5 +20,5 @@
         {!! json_encode($initialData) !!}
     </script>
 
-    @include('layout._extra_js', ['src' => 'js/react/beatmap-discussions.js'])
+    @include('layout._extra_js', ['src' => 'react/beatmap-discussions.js'])
 @endsection

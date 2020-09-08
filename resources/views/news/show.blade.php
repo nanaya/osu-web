@@ -32,5 +32,5 @@
 
     <div class="js-news-sidebar-record"></div>
 
-    @include('layout._extra_js', ['src' => 'js/react/news-show.js'])
+    @include('layout._extra_js', ['src' => 'react/news-show.js'])
 @endsection

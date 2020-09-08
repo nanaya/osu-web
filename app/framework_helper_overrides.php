@@ -13,6 +13,17 @@ function e($value)
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', true);
 }
 
+function mix($path)
+{
+    static $manifest;
+
+    if ($manifest === null) {
+        $manifest = json_decode(file_get_contents(public_path('assets/manifest.json')), true);
+    }
+
+    return $manifest[$path];
+}
+
 function trans($key = null, $replace = [], $locale = null)
 {
     $translator = app('translator');
