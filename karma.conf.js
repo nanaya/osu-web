@@ -1,8 +1,6 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-const fs = require('fs');
-
 // karma-webpack doesn't exit on compile error.
 // This plugin makes it exit on compile error.
 class ExitOnErrorWebpackPlugin {
@@ -61,18 +59,11 @@ delete webpackConfig.entry; // test runner doesn't use the entry points
 
 const testIndex = './tests/karma/index.ts';
 
-const manifest = JSON.parse(fs.readFileSync('./public/assets/manifest.json'));
-
 const files = [
-  'vendor.js',
-  'runtime.js',
-  'commons.js',
-  'copy/locales/en.js',
-].map((file) => `./public${manifest[file]}`);
-files.push(
+  './resources/assets/build/locales/en.js',
   './tests/karma/globals.js', // shims for tests
-  testIndex
-);
+  testIndex,
+];
 
 const preprocessors = {};
 preprocessors[testIndex] = ['webpack', 'sourcemap'];
