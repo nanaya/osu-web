@@ -6,5 +6,5 @@
 
 @section('script')
     @parent
-    @include('layout._extra_js', ['src' => 'store-bootstrap.js'])
+    @include('layout._extra_js', ['src' => 'react/store-bootstrap.js'])
 @endsection
