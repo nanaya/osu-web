@@ -122,6 +122,10 @@ const plugins = [
   }),
   new ManifestPlugin({
     map: (file) => {
+      // Workaround for CopyPlugin so we don't need to know the file hashes beforehand
+      // when using the manifest.
+      //
+      // Reference: https://github.com/webpack-contrib/copy-webpack-plugin/issues/104
       file.name = file.name.replace(/^(copy\/.*\.)[a-f0-9]{32}\.([^.]+)$/, '$1$2');
 
       return file;
