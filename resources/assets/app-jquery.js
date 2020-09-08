@@ -4,7 +4,7 @@
 // import jquery + plugins
 
 import $ from 'jquery';
-import {} from 'jquery-ujs'
+import {} from 'jquery-ujs';
 import 'bootstrap';
 import 'timeago/jquery.timeago.js';
 import 'qtip2/dist/jquery.qtip.js';
