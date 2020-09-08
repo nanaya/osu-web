@@ -40,7 +40,7 @@ function resolvePath(...segments) {
 //#region entrypoints and output
 const entry = {
   'app': [
-    './resources/assets/app.js',
+    './resources/assets/lib/app.js',
     './resources/assets/less/app.less',
   ],
 };
