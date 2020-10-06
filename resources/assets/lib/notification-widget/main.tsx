@@ -1,6 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+import { ClickMenuEventParams } from 'click-menu';
 import { route } from 'laroute';
 import * as _ from 'lodash';
 import { observer } from 'mobx-react';
@@ -16,10 +17,12 @@ import Stack from './stack';
 
 interface Props {
   extraClasses?: string;
+  menuId: string;
 }
 
 interface State {
   hasError: boolean;
+  visible: boolean;
 }
 
 @observer
@@ -31,6 +34,7 @@ export default class Main extends React.Component<Props, State> {
 
   readonly state = {
     hasError: false,
+    visible: false,
   };
 
   private readonly controller = new NotificationController(core.dataStore.notificationStore, { isWidget: true }, null);
@@ -41,7 +45,15 @@ export default class Main extends React.Component<Props, State> {
     return { hasError: true };
   }
 
+  componentDidMount(): void {
+    $.subscribe('click-menu:current', this.toggleVisibility);
+  }
+
   render() {
+    if (!this.state.visible) {
+      return null;
+    }
+
     const blockClass = `notification-popup u-fancy-scrollbar ${this.props.extraClasses ?? ''}`;
 
     return (
@@ -169,5 +181,13 @@ export default class Main extends React.Component<Props, State> {
     }
 
     return nodes;
+  }
+
+  private toggleVisibility = (e: JQuery.Event, params: ClickMenuEventParams) => {
+    const nextVisible = params.tree[0] === this.props.menuId;
+
+    if (nextVisible !== this.state.visible) {
+      this.setState({ visible: nextVisible });
+    }
   }
 }

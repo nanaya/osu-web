@@ -3,6 +3,12 @@
 
 import Fade from 'fade';
 
+export interface ClickMenuEventParams {
+  previousTree: string[];
+  target?: string | null;
+  tree: string[];
+}
+
 export default class ClickMenu {
   private current: string | null | undefined = null;
 
@@ -90,7 +96,8 @@ export default class ClickMenu {
       this.current = null;
     }
 
-    $.publish('click-menu:current', { previousTree, target: this.current, tree });
+    const params: ClickMenuEventParams = { previousTree, target: this.current, tree };
+    $.publish('click-menu:current', params);
 
     const toFocus = shownMenu?.querySelector('.js-click-menu--autofocus');
 

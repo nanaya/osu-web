@@ -94,7 +94,10 @@ reactTurbolinks.registerPersistent 'notification-icon', NotificationIcon, true, 
   props
 
 reactTurbolinks.registerPersistent 'notification-widget', NotificationWidget, true, (el) ->
-  try JSON.parse(el.dataset.notificationWidget)
+  props = (try JSON.parse(el.dataset.notificationWidget)) ? {}
+  props.menuId = el.dataset.clickMenuId
+
+  props
 
 quickSearchWorker = new QuickSearchWorker()
 reactTurbolinks.registerPersistent 'quick-search', QuickSearch, true, (el) ->
