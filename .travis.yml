@@ -45,6 +45,7 @@ env:
 
 # lint job doesn't need most of the setup except node update so they're separated out here from install
 before_install:
+  - composer self-update --1
   - travis_retry nvm install 12
   - nvm use 12
 
