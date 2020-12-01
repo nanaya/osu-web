@@ -4,6 +4,17 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
+    'comment' => [
+        'title' => 'comment',
+
+        'table' => [
+            'title' => 'Title',
+            'latest_comment' => 'Latest comment',
+            'latest_comment_value' => ':time by :username',
+            'latest_comment_empty' => 'no comments',
+        ],
+    ],
+
     'forum_topic' => [
         'title' => 'forum topic',
     ],

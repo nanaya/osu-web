@@ -23,7 +23,7 @@
         [
             'active' => $currentActive === 'follows_controller.index',
             'title' => trans('follows.index.title_compact'),
-            'url' => route('follows.index', ['type' => 'forum-topic']),
+            'url' => route('follows.index', ['type' => 'comment']),
         ],
         [
             'active' => $currentActive === 'account_controller.edit',

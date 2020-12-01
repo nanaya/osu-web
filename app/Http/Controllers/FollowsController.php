@@ -6,10 +6,12 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ModelNotSavedException;
+use App\Models\Comment;
 use App\Models\Follow;
 use App\Models\Forum\Topic;
 use App\Models\Forum\TopicTrack;
 use App\Models\Forum\TopicWatch;
+use App\Transformers\FollowCommentTransformer;
 use Exception;
 
 class FollowsController extends Controller
@@ -21,16 +23,38 @@ class FollowsController extends Controller
         $this->middleware('auth');
     }
 
+    public function destroy()
+    {
+        $params = $this->getParams();
+        foreach (['notifiable_type', 'notifiable_id', 'subtype'] as $field) {
+            if (!isset($params[$field])) {
+                abort(422, "Missing parameter follow[{$field}]");
+            }
+        }
+
+        $follow = Follow::where($params)->first();
+
+        if ($follow !== null) {
+            $follow->delete();
+        }
+
+        return response([], 204);
+    }
+
     public function index($type)
     {
+        $type = str_replace('-', '_', $type);
+
         view()->share('type', $type);
 
-        if ($type === 'forum-topic') {
+        if ($type === 'comment') {
+            return $this->indexComment();
+        } else if ($type === 'forum_topic') {
             return $this->indexForumTopic();
         } else if ($type === 'modding') {
             return $this->indexModding();
         } else {
-            return ujs_redirect(route('follows.index', ['type' => 'forum-topic']));
+            return ujs_redirect(route('follows.index', ['type' => 'comment']));
         }
     }
 
@@ -54,24 +78,42 @@ class FollowsController extends Controller
         return response([], 204);
     }
 
-    public function destroy()
-    {
-        $params = $this->getParams();
-        $follow = Follow::where($params)->first();
-
-        if ($follow !== null) {
-            $follow->delete();
-        }
-
-        return response([], 204);
-    }
-
     private function getParams()
     {
         $params = get_params(request()->all(), 'follow', ['notifiable_type:string', 'notifiable_id:int', 'subtype:string']);
         $params['user_id'] = auth()->user()->getKey();
 
         return $params;
+    }
+
+    private function indexComment()
+    {
+        $user = auth()->user();
+
+        $followsQuery = Follow::where(['user_id' => $user->getKey(), 'subtype' => 'comment']);
+        $follows = (clone $followsQuery)->with('notifiable')->get();
+
+        $recentCommentIds = Comment
+            ::selectRaw('MAX(id) latest_comment_id, commentable_type, commentable_id')
+            ->whereIn(
+                \DB::raw('(commentable_type, commentable_id)'),
+                (clone $followsQuery)->selectRaw('notifiable_type, notifiable_id')
+            )->groupBy('commentable_type', 'commentable_id')
+            ->get()
+            ->pluck('latest_comment_id');
+
+        $comments = Comment::whereIn('id', $recentCommentIds)->with('user')->get();
+
+        $commentsMapped = [];
+
+        foreach ($comments as $comment) {
+            $commentsMapped[$comment->commentable_type][$comment->commentable_id] = $comment;
+        }
+
+        $followsTransformer = new FollowCommentTransformer($commentsMapped);
+        $followsJson = json_collection($follows, $followsTransformer, ['commentable_meta', 'latest_comment.user']);
+
+        return ext_view('follows.comment', compact('followsJson'));
     }
 
     private function indexForumTopic()

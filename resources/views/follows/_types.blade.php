@@ -3,12 +3,12 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 <div class="page-tabs page-tabs--follows">
-    @foreach (['forum-topic', 'modding'] as $menuType)
+    @foreach (['comment', 'forum_topic', 'modding'] as $menuType)
         <a
-            href="{{ route('follows.index', ['type' => $menuType]) }}"
+            href="{{ route('follows.index', ['type' => str_replace('-', '_', $menuType)]) }}"
             class="page-tabs__tab {{ $type === $menuType ? 'page-tabs__tab--active' : '' }}"
         >
-            {{ trans('follows.'.str_replace('-', '_', $menuType).'.title') }}
+            {{ trans("follows.{$menuType}.title") }}
         </a>
     @endforeach
 </div>
