@@ -8,12 +8,33 @@ return [
         'title' => 'modding',
     ],
 
+    'comment' => [
+        'title' => 'comment',
+
+        'table' => [
+            'latest_comment_empty' => 'no comments',
+            'latest_comment_value' => ':time by :username',
+        ],
+    ],
+
     'forum_topic' => [
         'title' => 'forum topic',
     ],
 
     'index' => [
         'title_compact' => 'watchlists',
+    ],
+
+    'modding' => [
+        'title' => 'mapper',
+
+        'table' => [
+            'latest_beatmapset' => 'Latest Beatmap',
+            'latest_beatmapset_empty' => 'no beatmap',
+            'latest_beatmapset_state' => 'State',
+            'latest_beatmapset_time' => 'Submitted Date',
+            'user' => 'User',
+        ],
     ],
 
     'user' => [

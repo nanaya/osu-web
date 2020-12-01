@@ -3,6 +3,7 @@
 
 .btn-circle {
   @top: btn-circle;
+  --transition: all 120ms ease-in-out;
   .reset-input();
   .circle(@btn-circle-diameter);
   .default-box-shadow();
@@ -13,7 +14,7 @@
   flex: none;
   background-color: @osu-colour-l4;
   color: @osu-colour-c1;
-  transition: all 120ms ease-in-out;
+  transition: var(--transition);
   font-size: 14px;
 
   .link-hover({
@@ -130,5 +131,26 @@
     .center-content();
     height: 100%;
     width: 100%;
+    // for icon-flip
+    position: relative;
+  }
+
+  &__icon-flip {
+    .full-size();
+    .center-content();
+    --normal-opacity: 1;
+    --hover-opacity: 0;
+
+    opacity: var(--normal-opacity);
+    transition: var(--transition);
+
+    .@{top}:hover &, .@{top}:active & {
+      opacity: var(--hover-opacity);
+    }
+
+    &--hover-show {
+      --normal-opacity: 0;
+      --hover-opacity: 1;
+    }
   }
 }
