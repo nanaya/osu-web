@@ -78,6 +78,9 @@ return [
         'friends_controller' => [
             'index' => 'dashboard',
         ],
+        'follows_controller' => [
+            'comments' => 'dashboard',
+        ],
         'groups_controller' => [
             'show' => 'groups',
         ],

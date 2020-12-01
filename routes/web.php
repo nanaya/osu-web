@@ -207,6 +207,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('messages/users/{user}', 'HomeController@messageUser')->name('messages.users.show');
 
         Route::resource('follows', 'FollowsController', ['only' => ['store']]);
+        Route::get('follows/comment', 'FollowsController@indexComment')->name('follows.comment');
         Route::delete('follows', 'FollowsController@destroy')->name('follows.destroy');
     });
 

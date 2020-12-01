@@ -21,6 +21,11 @@
             'url' => route('friends.index'),
         ],
         [
+            'active' => $currentActive === 'follows_controller.index_comment',
+            'title' => trans('follows.comment.title_compact'),
+            'url' => route('follows.comment'),
+        ],
+        [
             'active' => $currentActive === 'topic_watches_controller.index',
             'title' => trans('forum.topic_watches.index.title_compact'),
             'url' => route('forum.topic-watches.index'),
