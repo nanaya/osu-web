@@ -34,6 +34,6 @@ class RankingControllerTest extends TestCase
     {
         $this
             ->get(route('rankings', ['mode' => 'osu', 'type' => 'notatype']))
-            ->assertStatus(404);
+            ->assertStatus(405);
     }
 }
