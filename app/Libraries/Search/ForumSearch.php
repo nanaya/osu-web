@@ -26,6 +26,7 @@ class ForumSearch extends Search
         $this->highlight(
             (new Highlight())
                 ->field('search_content')
+                ->field('topic_title')
                 ->fragmentSize(static::HIGHLIGHT_FRAGMENT_SIZE)
                 ->numberOfFragments(3)
         );

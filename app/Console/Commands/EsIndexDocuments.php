@@ -17,7 +17,7 @@ class EsIndexDocuments extends Command
 {
     const ALLOWED_TYPES = [
         'beatmapsets' => [Beatmapset::class],
-        'posts' => [Topic::class, Post::class],
+        'posts' => [Post::class],
         'users' => [User::class],
     ];
 

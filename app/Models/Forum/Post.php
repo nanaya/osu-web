@@ -59,7 +59,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Post extends Model implements AfterCommit, Indexable
 {
-    use Elasticsearch\PostTrait, Reportable, SoftDeletes, Validatable;
+    use Elasticsearch\ForumPostTrait, Reportable, SoftDeletes, Validatable;
 
     protected $table = 'phpbb_posts';
     protected $primaryKey = 'post_id';
@@ -154,6 +154,13 @@ class Post extends Model implements AfterCommit, Indexable
         $text = BBCodeFromDB::removeBBCodeTags($text);
 
         return strip_tags($text);
+    }
+
+    public function getTopicTitle()
+    {
+        if ($this->topic !== null && $this->topic->topic_first_post_id === $this->getKey()) {
+            return presence($this->topic->topic_title);
+        }
     }
 
     public static function lastUnreadByUser($topic, $user)

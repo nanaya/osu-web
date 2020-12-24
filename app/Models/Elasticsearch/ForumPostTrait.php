@@ -9,7 +9,7 @@ use App\Models\Forum\Forum;
 use App\Traits\EsIndexableModel;
 use Carbon\Carbon;
 
-trait PostTrait
+trait ForumPostTrait
 {
     use EsIndexableModel;
 
@@ -22,18 +22,12 @@ trait PostTrait
     {
         $forumIds = Forum::where('enable_indexing', 1)->pluck('forum_id');
 
-        return static::withoutGlobalScopes()->whereIn('forum_id', $forumIds)->with('forum');
+        return static::withoutGlobalScopes()->whereIn('forum_id', $forumIds)->with('forum')->with('topic');
     }
 
     public static function esSchemaFile()
     {
-        return config_path('schemas/posts.json');
-    }
-
-    public function esRouting()
-    {
-        // Post and Topic should have the same routing for relationships to work.
-        return $this->topic_id;
+        return config_path('schemas/forum_posts.json');
     }
 
     public function esShouldIndex()
@@ -59,11 +53,6 @@ trait PostTrait
 
             $values[$field] = $value;
         }
-
-        $values['type'] = [
-            'name' => 'posts',
-            'parent' => "topic-{$this->topic_id}",
-        ];
 
         return $values;
     }
