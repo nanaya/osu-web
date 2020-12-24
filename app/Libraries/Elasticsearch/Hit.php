@@ -54,17 +54,6 @@ class Hit implements \ArrayAccess
         return [html_excerpt($this['_source'][$field], $limit)];
     }
 
-    public function innerHits(string $name)
-    {
-        $results = $this->raw['inner_hits'][$name] ?? null;
-
-        if ($results) {
-            return new SearchResponse($results, $name);
-        }
-
-        return SearchResponse::empty();
-    }
-
     public function raw()
     {
         return $this->raw;
