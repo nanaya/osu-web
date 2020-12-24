@@ -5,7 +5,7 @@
 {{-- more code than template in this view :best: --}}
 @php
     $users = $search->users()->select('user_id', 'username', 'user_avatar')->get()->keyBy('user_id');
-    $topics = $search->topics()->with('forum')->get()->keyBy('topic_id');
+    $topics = $search->topics()->get()->keyBy('topic_id');
     $skipTitle = $search->isTopicSpecificSearch();
 @endphp
 
