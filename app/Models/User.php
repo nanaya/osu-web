@@ -1916,9 +1916,7 @@ class User extends Model implements AuthenticatableContract, HasLocalePreference
     {
         return $this->memoize(__FUNCTION__, function () {
             try {
-                return $this
-                    ->userProfileCustomization()
-                    ->firstOrCreate([]);
+                return $this->userProfileCustomization ?? $this->userProfileCustomization()->create([]);
             } catch (Exception $ex) {
                 if (is_sql_unique_exception($ex)) {
                     // retry on duplicate
