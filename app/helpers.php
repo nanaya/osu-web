@@ -1225,13 +1225,8 @@ function fast_imagesize($url)
         $data = curl_exec($curl);
         curl_close($curl);
 
-        $result = read_image_properties_from_string($data);
-
-        if ($result === null) {
-            return false;
-        } else {
-            return $result;
-        }
+        // false if null so it can be cached
+        return read_image_properties_from_string($data) ?? false;
     });
 
     if ($result !== false) {
