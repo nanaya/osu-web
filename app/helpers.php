@@ -508,6 +508,17 @@ function read_image_properties_from_string($string)
     }
 
     if ($data !== false) {
+        if ($data[2] === IMAGETYPE_JPEG) {
+            $exif = exif_read_data('data://image/jpeg;base64,'.base64_encode($string));
+
+            // https://jdhao.github.io/2019/07/31/image_rotation_exif_info/
+            if ($exif !== false && isset($exif['Orientation']) && in_array($exif['Orientation'], [5, 6, 7, 8], true)) {
+                $tmp = $data[1];
+                $data[1] = $data[0];
+                $data[0] = $tmp;
+            }
+        }
+
         return $data;
     }
 }
