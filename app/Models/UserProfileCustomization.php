@@ -178,6 +178,20 @@ class UserProfileCustomization extends Model
         $this->setOption('comments_sort', $value);
     }
 
+    public function setCommentsShowDeletedAttribute($value)
+    {
+        if (!is_bool($value)) {
+            $value = null;
+        }
+
+        $this->setOption('comments_show_deleted', $value);
+    }
+
+    public function getCommentsShowDeletedAttribute()
+    {
+        return $this->getOptions()['comments_show_deleted'] ?? false;
+    }
+
     public function getForumPostsShowDeletedAttribute()
     {
         return $this->getOptions()['forum_posts_show_deleted'] ?? true;

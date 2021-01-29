@@ -211,6 +211,7 @@ class AccountController extends Controller
             'beatmapset_show_nsfw:bool',
             'beatmapset_title_show_original:bool',
             'comments_sort:string',
+            'comments_show_deleted:bool',
             'extras_order:string[]',
             'forum_posts_show_deleted:bool',
             'ranking_expanded:bool',
