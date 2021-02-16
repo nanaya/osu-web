@@ -7,7 +7,6 @@ namespace Tests\Browser;
 
 use App\Models\Country;
 use App\Models\Multiplayer\Room;
-use DB;
 use Route;
 use Tests\Browser;
 use Tests\DuskTestCase;
@@ -160,7 +159,7 @@ class SanityTest extends DuskTestCase
 
         // Clean up extra things that get created (i.e. as side-effects, etc)
         if (isset(self::$scaffolding['user'])) {
-            self::$scaffolding['user']->userProfileCustomization()->forceDelete();
+            $this->removeAll(new \App\Models\UserProfileCustomization());
         }
 
         // Tear down in reverse-order so that dependants get destroyed before their dependencies.
@@ -168,13 +167,7 @@ class SanityTest extends DuskTestCase
 
         foreach ($nukingOrder as $name => $scaffold) {
             $this->output("TEARDOWN: $name (".get_class($scaffold).")\n");
-
-            if ($name === 'order' || $name === 'invoice') {
-                // we need to perform custom deletion for orders to bypass their immutability protections
-                DB::connection('mysql-store')->delete('delete from orders where order_id = ?', [$scaffold->getKey()]);
-            } else {
-                $scaffold->forceDelete();
-            }
+            $this->removeAll($scaffold);
         }
     }
 
@@ -439,5 +432,10 @@ class SanityTest extends DuskTestCase
             // tearDown/tearDownAfterClass runs after laravel is torn down
             $this->cleanup();
         });
+    }
+
+    private function removeAll($modelInstance)
+    {
+        get_class($modelInstance)::delete();
     }
 }
