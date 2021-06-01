@@ -18,7 +18,7 @@ class BeatmapDiscussionTransformerTest extends TestCase
      */
     public function testWithOAuth($groupIdentifier)
     {
-        $viewer = $this->createUserWithGroup($groupIdentifier);
+        $viewer = User::factory()->withGroup($groupIdentifier)->create();
 
         $this->actAsScopedUser($viewer);
 
@@ -32,7 +32,7 @@ class BeatmapDiscussionTransformerTest extends TestCase
      */
     public function testWithoutOAuth($groupIdentifier, $visible)
     {
-        $viewer = $this->createUserWithGroup($groupIdentifier);
+        $viewer = User::factory()->withGroup($groupIdentifier)->create();
         $this->actAsUser($viewer);
 
         $json = json_item($this->deletedBeatmapDiscussion, 'BeatmapDiscussion');
@@ -49,9 +49,9 @@ class BeatmapDiscussionTransformerTest extends TestCase
         return [
             ['admin', true],
             ['bng', false],
+            ['default', false],
             ['gmt', true],
             ['nat', true],
-            [[], false],
         ];
     }
 
@@ -59,10 +59,8 @@ class BeatmapDiscussionTransformerTest extends TestCase
     {
         parent::setUp();
 
-        $mapper = factory(User::class)->create();
-        $beatmapset = factory(Beatmapset::class)->states('with_discussion')->create([
-            'user_id' => $mapper->getKey(),
-        ]);
+        $mapper = User::factory()->create();
+        $beatmapset = Beatmapset::factory()->withDiscussion()->create(['user_id' => $mapper]);
 
         $this->deletedBeatmapDiscussion = $beatmapset->beatmapDiscussions()->first();
         $this->deletedBeatmapDiscussion->update(['deleted_at' => now()]);

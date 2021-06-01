@@ -28,14 +28,14 @@ class UserNotificationDigestTest extends TestCase
             'details' => ['mail' => true],
         ]);
 
-        $forum = factory(Forum::class, 'parent')->create();
-        $topic = factory(Topic::class)->make();
+        $forum = Forum::factory()->parent()->create();
+        $topic = Topic::factory()->make();
         $forum->topics()->save($topic);
         $topic->refresh();
 
         $topic->watches()->create(['mail' => true, 'user_id' => $this->user->getKey()]);
 
-        $post = factory(Post::class)->create([
+        $post = Post::factory()->create([
             'post_username' => $this->sender->username,
             'poster_id' => $this->sender->getKey(),
             'forum_id' => $forum->getKey(),
@@ -61,8 +61,8 @@ class UserNotificationDigestTest extends TestCase
         Event::fake();
         Mail::fake();
 
-        $this->user = factory(User::class)->create();
-        $this->sender = factory(User::class)->create();
+        $this->user = User::factory()->create();
+        $this->sender = User::factory()->create();
     }
 
     private function broadcastAndSendMail($notification)

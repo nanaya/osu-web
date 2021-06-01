@@ -3,24 +3,38 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-$factory->define(App\Models\UserDonation::class, function (Faker\Generator $faker) {
-    return [
-        'user_id' => function () {
-            return factory(App\Models\User::class)->create()->user_id;
-        },
-        'target_user_id' => function (array $self) {
-            return $self['user_id'];
-        },
-        'transaction_id' => 'faked-'.time()."-{$faker->randomNumber()}",
-        'length' => 1,
-        'amount' => 4,
-        'cancel' => false,
-    ];
-});
+namespace Database\Factories;
 
-$factory->state(App\Models\UserDonation::class, 'cancelled', function (Faker\Generator $faker) {
-    return [
-        'transaction_id' => 'faked-'.time()."-{$faker->randomNumber()}-cancel",
-        'cancel' => true,
-    ];
-});
+use App\Models\User;
+use App\Models\UserDonation;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class UserDonationFactory extends Factory
+{
+    protected $model = UserDonation::class;
+
+    public function definition()
+    {
+        return [
+            'user_id' => User::factory(),
+            'target_user_id' => fn(array $attributes) => $attributes['user_id'],
+            'transaction_id' => fn() => $this->transactionId(),
+            'length' => 1,
+            'amount' => 4,
+            'cancel' => false,
+        ];
+    }
+
+    public function cancelled()
+    {
+        return $this->state([
+            'transaction_id' => fn() => "{$this->transactionId()}-cancel",
+            'cancel' => true,
+        ]);
+    }
+
+    private function transactionId()
+    {
+        return 'faked-'.time().'-'.$this->faker->randomNumber();
+    }
+}

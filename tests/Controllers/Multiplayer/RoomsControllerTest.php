@@ -17,8 +17,8 @@ class RoomsControllerTest extends TestCase
 {
     public function testIndex()
     {
-        $room = factory(Room::class)->create();
-        $user = factory(User::class)->create();
+        $room = Room::factory()->create();
+        $user = User::factory()->create();
 
         $this->actAsScopedUser($user, ['*']);
 
@@ -27,9 +27,9 @@ class RoomsControllerTest extends TestCase
 
     public function testStore()
     {
-        $token = factory(Token::class)->create(['scopes' => ['*']]);
-        $beatmapset = factory(Beatmapset::class)->create();
-        $beatmap = factory(Beatmap::class)->create(['beatmapset_id' => $beatmapset->getKey()]);
+        $token = Token::factory()->create(['scopes' => ['*']]);
+        $beatmapset = Beatmapset::factory()->create();
+        $beatmap = Beatmap::factory()->create(['beatmapset_id' => $beatmapset]);
 
         $roomsCountInitial = Room::count();
         $playlistItemsCountInitial = PlaylistItem::count();
@@ -53,9 +53,9 @@ class RoomsControllerTest extends TestCase
 
     public function testStoreRealtime()
     {
-        $token = factory(Token::class)->create(['scopes' => ['*']]);
-        $beatmapset = factory(Beatmapset::class)->create();
-        $beatmap = factory(Beatmap::class)->create(['beatmapset_id' => $beatmapset->getKey()]);
+        $token = Token::factory()->create(['scopes' => ['*']]);
+        $beatmapset = Beatmapset::factory()->create();
+        $beatmap = Beatmap::factory()->create(['beatmapset_id' => $beatmapset]);
 
         $roomsCountInitial = Room::count();
         $playlistItemsCountInitial = PlaylistItem::count();
@@ -79,10 +79,10 @@ class RoomsControllerTest extends TestCase
 
     public function testStoreRealtimeFailWithTwoPlaylistItems()
     {
-        $token = factory(Token::class)->create(['scopes' => ['*']]);
-        $beatmapset = factory(Beatmapset::class)->create();
-        $beatmap1 = factory(Beatmap::class)->create(['beatmapset_id' => $beatmapset->getKey()]);
-        $beatmap2 = factory(Beatmap::class)->create(['beatmapset_id' => $beatmapset->getKey()]);
+        $token = Token::factory()->create(['scopes' => ['*']]);
+        $beatmapset = Beatmapset::factory()->create();
+        $beatmap1 = Beatmap::factory()->create(['beatmapset_id' => $beatmapset]);
+        $beatmap2 = Beatmap::factory()->create(['beatmapset_id' => $beatmapset]);
 
         $roomsCountInitial = Room::count();
         $playlistItemsCountInitial = PlaylistItem::count();

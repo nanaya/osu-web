@@ -24,7 +24,7 @@ class BeatmapsetEventTransformerTest extends TestCase
             'type' => $eventType,
         ]);
 
-        $viewer = $this->createUserWithGroup($groupIdentifier);
+        $viewer = User::factory()->withGroup($groupIdentifier)->create();
         $this->actAsScopedUser($viewer);
 
         $json = json_item($event, 'BeatmapsetEvent');
@@ -45,7 +45,7 @@ class BeatmapsetEventTransformerTest extends TestCase
             'type' => $eventType,
         ]);
 
-        $viewer = $this->createUserWithGroup($groupIdentifier);
+        $viewer = User::factory()->withGroup($groupIdentifier)->create();
         $this->actAsUser($viewer);
 
         $json = json_item($event, 'BeatmapsetEvent');
@@ -69,6 +69,10 @@ class BeatmapsetEventTransformerTest extends TestCase
             ['bng', BeatmapsetEvent::KUDOSU_ALLOW, false, true],
             ['bng', BeatmapsetEvent::DISCUSSION_DELETE, false, false],
 
+            ['default', BeatmapsetEvent::NOMINATE, true, true],
+            ['default', BeatmapsetEvent::KUDOSU_ALLOW, false, false],
+            ['default', BeatmapsetEvent::DISCUSSION_DELETE, false, false],
+
             ['gmt', BeatmapsetEvent::NOMINATE, true, true],
             ['gmt', BeatmapsetEvent::KUDOSU_ALLOW, false, true],
             ['gmt', BeatmapsetEvent::DISCUSSION_DELETE, false, true],
@@ -76,10 +80,6 @@ class BeatmapsetEventTransformerTest extends TestCase
             ['nat', BeatmapsetEvent::NOMINATE, true, true],
             ['nat', BeatmapsetEvent::KUDOSU_ALLOW, false, true],
             ['nat', BeatmapsetEvent::DISCUSSION_DELETE, false, true],
-
-            [[], BeatmapsetEvent::NOMINATE, true, true],
-            [[], BeatmapsetEvent::KUDOSU_ALLOW, false, false],
-            [[], BeatmapsetEvent::DISCUSSION_DELETE, false, false],
         ];
     }
 
@@ -87,9 +87,7 @@ class BeatmapsetEventTransformerTest extends TestCase
     {
         parent::setUp();
 
-        $mapper = factory(User::class)->create();
-        $this->beatmapset = factory(Beatmapset::class)->states('with_discussion')->create([
-            'user_id' => $mapper->getKey(),
-        ]);
+        $mapper = User::factory()->create();
+        $this->beatmapset = Beatmapset::factory()->withDiscussion()->create(['user_id' => $mapper]);
     }
 }

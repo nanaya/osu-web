@@ -13,7 +13,7 @@ class UserTest extends TestCase
     public function testEmailLoginDisabled()
     {
         config()->set('osu.user.allow_email_login', false);
-        factory(User::class)->create([
+        User::factory()->create([
             'username' => 'test',
             'user_email' => 'test@example.org',
         ]);
@@ -24,7 +24,7 @@ class UserTest extends TestCase
     public function testEmailLoginEnabled()
     {
         config()->set('osu.user.allow_email_login', true);
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'username' => 'test',
             'user_email' => 'test@example.org',
         ]);
@@ -36,7 +36,7 @@ class UserTest extends TestCase
     {
         config()->set('osu.user.allowed_rename_groups', ['default']);
         $allowedAtUpTo = now()->addYears(5);
-        $user = factory(User::class)->create(['group_id' => app('groups')->byIdentifier('default')->getKey()]);
+        $user = User::factory()->create(['group_id' => app('groups')->byIdentifier('default')->getKey()]);
 
         $this->assertLessThanOrEqual($allowedAtUpTo, $user->getUsernameAvailableAt());
     }
@@ -45,7 +45,7 @@ class UserTest extends TestCase
     {
         config()->set('osu.user.allowed_rename_groups', ['default']);
         $allowedAt = now()->addYears(10);
-        $user = $this->createUserWithGroup('gmt', ['group_id' => app('groups')->byIdentifier('default')->getKey()]);
+        $user = User::factory()->withGroup('gmt')->withGroup('default')->create();
 
         $this->assertGreaterThanOrEqual($allowedAt, $user->getUsernameAvailableAt());
     }

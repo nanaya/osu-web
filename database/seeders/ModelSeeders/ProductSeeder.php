@@ -3,6 +3,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+namespace Database\Seeders\ModelSeeders;
+
+use App\Models\Country;
+use App\Models\Store\Product;
+use App\Models\Tournament;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -23,19 +28,19 @@ class ProductSeeder extends Seeder
         $this->product_ids = [];
         $this->count = 0;
 
-        $master_tshirt = factory(App\Models\Store\Product::class, 'master_tshirt')->create();
-        $child_shirts = factory(App\Models\Store\Product::class, 'child_tshirt', 7)->create([
-            'master_product_id' => $master_tshirt->product_id,
+        $masterTshirt = Product::factory()->masterTshirt()->create();
+        $childShirts = Product::factory()->childTshirt()->count(7)->create([
+            'master_product_id' => $masterTshirt->product_id,
         ])->each(function ($s) {
             $this->product_ids[] = $s->product_id;
             $this->count++;
         });
 
         // Add the child shirt IDs to the master shirt's type_mappings_json
-        $type_mappings_json = [];
+        $typeMappingsJson = [];
         $sizes = ['S', 'M', 'L', 'XL'];
 
-        $type_mappings_json[$master_tshirt->product_id] = [
+        $typeMappingsJson[$masterTshirt->product_id] = [
             'size' => 'S',
             'colour' => 'White',
         ];
@@ -47,51 +52,51 @@ class ProductSeeder extends Seeder
             } else {
                 $colour = 'Charcoal';
             }
-            $type_mappings_json[$id] = [
+            $typeMappingsJson[$id] = [
                 'size' => $sizes[$i % 4],
                 'colour' => $colour,
             ];
             $i++;
         }
-        $master_tshirt->type_mappings_json = json_encode($type_mappings_json, JSON_PRETTY_PRINT);
-        $master_tshirt->save();
+        $masterTshirt->type_mappings_json = json_encode($typeMappingsJson, JSON_PRETTY_PRINT);
+        $masterTshirt->save();
     }
 
     public function seedBanners()
     {
-        $tournament = factory(App\Models\Tournament::class)->create();
+        $tournament = Tournament::factory()->create();
         // Get some countries to use.
-        $countries = App\Models\Country::limit(6)->get()->toArray();
-        $master_country = array_shift($countries);
+        $countries = Country::limit(6)->get()->toArray();
+        $masterCountry = array_shift($countries);
 
-        $master = factory(App\Models\Store\Product::class, 'child_banners')->create([
-            'name' => "{$tournament->name} Support Banner ({$master_country['name']})",
+        $master = Product::factory()->childBanners()->create([
+            'name' => "{$tournament->name} Support Banner ({$masterCountry['name']})",
             'description' => ':)',
             'header_description' => "# {$tournament->name} Support Banners\nYayifications",
             'promoted' => true,
             'display_order' => 0,
         ]);
 
-        $type_mappings_json = [
+        $typeMappingsJson = [
             $master->product_id => [
-                'country' => $master_country['name'],
+                'country' => $masterCountry['name'],
                 'tournament_id' => $tournament->tournament_id,
             ],
         ];
 
         foreach ($countries as $country) {
-            $product = factory(App\Models\Store\Product::class, 'child_banners')->create([
+            $product = Product::factory()->childBanners()->create([
                 'name' => "{$tournament->name} Support Banner ({$country['name']})",
                 'master_product_id' => $master->product_id,
             ]);
 
-            $type_mappings_json[$product->product_id] = [
+            $typeMappingsJson[$product->product_id] = [
                 'country' => $country['name'],
                 'tournament_id' => $tournament->tournament_id,
             ];
         }
 
-        $master->type_mappings_json = json_encode($type_mappings_json, JSON_PRETTY_PRINT);
+        $master->type_mappings_json = json_encode($typeMappingsJson, JSON_PRETTY_PRINT);
         $master->saveOrExplode();
     }
 }

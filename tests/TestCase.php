@@ -83,7 +83,7 @@ class TestCase extends BaseTestCase
     protected function actAsScopedUser(?User $user, ?array $scopes = ['*'], ?Client $client = null, $driver = null)
     {
         if ($client === null) {
-            $client = factory(Client::class)->create();
+            $client = Client::factory()->create();
         }
 
         // create valid token
@@ -209,7 +209,7 @@ class TestCase extends BaseTestCase
     protected function createToken(?User $user, ?array $scopes = null, ?Client $client = null)
     {
         if ($client === null) {
-            $client = factory(Client::class)->create();
+            $client = Client::factory()->create();
         }
 
         $token = $client->tokens()->create([
@@ -221,15 +221,6 @@ class TestCase extends BaseTestCase
         ]);
 
         return $token;
-    }
-
-    protected function createUserWithGroup($groupIdentifier, array $attributes = []): ?User
-    {
-        if ($groupIdentifier === null) {
-            return null;
-        }
-
-        return factory(User::class)->states($groupIdentifier)->create($attributes);
     }
 
     protected function fileList($path, $suffix)

@@ -87,7 +87,7 @@ class RouteTest extends TestCase
      */
     public function testProfileRoutes()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $id = $user->user_id;
         $username = $user->username;
         $this->assertGetRoutes(["/u/{$id}", '/u/'.$username]);

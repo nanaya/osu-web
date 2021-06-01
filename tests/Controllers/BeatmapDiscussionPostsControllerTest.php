@@ -34,7 +34,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
         $currentNotifications = Notification::count();
         $currentUserNotifications = UserNotification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $this->beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $this->user->statisticsOsu->update(['playcount' => $this->minPlays - 1]);
@@ -76,7 +76,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
     public function testPostStoreNewDiscussionInactiveBeatmapset()
     {
-        $this->beatmapset = factory(Beatmapset::class)->states('inactive')->create([
+        $this->beatmapset = Beatmapset::factory()->inactive()->create([
             'user_id' => $this->mapper->getKey(),
         ]);
 
@@ -199,7 +199,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
     public function testPostStoreNewReplyReopenByNominator()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->addToGroup(app('groups')->byIdentifier('bng'));
         $user->statisticsOsu()->create(['playcount' => $this->minPlays]);
         $this->beatmapDiscussion->update(['message_type' => 'problem', 'resolved' => true]);
@@ -216,7 +216,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
     public function testPostStoreNewReplyReopenByOtherUser()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->statisticsOsu()->create(['playcount' => $this->minPlays]);
         $this->beatmapDiscussion->update(['message_type' => 'problem', 'resolved' => true]);
         $lastDiscussionPosts = BeatmapDiscussionPost::count();
@@ -276,7 +276,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
     public function testPostStoreNewReplyResolveByMapperOnGuestBeatmap()
     {
-        $guest = factory(User::class)->create();
+        $guest = User::factory()->create();
         $this->beatmap->update(['user_id' => $guest->getKey()]);
         $this->beatmapDiscussion->update([
             'beatmap_id' => $this->beatmap->getKey(),
@@ -295,7 +295,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
     public function testPostStoreNewReplyResolveByGuest()
     {
-        $guest = factory(User::class)->create();
+        $guest = User::factory()->create();
         $this->beatmap->update(['user_id' => $guest->getKey()]);
         $this->beatmapDiscussion->update([
             'beatmap_id' => $this->beatmap->getKey(),
@@ -314,7 +314,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
     public function testPostStoreNewReplyResolveByOtherUser()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->beatmapDiscussion->update(['message_type' => 'problem', 'resolved' => false]);
         $lastDiscussionPosts = BeatmapDiscussionPost::count();
 
@@ -347,7 +347,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
     public function testPostUpdate()
     {
-        $beatmapDiscussionPost = factory(BeatmapDiscussionPost::class)->create([
+        $beatmapDiscussionPost = BeatmapDiscussionPost::factory()->create([
             'beatmap_discussion_id' => $this->beatmapDiscussion->id,
             'user_id' => $this->user->user_id,
         ]);
@@ -355,7 +355,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
         $initialMessage = $beatmapDiscussionPost->message;
         $editedMessage = "{$initialMessage} Edited";
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
 
         // invalid user
         $this
@@ -378,7 +378,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
     public function testPostUpdateNotLoggedIn()
     {
-        $post = factory(BeatmapDiscussionPost::class)->create([
+        $post = BeatmapDiscussionPost::factory()->create([
             'beatmap_discussion_id' => $this->beatmapDiscussion->id,
             'user_id' => $this->user->user_id,
         ]);
@@ -394,7 +394,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
     public function testPostUpdateWhenBeatmapsetDiscussionIsLocked()
     {
         $reply = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -410,7 +410,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
     {
         // reply made before resolve
         $reply1 = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -420,7 +420,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
         // reply made after resolve
         $reply2 = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -436,7 +436,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
     {
         // reply made before resolve
         $reply1 = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -451,7 +451,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
         // reply made after resolve
         $reply2 = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -500,7 +500,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
     public function testPostDestroy()
     {
         $reply = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -512,7 +512,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
     public function testPostDestroyNotLoggedIn()
     {
         $reply = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -527,7 +527,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
     public function testPostDestroyWhenBeatmapsetDiscussionIsLocked()
     {
         $reply = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -542,7 +542,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
     {
         // reply made before resolve
         $reply1 = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -551,7 +551,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
         // reply made after resolve
         $reply2 = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -566,7 +566,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
     {
         // reply made before resolve
         $reply1 = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -580,7 +580,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
         // reply made after resolve
         $reply2 = $this->beatmapDiscussion->beatmapDiscussionPosts()->save(
-            factory(BeatmapDiscussionPost::class, 'timeline')->make([
+            BeatmapDiscussionPost::factory()->timeline()->make([
                 'user_id' => $this->user->getKey(),
             ])
         );
@@ -600,7 +600,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
             'resolved' => false,
         ]);
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $otherUser->statisticsOsu()->create(['playcount' => $this->minPlays]);
 
         foreach ([$this->user, $otherUser] as $user) {
@@ -640,7 +640,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
             'queued_at' => now(),
         ]);
         $this->beatmapset->beatmaps()->update(['playmode' => Beatmap::MODES['osu']]);
-        $notificationOption = factory(User::class)->create()->notificationOptions()->firstOrCreate([
+        $notificationOption = User::factory()->create()->notificationOptions()->firstOrCreate([
             'name' => Notification::BEATMAPSET_DISCUSSION_QUALIFIED_PROBLEM,
         ]);
         $notificationOption->update(['details' => ['modes' => ['taiko']]]);
@@ -662,7 +662,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
             'queued_at' => now(),
         ]);
         $this->beatmapset->beatmaps()->update(['playmode' => Beatmap::MODES['osu']]);
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $notificationOption = $user->notificationOptions()->firstOrCreate([
             'name' => Notification::BEATMAPSET_DISCUSSION_QUALIFIED_PROBLEM,
         ]);
@@ -686,7 +686,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
     public function testProblemOnQualifiedBeatmap($updateParams, $assertMethod)
     {
         $this->beatmapset->update($updateParams);
-        $notificationOption = factory(User::class)->create()->notificationOptions()->firstOrCreate([
+        $notificationOption = User::factory()->create()->notificationOptions()->firstOrCreate([
             'name' => Notification::BEATMAPSET_DISCUSSION_QUALIFIED_PROBLEM,
         ]);
         $notificationOption->update(['details' => ['modes' => array_keys(Beatmap::MODES)]]);
@@ -707,7 +707,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
             'approved' => Beatmapset::STATES['qualified'],
             'queued_at' => now(),
         ]);
-        $notificationOption = factory(User::class)->create()->notificationOptions()->firstOrCreate([
+        $notificationOption = User::factory()->create()->notificationOptions()->firstOrCreate([
             'name' => Notification::BEATMAPSET_DISCUSSION_QUALIFIED_PROBLEM,
         ]);
         $notificationOption->update(['details' => ['modes' => array_keys(Beatmap::MODES)]]);
@@ -722,7 +722,7 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
     /**
      * @dataProvider problemQueueDataProvider
      */
-    public function testProblemOnQualifiedBeatmapQueuesNotification($userStates, $queued, $notQueued)
+    public function testProblemOnQualifiedBeatmapQueuesNotification($userGroup, $queued, $notQueued)
     {
         // ensure there's no currently open problems
         $this->beatmapset->beatmapDiscussions()->ofType('problem')->update(['resolved' => true]);
@@ -734,17 +734,12 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
         // faking prevents jobs from actually running, so events and jobs can't be asserted together.
         Queue::fake();
 
-        $factory = factory(User::class);
-        if ($userStates !== null) {
-            $factory->states($userStates);
-        }
-
-        $user = $factory->create();
+        $user = User::factory()->withGroup($userGroup)->create();
         $user->statisticsOsu()->create(['playcount' => $this->minPlays]);
 
         $this
             ->actingAsVerified($user)
-            ->post(route('beatmapsets.discussions.posts.store'), $this->makeBeatmapsetDiscussionPostParams($this->beatmapset, 'problem'));
+            ->post(route('beatmapsets.discussions.posts.store'), $this->makeBeatmapsetDiscussionPostParams($this->beatmapset, 'problem'))->assertSuccessful();
 
         foreach ($queued as $class) {
             Queue::assertPushed($class);
@@ -787,30 +782,30 @@ class BeatmapDiscussionPostsControllerTest extends TestCase
 
         $this->minPlays = config('osu.user.min_plays_for_posting');
 
-        $this->mapper = factory(User::class)->create();
+        $this->mapper = User::factory()->create();
         $this->mapper->statisticsOsu()->create(['playcount' => $this->minPlays]);
 
-        $this->user = factory(User::class)->create();
+        $this->user = User::factory()->create();
         $this->user->statisticsOsu()->create(['playcount' => $this->minPlays]);
 
-        $this->beatmapset = factory(Beatmapset::class)->create([
+        $this->beatmapset = Beatmapset::factory()->create([
             'user_id' => $this->mapper->getKey(),
         ]);
-        $this->beatmap = $this->beatmapset->beatmaps()->save(factory(Beatmap::class)->make([
+        $this->beatmap = $this->beatmapset->beatmaps()->save(Beatmap::factory()->make([
             'user_id' => $this->mapper->getKey(),
         ]));
-        $this->beatmapDiscussion = factory(BeatmapDiscussion::class, 'timeline')->create([
+        $this->beatmapDiscussion = BeatmapDiscussion::factory()->timeline()->create([
             'beatmapset_id' => $this->beatmapset->getKey(),
             'beatmap_id' => $this->beatmap->getKey(),
             'user_id' => $this->user->getKey(),
         ]);
-        $post = factory(BeatmapDiscussionPost::class, 'timeline')->make([
+        $post = BeatmapDiscussionPost::factory()->timeline()->make([
             'user_id' => $this->user->getKey(),
         ]);
         $this->beatmapDiscussionPost = $this->beatmapDiscussion->beatmapDiscussionPosts()->save($post);
 
-        $this->otherBeatmapset = factory(Beatmapset::class)->states('no_discussion')->create();
-        $this->otherBeatmap = $this->otherBeatmapset->beatmaps()->save(factory(Beatmap::class)->make());
+        $this->otherBeatmapset = Beatmapset::factory()->noDiscussion()->create();
+        $this->otherBeatmap = $this->otherBeatmapset->beatmaps()->save(Beatmap::factory()->make());
     }
 
     private function deletePost(BeatmapDiscussionPost $post, ?User $user = null)

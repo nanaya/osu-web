@@ -97,7 +97,7 @@ class MessagesControllerTest extends TestCase
 
     public function testChannelShowPrivateWhenJoined() // success
     {
-        $this->userChannel = factory(UserChannel::class)->create([
+        $this->userChannel = UserChannel::factory()->create([
             'user_id' => $this->user->user_id,
             'channel_id' => $this->privateChannel->channel_id,
         ]);
@@ -125,13 +125,13 @@ class MessagesControllerTest extends TestCase
 
     public function testChannelShowPMWhenTargetRestricted() // fail
     {
-        $pmChannel = factory(Chat\Channel::class)->states('pm')->create();
+        $pmChannel = Chat\Channel::factory()->pm()->create();
 
-        factory(UserChannel::class)->create([
+        UserChannel::factory()->create([
             'user_id' => $this->user->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
-        factory(UserChannel::class)->create([
+        UserChannel::factory()->create([
             'user_id' => $this->restrictedUser->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
@@ -143,8 +143,8 @@ class MessagesControllerTest extends TestCase
 
     public function testChannelShowPM() // success
     {
-        $pmChannel = factory(Chat\Channel::class)->states('pm')->create();
-        factory(UserChannel::class)->create([
+        $pmChannel = Chat\Channel::factory()->pm()->create();
+        UserChannel::factory()->create([
             'user_id' => $this->user->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
@@ -201,7 +201,7 @@ class MessagesControllerTest extends TestCase
 
     public function testChannelSendWhenModerated() // fail
     {
-        $moderatedChannel = factory(Chat\Channel::class)->states('public')->create(['moderated' => true]);
+        $moderatedChannel = Chat\Channel::factory()->public()->create(['moderated' => true]);
 
         $this->actAsScopedUser($this->user, ['*']);
         $this->json(
@@ -214,16 +214,16 @@ class MessagesControllerTest extends TestCase
 
     public function testChannelSendWhenBlocking() // fail
     {
-        $pmChannel = factory(Chat\Channel::class)->states('pm')->create();
-        factory(UserChannel::class)->create([
+        $pmChannel = Chat\Channel::factory()->pm()->create();
+        UserChannel::factory()->create([
             'user_id' => $this->user->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
-        factory(UserChannel::class)->create([
+        UserChannel::factory()->create([
             'user_id' => $this->anotherUser->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
-        factory(UserRelation::class)->states('block')->create([
+        UserRelation::factory()->block()->create([
             'user_id' => $this->user->user_id,
             'zebra_id' => $this->anotherUser->user_id,
         ]);
@@ -239,16 +239,16 @@ class MessagesControllerTest extends TestCase
 
     public function testChannelSendWhenBlocked() // fail
     {
-        $pmChannel = factory(Chat\Channel::class)->states('pm')->create();
-        factory(UserChannel::class)->create([
+        $pmChannel = Chat\Channel::factory()->pm()->create();
+        UserChannel::factory()->create([
             'user_id' => $this->user->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
-        factory(UserChannel::class)->create([
+        UserChannel::factory()->create([
             'user_id' => $this->anotherUser->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
-        factory(UserRelation::class)->states('block')->create([
+        UserRelation::factory()->block()->create([
             'user_id' => $this->anotherUser->user_id,
             'zebra_id' => $this->user->user_id,
         ]);
@@ -264,13 +264,13 @@ class MessagesControllerTest extends TestCase
 
     public function testChannelSendWhenRestrictedToPM() // fail
     {
-        $pmChannel = factory(Chat\Channel::class)->states('pm')->create();
+        $pmChannel = Chat\Channel::factory()->pm()->create();
 
-        factory(UserChannel::class)->create([
+        UserChannel::factory()->create([
             'user_id' => $this->restrictedUser->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
-        factory(UserChannel::class)->create([
+        UserChannel::factory()->create([
             'user_id' => $this->anotherUser->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
@@ -303,13 +303,13 @@ class MessagesControllerTest extends TestCase
 
     public function testChannelSendWhenTargetRestricted() // fail
     {
-        $pmChannel = factory(Chat\Channel::class)->states('pm')->create();
+        $pmChannel = Chat\Channel::factory()->pm()->create();
 
-        factory(UserChannel::class)->create([
+        UserChannel::factory()->create([
             'user_id' => $this->user->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
-        factory(UserChannel::class)->create([
+        UserChannel::factory()->create([
             'user_id' => $this->restrictedUser->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
@@ -345,13 +345,13 @@ class MessagesControllerTest extends TestCase
 
     public function testChannelSendWhenSilencedToPM() // fail
     {
-        $pmChannel = factory(Chat\Channel::class)->states('pm')->create();
+        $pmChannel = Chat\Channel::factory()->pm()->create();
 
-        factory(UserChannel::class)->create([
+        UserChannel::factory()->create([
             'user_id' => $this->silencedUser->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
-        factory(UserChannel::class)->create([
+        UserChannel::factory()->create([
             'user_id' => $this->anotherUser->user_id,
             'channel_id' => $pmChannel->channel_id,
         ]);
@@ -388,16 +388,16 @@ class MessagesControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
+        $this->user = User::factory()->create();
         $minPlays = config('osu.user.min_plays_for_posting');
         $this->user->statisticsOsu()->create(['playcount' => $minPlays]);
 
-        $this->anotherUser = factory(User::class)->create();
-        $this->restrictedUser = factory(User::class)->states('restricted')->create();
-        $this->silencedUser = factory(User::class)->states('silenced')->create();
-        $this->publicChannel = factory(Chat\Channel::class)->states('public')->create();
-        $this->privateChannel = factory(Chat\Channel::class)->states('private')->create();
-        $this->pmChannel = factory(Chat\Channel::class)->states('pm')->create();
-        $this->tourneyChannel = factory(Chat\Channel::class)->states('tourney')->create();
+        $this->anotherUser = User::factory()->create();
+        $this->restrictedUser = User::factory()->restricted()->create();
+        $this->silencedUser = User::factory()->silenced()->create();
+        $this->publicChannel = Chat\Channel::factory()->public()->create();
+        $this->privateChannel = Chat\Channel::factory()->private()->create();
+        $this->pmChannel = Chat\Channel::factory()->pm()->create();
+        $this->tourneyChannel = Chat\Channel::factory()->tourney()->create();
     }
 }

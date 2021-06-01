@@ -73,7 +73,7 @@ class BeatmapDiscussionPostsTest extends DuskTestCase
 
     protected function createUserCapableOfDiscussing(): User
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->statisticsOsu()->create(['playcount' => $this->minPlays]);
 
         return $user;
@@ -106,18 +106,18 @@ class BeatmapDiscussionPostsTest extends DuskTestCase
         $this->mapper = $this->createUserCapableOfDiscussing();
         $this->user = $this->createUserCapableOfDiscussing();
 
-        $this->beatmapset = factory(Beatmapset::class)->create([
+        $this->beatmapset = Beatmapset::factory()->create([
             'user_id' => $this->mapper->getKey(),
         ]);
-        $this->beatmap = $this->beatmapset->beatmaps()->save(factory(Beatmap::class)->make([
+        $this->beatmap = $this->beatmapset->beatmaps()->save(Beatmap::factory()->make([
             'user_id' => $this->mapper->getKey(),
         ]));
-        $this->beatmapDiscussion = factory(BeatmapDiscussion::class, 'timeline')->create([
+        $this->beatmapDiscussion = BeatmapDiscussion::factory()->timeline()->create([
             'beatmapset_id' => $this->beatmapset->getKey(),
             'beatmap_id' => $this->beatmap->getKey(),
             'user_id' => $this->user->getKey(),
         ]);
-        $post = factory(BeatmapDiscussionPost::class, 'timeline')->make([
+        $post = BeatmapDiscussionPost::factory()->timeline()->make([
             'user_id' => $this->user->getKey(),
         ]);
         $this->beatmapDiscussionPost = $this->beatmapDiscussion->beatmapDiscussionPosts()->save($post);

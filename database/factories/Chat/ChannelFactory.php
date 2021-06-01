@@ -2,33 +2,47 @@
 
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
+
+namespace Database\Factories\Chat;
+
 use App\Models\Chat\Channel;
 use App\Models\LegacyMatch\LegacyMatch;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Channel::class, function (Faker\Generator $faker) {
-    return [
-        'name' => '#'.$faker->colorName,
-        'description' => $faker->bs,
-    ];
-});
+class ChannelFactory extends Factory
+{
+    protected $model = Channel::class;
 
-$factory->state(Channel::class, 'public', function (Faker\Generator $faker) {
-    return ['type' => Channel::TYPES['public']];
-});
+    public function definition()
+    {
+        return [
+            'name' => fn() => "#{$this->faker->colorName}",
+            'description' => fn() => $this->faker->bs(),
+        ];
+    }
 
-$factory->state(Channel::class, 'private', function (Faker\Generator $faker) {
-    return ['type' => Channel::TYPES['private']];
-});
+    public function pm()
+    {
+        return $this->state(['type' => Channel::TYPES['pm']]);
+    }
 
-$factory->state(Channel::class, 'pm', function (Faker\Generator $faker) {
-    return ['type' => Channel::TYPES['pm']];
-});
+    public function private()
+    {
+        return $this->state(['type' => Channel::TYPES['private']]);
+    }
 
-$factory->state(Channel::class, 'tourney', function (Faker\Generator $faker) {
-    $match = factory(LegacyMatch::class)->states('tourney')->create();
+    public function public()
+    {
+        return $this->state(['type' => Channel::TYPES['public']]);
+    }
 
-    return [
-        'name' => "#mp_{$match->match_id}",
-        'type' => Channel::TYPES['temporary'],
-    ];
-});
+    public function tourney()
+    {
+        $match = LegacyMatch::factory()->tourney()->create();
+
+        return $this->state([
+            'name' => "#mp_{$match->getKey()}",
+            'type' => Channel::TYPES['temporary'],
+        ]);
+    }
+}

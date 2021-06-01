@@ -39,22 +39,22 @@ class RouteScopesTest extends TestCase
         // This can't be simply setup in setUpBeforeClass() because then we'd need to initialize the app container there,
         // but the container is overriden on each test and also destroyed before the teardown
         // making rolling back or cleaning up problematic.
-        $stream = factory(UpdateStream::class)->create([
+        $stream = UpdateStream::factory()->create([
             'name' => '1',
             'stream_id' => 1, // Changelog stream_id is tinyint, autoincrement makes test fail too soon.
         ]);
 
-        factory(Changelog::class)->create([
+        Changelog::factory()->create([
             'stream_id' => $stream->getKey(),
             'user_id' => 1, // user doesn't need to exist and not having to create a user makes the test much faster
         ]);
 
-        $build = factory(Build::class)->create([
+        $build = Build::factory()->create([
             'version' => '1',
             'stream_id' => $stream->getKey(),
         ]);
 
-        factory(Comment::class)->create([
+        Comment::factory()->create([
             'commentable_id' => $build->getKey(),
             'commentable_type' => 'build',
             'id' => 1,

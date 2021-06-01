@@ -15,17 +15,17 @@ class UserNotificationTest extends TestCase
 {
     public function testBatchDestroyByIds()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $notificationA = factory(Notification::class)->create();
-        $notificationB = factory(Notification::class)->create();
+        $notificationA = Notification::factory()->create();
+        $notificationB = Notification::factory()->create();
 
-        $userNotificationA = factory(UserNotification::class)->create([
+        $userNotificationA = UserNotification::factory()->create([
             'notification_id' => $notificationA->getKey(),
             'user_id' => $user->getKey(),
         ]);
 
-        $userNotificationB = factory(UserNotification::class)->create([
+        $userNotificationB = UserNotification::factory()->create([
             'notification_id' => $notificationB->getKey(),
             'user_id' => $user->getKey(),
         ]);
@@ -45,35 +45,35 @@ class UserNotificationTest extends TestCase
 
     public function testBatchDestroyByNotificationIdentyByStack()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $notificationA = factory(Notification::class)->create([
+        $notificationA = Notification::factory()->create([
             'name' => Notification::BEATMAPSET_DISCUSSION_LOCK,
             'notifiable_id' => 1,
             'notifiable_type' => 'beatmapset',
         ]);
-        $notificationB = factory(Notification::class)->create([
+        $notificationB = Notification::factory()->create([
             'name' => $notificationA->name,
             'notifiable_id' => $notificationA->notifiable_id,
             'notifiable_type' => $notificationA->notifiable_type,
         ]);
-        $notificationC = factory(Notification::class)->create([
+        $notificationC = Notification::factory()->create([
             'name' => $notificationA->name,
             'notifiable_id' => 2,
             'notifiable_type' => $notificationA->notifiable_type,
         ]);
 
-        $userNotificationA = factory(UserNotification::class)->create([
+        $userNotificationA = UserNotification::factory()->create([
             'notification_id' => $notificationA->getKey(),
             'user_id' => $user->getKey(),
         ]);
 
-        $userNotificationB = factory(UserNotification::class)->create([
+        $userNotificationB = UserNotification::factory()->create([
             'notification_id' => $notificationB->getKey(),
             'user_id' => $user->getKey(),
         ]);
 
-        $userNotificationC = factory(UserNotification::class)->create([
+        $userNotificationC = UserNotification::factory()->create([
             'notification_id' => $notificationC->getKey(),
             'user_id' => $user->getKey(),
         ]);
@@ -98,32 +98,32 @@ class UserNotificationTest extends TestCase
 
     public function testBatchDestroyByNotificationIdentityByObjectType()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $notificationA = factory(Notification::class)->create([
+        $notificationA = Notification::factory()->create([
             'name' => Notification::BEATMAPSET_DISCUSSION_LOCK,
             'notifiable_type' => 'beatmapset',
         ]);
-        $notificationB = factory(Notification::class)->create([
+        $notificationB = Notification::factory()->create([
             'name' => $notificationA->name,
             'notifiable_type' => 'beatmapset',
         ]);
-        $notificationC = factory(Notification::class)->create([
+        $notificationC = Notification::factory()->create([
             'name' => Notification::COMMENT_NEW,
             'notifiable_type' => 'news_post',
         ]);
 
-        $userNotificationA = factory(UserNotification::class)->create([
+        $userNotificationA = UserNotification::factory()->create([
             'notification_id' => $notificationA->getKey(),
             'user_id' => $user->getKey(),
         ]);
 
-        $userNotificationB = factory(UserNotification::class)->create([
+        $userNotificationB = UserNotification::factory()->create([
             'notification_id' => $notificationB->getKey(),
             'user_id' => $user->getKey(),
         ]);
 
-        $userNotificationC = factory(UserNotification::class)->create([
+        $userNotificationC = UserNotification::factory()->create([
             'notification_id' => $notificationC->getKey(),
             'user_id' => $user->getKey(),
         ]);

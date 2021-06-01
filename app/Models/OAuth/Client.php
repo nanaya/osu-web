@@ -16,6 +16,11 @@ class Client extends PassportClient
 {
     use Validatable;
 
+    public static function newFactory()
+    {
+        return null;
+    }
+
     public static function forUser(User $user)
     {
         // Get clients matching non-revoked tokens. Expired tokens should be included.

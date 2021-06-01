@@ -3,6 +3,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+namespace Database\Seeders\ModelSeeders;
+
 use App\Models\Beatmap;
 use App\Models\BeatmapDifficulty;
 use App\Models\BeatmapFailtimes;
@@ -168,8 +170,8 @@ class BeatmapSeeder extends Seeder
         BeatmapFailtimes::where('beatmap_id', $beatmap->beatmap_id)->delete();
 
         $beatmap->failtimes()->saveMany([
-            factory(App\Models\BeatmapFailtimes::class, 'fail')->make(),
-            factory(App\Models\BeatmapFailtimes::class, 'retry')->make(),
+            BeatmapFailtimes::factory()->fail()->make(),
+            BeatmapFailtimes::factory()->retry()->make(),
         ]);
     }
 

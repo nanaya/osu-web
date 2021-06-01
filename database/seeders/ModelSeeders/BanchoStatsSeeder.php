@@ -3,7 +3,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-use Carbon\Carbon;
+namespace Database\Seeders\ModelSeeders;
+
+use App\Models\BanchoStats;
 use Illuminate\Database\Seeder;
 
 class BanchoStatsSeeder extends Seeder
@@ -15,10 +17,10 @@ class BanchoStatsSeeder extends Seeder
      */
     public function run()
     {
-        $date = new Carbon();
+        $date = now();
 
         //Create 500 new data points
-        factory(App\Models\BanchoStats::class, 500)->make()->each(function ($stat) use ($date) {
+        BanchoStats::factory()->count(500)->make()->each(function ($stat) use ($date) {
             $stat->date = $date;
             $stat->save();
 

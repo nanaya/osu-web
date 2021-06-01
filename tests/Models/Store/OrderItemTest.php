@@ -14,8 +14,8 @@ class OrderItemTest extends TestCase
 {
     public function testReserveUnreservedProduct()
     {
-        $product = factory(Product::class)->create(['stock' => 5, 'max_quantity' => 5]);
-        $orderItem = factory(OrderItem::class)->create([
+        $product = Product::factory()->create(['stock' => 5, 'max_quantity' => 5]);
+        $orderItem = OrderItem::factory()->create([
             'product_id' => $product->product_id,
             'quantity' => 2,
             'reserved' => false,
@@ -32,8 +32,8 @@ class OrderItemTest extends TestCase
 
     public function testReserveReservedProduct()
     {
-        $product = factory(Product::class)->create(['stock' => 5, 'max_quantity' => 5]);
-        $orderItem = factory(OrderItem::class)->create([
+        $product = Product::factory()->create(['stock' => 5, 'max_quantity' => 5]);
+        $orderItem = OrderItem::factory()->create([
             'product_id' => $product->product_id,
             'quantity' => 2,
             'reserved' => true,
@@ -50,8 +50,8 @@ class OrderItemTest extends TestCase
 
     public function testReleaseUnreservedProduct()
     {
-        $product = factory(Product::class)->create(['stock' => 5, 'max_quantity' => 5]);
-        $orderItem = factory(OrderItem::class)->create([
+        $product = Product::factory()->create(['stock' => 5, 'max_quantity' => 5]);
+        $orderItem = OrderItem::factory()->create([
             'product_id' => $product->product_id,
             'quantity' => 2,
             'reserved' => false,
@@ -68,8 +68,8 @@ class OrderItemTest extends TestCase
 
     public function testReleaseReservedProduct()
     {
-        $product = factory(Product::class)->create(['stock' => 5, 'max_quantity' => 5]);
-        $orderItem = factory(OrderItem::class)->create([
+        $product = Product::factory()->create(['stock' => 5, 'max_quantity' => 5]);
+        $orderItem = OrderItem::factory()->create([
             'product_id' => $product->product_id,
             'quantity' => 2,
             'reserved' => true,
@@ -86,8 +86,8 @@ class OrderItemTest extends TestCase
 
     public function testReserveInsufficientStock()
     {
-        $product = factory(Product::class)->create(['stock' => 1, 'max_quantity' => 5]);
-        $orderItem = factory(OrderItem::class)->create([
+        $product = Product::factory()->create(['stock' => 1, 'max_quantity' => 5]);
+        $orderItem = OrderItem::factory()->create([
             'product_id' => $product->product_id,
             'quantity' => 2,
             'reserved' => false,
@@ -99,8 +99,8 @@ class OrderItemTest extends TestCase
 
     public function testReleaseWhenStockIsZero()
     {
-        $product = factory(Product::class)->create(['stock' => 0, 'max_quantity' => 5]);
-        $orderItem = factory(OrderItem::class)->create([
+        $product = Product::factory()->create(['stock' => 0, 'max_quantity' => 5]);
+        $orderItem = OrderItem::factory()->create([
             'product_id' => $product->product_id,
             'quantity' => 2,
             'reserved' => true,

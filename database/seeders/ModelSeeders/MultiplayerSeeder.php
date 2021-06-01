@@ -3,6 +3,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+namespace Database\Seeders\ModelSeeders;
+
 use App\Models\Beatmap;
 use App\Models\Multiplayer\PlaylistItem;
 use App\Models\Multiplayer\Room;
@@ -20,12 +22,12 @@ class MultiplayerSeeder extends Seeder
      */
     public function run()
     {
-        $rooms = factory(Room::class, 10)->create();
+        $rooms = Room::factory()->count(10)->create();
 
         foreach ($rooms as $room) {
             $beatmaps = Beatmap::orderByRaw('RAND()')->limit(rand(4, 10))->get();
             foreach ($beatmaps as $beatmap) {
-                $playlistItem = factory(PlaylistItem::class)->create([
+                $playlistItem = PlaylistItem::factory()->create([
                     'room_id' => $room->getKey(),
                     'beatmap_id' => $beatmap->getKey(),
                     'ruleset_id' => $beatmap->playmode,
@@ -36,7 +38,7 @@ class MultiplayerSeeder extends Seeder
                     $attempts = rand(1, 10);
                     for ($i = 0; $i < $attempts; $i++) {
                         $completed = rand(0, 100) > 20;
-                        factory(Score::class)->create([
+                        Score::factory()->create([
                             'playlist_item_id' => $playlistItem->getKey(),
                             'user_id' => $user->getKey(),
                             'beatmap_id' => $beatmap->getKey(),

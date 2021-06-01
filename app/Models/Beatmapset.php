@@ -127,17 +127,6 @@ class Beatmapset extends Model implements AfterCommit, Commentable, Indexable
     ];
 
     public $timestamps = false;
-    protected $hidden = [
-        'header_hash',
-        'body_hash',
-        'download_disabled',
-        'download_disabled_url',
-        'displaytitle',
-        'approvedby_id',
-        'difficulty_names',
-        'thread_icon_date',
-        'thread_id',
-    ];
 
     const STATES = [
         'graveyard' => -2,

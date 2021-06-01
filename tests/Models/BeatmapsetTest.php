@@ -21,13 +21,13 @@ class BeatmapsetTest extends TestCase
 {
     public function testLove()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $beatmapset = $this->createBeatmapset();
 
         $notifications = Notification::count();
         $userNotifications = UserNotification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $beatmapset->love($user);
@@ -46,7 +46,7 @@ class BeatmapsetTest extends TestCase
         $notifications = Notification::count();
         $userNotifications = UserNotification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $result = $beatmapset->nominate($user, [$beatmapset->playmodesStr()[0]]);
@@ -65,7 +65,7 @@ class BeatmapsetTest extends TestCase
         $notifications = Notification::count();
         $userNotifications = UserNotification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $beatmapset->qualify($user);
@@ -131,7 +131,7 @@ class BeatmapsetTest extends TestCase
 
     public function testRank()
     {
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
 
         $beatmapset = $this->createBeatmapset([
             'approved' => Beatmapset::STATES['qualified'],
@@ -164,7 +164,7 @@ class BeatmapsetTest extends TestCase
 
         $notifications = Notification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $res = $beatmapset->rank();
@@ -177,7 +177,7 @@ class BeatmapsetTest extends TestCase
 
     public function testGlobalScopeActive()
     {
-        $beatmapset = factory(Beatmapset::class)->states('inactive')->create();
+        $beatmapset = Beatmapset::factory()->inactive()->create();
         $id = $beatmapset->getKey();
 
         $this->assertNull(Beatmapset::find($id)); // global scope
@@ -187,7 +187,7 @@ class BeatmapsetTest extends TestCase
 
     public function testGlobalScopeSoftDelete()
     {
-        $beatmapset = factory(Beatmapset::class)->states(['inactive', 'deleted'])->create();
+        $beatmapset = Beatmapset::factory()->inactive()->deleted()->create();
         $id = $beatmapset->getKey();
 
         $this->assertNull(Beatmapset::withTrashed()->find($id));
@@ -210,7 +210,7 @@ class BeatmapsetTest extends TestCase
         $notifications = Notification::count();
         $userNotifications = UserNotification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $result = $beatmapset->nominate($user);
@@ -241,7 +241,7 @@ class BeatmapsetTest extends TestCase
         $notifications = Notification::count();
         $userNotifications = UserNotification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $result = $beatmapset->nominate($user);
@@ -254,13 +254,13 @@ class BeatmapsetTest extends TestCase
 
     public function testHybridNominateWithNullPlaymode(): void
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $beatmapset = $this->createHybridBeatmapset();
 
         $notifications = Notification::count();
         $userNotifications = UserNotification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $result = $beatmapset->nominate($user);
@@ -281,7 +281,7 @@ class BeatmapsetTest extends TestCase
         $notifications = Notification::count();
         $userNotifications = UserNotification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $result = $beatmapset->nominate($user, ['taiko']);
@@ -302,7 +302,7 @@ class BeatmapsetTest extends TestCase
         $notifications = Notification::count();
         $userNotifications = UserNotification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $result = $beatmapset->nominate($user, ['osu']);
@@ -338,7 +338,7 @@ class BeatmapsetTest extends TestCase
         $notifications = Notification::count();
         $userNotifications = UserNotification::count();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         $beatmapset->watches()->create(['user_id' => $otherUser->getKey()]);
 
         $result = $beatmapset->nominate($user, ['osu', 'taiko']);
@@ -419,14 +419,14 @@ class BeatmapsetTest extends TestCase
         ];
 
         if (!isset($params['user_id'])) {
-            $user = factory(User::class)->create();
+            $user = User::factory()->create();
 
             $params['user_id'] = $user->getKey();
         }
 
-        $beatmapset = factory(Beatmapset::class)->create(array_merge($defaultParams, $params));
-        $beatmapset->beatmaps()->save(factory(Beatmap::class)->make());
-        factory(BeatmapMirror::class)->states('default')->create();
+        $beatmapset = Beatmapset::factory()->create(array_merge($defaultParams, $params));
+        $beatmapset->beatmaps()->save(Beatmap::factory()->make());
+        BeatmapMirror::factory()->default()->create();
 
         return $beatmapset;
     }
@@ -442,17 +442,17 @@ class BeatmapsetTest extends TestCase
         ];
 
         if (!isset($params['user_id'])) {
-            $user = factory(User::class)->create();
+            $user = User::factory()->create();
 
             $params['user_id'] = $user->getKey();
         }
 
-        $beatmapset = factory(Beatmapset::class)->create(array_merge($defaultParams, $params));
+        $beatmapset = Beatmapset::factory()->create(array_merge($defaultParams, $params));
 
         foreach ($playmodes as $playmode) {
-            $beatmapset->beatmaps()->save(factory(Beatmap::class)->make(['playmode' => Beatmap::modeInt($playmode)]));
+            $beatmapset->beatmaps()->save(Beatmap::factory()->make(['playmode' => Beatmap::modeInt($playmode)]));
         }
-        factory(BeatmapMirror::class)->states('default')->create();
+        BeatmapMirror::factory()->default()->create();
 
         return $beatmapset;
     }
@@ -461,7 +461,7 @@ class BeatmapsetTest extends TestCase
     {
         app('groups')->byIdentifier($group)->update(['has_playmodes' => true]);
         app('groups')->resetCache();
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->userGroups()->create([
             'group_id' => app('groups')->byIdentifier($group)->getKey(),
             'playmodes' => $playmodes,
@@ -483,9 +483,9 @@ class BeatmapsetTest extends TestCase
     {
         parent::setUp();
 
-        factory(Genre::class)->create(['genre_id' => Genre::UNSPECIFIED]);
-        factory(Language::class)->create(['language_id' => Language::UNSPECIFIED]);
-        $this->fakeGenre = factory(Genre::class)->create();
-        $this->fakeLanguage = factory(Language::class)->create();
+        Genre::factory()->create(['genre_id' => Genre::UNSPECIFIED]);
+        Language::factory()->create(['language_id' => Language::UNSPECIFIED]);
+        $this->fakeGenre = Genre::factory()->create();
+        $this->fakeLanguage = Language::factory()->create();
     }
 }

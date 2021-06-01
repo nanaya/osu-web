@@ -14,11 +14,11 @@ class ForumTopicsControllerTest extends TestCase
 {
     public function testDestroy()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $topic = factory(Forum\Topic::class)->create([
+        $forum = Forum\Forum::factory()->child()->create();
+        $topic = Forum\Topic::factory()->create([
             'forum_id' => $forum->forum_id,
         ]);
-        $user = factory(User::class)->create()->fresh();
+        $user = User::factory()->create()->fresh();
         $group = app('groups')->byIdentifier('default');
         $user->setDefaultGroup($group);
         $authOption = Forum\AuthOption::firstOrCreate([
@@ -63,11 +63,11 @@ class ForumTopicsControllerTest extends TestCase
 
     public function testReply()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $topic = factory(Forum\Topic::class)->create([
+        $forum = Forum\Forum::factory()->child()->create();
+        $topic = Forum\Topic::factory()->create([
             'forum_id' => $forum->forum_id,
         ]);
-        $user = factory(User::class)->create()->fresh();
+        $user = User::factory()->create()->fresh();
         $group = app('groups')->byIdentifier('default');
         $user->setDefaultGroup($group);
         $authOption = Forum\AuthOption::firstOrCreate([
@@ -112,18 +112,18 @@ class ForumTopicsControllerTest extends TestCase
 
     public function testRestore()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $topic = factory(Forum\Topic::class)->create([
+        $forum = Forum\Forum::factory()->child()->create();
+        $topic = Forum\Topic::factory()->create([
             'forum_id' => $forum->forum_id,
         ]);
-        $poster = factory(User::class)->create()->fresh();
+        $poster = User::factory()->create()->fresh();
         $poster->setDefaultGroup(app('groups')->byIdentifier('default'));
         Forum\Post::createNew($topic, $poster, 'test', false);
 
         $topic->refresh();
         $topic->delete();
 
-        $user = factory(User::class)->create()->fresh();
+        $user = User::factory()->create()->fresh();
         $user->setDefaultGroup(app('groups')->byIdentifier('gmt'));
 
         $initialTopicCount = Forum\Topic::count();
@@ -140,11 +140,11 @@ class ForumTopicsControllerTest extends TestCase
 
     public function testShow()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $topic = factory(Forum\Topic::class)->create([
+        $forum = Forum\Forum::factory()->child()->create();
+        $topic = Forum\Topic::factory()->create([
             'forum_id' => $forum->forum_id,
         ]);
-        $post = factory(Forum\Post::class)->create([
+        $post = Forum\Post::factory()->create([
             'forum_id' => $forum->forum_id,
             'topic_id' => $topic->topic_id,
         ]);
@@ -156,11 +156,11 @@ class ForumTopicsControllerTest extends TestCase
 
     public function testShowNoMorePosts()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $topic = factory(Forum\Topic::class)->create([
+        $forum = Forum\Forum::factory()->child()->create();
+        $topic = Forum\Topic::factory()->create([
             'forum_id' => $forum->forum_id,
         ]);
-        $post = factory(Forum\Post::class)->create([
+        $post = Forum\Post::factory()->create([
             'forum_id' => $forum->forum_id,
             'topic_id' => $topic->topic_id,
         ]);
@@ -174,11 +174,11 @@ class ForumTopicsControllerTest extends TestCase
 
     public function testShowNoMorePostsWithSkipLayout()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $topic = factory(Forum\Topic::class)->create([
+        $forum = Forum\Forum::factory()->child()->create();
+        $topic = Forum\Topic::factory()->create([
             'forum_id' => $forum->forum_id,
         ]);
-        $post = factory(Forum\Post::class)->create([
+        $post = Forum\Post::factory()->create([
             'forum_id' => $forum->forum_id,
             'topic_id' => $topic->topic_id,
         ]);
@@ -193,8 +193,8 @@ class ForumTopicsControllerTest extends TestCase
 
     public function testShowMissingPosts()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $topic = factory(Forum\Topic::class)->create([
+        $forum = Forum\Forum::factory()->child()->create();
+        $topic = Forum\Topic::factory()->create([
             'forum_id' => $forum->forum_id,
         ]);
 
@@ -205,15 +205,15 @@ class ForumTopicsControllerTest extends TestCase
 
     public function testShowNewUser()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $topic = factory(Forum\Topic::class)->create([
+        $forum = Forum\Forum::factory()->child()->create();
+        $topic = Forum\Topic::factory()->create([
             'forum_id' => $forum->forum_id,
         ]);
-        $post = factory(Forum\Post::class)->create([
+        $post = Forum\Post::factory()->create([
             'forum_id' => $forum->forum_id,
             'topic_id' => $topic->topic_id,
         ]);
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $this
             ->be($user)
@@ -223,8 +223,8 @@ class ForumTopicsControllerTest extends TestCase
 
     public function testStore()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $user = factory(User::class)->create()->fresh();
+        $forum = Forum\Forum::factory()->child()->create();
+        $user = User::factory()->create()->fresh();
         $group = app('groups')->byIdentifier('default');
         $user->setDefaultGroup($group);
         $authOption = Forum\AuthOption::firstOrCreate([
@@ -277,8 +277,8 @@ class ForumTopicsControllerTest extends TestCase
 
     public function testUpdateTitle()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $user = factory(User::class)->create();
+        $forum = Forum\Forum::factory()->child()->create();
+        $user = User::factory()->create();
         $group = app('groups')->byIdentifier('default');
         $user->setDefaultGroup($group);
         $initialTitle = 'New topic';
@@ -304,8 +304,8 @@ class ForumTopicsControllerTest extends TestCase
 
     public function testUpdateTitleBlank()
     {
-        $forum = factory(Forum\Forum::class, 'child')->create();
-        $user = factory(User::class)->create();
+        $forum = Forum\Forum::factory()->child()->create();
+        $user = User::factory()->create();
         $group = app('groups')->byIdentifier('default');
         $user->setDefaultGroup($group);
         $initialTitle = 'New topic';
@@ -333,7 +333,7 @@ class ForumTopicsControllerTest extends TestCase
 
         // initial user for forum posts and stuff
         // FIXME: this is actually a hidden dependency
-        factory(User::class)->create();
+        User::factory()->create();
     }
 
     private function addPlaycount($user, $playcount = null)
@@ -341,7 +341,7 @@ class ForumTopicsControllerTest extends TestCase
         $playcount ?? $playcount = config('osu.forum.minimum_plays');
 
         if ($user->statisticsOsu === null) {
-            factory(StatisticsOsu::class)->create([
+            StatisticsOsu::factory()->create([
                 'playcount' => $playcount,
                 'user_id' => $user->getKey(),
             ]);

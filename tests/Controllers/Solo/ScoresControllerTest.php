@@ -16,10 +16,10 @@ class ScoresControllerTest extends TestCase
 {
     public function testStore()
     {
-        $user = factory(User::class)->create();
-        $beatmap = factory(Beatmap::class)->states('ranked')->create();
+        $user = User::factory()->create();
+        $beatmap = Beatmap::factory()->ranked()->create();
         $hash = md5('testversion');
-        factory(Build::class)->create(['hash' => hex2bin($hash), 'allow_ranking' => true]);
+        Build::factory()->create(['hash' => hex2bin($hash), 'allow_ranking' => true]);
         $initialScoresCount = Score::count();
 
         $this->actAsScopedUser($user, ['*']);
@@ -36,10 +36,10 @@ class ScoresControllerTest extends TestCase
 
     public function testStoreUnranked()
     {
-        $user = factory(User::class)->create();
-        $beatmap = factory(Beatmap::class)->states('wip')->create();
+        $user = User::factory()->create();
+        $beatmap = Beatmap::factory()->wip()->create();
         $hash = md5('testversion');
-        factory(Build::class)->create(['hash' => hex2bin($hash), 'allow_ranking' => true]);
+        Build::factory()->create(['hash' => hex2bin($hash), 'allow_ranking' => true]);
         $initialScoresCount = Score::count();
 
         $this->actAsScopedUser($user, ['*']);
@@ -56,10 +56,10 @@ class ScoresControllerTest extends TestCase
 
     public function testStoreMissingRulesetId()
     {
-        $user = factory(User::class)->create();
-        $beatmap = factory(Beatmap::class)->states('ranked')->create();
+        $user = User::factory()->create();
+        $beatmap = Beatmap::factory()->ranked()->create();
         $hash = md5('testversion');
-        factory(Build::class)->create(['hash' => hex2bin($hash), 'allow_ranking' => true]);
+        Build::factory()->create(['hash' => hex2bin($hash), 'allow_ranking' => true]);
         $initialScoresCount = Score::count();
 
         $this->actAsScopedUser($user, ['*']);
@@ -75,10 +75,10 @@ class ScoresControllerTest extends TestCase
 
     public function testStoreInvalidHash()
     {
-        $user = factory(User::class)->create();
-        $beatmap = factory(Beatmap::class)->states('ranked')->create();
+        $user = User::factory()->create();
+        $beatmap = Beatmap::factory()->ranked()->create();
         $initialScoresCount = Score::count();
-        factory(Build::class)->create(['hash' => hex2bin(md5('validversion')), 'allow_ranking' => true]);
+        Build::factory()->create(['hash' => hex2bin(md5('validversion')), 'allow_ranking' => true]);
 
         $this->actAsScopedUser($user, ['*']);
 
@@ -94,8 +94,8 @@ class ScoresControllerTest extends TestCase
 
     public function testUpdate()
     {
-        $user = factory(User::class)->create();
-        $beatmap = factory(Beatmap::class)->states('ranked')->create();
+        $user = User::factory()->create();
+        $beatmap = Beatmap::factory()->ranked()->create();
         $score = Score::create([
             'beatmap_id' => $beatmap->getKey(),
             'ruleset_id' => $beatmap->playmode,
@@ -131,8 +131,8 @@ class ScoresControllerTest extends TestCase
 
     public function testUpdateMissingData()
     {
-        $user = factory(User::class)->create();
-        $beatmap = factory(Beatmap::class)->states('ranked')->create();
+        $user = User::factory()->create();
+        $beatmap = Beatmap::factory()->ranked()->create();
         $score = Score::create([
             'beatmap_id' => $beatmap->getKey(),
             'ruleset_id' => $beatmap->playmode,
@@ -159,9 +159,9 @@ class ScoresControllerTest extends TestCase
 
     public function testUpdateWrongUser()
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
-        $beatmap = factory(Beatmap::class)->states('ranked')->create();
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $beatmap = Beatmap::factory()->ranked()->create();
         $score = Score::create([
             'beatmap_id' => $beatmap->getKey(),
             'ruleset_id' => $beatmap->playmode,

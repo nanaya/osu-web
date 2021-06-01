@@ -3,85 +3,83 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| Here you may define all of your model factories. Model factories give
-| you a convenient way to create models for testing and seeding your
-| database. Just tell the factory how a default model should look.
-|
-*/
+namespace Database\Factories;
 
+use App\Models\Beatmap;
 use App\Models\BeatmapDiscussion;
 use App\Models\Beatmapset;
+use App\Models\Genre;
+use App\Models\Language;
+use Exception;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Beatmapset::class, function (Faker\Generator $faker) {
-    $artist = $faker->name;
-    $title = $faker->sentence(rand(0, 5));
-    $isApproved = (rand(0, 2) > 0);
+class BeatmapsetFactory extends Factory
+{
+    protected $model = Beatmapset::class;
 
-    return [
-        'creator' => $faker->userName,
-        'artist' => $artist,
-        'title' => $title,
-        'discussion_enabled' => true,
-        'displaytitle' => "{$artist}|{$title}",
-        'source' => $faker->domainWord,
-        'tags' => $faker->domainWord,
-        'bpm' => rand(100, 200),
-        'approved' => $isApproved,
-        'approved_date' => $isApproved ? Carbon\Carbon::now() : null,
-        'play_count' => rand(0, 50000),
-        'favourite_count' => rand(0, 500),
-        'genre_id' => function () {
-            return factory(App\Models\Genre::class)->create()->genre_id;
-        },
-        'language_id' => function () {
-            return factory(App\Models\Language::class)->create()->language_id;
-        },
-        'submit_date' => $faker->dateTime(),
-        'thread_id' => 0,
-    ];
-});
+    public function definition()
+    {
+        $artist = $this->faker->name();
+        $title = $this->faker->sentence(rand(0, 5));
 
-$factory->state(Beatmapset::class, 'deleted', function () {
-    return ['deleted_at' => now()];
-});
-
-$factory->state(Beatmapset::class, 'inactive', function () {
-    return ['active' => 0];
-});
-
-$factory->state(Beatmapset::class, 'no_discussion', function () {
-    return ['discussion_enabled' => false];
-});
-
-$factory->state(Beatmapset::class, 'qualified', function () {
-    $approvedAt = now();
-
-    return [
-        'approved' => Beatmapset::STATES['qualified'],
-        'approved_date' => $approvedAt,
-        'queued_at' => $approvedAt,
-    ];
-});
-
-$factory->afterCreatingState(Beatmapset::class, 'with_discussion', function (App\Models\Beatmapset $beatmapset) {
-    if (
-        !$beatmapset->beatmaps()->save(
-            factory(App\Models\Beatmap::class)->make()
-        )
-    ) {
-        throw new Exception();
+        return [
+            'creator' => fn() => $this->faker->userName(),
+            'artist' => $artist,
+            'title' => $title,
+            'discussion_enabled' => true,
+            'displaytitle' => "{$artist}|{$title}",
+            'source' => fn() => $this->faker->domainWord(),
+            'tags' => fn() => $this->faker->domainWord(),
+            'bpm' => rand(100, 200),
+            'approved' => fn() => rand(0, 1),
+            'approved_date' => fn(array $attributes) => $attributes['approved'] > 0 ? now() : null,
+            'play_count' => rand(0, 50000),
+            'favourite_count' => rand(0, 500),
+            'genre_id' => Genre::factory(),
+            'language_id' => Language::factory(),
+            'submit_date' => fn() => $this->faker->dateTime(),
+            'thread_id' => 0,
+        ];
     }
 
-    if (
-        !$beatmapset->beatmapDiscussions()->save(
-            factory(BeatmapDiscussion::class, 'general')->make(['user_id' => $beatmapset->user_id])
-        )
-    ) {
-        throw new Exception();
+    public function deleted()
+    {
+        return $this->state(['deleted_at' => fn() => now()]);
     }
-});
+
+    public function inactive()
+    {
+        return $this->state(['active' => 0]);
+    }
+
+    public function noDiscussion()
+    {
+        return $this->state(['discussion_enabled' => false]);
+    }
+
+    public function qualified()
+    {
+        $approvedAt = now();
+
+        return $this->state([
+            'approved' => Beatmapset::STATES['qualified'],
+            'approved_date' => $approvedAt,
+            'queued_at' => $approvedAt,
+        ]);
+    }
+
+    public function withDiscussion()
+    {
+        return $this->afterCreating(function (Beatmapset $beatmapset) {
+            $beatmap = Beatmap::factory()->make();
+            if (!$beatmapset->beatmaps()->save($beatmap)) {
+                throw new Exception('Failed creating beatmap');
+            }
+
+            $discussion = BeatmapDiscussion::factory()->general()->make(['user_id' => $beatmapset->user_id]);
+            if (!$beatmapset->beatmapDiscussions()->save($discussion)) {
+                throw new Exception('Failed creating beatmap discussion');
+            }
+        });
+    }
+}

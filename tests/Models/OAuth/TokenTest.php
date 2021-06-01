@@ -9,8 +9,8 @@ use App\Events\UserSessionEvent;
 use App\Exceptions\InvalidScopeException;
 use App\Models\OAuth\Client;
 use App\Models\User;
+use Database\Factories\OAuth\RefreshTokenFactory;
 use Illuminate\Support\Facades\Event;
-use Laravel\Passport\RefreshToken;
 use Tests\TestCase;
 
 class TokenTest extends TestCase
@@ -20,13 +20,9 @@ class TokenTest extends TestCase
      */
     public function testBotScopeRequiresBotGroup($group, $expectedException)
     {
-        $user = factory(User::class);
-        if ($group !== null) {
-            $user->states($group);
-        }
-        $user = $user->create();
+        $user = User::factory()->withGroup($group)->create();
 
-        $client = factory(Client::class)->create(['user_id' => $user->getKey()]);
+        $client = Client::factory()->create(['user_id' => $user]);
 
         if ($expectedException !== null) {
             $this->expectException($expectedException);
@@ -39,8 +35,8 @@ class TokenTest extends TestCase
 
     public function testClientCredentialResourceOwnerBot()
     {
-        $user = factory(User::class)->states('bot')->create();
-        $client = factory(Client::class)->create(['user_id' => $user->getKey()]);
+        $user = User::factory()->withGroup('bot')->create();
+        $client = Client::factory()->create(['user_id' => $user]);
         $token = $this->createToken(null, ['bot'], $client);
 
         $this->actAsUserWithToken($token);
@@ -52,8 +48,8 @@ class TokenTest extends TestCase
 
     public function testClientCredentialResourceOwnerPublic()
     {
-        $user = factory(User::class)->states('bot')->create();
-        $client = factory(Client::class)->create(['user_id' => $user->getKey()]);
+        $user = User::factory()->withGroup('bot')->create();
+        $client = Client::factory()->create(['user_id' => $user]);
         $token = $this->createToken(null, ['public'], $client);
 
         $this->actAsUserWithToken($token);
@@ -70,8 +66,8 @@ class TokenTest extends TestCase
      */
     public function testScopes($scopes, $expectedException)
     {
-        $user = factory(User::class)->create();
-        $client = factory(Client::class)->create(['user_id' => $user->getKey()]);
+        $user = User::factory()->create();
+        $client = Client::factory()->create(['user_id' => $user]);
 
         if ($expectedException !== null) {
             $this->expectException($expectedException);
@@ -89,8 +85,8 @@ class TokenTest extends TestCase
      */
     public function testScopesClientCredentials($scopes, $expectedException)
     {
-        $user = factory(User::class)->create();
-        $client = factory(Client::class)->create(['user_id' => $user->getKey()]);
+        $user = User::factory()->create();
+        $client = Client::factory()->create(['user_id' => $user]);
 
         if ($expectedException !== null) {
             $this->expectException($expectedException);
@@ -105,7 +101,7 @@ class TokenTest extends TestCase
     {
         Event::fake();
 
-        $refreshToken = factory(RefreshToken::class)->create();
+        $refreshToken = (new RefreshTokenFactory())->create();
         $token = $refreshToken->accessToken;
 
         $this->assertFalse($refreshToken->revoked);

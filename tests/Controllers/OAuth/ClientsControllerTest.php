@@ -37,14 +37,14 @@ class ClientsControllerTest extends TestCase
 
     public function testCannotDeleteOtherUserClient()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $this
             ->actingAsVerified($user)
             ->json('DELETE', route('oauth.clients.destroy', ['client' => $this->client->getKey()]))
             ->assertStatus(404);
 
-        $this->assertFalse(Client::find($this->client->getKey())->revoked);
+        $this->assertFalse($this->client->fresh()->revoked);
     }
 
     public function testCreateNewClient()
@@ -135,7 +135,7 @@ class ClientsControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->owner = factory(User::class)->create();
-        $this->client = factory(Client::class)->create(['user_id' => $this->owner->getKey()]);
+        $this->owner = User::factory()->create();
+        $this->client = Client::factory()->create(['user_id' => $this->owner]);
     }
 }

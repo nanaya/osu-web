@@ -13,9 +13,9 @@ class OrderTest extends TestCase
 {
     public function testSwitchOrderItemReservation()
     {
-        $product1 = factory(Product::class)->create(['stock' => 5, 'max_quantity' => 5]);
-        $product2 = factory(Product::class)->create(['stock' => 5, 'max_quantity' => 5]);
-        $orderItem = factory(OrderItem::class)->create([
+        $product1 = Product::factory()->create(['stock' => 5, 'max_quantity' => 5]);
+        $product2 = Product::factory()->create(['stock' => 5, 'max_quantity' => 5]);
+        $orderItem = OrderItem::factory()->create([
             'product_id' => $product1->product_id,
             'quantity' => 2,
             'reserved' => true,

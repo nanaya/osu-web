@@ -17,12 +17,12 @@ class UpdateUserForumTopicFollowsTest extends TestCase
 {
     public function testRemoveUserWithNoWatchPermission()
     {
-        $forum = factory(Forum::class, 'child')->create();
-        $adminForum = factory(Forum::class, 'child')->create(['forum_id' => config('osu.forum.admin_forum_id')]);
+        $forum = Forum::factory()->child()->create();
+        $adminForum = Forum::factory()->child()->create(['forum_id' => config('osu.forum.admin_forum_id')]);
         config()->set('osu.forum.admin_forum_id', $adminForum->getKey());
-        $anotherForum = factory(Forum::class, 'child')->create();
-        $topic = factory(Topic::class)->create(['forum_id' => $forum->getKey()]);
-        $user = factory(User::class)->create();
+        $anotherForum = Forum::factory()->child()->create();
+        $topic = Topic::factory()->create(['forum_id' => $forum->getKey()]);
+        $user = User::factory()->create();
 
         TopicWatch::setState($topic, $user, 'watching_mail');
         $notification = Notification::create([

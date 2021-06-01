@@ -6,6 +6,7 @@
 namespace Tests\Transformers;
 
 use App\Models\Comment;
+use App\Models\User;
 use Tests\TestCase;
 
 class CommentTransformerTest extends TestCase
@@ -15,8 +16,8 @@ class CommentTransformerTest extends TestCase
      */
     public function testWithOAuth($groupIdentifier)
     {
-        $viewer = $this->createUserWithGroup($groupIdentifier);
-        $comment = factory(Comment::class)->states('deleted')->create();
+        $viewer = User::factory()->withGroup($groupIdentifier)->create();
+        $comment = Comment::factory()->deleted()->create();
         $this->actAsScopedUser($viewer);
 
         $json = json_item($comment, 'Comment');
@@ -30,8 +31,8 @@ class CommentTransformerTest extends TestCase
      */
     public function testWithoutOAuth($groupIdentifier, $visible)
     {
-        $viewer = $this->createUserWithGroup($groupIdentifier);
-        $comment = factory(Comment::class)->states('deleted')->create();
+        $viewer = User::factory()->withGroup($groupIdentifier)->create();
+        $comment = Comment::factory()->deleted()->create();
         $this->actAsUser($viewer);
 
         $json = json_item($comment, 'Comment');
@@ -50,9 +51,9 @@ class CommentTransformerTest extends TestCase
         return [
             ['admin', true],
             ['bng', false],
+            ['default', false],
             ['gmt', true],
             ['nat', true],
-            [[], false],
         ];
     }
 }

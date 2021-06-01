@@ -18,12 +18,12 @@ class BeatmapsetDeleteTest extends TestCase
 {
     public function testBeatmapsetDeletedByOwner()
     {
-        $owner = factory(User::class)->create();
-        $forum = factory(Forum::class, 'parent')->create();
-        $topic = factory(Topic::class)->create([
+        $owner = User::factory()->create();
+        $forum = Forum::factory()->parent()->create();
+        $topic = Topic::factory()->create([
             'forum_id' => $forum->getKey(),
         ]);
-        $beatmapset = factory(Beatmapset::class)->create([
+        $beatmapset = Beatmapset::factory()->create([
             'thread_id' => $topic->getKey(),
             'user_id' => $owner->user_id,
             'approved' => Beatmapset::STATES['pending'],
@@ -44,13 +44,13 @@ class BeatmapsetDeleteTest extends TestCase
 
     public function testBeatmapsetDeletedByAnotherUser()
     {
-        $moderator = factory(User::class)->create();
-        $owner = factory(User::class)->create();
-        $forum = factory(Forum::class, 'parent')->create();
-        $topic = factory(Topic::class)->create([
+        $moderator = User::factory()->create();
+        $owner = User::factory()->create();
+        $forum = Forum::factory()->parent()->create();
+        $topic = Topic::factory()->create([
             'forum_id' => $forum->getKey(),
         ]);
-        $beatmapset = factory(Beatmapset::class)->create([
+        $beatmapset = Beatmapset::factory()->create([
             'thread_id' => $topic->getKey(),
             'user_id' => $owner->user_id,
             'approved' => Beatmapset::STATES['pending'],

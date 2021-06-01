@@ -15,6 +15,7 @@ use App\Models\Store\Product;
 use App\Models\Tournament;
 use App\Models\User;
 use Carbon\Carbon;
+use Database\Seeders\ModelSeeders\ProductSeeder;
 use Tests\TestCase;
 
 class BannerFulfillmentTest extends TestCase
@@ -28,8 +29,8 @@ class BannerFulfillmentTest extends TestCase
             preg_match('/.+\((?<country>.+)\)$/', $this->product->name, $matches);
             $country = Country::where('name', $matches['country'])->first();
         } else {
-            $country = factory(Country::class)->create();
-            (new \ProductSeeder())->seedBanners();
+            $country = Country::factory()->create();
+            (new ProductSeeder())->seedBanners();
             $product = Product::customClass('mwc7-supporter')->orderBy('product_id', 'desc')->first();
         }
 
@@ -64,8 +65,8 @@ class BannerFulfillmentTest extends TestCase
         static $customClasses = BannerFulfillment::ALLOWED_TAGGED_NAMES;
         foreach ($customClasses as $customClass) {
             // only need the custom_class
-            $product = factory(Product::class)->create(['custom_class' => $customClass]);
-            $orderItem = factory(OrderItem::class)->create([
+            $product = Product::factory()->create(['custom_class' => $customClass]);
+            $orderItem = OrderItem::factory()->create([
                 'product_id' => $product->product_id,
                 'order_id' => $this->order->order_id,
                 'cost' => $product->cost,
@@ -79,8 +80,8 @@ class BannerFulfillmentTest extends TestCase
 
     public function testInvalidBannerCustomClasss()
     {
-        $product = factory(Product::class)->create(['custom_class' => 'invalid-supporter']);
-        $orderItem = factory(OrderItem::class)->create([
+        $product = Product::factory()->create(['custom_class' => 'invalid-supporter']);
+        $orderItem = OrderItem::factory()->create([
             'product_id' => $product->product_id,
             'order_id' => $this->order->order_id,
             'cost' => $product->cost,
@@ -94,24 +95,24 @@ class BannerFulfillmentTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create([
+        $this->user = User::factory()->create([
             'osu_featurevotes' => 0,
             'osu_subscriptionexpiry' => Carbon::now(),
         ]);
 
-        $this->order = factory(Order::class, 'paid')->create([
+        $this->order = Order::factory()->paid()->create([
             'user_id' => $this->user->user_id,
         ]);
 
         // crap test
-        $this->tournament = factory(Tournament::class)->create();
+        $this->tournament = Tournament::factory()->create();
         $this->product = Product::customClass('mwc7-supporter')->orderBy('product_id', 'desc')->first();
         $this->findOrSeed();
     }
 
     private function createOrderItem($product)
     {
-        return factory(OrderItem::class)->create([
+        return OrderItem::factory()->create([
             'product_id' => $product->product_id,
             'order_id' => $this->order->order_id,
             'cost' => $product->cost,

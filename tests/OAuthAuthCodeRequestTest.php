@@ -35,8 +35,8 @@ class OAuthAuthCodeRequestTest extends TestCase
 
     public function testNonBotClientCannotRequestChatWriteScope()
     {
-        $owner = factory(User::class)->create();
-        $client = factory(Client::class)->create([
+        $owner = User::factory()->create();
+        $client = Client::factory()->create([
             'redirect' => 'https://localhost',
             'user_id' => $owner->getKey(),
         ]);
@@ -68,13 +68,13 @@ class OAuthAuthCodeRequestTest extends TestCase
         // otherwise exceptions won't render the actual view.
         config()->set('app.debug', false);
 
-        $owner = factory(User::class)->states('bot')->create();
-        $this->client = factory(Client::class)->create([
+        $owner = User::factory()->withGroup('bot')->create();
+        $this->client = Client::factory()->create([
             'redirect' => 'https://localhost',
-            'user_id' => $owner->getKey(),
+            'user_id' => $owner,
         ]);
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->actAsUser($user, true);
     }
 }

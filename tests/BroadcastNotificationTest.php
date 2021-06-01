@@ -26,7 +26,7 @@ class BroadcastNotificationTest extends TestCase
 
     public function testNoNotificationForBotUser()
     {
-        $bot = $this->createUserWithGroup('bot', ['user_allow_pm' => true]);
+        $bot = User::factory()->withGroup('bot')->create(['user_allow_pm' => true]);
         $this->sender->markSessionVerified();
         $notificationsCount = Notification::count();
 
@@ -61,13 +61,13 @@ class BroadcastNotificationTest extends TestCase
      */
     public function testSendNotificationWithOptions($details)
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->notificationOptions()->create([
             'name' => UserNotificationOption::BEATMAPSET_MODDING,
             'details' => $details,
         ]);
 
-        $beatmapset = factory(Beatmapset::class)->states('with_discussion')->create([
+        $beatmapset = Beatmapset::factory()->withDiscussion()->create([
             'user_id' => $user->getKey(),
         ]);
         $beatmapset->watches()->create([
@@ -146,6 +146,6 @@ class BroadcastNotificationTest extends TestCase
         Event::fake();
         Mail::fake();
 
-        $this->sender = factory(User::class)->create();
+        $this->sender = User::factory()->create();
     }
 }

@@ -59,8 +59,8 @@ class BeatmapsControllerTest extends TestCase
 
     public function testUpdateOwner(): void
     {
-        $otherUser = factory(User::class)->create();
-        $beatmapset = factory(Beatmapset::class)->create([
+        $otherUser = User::factory()->create();
+        $beatmapset = Beatmapset::factory()->create([
             'approved' => Beatmapset::STATES['pending'],
             'user_id' => $this->user->getKey(),
         ]);
@@ -82,8 +82,8 @@ class BeatmapsControllerTest extends TestCase
 
     public function testUpdateOwnerInvalidState(): void
     {
-        $otherUser = factory(User::class)->create();
-        $beatmapset = factory(Beatmapset::class)->create([
+        $otherUser = User::factory()->create();
+        $beatmapset = Beatmapset::factory()->create([
             'approved' => Beatmapset::STATES['qualified'],
             'user_id' => $this->user->getKey(),
         ]);
@@ -105,7 +105,7 @@ class BeatmapsControllerTest extends TestCase
 
     public function testUpdateOwnerInvalidUser(): void
     {
-        $beatmapset = factory(Beatmapset::class)->create([
+        $beatmapset = Beatmapset::factory()->create([
             'approved' => Beatmapset::STATES['pending'],
             'user_id' => $this->user->getKey(),
         ]);
@@ -127,8 +127,8 @@ class BeatmapsControllerTest extends TestCase
 
     public function testUpdateOwnerNotOwner(): void
     {
-        $otherUser = factory(User::class)->create();
-        $beatmapset = factory(Beatmapset::class)->create(['user_id' => $this->user->getKey()]);
+        $otherUser = User::factory()->create();
+        $beatmapset = Beatmapset::factory()->create(['user_id' => $this->user->getKey()]);
         $this->beatmap->update([
             'beatmapset_id' => $beatmapset->getKey(),
             'user_id' => $this->user->getKey(),
@@ -147,7 +147,7 @@ class BeatmapsControllerTest extends TestCase
 
     public function testUpdateOwnerSameOwner(): void
     {
-        $beatmapset = factory(Beatmapset::class)->create([
+        $beatmapset = Beatmapset::factory()->create([
             'approved' => Beatmapset::STATES['pending'],
             'user_id' => $this->user->getKey(),
         ]);
@@ -171,7 +171,7 @@ class BeatmapsControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
-        $this->beatmap = factory(Beatmap::class)->states('approved')->create();
+        $this->user = User::factory()->create();
+        $this->beatmap = Beatmap::factory()->qualified()->create();
     }
 }

@@ -22,7 +22,7 @@ class BeatmapsetDescriptionTransformerTest extends TestCase
      */
     public function testWithOAuth($groupIdentifier)
     {
-        $viewer = $this->createUserWithGroup($groupIdentifier);
+        $viewer = User::factory()->withGroup($groupIdentifier)->create();
         $this->actAsScopedUser($viewer);
 
         $json = json_item($this->beatmapset, 'BeatmapsetDescription');
@@ -35,7 +35,7 @@ class BeatmapsetDescriptionTransformerTest extends TestCase
      */
     public function testWithoutOAuth($groupIdentifier, $visible)
     {
-        $viewer = $this->createUserWithGroup($groupIdentifier);
+        $viewer = User::factory()->withGroup($groupIdentifier)->create();
         $this->actAsUser($viewer);
 
         $json = json_item($this->beatmapset, 'BeatmapsetDescription');
@@ -67,7 +67,7 @@ class BeatmapsetDescriptionTransformerTest extends TestCase
 
     public function testUserIsNotMapper()
     {
-        $this->actAsUser(factory(User::class)->create());
+        $this->actAsUser(User::factory()->create());
 
         $json = json_item($this->beatmapset, 'BeatmapsetDescription');
 
@@ -80,9 +80,9 @@ class BeatmapsetDescriptionTransformerTest extends TestCase
         return [
             ['admin', true],
             ['bng', false],
+            ['default', false],
             ['gmt', true],
             ['nat', true],
-            [[], false],
         ];
     }
 
@@ -90,8 +90,8 @@ class BeatmapsetDescriptionTransformerTest extends TestCase
     {
         parent::setUp();
 
-        $this->mapper = factory(User::class)->create();
-        $this->beatmapset = factory(Beatmapset::class)->create([
+        $this->mapper = User::factory()->create();
+        $this->beatmapset = Beatmapset::factory()->create([
             'user_id' => $this->mapper->getKey(),
         ]);
     }

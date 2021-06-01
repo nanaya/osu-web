@@ -15,8 +15,8 @@ class ScoresControllerTest extends TestCase
 {
     public function testShow()
     {
-        $score = factory(Score::class)->create();
-        $user = factory(User::class)->create();
+        $score = Score::factory()->create();
+        $user = User::factory()->create();
 
         $this->actAsScopedUser($user, ['*']);
 
@@ -29,10 +29,10 @@ class ScoresControllerTest extends TestCase
 
     public function testStore()
     {
-        $user = factory(User::class)->create();
-        $playlistItem = factory(PlaylistItem::class)->create();
+        $user = User::factory()->create();
+        $playlistItem = PlaylistItem::factory()->create();
         $hash = md5('testversion');
-        factory(Build::class)->create(['hash' => hex2bin($hash), 'allow_ranking' => true]);
+        Build::factory()->create(['hash' => hex2bin($hash), 'allow_ranking' => true]);
         $initialScoresCount = Score::count();
 
         $this->actAsScopedUser($user, ['*']);
@@ -49,8 +49,8 @@ class ScoresControllerTest extends TestCase
 
     public function testStoreInvalidHash()
     {
-        $user = factory(User::class)->create();
-        $playlistItem = factory(PlaylistItem::class)->create();
+        $user = User::factory()->create();
+        $playlistItem = PlaylistItem::factory()->create();
         $initialScoresCount = Score::count();
 
         $this->actAsScopedUser($user, ['*']);
@@ -67,8 +67,8 @@ class ScoresControllerTest extends TestCase
 
     public function testStoreMissingHash()
     {
-        $user = factory(User::class)->create();
-        $playlistItem = factory(PlaylistItem::class)->create();
+        $user = User::factory()->create();
+        $playlistItem = PlaylistItem::factory()->create();
         $initialScoresCount = Score::count();
 
         $this->actAsScopedUser($user, ['*']);
@@ -83,10 +83,10 @@ class ScoresControllerTest extends TestCase
 
     public function testStoreNoRankingBuild()
     {
-        $user = factory(User::class)->create();
-        $playlistItem = factory(PlaylistItem::class)->create();
+        $user = User::factory()->create();
+        $playlistItem = PlaylistItem::factory()->create();
         $hash = md5('testversion');
-        factory(Build::class)->create(['hash' => hex2bin($hash), 'allow_ranking' => false]);
+        Build::factory()->create(['hash' => hex2bin($hash), 'allow_ranking' => false]);
         $initialScoresCount = Score::count();
 
         $this->actAsScopedUser($user, ['*']);

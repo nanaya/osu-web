@@ -18,7 +18,7 @@ class UserScoreAggregateTest extends TestCase
 
     public function testStartingPlayIncreasesAttempts()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $playlistItem = $this->playlistItem();
 
         $this->room->startPlay($user, $playlistItem);
@@ -30,11 +30,11 @@ class UserScoreAggregateTest extends TestCase
 
     public function testInCompleteScoresAreNotCounted()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $playlistItem = $this->playlistItem();
         $agg = UserScoreAggregate::new($user, $this->room);
 
-        $score = factory(Score::class)
+        $score = Score::factory()
             ->create([
                 'room_id' => $this->room->getKey(),
                 'playlist_item_id' => $playlistItem->getKey(),
@@ -50,29 +50,21 @@ class UserScoreAggregateTest extends TestCase
 
     public function testFailedScoresAreAttemptsOnly()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $playlistItem = $this->playlistItem();
         $agg = UserScoreAggregate::new($user, $this->room);
 
-        $agg->addScore(
-            factory(Score::class)
-                ->states('completed', 'failed')
-                ->create([
-                    'room_id' => $this->room->getKey(),
-                    'playlist_item_id' => $playlistItem->getKey(),
-                    'user_id' => $user->getKey(),
-                ])
-        );
+        $agg->addScore(Score::factory()->failed()->create([
+            'room_id' => $this->room,
+            'playlist_item_id' => $playlistItem,
+            'user_id' => $user,
+        ]));
 
-        $agg->addScore(
-            factory(Score::class)
-                ->states('completed', 'passed')
-                ->create([
-                    'room_id' => $this->room->getKey(),
-                    'playlist_item_id' => $playlistItem->getKey(),
-                    'user_id' => $user->getKey(),
-                ])
-        );
+        $agg->addScore(Score::factory()->passed()->create([
+            'room_id' => $this->room,
+            'playlist_item_id' => $playlistItem,
+            'user_id' => $user,
+        ]));
 
         $result = json_item($agg, 'Multiplayer\UserScoreAggregate');
 
@@ -82,19 +74,15 @@ class UserScoreAggregateTest extends TestCase
 
     public function testPassedScoresIncrementsCompletedCount()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $playlistItem = $this->playlistItem();
         $agg = UserScoreAggregate::new($user, $this->room);
 
-        $agg->addScore(
-            factory(Score::class)
-            ->states('completed', 'passed')
-            ->create([
-                'room_id' => $this->room->getKey(),
-                'playlist_item_id' => $playlistItem->getKey(),
-                'user_id' => $user->getKey(),
-            ])
-        );
+        $agg->addScore(Score::factory()->passed()->create([
+            'room_id' => $this->room,
+            'playlist_item_id' => $playlistItem,
+            'user_id' => $user,
+        ]));
 
         $result = json_item($agg, 'Multiplayer\UserScoreAggregate');
 
@@ -104,61 +92,46 @@ class UserScoreAggregateTest extends TestCase
 
     public function testPassedScoresAreAveraged()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $playlistItem = $this->playlistItem();
         $playlistItem2 = $this->playlistItem();
 
         $agg = UserScoreAggregate::new($user, $this->room);
-        $agg->addScore(
-            factory(Score::class)
-            ->create([
-                'room_id' => $this->room->getKey(),
-                'playlist_item_id' => $playlistItem->getKey(),
-                'user_id' => $user->getKey(),
-                'total_score' => 1,
-                'pp' => 0.2,
-                'pp' => 0.2,
-            ])
-        );
+        $agg->addScore(Score::factory()->create([
+            'room_id' => $this->room,
+            'playlist_item_id' => $playlistItem,
+            'user_id' => $user,
+            'total_score' => 1,
+            'pp' => 0.2,
+            'pp' => 0.2,
+        ]));
 
-        $agg->addScore(
-            factory(Score::class)
-            ->states('completed', 'failed')
-            ->create([
-                'room_id' => $this->room->getKey(),
-                'playlist_item_id' => $playlistItem->getKey(),
-                'user_id' => $user->getKey(),
-                'total_score' => 1,
-                'accuracy' => 0.3,
-                'pp' => 0.3,
-            ])
-        );
+        $agg->addScore(Score::factory()->failed()->create([
+            'room_id' => $this->room,
+            'playlist_item_id' => $playlistItem,
+            'user_id' => $user,
+            'total_score' => 1,
+            'accuracy' => 0.3,
+            'pp' => 0.3,
+        ]));
 
-        $agg->addScore(
-            factory(Score::class)
-            ->states('completed', 'passed')
-            ->create([
-                'room_id' => $this->room->getKey(),
-                'playlist_item_id' => $playlistItem->getKey(),
-                'user_id' => $user->getKey(),
-                'total_score' => 1,
-                'accuracy' => 0.5,
-                'pp' => 0.5,
-            ])
-        );
+        $agg->addScore(Score::factory()->passed()->create([
+            'room_id' => $this->room,
+            'playlist_item_id' => $playlistItem,
+            'user_id' => $user,
+            'total_score' => 1,
+            'accuracy' => 0.5,
+            'pp' => 0.5,
+        ]));
 
-        $agg->addScore(
-            factory(Score::class)
-            ->states('completed', 'passed')
-            ->create([
-                'room_id' => $this->room->getKey(),
-                'playlist_item_id' => $playlistItem2->getKey(),
-                'user_id' => $user->getKey(),
-                'total_score' => 1,
-                'accuracy' => 0.8,
-                'pp' => 0.8,
-            ])
-        );
+        $agg->addScore(Score::factory()->passed()->create([
+            'room_id' => $this->room,
+            'playlist_item_id' => $playlistItem2,
+            'user_id' => $user,
+            'total_score' => 1,
+            'accuracy' => 0.8,
+            'pp' => 0.8,
+        ]));
 
         $result = json_item($agg, 'Multiplayer\UserScoreAggregate');
 
@@ -170,13 +143,11 @@ class UserScoreAggregateTest extends TestCase
     {
         parent::setUp();
 
-        $this->room = factory(Room::class)->create();
+        $this->room = Room::factory()->create();
     }
 
     private function playlistItem()
     {
-        return factory(PlaylistItem::class)->create([
-            'room_id' => $this->room->getKey(),
-        ]);
+        return PlaylistItem::factory()->create(['room_id' => $this->room]);
     }
 }

@@ -15,10 +15,10 @@ class OAuthClientCredentialsRequestTest extends TestCase
      */
     public function testBotRequestingScope($scope, $status)
     {
-        $owner = factory(User::class)->states('bot')->create();
-        $client = factory(Client::class)->create([
+        $owner = User::factory()->withGroup('bot')->create();
+        $client = Client::factory()->create([
             'redirect' => 'https://localhost',
-            'user_id' => $owner->getKey(),
+            'user_id' => $owner,
         ]);
 
         $params = [
@@ -28,8 +28,7 @@ class OAuthClientCredentialsRequestTest extends TestCase
             'scope' => $scope,
         ];
 
-        $this->post(route('oauth.passport.token'), $params)
-            ->assertStatus($status);
+        $this->post(route('oauth.passport.token'), $params)->assertStatus($status);
     }
 
     /**
@@ -37,8 +36,8 @@ class OAuthClientCredentialsRequestTest extends TestCase
      */
     public function testNonBotRequestingScope($scope, $status)
     {
-        $owner = factory(User::class)->create();
-        $client = factory(Client::class)->create([
+        $owner = User::factory()->create();
+        $client = Client::factory()->create([
             'redirect' => 'https://localhost',
             'user_id' => $owner->getKey(),
         ]);

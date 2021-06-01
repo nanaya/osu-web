@@ -3,29 +3,38 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+namespace Database\Factories\Multiplayer;
+
 use App\Models\Chat\Channel;
 use App\Models\Multiplayer\Room;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Room::class, function (Faker\Generator $faker) {
-    return [
-        'user_id' => function (array $self) {
-            return factory(App\Models\User::class)->create()->getKey();
-        },
-        'name' => function () use ($faker) {
-            return $faker->realText(20);
-        },
-        'starts_at' => Carbon\Carbon::now()->subHour(1),
-        'ends_at' => Carbon\Carbon::now()->addHour(1),
-    ];
-});
+class RoomFactory extends Factory
+{
+    protected $model = Room::class;
 
-$factory->state(Room::class, 'ended', function (Faker\Generator $faker) {
-    return [
-        'ends_at' => Carbon\Carbon::now()->subMinute(1),
-    ];
-});
+    public function configure()
+    {
+        return $this->afterCreating(function (Room $room) {
+            $channel = Channel::createMultiplayer($room);
 
-$factory->afterCreating(Room::class, function (Room $room, $faker) {
-    $channel = Channel::createMultiplayer($room);
-    $room->update(['channel_id' => $channel->getKey()]);
-});
+            $room->update(['channel_id' => $channel->getKey()]);
+        });
+    }
+
+    public function definition()
+    {
+        return [
+            'user_id' => User::factory(),
+            'name' => fn() => $this->faker->realText(20),
+            'starts_at' => fn() => now()->subHour(1),
+            'ends_at' => fn() => now()->addHour(1),
+        ];
+    }
+
+    public function ended()
+    {
+        return $this->state(['ends_at' => now()->subMinute(1)]);
+    }
+}
