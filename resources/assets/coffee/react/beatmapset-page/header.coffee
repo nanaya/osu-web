@@ -285,9 +285,8 @@ export class Header extends React.Component
       key: key
       href: href
       icon: icon
+      isDownload: true
       modifiers: 'beatmapset-header'
-      props:
-        'data-turbolinks': 'false'
       text:
         top: osu.trans "beatmapsets.show.details.download.#{topTextKey}"
         bottom: if bottomTextKey? then osu.trans "beatmapsets.show.details.download.#{bottomTextKey}"

@@ -11,6 +11,7 @@ interface Props {
   href?: string;
   icon?: string;
   isBusy: boolean;
+  isDownload: boolean;
   isSubmit: boolean;
   modifiers?: Modifiers;
   props: React.HTMLAttributes<HTMLElement> & Partial<Record<`data-${string}`, string | number>>;
@@ -25,6 +26,7 @@ export default class BigButton extends React.PureComponent<Props> {
     disabled: false,
     extraClasses: [],
     isBusy: false,
+    isDownload: false,
     isSubmit: false,
     props: {},
   };
@@ -58,11 +60,18 @@ export default class BigButton extends React.PureComponent<Props> {
         );
       }
 
+      const downloadProps = this.props.isDownload
+        ? {
+          'data-turbolinks': false,
+          download: true,
+        } : {};
+
       return (
         <a
           className={blockClass}
           href={this.props.href}
           {...this.props.props}
+          {...downloadProps}
         >
           {this.renderChildren()}
         </a>
