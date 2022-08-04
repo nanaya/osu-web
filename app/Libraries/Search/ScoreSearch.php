@@ -142,6 +142,22 @@ class ScoreSearch extends RecordSearch
         }
     }
 
+    public function queueForIndex(array $ids, ?string $schema = null): void
+    {
+        $schema ??= $this->getSchema();
+
+        $count = count($ids);
+
+        if ($count === 0) {
+            return;
+        }
+
+        LaravelRedis::lpush("osu-queue:score-index-{$schema}", ...array_map(
+            fn (int $id): string => json_encode(['ScoreId' => $id]),
+            $ids,
+        ));
+    }
+
     private function schemaKey(): string
     {
         return 'osu-queue:score-index:'.config('osu.elasticsearch.prefix').'schema';

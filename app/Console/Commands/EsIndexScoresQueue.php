@@ -10,7 +10,6 @@ use App\Models\Solo\Score;
 use Ds\Set;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
-use LaravelRedis;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 class EsIndexScoresQueue extends Command
@@ -35,6 +34,7 @@ class EsIndexScoresQueue extends Command
 
     private ProgressBar $bar;
     private ?string $schema;
+    private ScoreSearch $search;
     private int $total;
 
     /**
@@ -44,6 +44,8 @@ class EsIndexScoresQueue extends Command
      */
     public function handle()
     {
+        $this->search = new ScoreSearch();
+
         if (!$this->confirm('This will queue scores for indexing, continue?', true)) {
             return $this->info('User aborted');
         }
@@ -115,17 +117,9 @@ class EsIndexScoresQueue extends Command
 
     private function queueIds(array $ids): void
     {
+        $this->search->queueForIndex($ids, $this->schema);
+
         $count = count($ids);
-
-        if ($count === 0) {
-            return;
-        }
-
-        LaravelRedis::lpush("osu-queue:score-index-{$this->schema}", ...array_map(
-            fn (int $id): string => json_encode(['ScoreId' => $id]),
-            $ids,
-        ));
-
         $this->bar->advance($count);
         $this->total += $count;
     }
