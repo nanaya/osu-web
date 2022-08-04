@@ -9,6 +9,7 @@ use App\Libraries\Elasticsearch\BoolQuery;
 use App\Libraries\Elasticsearch\RecordSearch;
 use App\Models\Solo\Score;
 use Ds\Set;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use LaravelRedis;
 
@@ -152,10 +153,38 @@ class ScoreSearch extends RecordSearch
             return;
         }
 
-        LaravelRedis::lpush("osu-queue:score-index-{$schema}", ...array_map(
+        LaravelRedis::lpush($this->queueKey($schema), ...array_map(
             fn (int $id): string => json_encode(['ScoreId' => $id]),
             $ids,
         ));
+    }
+
+    public function indexWait(float $maxWaitSecond = 5): void
+    {
+        $count = Score
+            ::where('preserve', true)
+            ->whereHas('user', fn (Builder $q): Builder => $q->default())
+            ->count();
+        $loopWait = 500000; // 0.5s in microsecond
+        $loops = (int) ceil($maxWaitSecond * 1000000.0 / $loopWait);
+
+        for ($i = 0; $i < $loops; $i++) {
+            usleep($loopWait);
+            $this->refresh();
+            $indexedCount = $this->client()->count(['index' => $this->index])['count'];
+            if ($indexedCount === $count) {
+                return;
+            }
+        }
+
+        throw new Exception("Indexable and indexed scores still don't match. Queue runner is probably either having problem, not running, or too slow");
+    }
+
+    private function queueKey(?string $schema = null): string
+    {
+        $schema ??= $this->getSchema();
+
+        return "osu-queue:score-index-{$schema}";
     }
 
     private function schemaKey(): string
