@@ -52,7 +52,7 @@ class EsIndexScoresQueue extends Command
 
         $this->schema = presence($this->option('schema'))
             ?? presence(env('schema'))
-            ?? (new ScoreSearch())->getSchema();
+            ?? $this->search->getSchema();
 
         if ($this->schema === null) {
             return $this->error('Index schema must be specified');
@@ -92,7 +92,7 @@ class EsIndexScoresQueue extends Command
             });
         }
 
-        (new ScoreSearch())->refresh();
+        $this->search->refresh();
 
         $this->bar->finish();
         $this->line('');
