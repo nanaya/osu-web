@@ -4,10 +4,12 @@
 import BeatmapList from 'beatmap-discussions/beatmap-list';
 import StringWithComponent from 'components/string-with-component';
 import { UserLink } from 'components/user-link';
+import BeatmapJson from 'interfaces/beatmap-json';
 import { route } from 'laroute';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { getArtist, getTitle } from 'utils/beatmap-helper';
+import { generate as generateHash } from 'utils/beatmapset-page-hash';
 import { trans } from 'utils/lang';
 import BeatmapPicker from './beatmap-picker';
 import Controller from './controller';
@@ -86,6 +88,7 @@ export default class Header extends React.Component<Props> {
             <BeatmapList
               beatmaps={this.controller.currentBeatmaps}
               beatmapset={this.controller.beatmapset}
+              createLink={this.generateBeatmapLink}
               currentBeatmap={this.controller.currentBeatmap}
               large={false}
               modifiers='beatmapset-show'
@@ -101,6 +104,11 @@ export default class Header extends React.Component<Props> {
       </div>
     );
   }
+
+  private readonly generateBeatmapLink = (beatmap: BeatmapJson) => generateHash({
+    beatmap,
+    ruleset: this.controller.currentBeatmap.mode,
+  });
 
   private onSelectBeatmap = (beatmapId: number) => {
     const selectedBeatmap = this.controller.currentBeatmaps.find((beatmap) => beatmap.id === beatmapId);

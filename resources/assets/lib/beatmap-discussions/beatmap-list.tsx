@@ -2,9 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BeatmapListItem from 'components/beatmap-list-item';
-import StringWithComponent from 'components/string-with-component';
-import { UserLink } from 'components/user-link';
 import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import BeatmapJson from 'interfaces/beatmap-json';
 import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
 import UserJson from 'interfaces/user-json';
 import { deletedUser } from 'models/user';
@@ -12,12 +11,12 @@ import * as React from 'react';
 import { blackoutToggle } from 'utils/blackout';
 import { classWithModifiers, Modifiers } from 'utils/css';
 import { formatNumber, isClickable } from 'utils/html';
-import { trans } from 'utils/lang';
 import { nextVal } from 'utils/seq';
 
 interface Props {
   beatmaps: BeatmapExtendedJson[];
   beatmapset: BeatmapsetExtendedJson;
+  createLink: (beatmap: BeatmapJson) => string;
   currentBeatmap: BeatmapExtendedJson;
   getCount?: (beatmap: BeatmapExtendedJson) => number | undefined;
   large: boolean;
@@ -68,12 +67,13 @@ export default class BeatmapList extends React.PureComponent<Props, State> {
           >
             <div className='beatmap-list__selected beatmap-list__selected--icons'>
               {Array.from({ length: 4 }).map((_blank, idx) => (
-                <i key={idx} className='fas fa-circle u-relative' />
+                <span key={idx} className='fas fa-circle u-relative' />
               ))}
             </div>
             <div className='beatmap-list__selected beatmap-list__selected--list u-ellipsis-overflow'>
               <BeatmapListItem
                 beatmap={this.props.currentBeatmap}
+                mapper={null}
                 modifiers={{ large: this.props.large }}
               />
 
@@ -83,8 +83,10 @@ export default class BeatmapList extends React.PureComponent<Props, State> {
             </div>
           </div>
 
-          <div className='beatmap-list__selector u-fancy-scrollbar'>
-            {this.props.beatmaps.map(this.beatmapListItem)}
+          <div className='beatmap-list__selector-container'>
+            <div className='beatmap-list__selector'>
+              {this.props.beatmaps.map(this.beatmapListItem)}
+            </div>
           </div>
         </div>
       </div>
@@ -101,20 +103,13 @@ export default class BeatmapList extends React.PureComponent<Props, State> {
         data-id={beatmap.id}
         onClick={this.selectBeatmap}
       >
-        <BeatmapListItem beatmap={beatmap} />
-        {this.props.beatmapset.user_id !== beatmap.user_id && (
-          <>
-            {' '}
-            <span className='beatmap-list__item-mapper'>
-              <StringWithComponent
-                mappings={{
-                  mapper: <UserLink user={this.props.users[beatmap.user_id] ?? deletedUser.toJson()} />,
-                }}
-                pattern={trans('beatmapsets.show.details.mapped_by')}
-              />
-            </span>
-          </>
-        )}
+        <BeatmapListItem
+          beatmap={beatmap}
+          beatmapUrl={this.props.createLink(beatmap)}
+          beatmapset={this.props.beatmapset}
+          mapper={this.props.users[beatmap.user_id] ?? deletedUser}
+          showNonGuestMapper={false}
+        />
         {count != null &&
           <div className='beatmap-list__item-count'>
             {formatNumber(count)}

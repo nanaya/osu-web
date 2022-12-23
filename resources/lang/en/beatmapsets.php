@@ -69,6 +69,7 @@ return [
             'length' => 'Length :value',
             'logged-out' => 'You need to sign in before downloading any beatmaps!',
             'mapped_by' => 'mapped by :mapper',
+            'mapped_by_guest' => 'guest difficulty by :mapper',
             'slider_count' => 'Slider Count :value',
             'song_bpm' => 'BPM :value',
             'unfavourite' => 'Unfavourite this beatmap',

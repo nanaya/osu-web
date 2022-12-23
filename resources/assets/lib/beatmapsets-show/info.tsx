@@ -2,12 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BeatmapListItem from 'components/beatmap-list-item';
-import StringWithComponent from 'components/string-with-component';
-import { UserLink } from 'components/user-link';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { formatDuration, formatNumber } from 'utils/html';
-import { trans } from 'utils/lang';
 import Controller from './controller';
 import CountBadge from './count-badge';
 import Extra from './extra';
@@ -27,17 +24,12 @@ export default class Info extends React.Component<Props> {
       <div className='beatmapset-info'>
         <div className='beatmapset-info__item beatmapset-info__item--diff'>
           <div className='beatmapset-info__diff-detail'>
-            <BeatmapListItem beatmap={showedBeatmap} />
-
-            {' '}
-            <span className='beatmapset-info__diff-mapper u-ellipsis-overflow'>
-              <StringWithComponent
-                mappings={{
-                  mapper: <UserLink user={this.props.controller.mapper(showedBeatmap)} />,
-                }}
-                pattern={trans('beatmapsets.show.details.mapped_by')}
-              />
-            </span>
+            <BeatmapListItem
+              beatmap={showedBeatmap}
+              beatmapset={this.props.controller.beatmapset}
+              mapper={this.props.controller.mapper(showedBeatmap)}
+              showNonGuestMapper={false}
+            />
           </div>
 
           <CountBadge
