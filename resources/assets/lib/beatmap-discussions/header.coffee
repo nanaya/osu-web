@@ -128,6 +128,7 @@ export class Header extends React.PureComponent
             el BeatmapList,
               beatmaps: @props.beatmaps.get(@props.currentBeatmap.mode)
               beatmapset: @props.beatmapset
+              createLink: @createLink
               currentBeatmap: @props.currentBeatmap
               getCount: @getCount
               onSelectBeatmap: @onSelectBeatmap
@@ -199,6 +200,10 @@ export class Header extends React.PureComponent
             total
 
         div className: "#{bn}__line"
+
+
+  createLink: (beatmap) =>
+    BeatmapDiscussionHelper.url beatmap: beatmap
 
 
   getCount: (beatmap) =>
