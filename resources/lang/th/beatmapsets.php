@@ -11,6 +11,10 @@ return [
         'rule_violation' => 'เนื้อหาบางส่วนในแมพนี้ได้ถูกนำออกเนื่องจากถูกตัดสินว่าไม่เหมาะสมใน osu!',
     ],
 
+    'cover' => [
+        'deleted' => '',
+    ],
+
     'download' => [
         'limit_exceeded' => 'ช้าลงหน่อย เล่นมากขึ้น',
     ],
@@ -62,6 +66,7 @@ return [
             'favourite_login' => 'ลงชื่อบีทแมพนี้เป็นรายการโปรด',
             'logged-out' => 'คุณต้องเข้าสู่ระบบก่อนที่จะดาวน์โหลดบีทแมพ',
             'mapped_by' => 'แมพโดย :mapper',
+            'mapped_by_guest' => '',
             'unfavourite' => 'เลิก Favourite beatmapset นี้',
             'updated_timeago' => 'อัปเดตล่าสุดเมื่อ :timeago',
 
@@ -120,7 +125,9 @@ return [
             'genre' => 'ประเภท',
             'language' => 'ภาษา',
             'no_scores' => 'ข้อมูลกำลังถูกคำนวณ...',
+            'nominators' => '',
             'nsfw' => 'เนื้อหาไม่เหมาะสม',
+            'offset' => '',
             'points-of-failure' => 'ความล้มเหลว',
             'source' => 'แหล่งที่มา',
             'storyboard' => 'บีทแมพนี้มี storyboard',
@@ -143,6 +150,7 @@ return [
         'scoreboard' => [
             'achieved' => 'ได้รับ :when',
             'country' => 'อันดับประเทศ',
+            'error' => '',
             'friend' => 'อันดับเพื่อน',
             'global' => 'อันดับโลก',
             'supporter-link' => 'คลิก <a href=":link">ที่นี่</a> เพื่อดูสิ่งสวยงามทั้งหมดที่คุณได้รับ!',
@@ -154,11 +162,12 @@ return [
                 'combo' => 'คอมโบสูงสุด',
                 'miss' => 'Miss',
                 'mods' => 'ม็อด',
+                'pin' => '',
                 'player' => 'ผู้เล่น',
                 'pp' => '',
                 'rank' => 'อันดับ',
-                'score_total' => 'คะแนนรวม',
                 'score' => 'คะแนน',
+                'score_total' => 'คะแนนรวม',
                 'time' => 'เวลา',
             ],
 
@@ -173,6 +182,10 @@ return [
                 'first' => 'นำ',
                 'own' => 'คะแนนดีที่สุดของคุณ',
             ],
+            'supporter_link' => [
+                '_' => '',
+                'here' => '',
+            ],
         ],
 
         'stats' => [
@@ -186,6 +199,7 @@ return [
             'bpm' => 'BPM',
             'count_circles' => 'จำนวนวงกลม',
             'count_sliders' => 'จำนวนสไลเดอร์',
+            'offset' => '',
             'user-rating' => 'คะแนน',
             'rating-spread' => 'การกระจายคะแนนโหวต',
             'nominations' => 'การเสนอชื่อ',
@@ -201,5 +215,9 @@ return [
             'pending' => 'อยู่ระหว่างดำเนินการ',
             'graveyard' => 'สุสาน',
         ],
+    ],
+
+    'spotlight_badge' => [
+        'label' => '',
     ],
 ];

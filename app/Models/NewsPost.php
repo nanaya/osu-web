@@ -9,9 +9,7 @@ use App\Exceptions\GitHubNotFoundException;
 use App\Libraries\Commentable;
 use App\Libraries\Markdown\OsuMarkdown;
 use App\Libraries\OsuWiki;
-use App\Traits\CommentableDefaults;
 use App\Traits\Memoizes;
-use App\Traits\WithDbCursorHelper;
 use Carbon\Carbon;
 use Exception;
 
@@ -30,7 +28,7 @@ use Exception;
  */
 class NewsPost extends Model implements Commentable, Wiki\WikiObject
 {
-    use CommentableDefaults, Memoizes, WithDbCursorHelper;
+    use Memoizes, Traits\CommentableDefaults, Traits\WithDbCursorHelper;
 
     // in minutes
     const CACHE_DURATION = 86400;
@@ -76,7 +74,7 @@ class NewsPost extends Model implements Commentable, Wiki\WikiObject
         $limit = clamp(get_int($params['limit'] ?? null) ?? 20, 1, 21);
 
         $cursorHelper = static::makeDbCursorHelper();
-        $cursor = get_arr($params['cursor'] ?? null);
+        $cursor = cursor_from_params($params);
         $query->cursorSort($cursorHelper, $cursor);
 
         $year = get_int($params['year'] ?? null);
@@ -97,13 +95,22 @@ class NewsPost extends Model implements Commentable, Wiki\WikiObject
 
     public static function syncAll()
     {
-        $entries = OsuWiki::fetch('news');
+        $baseEntries = OsuWiki::getTree(null, false)['tree'];
+        foreach ($baseEntries as $entry) {
+            if ($entry['path'] === 'news') {
+                $rootHash = $entry['sha'];
+                break;
+            }
+        }
+        // Something is terribly wrong if $rootHash is unset.
+        $entries = OsuWiki::getTree($rootHash)['tree'];
 
         $latestSlugs = [];
 
         foreach ($entries as $entry) {
-            if (($entry['type'] ?? null) === 'file' && ends_with($entry['name'], '.md')) {
-                $slug = substr($entry['name'], 0, -3);
+            if (($entry['type'] ?? null) === 'blob' && substr($entry['path'], -3) === '.md') {
+                $trimStartPos = strpos($entry['path'], '/');
+                $slug = substr($entry['path'], $trimStartPos === false ? 0 : $trimStartPos + 1, -3);
                 $hash = $entry['sha'];
 
                 $latestSlugs[$slug] = $hash;
@@ -112,7 +119,7 @@ class NewsPost extends Model implements Commentable, Wiki\WikiObject
 
         foreach (static::all() as $post) {
             if (array_key_exists($post->slug, $latestSlugs)) {
-                if ($latestSlugs[$post->slug] !== $post->hash) {
+                if ($post->published_at === null || $latestSlugs[$post->slug] !== $post->hash) {
                     $post->sync(true);
                 }
 
@@ -194,14 +201,24 @@ class NewsPost extends Model implements Commentable, Wiki\WikiObject
         return $this->page['author'];
     }
 
+    public function commentLocked(): bool
+    {
+        return false;
+    }
+
     public function commentableTitle()
     {
         return $this->title();
     }
 
-    public function filename()
+    public function filename($perYearDirectory = true)
     {
-        return "{$this->slug}.md";
+        $slug = $this->slug;
+        $prefix = $perYearDirectory
+            ? substr($slug, 0, 4).'/'
+            : '';
+
+        return "{$prefix}{$slug}.md";
     }
 
     public function isVisible()
@@ -253,14 +270,14 @@ class NewsPost extends Model implements Commentable, Wiki\WikiObject
     public function newer()
     {
         return $this->memoize(__FUNCTION__, function () {
-            return static::cursorSort('published_asc', $this)->first();
+            return static::default()->cursorSort('published_asc', $this)->first();
         });
     }
 
     public function older()
     {
         return $this->memoize(__FUNCTION__, function () {
-            return static::cursorSort('published_desc', $this)->first();
+            return static::default()->cursorSort('published_desc', $this)->first();
         });
     }
 
@@ -270,20 +287,23 @@ class NewsPost extends Model implements Commentable, Wiki\WikiObject
             return $this;
         }
 
-        $path = "news/{$this->filename()}";
-        $pathMissingKey = "osu_wiki:not_found:{$path}";
+        $postMissingKey = "osu_wiki:not_found:{$this->slug}";
 
-        if (!$force && cache()->get($pathMissingKey) !== null) {
+        if (!$force && cache()->get($postMissingKey) !== null) {
             return $this;
         }
 
         try {
-            $file = new OsuWiki($path);
+            try {
+                $file = new OsuWiki("news/{$this->filename()}");
+            } catch (GitHubNotFoundException $e) {
+                $file = new OsuWiki("news/{$this->filename(false)}");
+            }
         } catch (GitHubNotFoundException $e) {
             if ($this->exists) {
                 $this->update(['published_at' => null]);
             } else {
-                cache()->put($pathMissingKey, 1, 300);
+                cache()->put($postMissingKey, 1, 300);
             }
 
             return $this;

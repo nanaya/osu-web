@@ -22,7 +22,7 @@ return [
     ],
 
     'links' => [
-        'beatmaps' => '',
+        'beatmaps' => '"osu!" Мапе',
         'osu' => 'osu! профил',
         'site' => 'Званични сајт',
     ],
@@ -30,7 +30,8 @@ return [
     'songs' => [
         '_' => 'Песме',
         'count' => ':count_delimited песма|:count_delimited песме',
-        'original' => '',
+        'original' => '"osu!" оригинал',
+        'original_badge' => 'ОРИГИНАЛ',
     ],
 
     'tracklist' => [
@@ -38,5 +39,24 @@ return [
         'length' => 'дужина',
         'bpm' => 'темпо',
         'genre' => 'жанр',
+    ],
+
+    'tracks' => [
+        'index' => [
+            '_' => 'тражење песме',
+
+            'form' => [
+                'advanced' => 'Напредна претрага',
+                'album' => 'Албум',
+                'artist' => 'Извођач',
+                'bpm_gte' => '"BPM" Минимум',
+                'bpm_lte' => '"BPM" Максимум',
+                'empty' => 'Не постоји која песма која одговара Вашем критеријуму.',
+                'genre' => 'Жанр',
+                'genre_all' => 'Све',
+                'length_gte' => 'Минимална Дужина',
+                'length_lte' => 'Максимална Дужина',
+            ],
+        ],
     ],
 ];

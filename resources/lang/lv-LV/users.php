@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'Jūs esiet nobloķējis šo lietotāju.',
+        'comment_text' => '',
         'blocked_count' => 'bloķētie lietotāji (:count)',
         'hide_profile' => 'Slēpt profilu',
+        'hide_comment' => '',
         'not_blocked' => 'Šis lietotājs nav bloķēts.',
         'show_profile' => 'Rādīt profilu',
+        'show_comment' => '',
         'too_many' => 'Ir sasniegts bloķēsanas limits.',
         'button' => [
             'block' => 'Bloķēt',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'Notiek ielāde...',
         'send_message' => 'nosūtīt ziņu',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -159,6 +178,10 @@ return [
             '_' => '',
             'count' => '',
         ],
+        'cover' => [
+            'to_0' => '',
+            'to_1' => '',
+        ],
         'edit' => [
             'cover' => [
                 'button' => 'Mainīt Profila Pārklāju',
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Kapā Metamās Bītmapes',
                 ],
+                'guest' => [
+                    'title' => '',
+                ],
                 'loved' => [
                     'title' => 'Mīļākās Bītmapes',
+                ],
+                'nominated' => [
+                    'title' => '',
                 ],
                 'pending' => [
                     'title' => '',
@@ -301,7 +330,7 @@ return [
                 'recent' => 'Jaunākais',
                 'title' => 'Medaļas',
             ],
-            'multiplayer' => [
+            'playlists' => [
                 'title' => '',
             ],
             'posts' => [
@@ -311,6 +340,9 @@ return [
             ],
             'recent_activity' => [
                 'title' => 'Nesenie',
+            ],
+            'realtime' => [
+                'title' => '',
             ],
             'top_ranks' => [
                 'download_replay' => 'Lejupielādēt Spēles Ierakstu',
@@ -324,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'Pirmās Vietas Ranki',
+                ],
+                'pin' => [
+                    'to_0' => '',
+                    'to_0_done' => '',
+                    'to_1' => '',
+                    'to_1_done' => '',
+                ],
+                'pinned' => [
+                    'title' => '',
                 ],
             ],
             'votes' => [
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'Bans',
                         'silence' => 'Klusums',
+                        'tournament_ban' => '',
                         'note' => 'Piezīme',
                     ],
                 ],
@@ -391,6 +433,7 @@ return [
             'country_simple' => 'Valsts Rankējums',
             'global' => 'Globālais ranks pēc :mode',
             'global_simple' => 'Globālais Rankējums',
+            'highest' => '',
         ],
         'stats' => [
             'hit_accuracy' => 'Trāpījuma Precizitāte',
@@ -424,6 +467,8 @@ return [
         'offline' => '',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => '',
     ],
     'verify' => [

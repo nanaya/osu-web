@@ -22,7 +22,7 @@ return [
     ],
 
     'links' => [
-        'beatmaps' => '',
+        'beatmaps' => 'osu! beatmape',
         'osu' => 'osu! profil',
         'site' => 'Službena Stranica',
     ],
@@ -30,13 +30,33 @@ return [
     'songs' => [
         '_' => 'Pjesme',
         'count' => ':count pjesma|:count pjesme',
-        'original' => '',
+        'original' => 'osu! original',
+        'original_badge' => 'ORIGINAL',
     ],
 
     'tracklist' => [
-        'title' => '',
-        'length' => '',
-        'bpm' => '',
-        'genre' => '',
+        'title' => 'naslov',
+        'length' => 'dužina',
+        'bpm' => 'bpm',
+        'genre' => 'žanr',
+    ],
+
+    'tracks' => [
+        'index' => [
+            '_' => 'pretraživanje pjesama',
+
+            'form' => [
+                'advanced' => 'Napredno pretraživanje',
+                'album' => 'Album',
+                'artist' => 'Izvođač',
+                'bpm_gte' => 'Minimalni BPM',
+                'bpm_lte' => 'Maximalni BPM',
+                'empty' => 'Nisu pronađene pjesme koje odgovaraju kriterijima pretraživanja.',
+                'genre' => 'Žanr',
+                'genre_all' => 'Sve',
+                'length_gte' => 'Minimalna dužina',
+                'length_lte' => 'Maksimalna dužina',
+            ],
+        ],
     ],
 ];

@@ -5,7 +5,7 @@
 
 return [
     'play_more' => '为何不先玩几局 osu! 呢？',
-    'require_login' => '登录以继续。',
+    'require_login' => '请先登录以继续。',
     'require_verification' => '请验证以继续。',
     'restricted' => "账户处于限制模式，无法进行该操作。",
     'silenced' => "账户被禁言，无法进行该操作。",
@@ -27,12 +27,12 @@ return [
         ],
 
         'store' => [
-            'mapper_note_wrong_user' => '只有谱面作者或谱面管理团队、质量保证团队成员可以发布备注。',
+            'mapper_note_wrong_user' => '只有谱面作者、提名该谱面的谱面审核成员 (BN)、审核评估团队 (NAT) 成员可以在讨论区发送备注。',
         ],
 
         'vote' => [
             'bot' => "不能对机器人的讨论投票",
-            'limit_exceeded' => '在投更多票之前请稍等一会。',
+            'limit_exceeded' => '请稍等后再投票。',
             'owner' => "不能为自己的讨论投票！",
             'wrong_beatmapset_state' => '只能给 pending 谱面的讨论投票。',
         ],
@@ -48,7 +48,7 @@ return [
         'edit' => [
             'not_owner' => '只有作者可以编辑。',
             'resolved' => '你不能编辑已解决讨论里的帖子。',
-            'system_generated' => '无法编辑自动回复。',
+            'system_generated' => '自动生成的帖子无法被编辑。',
         ],
 
         'store' => [
@@ -58,20 +58,25 @@ return [
 
     'beatmapset' => [
         'metadata' => [
-            'nominated' => '您不能更改已提名的谱面信息。如果您认为其不正确，请联系谱面管理团队或质量保障团队进行更改。',
+            'nominated' => '您不能更改已提名谱面的信息。如果您认为其不正确，请联系谱面审核成员 (BN) 或审核评估团队 (NAT) 更改。',
         ],
     ],
 
     'chat' => [
+        'annnonce_only' => '此频道仅用于通知。',
         'blocked' => '无法向你已拉黑的用户发消息，或者你已经被对方拉黑了。',
         'friends_only' => '用户拒收了来自陌生人的消息。',
         'moderated' => '该频道现在正在被管制中。',
         'no_access' => '你没有权限访问该频道。',
+        'receive_friends_only' => '此用户可能无法回复你，因为你设置了只接受来自好友的消息。',
         'restricted' => '账户被禁言、受限或封禁期间不能发消息。',
         'silenced' => '账户被禁言、受限或封禁期间不能发消息。',
     ],
 
     'comment' => [
+        'store' => [
+            'disabled' => '评论已禁用',
+        ],
         'update' => [
             'deleted' => "无法编辑已删除的回复。",
         ],
@@ -163,6 +168,13 @@ return [
 
         'view' => [
             'admin_only' => '该板块仅限管理员查看。',
+        ],
+    ],
+
+    'score' => [
+        'pin' => [
+            'not_owner' => '只有获得此成绩的玩家才可以置顶它。',
+            'too_many' => '已置顶的成绩过多',
         ],
     ],
 

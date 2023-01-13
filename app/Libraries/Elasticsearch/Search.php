@@ -5,11 +5,12 @@
 
 namespace App\Libraries\Elasticsearch;
 
+use App\Exceptions\InvalidCursorException;
+use App\Exceptions\SilencedException;
 use Datadog;
 use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Curl\OperationTimeoutException;
 use Elasticsearch\Common\Exceptions\ElasticsearchException;
-use Log;
 
 abstract class Search extends HasSearch implements Queryable
 {
@@ -39,6 +40,13 @@ abstract class Search extends HasSearch implements Queryable
         parent::__construct($params);
 
         $this->index = $index;
+    }
+
+    public function assertNoError(): void
+    {
+        if ($this->error !== null) {
+            throw $this->error;
+        }
     }
 
     // for paginator
@@ -84,6 +92,14 @@ abstract class Search extends HasSearch implements Queryable
         return $this->count;
     }
 
+    public function deleteAll(): void
+    {
+        $this->client()->deleteByQuery([
+            'index' => $this->index,
+            'body' => ['query' => ['match_all' => (object) []]],
+        ]);
+    }
+
     public function fail($error = null)
     {
         $this->error = $error; // for the message.
@@ -112,6 +128,7 @@ abstract class Search extends HasSearch implements Queryable
 
     public function getSortCursor(): ?array
     {
+        // FIXME: should cast cursor values to match sort.
         $requested = $this->params->size;
         $received = $this->response()->count();
         $total = $this->response()->total();
@@ -149,6 +166,14 @@ abstract class Search extends HasSearch implements Queryable
     public function overLimit()
     {
         return $this->response()->total() > $this->maxResults();
+    }
+
+    /**
+     * Allow documents to be immediately searchable (mainly for testing).
+     */
+    public function refresh(): void
+    {
+        $this->client()->indices()->refresh(['index' => $this->index]);
     }
 
     /**
@@ -257,14 +282,16 @@ abstract class Search extends HasSearch implements Queryable
 
     private function handleError(ElasticsearchException $e, string $operation)
     {
+        $err = json_decode($e->getMessage(), true);
+
+        if (is_array($err) && str_starts_with($err['error']['caused_by']['reason'] ?? '', 'Failed to parse search_after value for field ')) {
+            $e = new InvalidCursorException();
+        }
+
         $tags = $this->getDatadogTags();
         $tags['class'] = get_class($e);
 
-        // Only report non query timeout errors to Sentry.
-        // Printing the entire exception to log makes the breadcrumb too large to be sent to Sentry (16kb limit)
-        // so we're only printing the message.
-        Log::error("{$tags['type']} {$tags['index']} {$operation}, {$tags['class']}: {$e->getMessage()}");
-        if (!($e instanceof OperationTimeoutException)) {
+        if (!($e instanceof OperationTimeoutException || $e instanceof SilencedException)) {
             app('sentry')->captureException($e);
         }
 
@@ -273,6 +300,8 @@ abstract class Search extends HasSearch implements Queryable
             1,
             $tags
         );
+
+        return $e;
     }
 
     private function isSearchWindowExceeded()
@@ -310,8 +339,7 @@ abstract class Search extends HasSearch implements Queryable
                 $this->getDatadogTags()
             );
         } catch (ElasticsearchException $e) {
-            $this->error = $e;
-            $this->handleError($e, $operation);
+            $this->error = $this->handleError($e, $operation);
         }
     }
 }

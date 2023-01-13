@@ -7,12 +7,6 @@ return [
     'admin' => [
         '_' => 'מנהל',
     ],
-    'admin_forum' => [
-        '_' => 'מנהל',
-    ],
-    'admin_store' => [
-        '_' => 'מנהל',
-    ],
     'error' => [
         'error' => [
             '400' => 'בקשה לא תקינה',
@@ -29,13 +23,12 @@ return [
     ],
     'forum' => [
         '_' => 'פורום',
-        'topic_watches_controller' => [
-            'index' => 'לוח בקרה',
+        'topic_logs_controller' => [
+            'index' => '',
         ],
     ],
     'main' => [
         'account_controller' => [
-            'edit' => 'לוח בקרה',
             'verify_link' => 'אימות חשבון',
         ],
         'artists_controller' => [
@@ -56,9 +49,6 @@ return [
         'beatmapset_events_controller' => [
             '_' => 'היסטוריית מפה',
         ],
-        'beatmapset_watches_controller' => [
-            'index' => 'לוח בקרה',
-        ],
         'beatmapsets_controller' => [
             'discussion' => 'דיוני מפה',
             'index' => 'רשימת מפות',
@@ -75,12 +65,6 @@ return [
         ],
         'contests_controller' => [
             '_' => 'תחרויות',
-        ],
-        'follows_controller' => [
-            'index' => 'לוח בקרה',
-        ],
-        'friends_controller' => [
-            'index' => 'לוח בקרה',
         ],
         'groups_controller' => [
             'show' => 'קבוצות',
@@ -116,23 +100,16 @@ return [
         'scores_controller' => [
             '_' => 'ביצועים',
         ],
-        'store_controller' => [
-            '_' => 'חנות osu!',
-        ],
         'tournaments_controller' => [
             '_' => 'טורנירים',
         ],
         'users_controller' => [
             '_' => 'מידע שחקן',
+            'create' => '',
             'disabled' => 'שים לב',
         ],
         'wiki_controller' => [
             '_' => 'מאגר נתונים',
-        ],
-    ],
-    'multiplayer' => [
-        'rooms_controller' => [
-            '_' => 'דירוג',
         ],
     ],
     'passport' => [

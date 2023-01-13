@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "låt oss<br>få dig igång!",
         'action' => 'Ladda ner osu!',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'macOS-användare',
+        'mirror' => 'mirror',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "låt oss<br>få dig igång!",
+        'video-guide' => 'videoguide',
 
         'help' => [
             '_' => 'om du har problem med att starta spelet eller registrera ett konto, :help_forum_link eller :support_button.',
@@ -86,8 +99,6 @@ return [
             'macos' => 'för macOS',
             'linux' => 'för Linux',
         ],
-        'mirror' => 'mirror',
-        'macos-fallback' => 'macOS-användare',
         'steps' => [
             'register' => [
                 'title' => 'skaffa ett konto',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => 'videoguide',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'Stötta osu!',
             'store' => 'osu!store',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'Wow!',
-        'subtitle' => 'Det ser ut som att du har kul! :D',
-        'body' => [
-            'part-1' => 'Visste du att osu! körs utan annonser, och förlitar sig på spelare som stöttar utvecklingen och kostnader för underhåll?',
-            'part-2' => 'Visste du också att när du stöttar osu! så får du en hel drös användbara funktioner, som <strong>nedladdning i spelet</strong> vilket automatiskt sätts igång när du är åskådare eller är i flerspelarläge?',
-        ],
-        'find-out-more' => 'Klicka här för att ta reda på mer!',
-        'download-starting' => "Åh, och oroa dig inte - din nedladdning har redan startats åt dig ;)",
     ],
 ];

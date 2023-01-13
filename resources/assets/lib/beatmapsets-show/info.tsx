@@ -1,86 +1,52 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DifficultyBadge from 'difficulty-badge';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
-import { padStart } from 'lodash';
+import BeatmapListItem from 'components/beatmap-list-item';
+import { observer } from 'mobx-react';
 import * as React from 'react';
-import StringWithComponent from 'string-with-component';
-import { UserLink } from 'user-link';
+import { formatDuration, formatNumber } from 'utils/html';
+import Controller from './controller';
 import CountBadge from './count-badge';
 import Extra from './extra';
 import Metadata from './metadata';
 import Stats from './stats';
 
 interface Props {
-  beatmapset: BeatmapsetExtendedJson;
-  currentBeatmap: BeatmapExtendedJson;
-  hoveredBeatmap: BeatmapExtendedJson | null;
+  controller: Controller;
 }
 
-// value is in second
-function formatDuration(value: number) {
-  const s = value % 60;
-  const m = Math.floor(value / 60) % 60;
-  const h = Math.floor(value / 3600);
-
-  if (h > 0) {
-    return `${h}:${padStart(String(m), 2, '0')}:${padStart(String(s), 2, '0')}`;
-  } else {
-    return `${m}:${padStart(String(s), 2, '0')}`;
-  }
-}
-
-export default class Header extends React.PureComponent<Props> {
+@observer
+export default class Info extends React.Component<Props> {
   render() {
-    const showedBeatmap = this.props.hoveredBeatmap ?? this.props.currentBeatmap;
+    const showedBeatmap = this.props.controller.hoveredBeatmap ?? this.props.controller.currentBeatmap;
 
     return (
       <div className='beatmapset-info'>
         <div className='beatmapset-info__item beatmapset-info__item--diff'>
-          <div className='beatmapset-info__diff-detail u-ellipsis-overflow'>
-            <div className='beatmapset-info__diff-icon'>
-              <i className={`fal fa-extra-mode-${showedBeatmap.mode}`} />
-            </div>
-
-            <DifficultyBadge modifiers='beatmapset-info' rating={showedBeatmap.difficulty_rating} />
-
-            <div className='u-ellipsis-overflow'>
-              <span className='beatmapset-info__diff-name'>
-                {showedBeatmap.version}
-              </span>
-              {' '}
-              <span className='beatmapset-info__diff-mapper'>
-                <StringWithComponent
-                  mappings={{
-                    ':mapper':
-                      <UserLink
-                        key='mapper'
-                        user={{ id: showedBeatmap.user?.id, username: showedBeatmap.user?.username ?? '' }}
-                      />,
-                  }}
-                  pattern={osu.trans('beatmapsets.show.details.mapped_by')}
-                />
-              </span>
-            </div>
+          <div className='beatmapset-info__diff-detail'>
+            <BeatmapListItem
+              beatmap={showedBeatmap}
+              beatmapset={this.props.controller.beatmapset}
+              mapper={this.props.controller.mapper(showedBeatmap)}
+              showNonGuestMapper={false}
+            />
           </div>
 
           <CountBadge
             data={{
               length: formatDuration(showedBeatmap.total_length),
-              song_bpm: showedBeatmap.bpm > 1000 ? '∞' : osu.formatNumber(showedBeatmap.bpm),
+              song_bpm: showedBeatmap.bpm > 1000 ? '∞' : formatNumber(showedBeatmap.bpm),
             }}
             modifiers='length-bpm'
           />
         </div>
 
         <div className='beatmapset-info__item beatmapset-info__item--stats'>
-          <Metadata beatmapset={this.props.beatmapset} />
+          <Metadata controller={this.props.controller} />
           <div className='beatmapset-info__line' />
-          <Stats beatmap={this.props.currentBeatmap} />
+          <Stats controller={this.props.controller} />
           <div className='beatmapset-info__line beatmapset-info__line--mobile' />
-          <Extra beatmap={this.props.currentBeatmap} beatmapset={this.props.beatmapset} />
+          <Extra controller={this.props.controller} />
         </div>
       </div>
     );

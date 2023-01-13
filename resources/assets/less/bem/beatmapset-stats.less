@@ -3,7 +3,7 @@
 
 .beatmapset-stats {
   display: grid;
-  grid-template-columns: auto auto 1fr;
+  grid-template-columns: auto minmax(30px, auto) 1fr;
   column-gap: 10px;
 
   &__bar {
@@ -19,6 +19,11 @@
   &__count-value {
     color: hsl(var(--hsl-c2));
     font-weight: 700;
+  }
+
+  &__spacer {
+    grid-column: 1 / span 3;
+    height: 1em;
   }
 
   &__value {

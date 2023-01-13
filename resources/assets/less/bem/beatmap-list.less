@@ -6,18 +6,138 @@
   color: #fff;
   min-width: 0;
   position: relative;
+  --icons-bg-opacity: 0;
 
   &--selecting {
     z-index: @z-index--blackout-visible;
+    --icons-bg-opacity: 1;
   }
 
   &__body {
+    height: var(--box-height);
     min-width: 0;
   }
 
-  &__selector {
-    .default-box-shadow();
+  &__item {
+    .link-plain();
+    .link-white();
 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    padding: 3px 10px;
+    gap: 10px;
+    font-size: @font-size--title-small;
+
+    &:hover {
+      background-color: @osu-colour-b6;
+    }
+
+    &--selected {
+      .default-box-shadow();
+      .default-border-radius();
+      background-color: @osu-colour-b5;
+      box-shadow: 0 0 0 2px fade(#000, 25%);
+      height: 100%;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      min-width: 0;
+      font-size: inherit;
+
+      &:hover {
+        background-color: @osu-colour-b6;
+      }
+
+      .@{top}--beatmapset-show & {
+        box-shadow: none;
+
+        @media @desktop {
+          background-color: transparent;
+          padding: 0;
+        }
+      }
+    }
+
+    &--current {
+      background-color: @osu-colour-b6;
+    }
+  }
+
+  &__item-count {
+    .default-border-radius();
+    padding: 2px 5px;
+    font-size: 0.7em;
+    font-weight: bold;
+    margin-left: 10px;
+    background-color: hsl(var(--hsl-b2));
+    color: hsl(var(--hsl-b5));
+  }
+
+
+  &__item-mapper {
+    color: hsl(var(--hsl-c2));
+    font-weight: normal;
+  }
+
+  &__item-selector-button {
+    margin-left: auto;
+  }
+
+  &__selected {
+    &--icons {
+      display: none;
+
+      .@{top}--beatmapset-show & {
+        @media @desktop {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          font-size: 9px;
+          gap: 2px;
+          position: relative;
+
+          &::before {
+            .default-border-radius();
+            --padding: 4px;
+            --offset: calc(-1 * var(--padding));
+            --size: calc(100% + 2 * var(--padding));
+            content: '';
+            position: absolute;
+            top: var(--offset);
+            left: var(--offset);
+            width: var(--size);
+            height: var(--size);
+            background-color: hsl(var(--hsl-b5));
+            pointer-events: none;
+            opacity: var(--icons-bg-opacity);
+          }
+        }
+      }
+    }
+
+    &--list {
+      display: flex;
+      flex: 1;
+
+      .@{top}--beatmapset-show & {
+        @media @desktop {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__selector {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    max-height: 70vh;
+  }
+
+  &__selector {
+    .default-border-radius();
+    .fancy-scrollbar();
+    background-color: @osu-colour-b5;
     position: absolute;
     width: 100%;
     top: 100%;
@@ -45,82 +165,13 @@
 
     .@{top}--beatmapset-show & {
       @media @desktop {
-        width: auto;
+        width: max-content;
+        max-width: 50vw;
         top: 50%;
         left: 100%;
         margin-top: 0;
         margin-left: 5px;
         transform: translateY(-50%);
-      }
-    }
-  }
-
-  &__item {
-    .reset-input();
-    .link-plain();
-    .link-white();
-
-    display: flex;
-    align-items: center;
-    text-align: left;
-    padding: 5px 10px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: @osu-colour-b6;
-    }
-
-    &--selected {
-      .default-box-shadow();
-      .default-border-radius();
-      background-color: @osu-colour-b5;
-      box-shadow: 0 0 0 2px fade(#000, 25%);
-      height: 100%;
-      padding-top: 10px;
-      padding-bottom: 10px;
-      min-width: 0;
-
-      &:hover {
-        background-color: @osu-colour-b6;
-      }
-
-      .@{top}--beatmapset-show & {
-        box-shadow: none;
-
-        @media @desktop {
-          background-color: transparent;
-          padding: 0;
-        }
-      }
-    }
-
-    &--current {
-      background-color: @osu-colour-b6;
-    }
-  }
-
-  &__selected {
-    &--icons {
-      display: none;
-
-      .@{top}--beatmapset-show & {
-        @media @desktop {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          font-size: 9px;
-          gap: 2px 2px;
-        }
-      }
-    }
-
-    &--list {
-      display: flex;
-      flex: 1;
-
-      .@{top}--beatmapset-show & {
-        @media @desktop {
-          display: none;
-        }
       }
     }
   }

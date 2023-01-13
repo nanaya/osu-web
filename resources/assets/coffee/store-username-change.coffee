@@ -1,6 +1,9 @@
 # Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 # See the LICENCE file in the repository root for full licence text.
 
+import { route } from 'laroute'
+import { trans } from 'utils/lang'
+
 preventUsernameSubmission = ->
   StoreCart.setEnabled(false)
   $('#username-check-price').text ''
@@ -9,7 +12,7 @@ checkUsernameValidity = ->
   $status = $('#username-check-status')
   requestedUsername = $('.js-username-change-input').val()
 
-  $.post laroute.route('users.check-username-availability'), username: requestedUsername
+  $.post route('users.check-username-availability'), username: requestedUsername
   .done (data) ->
     return unless data.username == $('.js-username-change-input').val()
 
@@ -41,9 +44,9 @@ $(document).on 'input', '.js-username-change-input', (e) ->
   preventUsernameSubmission()
 
   if requestedUsername.length == 0
-    $status.text osu.trans('store.username_change.check')
+    $status.text trans('store.username_change.check')
   else
-    $status.text osu.trans('store.username_change.checking', username: requestedUsername)
+    $status.text trans('store.username_change.checking', username: requestedUsername)
     debouncedCheckUsernameValidity()
 
 $(document).on 'turbolinks:load', ->

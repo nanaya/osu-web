@@ -9,7 +9,6 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\UserAccountHistory;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserAccountHistoryFactory extends Factory
 {
@@ -38,5 +37,10 @@ class UserAccountHistoryFactory extends Factory
     public function silence()
     {
         return $this->state(['ban_status' => 2]);
+    }
+
+    public function tournamentBan()
+    {
+        return $this->state(['ban_status' => 3]);
     }
 }

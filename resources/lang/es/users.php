@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'Has bloqueado a este usuario.',
+        'comment_text' => 'Este comentario está oculto.',
         'blocked_count' => 'usuarios bloqueados (:count)',
         'hide_profile' => 'Ocultar perfil',
+        'hide_comment' => 'ocultar',
         'not_blocked' => 'Ese usuario no está bloqueado.',
         'show_profile' => 'Mostrar perfil',
+        'show_comment' => 'mostrar',
         'too_many' => 'Límite de bloqueos alcanzado.',
         'button' => [
             'block' => 'Bloquear',
@@ -49,18 +52,34 @@ return [
         'send_message' => 'Enviar mensaje',
     ],
 
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
+    ],
+
     'disabled' => [
         'title' => '¡Oh, oh! Parece que su cuenta ha sido desactivada.',
         'warning' => "En el caso de que haya roto una regla, tenga en cuenta que generalmente hay un período de espera de un mes durante el cual no consideraremos ninguna solicitud de amnistía. Después de este período, puede contactar con nosotros si lo considera necesario. Tenga en cuenta que la creación de nuevas cuentas después de haber tenido una desactivada resultará en una <strong>extensión de este período de espera de un mes</strong>. Por favor, también tenga en cuenta que por <strong>cada cuenta que cree, estará violando más reglas</strong>. ¡Le sugerimos que no siga este camino!",
 
         'if_mistake' => [
             '_' => 'Si cree que se trata de un error, puede ponerse en contacto con nosotros (por :email o haciendo clic en el "?" en la esquina inferior derecha de esta página). Tenga en cuenta que siempre confiamos plenamente en nuestras acciones, ya que se basan en datos muy sólidos. Nos reservamos el derecho de ignorar su petición si consideramos que está siendo intencionadamente deshonesto.',
-            'email' => 'correo electrónico',
+            'email' => 'correo',
         ],
 
         'reasons' => [
             'compromised' => 'Su cuenta se ha considerado comprometida. Puede ser desactivada temporalmente mientras se confirma su identidad.',
-            'opening' => 'Hay un serie de razones que pueden resultar en la desactivación de su cuenta:',
+            'opening' => 'Hay una serie de razones que pueden resultar en la desactivación de su cuenta:',
 
             'tos' => [
                 '_' => 'Ha roto una o más de nuestras :community_rules o :tos.',
@@ -84,7 +103,7 @@ return [
         '_' => 'Iniciar sesión',
         'button' => 'Iniciar sesión',
         'button_posting' => 'Iniciando sesión...',
-        'email_login_disabled' => 'El inicio de sesión con correo electrónico está actualmente desactivado. Por favor, utilice el nombre de usuario en su lugar.',
+        'email_login_disabled' => 'El inicio de sesión con correo está actualmente desactivado. Use el nombre de usuario en su lugar.',
         'failed' => 'Inicio de sesión incorrecto',
         'forgot' => '¿Olvidaste tu contraseña?',
         'info' => 'Por favor, inicie sesión para continuar',
@@ -114,15 +133,15 @@ return [
     ],
     'logout_confirm' => '¿Seguro que desea cerrar la sesión? :(',
     'report' => [
-        'button_text' => 'Denunciar',
+        'button_text' => 'Reportar',
         'comments' => 'Comentarios adicionales',
         'placeholder' => 'Por favor, proporcione cualquier información que crea que pueda ser útil.',
         'reason' => 'Motivo',
-        'thanks' => '¡Gracias por su informe!',
-        'title' => '¿Denunciar a :username?',
+        'thanks' => '¡Gracias por reportar!',
+        'title' => '¿Reportar a :username?',
 
         'actions' => [
-            'send' => 'Enviar denuncia',
+            'send' => 'Enviar reporte',
             'cancel' => 'Cancelar',
         ],
 
@@ -158,6 +177,10 @@ return [
         'comments_count' => [
             '_' => 'Publicó :link',
             'count' => 'un comentario|:count_delimited comentarios',
+        ],
+        'cover' => [
+            'to_0' => 'Ocultar portada',
+            'to_1' => 'Mostrar portada',
         ],
         'edit' => [
             'cover' => [
@@ -199,19 +222,25 @@ return [
                 'title' => 'Mapas',
 
                 'favourite' => [
-                    'title' => 'Mapas Favoritos',
+                    'title' => 'Mapas favoritos',
                 ],
                 'graveyard' => [
-                    'title' => 'Mapas Abandonados',
+                    'title' => 'Mapas abandonados',
+                ],
+                'guest' => [
+                    'title' => 'Mapas con participación de invitados',
                 ],
                 'loved' => [
-                    'title' => 'Mapas Amados',
+                    'title' => 'Mapas amados',
+                ],
+                'nominated' => [
+                    'title' => 'Mapas clasificados nominados',
                 ],
                 'pending' => [
-                    'title' => 'Mapas Pendientes',
+                    'title' => 'Mapas pendientes',
                 ],
                 'ranked' => [
-                    'title' => 'Mapas Clasificados y Aprobados',
+                    'title' => 'Mapas clasificados',
                 ],
             ],
             'discussions' => [
@@ -301,8 +330,8 @@ return [
                 'recent' => 'Más reciente',
                 'title' => 'Medallas',
             ],
-            'multiplayer' => [
-                'title' => 'Partidas multijugador',
+            'playlists' => [
+                'title' => 'Partidas de listas de juego',
             ],
             'posts' => [
                 'title' => 'Publicaciones',
@@ -311,6 +340,9 @@ return [
             ],
             'recent_activity' => [
                 'title' => 'Reciente',
+            ],
+            'realtime' => [
+                'title' => 'Partidas multijugador',
             ],
             'top_ranks' => [
                 'download_replay' => 'Descargar repetición',
@@ -325,6 +357,15 @@ return [
                 'first' => [
                     'title' => 'Primeros lugares',
                 ],
+                'pin' => [
+                    'to_0' => 'Desanclar',
+                    'to_0_done' => 'Puntuación no anclada',
+                    'to_1' => 'Anclar',
+                    'to_1_done' => 'Puntuación anclada',
+                ],
+                'pinned' => [
+                    'title' => 'Puntuaciones ancladas',
+                ],
             ],
             'votes' => [
                 'given' => 'Votos dados (últimos 3 meses)',
@@ -336,7 +377,7 @@ return [
             'account_standing' => [
                 'title' => 'Estado de la cuenta',
                 'bad_standing' => "La cuenta de <strong>:username</strong> no está en buen estado :(",
-                'remaining_silence' => '<strong>:username</strong> podrá hablar otra vez dentro de :duration.',
+                'remaining_silence' => ':username podrá volver a hablar dentro de :duration.',
 
                 'recent_infringements' => [
                     'title' => 'Infracciones recientes',
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'Restringir',
                         'silence' => 'Silenciado',
+                        'tournament_ban' => 'Excluído de torneos',
                         'note' => 'Nota',
                     ],
                 ],
@@ -388,9 +430,10 @@ return [
         ],
         'rank' => [
             'country' => 'Rank nacional para :mode',
-            'country_simple' => 'Clasificación Nacional',
+            'country_simple' => 'Clasificación nacional',
             'global' => 'Rank global para :mode',
-            'global_simple' => 'Clasificación Global',
+            'global_simple' => 'Clasificación global',
+            'highest' => 'Clasificación más alta: :rank el :date',
         ],
         'stats' => [
             'hit_accuracy' => 'Precisión',
@@ -406,10 +449,10 @@ return [
             'total_hits' => 'Golpes totales',
             'total_score' => 'Puntuación total',
             // modding stats
-            'graveyard_beatmapset_count' => 'Mapas Abandonados',
-            'loved_beatmapset_count' => 'Mapas Amados',
-            'pending_beatmapset_count' => 'Mapas Pendientes',
-            'ranked_beatmapset_count' => 'Mapas Clasificados y Aprobados',
+            'graveyard_beatmapset_count' => 'Mapas abandonados',
+            'loved_beatmapset_count' => 'Mapas amados',
+            'pending_beatmapset_count' => 'Mapas pendientes',
+            'ranked_beatmapset_count' => 'Mapas clasificados',
         ],
     ],
 
@@ -424,6 +467,8 @@ return [
         'offline' => 'Sin conexión',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'Usuario creado',
     ],
     'verify' => [

@@ -4,7 +4,10 @@
 import Captcha from 'core/captcha';
 import UserJson from 'interfaces/user-json';
 import * as Cookies from 'js-cookie';
+import core from 'osu-core-singleton';
+import { xhrErrorMessage } from 'utils/ajax';
 import { createClickCallback } from 'utils/html';
+import { reloadPage } from 'utils/turbolinks';
 
 declare global {
   interface Window {
@@ -30,7 +33,7 @@ export default class UserLogin {
       .on('input', '.js-login-form-input', this.clearError)
       .on('click', '.js-user-link', this.showOnClick)
       .on('click', '.js-login-required--click', this.showToContinue)
-      .on('ajax:before', '.js-login-required--click', () => currentUser.id != null)
+      .on('ajax:before', '.js-login-required--click', () => core.currentUser != null)
       .on('ajax:error', this.onError)
       .on('turbolinks:load', this.showOnLoad);
     $.subscribe('nav:popup:hidden', this.reset);
@@ -46,7 +49,7 @@ export default class UserLogin {
   };
 
   showIfGuest = (callback?: () => void) => {
-    if (currentUser.id != null) {
+    if (core.currentUser != null) {
       return false;
     }
 
@@ -60,9 +63,9 @@ export default class UserLogin {
       return false;
     }
 
-    if (currentUser.id != null) {
+    if (core.currentUser != null) {
       // broken page state
-      osu.reloadPage();
+      reloadPage();
     } else {
       this.show(callback);
     }
@@ -74,23 +77,32 @@ export default class UserLogin {
     $('.js-login-form--error').text('');
   };
 
-  private loginError = (e: JQuery.Event, xhr: JQuery.jqXHR) => {
+  private loginError = (e: JQuery.TriggeredEvent, xhr: JQuery.jqXHR) => {
     e.preventDefault();
     e.stopPropagation();
-    $('.js-login-form--error').text(osu.xhrErrorMessage(xhr));
+    $('.js-login-form--error').text(xhrErrorMessage(xhr));
+    const captchaContainer = this.captcha.findContainer(e.currentTarget);
 
-    // Timeout here is to let ujs events fire first, so that the disabling of the submit button
-    // in captcha.reset() happens _after_ the button has been re-enabled
-    window.setTimeout(() => {
-      if (xhr?.responseJSON?.captcha_triggered) {
-        this.captcha.trigger();
-      }
-      this.captcha.reset();
-    }, 0);
+    if (captchaContainer != null) {
+      // Timeout here is to let ujs events fire first, so that the disabling of the submit button
+      // in captcha.reset() happens _after_ the button has been re-enabled
+      window.setTimeout(() => {
+        if (xhr?.responseJSON?.captcha_triggered) {
+          this.captcha.trigger(captchaContainer);
+        }
+        this.captcha.reset(captchaContainer);
+      }, 0);
+    }
   };
 
   private loginSuccess = (event: unknown, data: LoginSuccessJson) => {
     const callback = this.callback;
+
+    if (callback == null) {
+      reloadPage();
+      return;
+    }
+
     this.reset();
 
     this.refreshToken();
@@ -103,9 +115,7 @@ export default class UserLogin {
       $('.js-user-login--menu')[0]?.click();
       $('.js-user-header').replaceWith(data.header);
       $('.js-user-header-popup').html(data.header_popup);
-      this.captcha.untrigger();
-
-      (callback ?? osu.reloadPage)();
+      callback();
     }, 0);
   };
 
@@ -140,7 +150,7 @@ export default class UserLogin {
   };
 
   private showToContinue = (e: JQuery.ClickEvent) => {
-    if (currentUser.id != null) {
+    if (core.currentUser != null) {
       return;
     }
 

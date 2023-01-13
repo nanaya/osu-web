@@ -25,6 +25,11 @@ return [
             'index' => '목록',
         ],
 
+        'beatmapsets' => [
+            'show' => '정보',
+            'discussions' => '토론',
+        ],
+
         'changelog' => [
             'index' => '목록',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => '모딩',
-            'multiplayer' => '멀티플레이',
+            'playlists' => '플레이리스트',
+            'realtime' => '멀티플레이어',
             'show' => '정보',
         ],
     ],
@@ -195,7 +201,7 @@ return [
     ],
 
     'popup_search' => [
-        'initial' => '검색어를 입력해주세요!',
+        'initial' => '검색어를 입력하세요!',
         'retry' => '검색에 실패했습니다. 다시 시도하려면 클릭해주세요.',
     ],
 ];

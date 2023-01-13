@@ -11,12 +11,16 @@ return [
         'rule_violation' => '',
     ],
 
+    'cover' => [
+        'deleted' => '',
+    ],
+
     'download' => [
         'limit_exceeded' => 'Ro ned, spill mer.',
     ],
 
     'featured_artist_badge' => [
-        'label' => '',
+        'label' => 'Utvalgt artist',
     ],
 
     'index' => [
@@ -25,7 +29,7 @@ return [
     ],
 
     'panel' => [
-        'empty' => '',
+        'empty' => 'ingen beatmaps',
 
         'download' => [
             'all' => 'last ned',
@@ -62,6 +66,7 @@ return [
             'favourite_login' => '',
             'logged-out' => 'Du må logge inn før du kan laste ned beatmaps!',
             'mapped_by' => 'mappet av :mapper',
+            'mapped_by_guest' => '',
             'unfavourite' => 'Fjern dette beatmapsettet som en favoritt',
             'updated_timeago' => 'sist oppdatert :timeago',
 
@@ -120,7 +125,9 @@ return [
             'genre' => 'Sjanger',
             'language' => 'Språk',
             'no_scores' => 'Data blir fortsatt kalkulert...',
+            'nominators' => '',
             'nsfw' => 'Eksplisitt innhold',
+            'offset' => '',
             'points-of-failure' => 'Feilpunkter',
             'source' => 'Kilde',
             'storyboard' => '',
@@ -143,6 +150,7 @@ return [
         'scoreboard' => [
             'achieved' => 'oppnådd :when',
             'country' => 'Landsrangering',
+            'error' => '',
             'friend' => 'Vennerangering',
             'global' => 'Global Rangering',
             'supporter-link' => 'Klikk <a href=":link">her</a> for å se alle de fancy funskjonene du får tildelt!',
@@ -154,11 +162,12 @@ return [
                 'combo' => 'Maks Kombo',
                 'miss' => 'Bom',
                 'mods' => 'Modifikasjoner',
+                'pin' => '',
                 'player' => 'Spiller',
                 'pp' => '',
                 'rank' => 'Rang',
-                'score_total' => 'Total Poengsum',
                 'score' => 'Poengsum',
+                'score_total' => 'Total Poengsum',
                 'time' => 'Tid',
             ],
 
@@ -173,6 +182,10 @@ return [
                 'first' => 'I ledelsen',
                 'own' => 'Ditt beste',
             ],
+            'supporter_link' => [
+                '_' => '',
+                'here' => '',
+            ],
         ],
 
         'stats' => [
@@ -186,6 +199,7 @@ return [
             'bpm' => 'BPM',
             'count_circles' => 'Antall Sirkler',
             'count_sliders' => 'Antall Glidere',
+            'offset' => '',
             'user-rating' => 'Brukervurderinger',
             'rating-spread' => 'Vurderingsskjema',
             'nominations' => 'Nominasjoner',
@@ -201,5 +215,9 @@ return [
             'pending' => 'Avventes',
             'graveyard' => 'Gravplassert',
         ],
+    ],
+
+    'spotlight_badge' => [
+        'label' => '',
     ],
 ];

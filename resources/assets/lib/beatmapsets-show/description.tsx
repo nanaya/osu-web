@@ -1,31 +1,27 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BbcodeEditor, { OnChangeProps } from 'bbcode-editor';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import BbcodeEditor, { OnChangeProps } from 'components/bbcode-editor';
+import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
 import { route } from 'laroute';
+import { action, makeObservable, observable, runInAction } from 'mobx';
+import { observer } from 'mobx-react';
 import * as React from 'react';
+import { onErrorWithClick } from 'utils/ajax';
+import Controller from './controller';
 
 interface Props {
-  beatmapset: BeatmapsetExtendedJson;
+  controller: Controller;
 }
 
-interface State {
-  description?: BeatmapsetExtendedJson['description'];
-  isBusy: boolean;
-  isEditing: boolean;
-}
-
-export default class Description extends React.PureComponent<Props, State> {
-  private xhr?: JQueryXHR;
+@observer
+export default class Description extends React.Component<Props> {
+  @observable private isEditing = false;
+  @observable private xhr: JQuery.jqXHR<BeatmapsetJsonForShow> | null = null;
 
   constructor(props: Props) {
     super(props);
-
-    this.state = {
-      isBusy: false,
-      isEditing: false,
-    };
+    makeObservable(this);
   }
 
   componentWillUnmount() {
@@ -33,82 +29,80 @@ export default class Description extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const canEdit = this.props.beatmapset.description.bbcode !== undefined;
-    const description = this.state.description ?? this.props.beatmapset.description;
+    const canEdit = this.props.controller.beatmapset.description.bbcode !== undefined;
+    const description = this.props.controller.beatmapset.description;
 
     return (
-      <div className='beatmapset-description u-fancy-scrollbar'>
-        {this.state.isEditing && canEdit ? (
+      <div className='page-extra page-extra--userpage'>
+        {!this.isEditing && canEdit && (
+          <div className='page-extra__actions'>
+            <button
+              className='btn-circle btn-circle--page-toggle'
+              onClick={this.onStartEditClick}
+              type='button'
+            >
+              <span className='fas fa-pencil-alt' />
+            </button>
+          </div>
+        )}
+
+        {this.isEditing && canEdit ? (
           <BbcodeEditor
-            disabled={this.state.isBusy}
-            modifiers={'beatmapset-description-editor'}
+            disabled={this.xhr != null}
+            modifiers='profile-page'
             onChange={this.onEditorChange}
             rawValue={description.bbcode ?? ''}
           />
         ) : (
-          <div className='beatmapset-description__container'>
+          <div className='page-extra__content-overflow-wrapper-outer u-fancy-scrollbar'>
             <div
-              className='beatmapset-description__content'
+              className='page-extra__content-overflow-wrapper-inner'
               dangerouslySetInnerHTML={{ __html: description.description ?? '' }}
             />
           </div>
         )}
 
-        {!this.state.isEditing && canEdit && (
-          <div className='beatmapset-description__edit-button'>
-            <button
-              className='btn-circle'
-              onClick={this.toggleEditing}
-              type='button'
-            >
-              <span className='btn-circle__content'>
-                <i className='fas fa-pencil-alt' />
-              </span>
-            </button>
-          </div>
-        )}
       </div>
     );
   }
 
-  private onEditorChange = (action: OnChangeProps) => {
-    switch (action.type) {
+  @action
+  private onEditorChange = (change: OnChangeProps) => {
+    switch (change.type) {
       case 'cancel':
-        this.setState({ isEditing: false });
+        this.isEditing = false;
         break;
 
       case 'save':
-        if (action.hasChanged) {
-          this.saveDescription(action);
+        if (change.hasChanged) {
+          this.saveDescription(change);
         } else {
-          this.setState({ isEditing: false });
+          this.isEditing = false;
         }
+        break;
     }
   };
 
-  private saveDescription = ({ event, value }: OnChangeProps) => {
-    this.setState({ isBusy: true });
-
-    this.xhr = $.ajax(route('beatmapsets.update', { beatmapset: this.props.beatmapset.id }), {
-      data: {
-        description: value,
-      },
-      method: 'PATCH',
-    }).done((data: BeatmapsetExtendedJson) => {
-      this.setState({
-        description: data.description,
-        isEditing: false,
-      });
-    }).fail(() => {
-      if (event != null) {
-        osu.emitAjaxError(event.target);
-      }
-    }).always(() => {
-      this.setState({ isBusy: false });
-    });
+  @action
+  private readonly onStartEditClick = () => {
+    this.isEditing = true;
   };
 
-  private toggleEditing = () => {
-    this.setState({ isEditing: !this.state.isEditing });
+  private readonly saveDescription = ({ event, value }: OnChangeProps) => {
+    if (this.xhr != null) return;
+
+    this.xhr = $.ajax(route('beatmapsets.update', { beatmapset: this.props.controller.beatmapset.id }), {
+      data: { description: value },
+      method: 'PATCH',
+    });
+
+    this.xhr.done((beatmapset) => runInAction(() => {
+      this.isEditing = false;
+      this.props.controller.state.beatmapset = beatmapset;
+    })).fail(
+      onErrorWithClick(event?.target),
+    ).always(action(() => {
+      this.xhr = null;
+    }));
   };
 }

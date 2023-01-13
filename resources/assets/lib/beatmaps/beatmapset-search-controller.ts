@@ -3,11 +3,17 @@
 
 import { BeatmapsetSearch, SearchResponse } from 'beatmaps/beatmapset-search';
 import ResultSet from 'beatmaps/result-set';
-import { BeatmapsetSearchFilters, BeatmapsetSearchParams } from 'beatmapset-search-filters';
+import { BeatmapsetSearchFilters, FilterKey, filtersFromUrl } from 'beatmapset-search-filters';
 import { route } from 'laroute';
-import { debounce, intersection, map } from 'lodash';
+import { debounce, intersection } from 'lodash';
 import { action, computed, IObjectDidChange, Lambda, makeObservable, observable, observe, runInAction } from 'mobx';
+import core from 'osu-core-singleton';
+import { trans, transArray } from 'utils/lang';
+import { popup } from 'utils/popup';
 import { currentUrl } from 'utils/turbolinks';
+
+
+const expandFilters: FilterKey[] = ['genre', 'language', 'extra', 'rank', 'played'];
 
 export interface SearchStatus {
   error?: any;
@@ -25,7 +31,7 @@ export class BeatmapsetSearchController {
   // the list that gets displayed while new searches are loading.
   @observable currentResultSet = new ResultSet();
   @observable filters!: BeatmapsetSearchFilters;
-  @observable isExpanded!: boolean;
+  @observable isExpanded = false;
 
   @observable searchStatus: SearchStatus = {
     error: null,
@@ -33,7 +39,7 @@ export class BeatmapsetSearchController {
     state: 'completed',
   };
 
-  private readonly debouncedFilterChangedSearch = debounce(this.filterChangedSearch, 500);
+  private readonly debouncedFilterChangedSearch = debounce(() => this.filterChangedSearch(), 500);
   private filtersObserver!: Lambda;
   private initialErrorMessage?: string;
 
@@ -46,7 +52,6 @@ export class BeatmapsetSearchController {
     return [...this.currentResultSet.beatmapsetIds];
   }
 
-  @computed
   get error() {
     return this.searchStatus.error;
   }
@@ -68,7 +73,7 @@ export class BeatmapsetSearchController {
 
   @computed
   get isSupporterMissing() {
-    return !currentUser.is_supporter && BeatmapsetFilter.supporterRequired(this.filters).length > 0;
+    return !(core.currentUser?.is_supporter ?? false) && this.filters.supporterRequired.length > 0;
   }
 
   @computed
@@ -78,16 +83,20 @@ export class BeatmapsetSearchController {
 
   @computed
   get supporterRequiredFilterText() {
-    const filters = BeatmapsetFilter.supporterRequired(this.filters);
-    const trans = map(filters, (name) => osu.trans(`beatmaps.listing.search.filters.${name}`));
-
-    return osu.transArray(trans);
+    const text = this.filters.supporterRequired.map((name) => trans(`beatmaps.listing.search.filters.${name}`));
+    return transArray(text);
   }
 
   @action
   cancel() {
     this.debouncedFilterChangedSearch.cancel();
     this.beatmapsetSearch.cancel();
+  }
+
+  getFilters(key: FilterKey) {
+    const value = this.filters.selectedValue(key);
+
+    return value != null ? value.split('.') : value;
   }
 
   initialize(data: SearchResponse) {
@@ -110,7 +119,7 @@ export class BeatmapsetSearchController {
     this.restoreStateFromUrl();
     this.search(0, true);
     if (this.initialErrorMessage != null) {
-      osu.popup(this.initialErrorMessage, 'danger');
+      popup(this.initialErrorMessage, 'danger');
       delete this.initialErrorMessage;
     }
   }
@@ -141,11 +150,6 @@ export class BeatmapsetSearchController {
     });
   }
 
-  @action
-  updateFilters(newFilters: Partial<BeatmapsetSearchParams>) {
-    this.filters.update(newFilters);
-  }
-
   private filterChangedHandler = (change: IObjectDidChange<BeatmapsetSearchFilters>) => {
     if (change.type === 'update' && change.oldValue === change.newValue) return;
     // FIXME: sort = null changes ignored because search triggered too early during filter update.
@@ -169,7 +173,6 @@ export class BeatmapsetSearchController {
   @action
   private restoreStateFromUrl() {
     const url = currentUrl().href;
-    const filtersFromUrl = BeatmapsetFilter.filtersFromUrl(url);
 
     if (this.filtersObserver != null) {
       this.filtersObserver();
@@ -177,6 +180,6 @@ export class BeatmapsetSearchController {
     this.filters = new BeatmapsetSearchFilters(url);
     this.filtersObserver = observe(this.filters, this.filterChangedHandler);
 
-    this.isExpanded = intersection(Object.keys(filtersFromUrl), BeatmapsetFilter.expand).length > 0;
+    this.isExpanded = intersection(Object.keys(filtersFromUrl(url)), expandFilters).length > 0;
   }
 }

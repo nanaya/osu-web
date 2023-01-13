@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "さぁ、<br>始めよう！",
         'action' => 'osu!をダウンロード',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'macOSユーザー',
+        'mirror' => 'ミラー',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "さぁ、<br>始めよう！",
+        'video-guide' => '説明動画',
 
         'help' => [
             '_' => 'ゲームの開始やアカウント登録に問題がある場合は、:help_forum_link または :support_button。',
@@ -86,8 +99,6 @@ return [
             'macos' => 'for macOS',
             'linux' => 'for Linux',
         ],
-        'mirror' => 'ミラー',
-        'macos-fallback' => 'macOSユーザー',
         'steps' => [
             'register' => [
                 'title' => 'アカウントを作る',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => '説明動画',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'osu!を支援する',
             'store' => 'osu!ストア',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'ねえねえ、君！',
-        'subtitle' => 'osu!の事、気に入って貰えたかな？',
-        'body' => [
-            'part-1' => 'osu!のサービス維持は広告に頼らず、全てプレイヤーたちの支援によって実現されています。',
-            'part-2' => 'osu! を支援する事によってさまざまな機能が追加で利用できるようになります。<strong>ゲーム内ダウンロード</strong>はそのうちのひとつで、観戦やマルチプレイ中に自動でビートマップをダウンロードできるようになります！',
-        ],
-        'find-out-more' => 'もっと知りたい人はクリック！',
-        'download-starting' => "あ、君のダウンロードはもう始まってるよ！",
     ],
 ];

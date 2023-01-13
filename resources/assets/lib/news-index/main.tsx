@@ -1,17 +1,18 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import AdminMenu from 'admin-menu';
+import AdminMenu from 'components/admin-menu';
+import NewsHeader from 'components/news-header';
+import ShowMoreLink from 'components/show-more-link';
 import PostJson from 'interfaces/news-post-json';
 import NewsSidebarMetaJson from 'interfaces/news-sidebar-meta-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
-import NewsHeader from 'news-header';
 import NewsSidebar from 'news-sidebar/main';
 import * as React from 'react';
-import ShowMoreLink from 'show-more-link';
 import { jsonClone } from 'utils/json';
+import { trans } from 'utils/lang';
 import PostItem from './post-item';
 
 interface NewsSearch {
@@ -20,7 +21,7 @@ interface NewsSearch {
 }
 
 interface NewsIndexJson {
-  cursor: unknown;
+  cursor_string: string | null;
   news_posts: PostJson[];
   news_sidebar: NewsSidebarMetaJson;
   search: NewsSearch;
@@ -51,7 +52,7 @@ export default class Main extends React.Component<Props> {
       <>
         <NewsHeader
           section='index'
-          title={osu.trans('news.index.title.info')}
+          title={trans('news.index.title.info')}
         />
         <div className='osu-page osu-page--wiki'>
           <div className='wiki-page'>
@@ -68,7 +69,7 @@ export default class Main extends React.Component<Props> {
                 <div className='news-index__item news-index__item--more'>
                   <ShowMoreLink
                     callback={this.handleShowMore}
-                    hasMore={this.data.cursor != null}
+                    hasMore={this.data.cursor_string != null}
                     loading={this.loadingXhr != null}
                     modifiers='t-dark-purple-dark'
                   />
@@ -90,7 +91,7 @@ export default class Main extends React.Component<Props> {
                 'data-url': route('news.store'),
                 type: 'button',
               },
-              text: osu.trans('news.store.button'),
+              text: trans('news.store.button'),
             },
           ]}
         />
@@ -100,11 +101,11 @@ export default class Main extends React.Component<Props> {
 
   @action
   private handleShowMore = () => {
-    if (this.data.cursor == null || this.loadingXhr != null) {
+    if (this.data.cursor_string == null || this.loadingXhr != null) {
       return;
     }
 
-    this.loadingXhr = $.get(route('news.index'), { ...this.data.search, cursor: this.data.cursor })
+    this.loadingXhr = $.get(route('news.index'), { ...this.data.search, cursor_string: this.data.cursor_string })
       .done(action((newData: NewsIndexJson) => {
         newData.news_posts = this.data.news_posts.concat(newData.news_posts);
         this.data = newData;

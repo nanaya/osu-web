@@ -14,7 +14,7 @@ return [
 
         'slogan' => [
             'main' => 'il miglior gioco di ritmo free-to-win',
-            'sub' => 'il ritmo è solo ad un click di distanza',
+            'sub' => 'il ritmo è solo a un click di distanza',
         ],
     ],
 
@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "iniziamo<br>subito!",
         'action' => 'Scarica osu!',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'utenti macOS',
+        'mirror' => 'mirror',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "iniziamo<br>subito!",
+        'video-guide' => 'video guida',
 
         'help' => [
             '_' => 'se hai problemi ad avviare il gioco o a registrarti l\'account, :help_forum_link oppure :support_button.',
@@ -86,8 +99,6 @@ return [
             'macos' => 'per macOS',
             'linux' => 'per Linux',
         ],
-        'mirror' => 'mirror',
-        'macos-fallback' => 'utenti macOS',
         'steps' => [
             'register' => [
                 'title' => 'registrati',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => 'video guida',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'Supporta osu!',
             'store' => 'osu!store',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'Wow!',
-        'subtitle' => 'Sembra che te la stai passando bene! :D',
-        'body' => [
-            'part-1' => 'Sapevi che osu! è privo di pubblicità, e si basa sui giocatori per supportare il suo sviluppo e mantenimento?',
-            'part-2' => 'Sapevi anche che supportando osu! ricevi nuove utili funzionalità, come ad esempio il <strong>download in gioco</strong> che si avvia in modalità spettatore e nelle partite multigiocatore?',
-        ],
-        'find-out-more' => 'Clicca qui per scoprire di più!',
-        'download-starting' => "Oh, e non preoccuparti - il tuo download è stato già avviato per te ;)",
     ],
 ];

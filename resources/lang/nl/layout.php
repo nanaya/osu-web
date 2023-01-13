@@ -25,6 +25,11 @@ return [
             'index' => 'lijst',
         ],
 
+        'beatmapsets' => [
+            'show' => 'info',
+            'discussions' => 'discussie',
+        ],
+
         'changelog' => [
             'index' => 'lijst',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'modding',
-            'multiplayer' => 'multiplayer',
+            'playlists' => 'afspeellijsten',
+            'realtime' => 'multiplayer',
             'show' => 'info',
         ],
     ],
@@ -179,7 +185,7 @@ return [
 
         'register' => [
             'download' => 'Download',
-            'info' => 'Je hebt een account nodig, meneer. Waarom heeft u er niet al eentje?',
+            'info' => 'Download osu! om een account aan te maken!',
             'title' => "Heb je geen account?",
         ],
     ],

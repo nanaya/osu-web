@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'Du har blokeret denne bruger.',
+        'comment_text' => 'Denne kommentar er skjult.',
         'blocked_count' => 'blokerede brugere (:count)',
         'hide_profile' => 'Skjul profil',
+        'hide_comment' => 'skjul',
         'not_blocked' => 'Denne bruger er ikke blokeret.',
         'show_profile' => 'Vis profil',
+        'show_comment' => 'vis',
         'too_many' => 'Blokeringsgrænsen er nået.',
         'button' => [
             'block' => 'Bloker',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'Indlæser...',
         'send_message' => 'Send besked',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -128,7 +147,7 @@ return [
 
         'options' => [
             'cheating' => 'Uærligt spil / Snyd',
-            'multiple_accounts' => '',
+            'multiple_accounts' => 'Bruger flere konti',
             'insults' => 'Fornærmede mig / andre',
             'spam' => 'Spamming',
             'unwanted_content' => 'Sender links med upassende indhold',
@@ -158,6 +177,10 @@ return [
         'comments_count' => [
             '_' => 'Slået op :link',
             'count' => ':count_delimited kommentar|:count_delimited kommentarer',
+        ],
+        'cover' => [
+            'to_0' => 'Skjul omslag',
+            'to_1' => 'Vis omslag',
         ],
         'edit' => [
             'cover' => [
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Beatmaps på Kirkegården',
                 ],
+                'guest' => [
+                    'title' => 'Gæst Deltagelse Beatmaps',
+                ],
                 'loved' => [
                     'title' => 'Elskede beatmaps',
+                ],
+                'nominated' => [
+                    'title' => '',
                 ],
                 'pending' => [
                     'title' => 'Afventende Beatmaps',
@@ -294,15 +323,15 @@ return [
                 ],
             ],
             'me' => [
-                'title' => 'me!',
+                'title' => 'mig!',
             ],
             'medals' => [
                 'empty' => "Denne bruger har ikke fået nogle endnu. ;_;",
                 'recent' => 'Seneste',
                 'title' => 'Medaljer',
             ],
-            'multiplayer' => [
-                'title' => '',
+            'playlists' => [
+                'title' => 'Spilleliste spil',
             ],
             'posts' => [
                 'title' => 'Opslag',
@@ -311,6 +340,9 @@ return [
             ],
             'recent_activity' => [
                 'title' => 'Seneste',
+            ],
+            'realtime' => [
+                'title' => 'Multiplayerspil',
             ],
             'top_ranks' => [
                 'download_replay' => 'Download Replay',
@@ -324,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'Førstepladser',
+                ],
+                'pin' => [
+                    'to_0' => 'Frigør',
+                    'to_0_done' => 'Ufastgjort score',
+                    'to_1' => 'Fastgør',
+                    'to_1_done' => 'Fastgjort score',
+                ],
+                'pinned' => [
+                    'title' => 'Fastgjorte Scores',
                 ],
             ],
             'votes' => [
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'Ban',
                         'silence' => 'Mute',
+                        'tournament_ban' => 'Turneringsforbud',
                         'note' => 'Noter',
                     ],
                 ],
@@ -391,6 +433,7 @@ return [
             'country_simple' => 'Lande Rang',
             'global' => 'Global rang for :mode',
             'global_simple' => 'Global Rang',
+            'highest' => '',
         ],
         'stats' => [
             'hit_accuracy' => 'Præcision',
@@ -424,6 +467,8 @@ return [
         'offline' => 'Offline',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'Bruger Oprettet',
     ],
     'verify' => [

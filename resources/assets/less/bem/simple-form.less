@@ -6,12 +6,14 @@
   display: flex;
   flex-wrap: wrap;
   font-size: @font-size--normal;
+  --input-bg: hsl(var(--hsl-b4));
 
   &--modal {
     .default-border-radius();
     background-color: @osu-colour-b5;
     padding: 20px 20px 10px;
     max-width: 400px;
+    --input-bg: hsl(var(--hsl-b6));
   }
 
   &--search-box {
@@ -19,6 +21,11 @@
     background-color: @osu-colour-b2;
     padding: 10px 10px 0;
     margin: 10px 0;
+  }
+
+  &--user-create {
+    max-width: 500px;
+    margin: auto;
   }
 
   &__buttons {
@@ -29,6 +36,16 @@
   &__button {
     margin: 5px;
     flex: none;
+  }
+
+  &__captcha {
+    min-height: 78px;
+
+    &:empty {
+      &::before {
+      content: '\a0';
+      }
+    }
   }
 
   &__checkbox {
@@ -77,6 +94,22 @@
     }
   }
 
+  &__error {
+    color: hsl(var(--hsl-red-1));
+    width: 100%;
+    margin-top: 5px;
+
+    &:empty {
+      &::before {
+      content: '\a0';
+      }
+    }
+
+    @media @desktop {
+      padding-left: @_base-column-width;
+    }
+  }
+
   &__info {
     margin: 0;
     font-weight: normal;
@@ -93,7 +126,7 @@
     padding: 5px 10px;
 
     resize: vertical;
-    background-color: @osu-colour-b4;
+    background-color: var(--input-bg);
     color: @osu-colour-c1;
     font-weight: normal;
     font-size: @font-size--phone-input;
@@ -200,6 +233,10 @@
       font-weight: normal;
       font-size: @font-size--title-small-2;
       font-style: normal;
+    }
+
+    &.js-form-error--field {
+      flex-wrap: wrap;
     }
   }
 

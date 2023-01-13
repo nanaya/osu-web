@@ -96,20 +96,8 @@
   }
 }
 
-.default-header-overlay() {
-  position: relative;
-
-  &::before {
-    .full-size();
-    content: '';
-    background-color: hsla(var(--hsl-b1), 80%);
-  }
-}
-
 .light-header-overlay() {
-  position: relative;
-
-  &::before {
+  &::after {
     .full-size();
     content: '';
     background-color: hsla(var(--hsl-b5), 60%);
@@ -168,14 +156,6 @@
 
   .link-hover({
     color: @link-gray-light-hover;
-  });
-}
-
-.link-gray-555() {
-  color: #555;
-
-  .link-hover({
-    color: #555;
   });
 }
 
@@ -276,6 +256,12 @@
   @media @highdpi {
     background-image: var(~"@{var}-2x", url(@fallback2x));
   }
+}
+
+.at2x-var(@key, @url) {
+  @url2x: replace(@url, "(\.[^.]+)$", "@2x$1");
+  @{key}: url(@url);
+  @{key}-2x: url(@url2x);
 }
 
 // Will force the element to be rendered in its own layer

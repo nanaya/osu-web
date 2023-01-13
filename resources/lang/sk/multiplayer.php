@@ -4,14 +4,22 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
-    'empty' => '',
+    'empty' => [
+        '_' => 'Žiadne osu!(lazer) :type_group hry zahraté zatiaľ!',
+        'playlists' => '',
+        'realtime' => 'multiplayer',
+    ],
 
     'room' => [
-        'hosted_by' => '',
-        'invalid_password' => '',
+        'hosted_by' => 'vytvorené hráčom :user',
+        'invalid_password' => 'Nesprávne heslo',
         'map_count' => '',
         'player_count' => '',
-        'time_left' => '',
+        'time_left' => 'Zostávajúci čas - :time',
+
+        'errors' => [
+            'duration_too_long' => '',
+        ],
 
         'status' => [
             'active' => '',

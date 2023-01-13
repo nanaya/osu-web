@@ -2,9 +2,11 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { discussionTypeIcons } from 'beatmap-discussions/discussion-type';
-import { BeatmapIcon } from 'beatmap-icon';
+import { BeatmapIcon } from 'components/beatmap-icon';
 import * as React from 'react';
+import { format, formatTimestamp, startingPost } from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';
+import { trans } from 'utils/lang';
 import { BeatmapsContext } from './beatmaps-context';
 import { DiscussionsContext } from './discussions-context';
 
@@ -24,9 +26,15 @@ export const ReviewPostEmbed = ({ data }: Props) => {
     // if a discussion has been deleted or is otherwise missing
     return (
       <div className={classWithModifiers(bn, ['deleted', 'lighter'])}>
-        <div className={`${bn}__missing`}>{osu.trans('beatmaps.discussions.review.embed.missing')}</div>
+        <div className={`${bn}__missing`}>{trans('beatmaps.discussions.review.embed.missing')}</div>
       </div>
     );
+  }
+
+  const post = startingPost(discussion);
+  if (post.system) {
+    console.error('embed should not have system starting post', discussion.id);
+    return null;
   }
 
   const beatmap = discussion.beatmap_id == null ? undefined : beatmaps[discussion.beatmap_id];
@@ -50,7 +58,7 @@ export const ReviewPostEmbed = ({ data }: Props) => {
   const messageTypeIcon = () => {
     const type = discussion.message_type;
     return (
-      <div className={`beatmap-discussion-message-type beatmap-discussion-message-type--${type}`}><i className={discussionTypeIcons[type]} title={osu.trans(`beatmaps.discussions.message_type.${type}`)} /></div>
+      <div className={`beatmap-discussion-message-type beatmap-discussion-message-type--${type}`}><i className={discussionTypeIcons[type]} title={trans(`beatmaps.discussions.message_type.${type}`)} /></div>
     );
   };
 
@@ -58,8 +66,8 @@ export const ReviewPostEmbed = ({ data }: Props) => {
     <div className={`${bn}__timestamp-text`}>
       {
         discussion.timestamp !== null
-          ? BeatmapDiscussionHelper.formatTimestamp(discussion.timestamp)
-          : osu.trans('beatmap_discussions.timestamp_display.general')
+          ? formatTimestamp(discussion.timestamp)
+          : trans('beatmap_discussions.timestamp_display.general')
       }
     </div>
   );
@@ -74,7 +82,7 @@ export const ReviewPostEmbed = ({ data }: Props) => {
         <a
           className={`${bn}__link-text js-beatmap-discussion--jump`}
           href={BeatmapDiscussionHelper.url({ discussion })}
-          title={osu.trans('beatmap_discussions.review.go_to_child')}
+          title={trans('beatmap_discussions.review.go_to_child')}
         >
           <i className='fas fa-external-link-alt' />
         </a>
@@ -87,9 +95,9 @@ export const ReviewPostEmbed = ({ data }: Props) => {
       <div className={`${bn}__content`}>
         <div className={`${bn}__selectors`}>
           <div className='icon-dropdown-menu icon-dropdown-menu--disabled'>
-            {beatmap != null && <BeatmapIcon beatmap={beatmap} />}
+            {beatmap != null && <BeatmapIcon beatmap={beatmap} withTooltip />}
             {!discussion.beatmap_id &&
-              <i className='fas fa-fw fa-star-of-life' title={osu.trans('beatmaps.discussions.mode.scopes.generalAll')} />
+              <i className='fas fa-fw fa-star-of-life' title={trans('beatmaps.discussions.mode.scopes.generalAll')} />
             }
           </div>
           <div className='icon-dropdown-menu icon-dropdown-menu--disabled'>
@@ -103,7 +111,7 @@ export const ReviewPostEmbed = ({ data }: Props) => {
         </div>
         <div className={`${bn}__stripe`} />
         <div className={`${bn}__message-container`}>
-          <div className={`${bn}__body`} dangerouslySetInnerHTML={{ __html: BeatmapDiscussionHelper.format((discussion.starting_post || discussion.posts[0]).message) }} />
+          <div className={`${bn}__body`} dangerouslySetInnerHTML={{ __html: format(post.message) }} />
         </div>
         {parentLink()}
       </div>

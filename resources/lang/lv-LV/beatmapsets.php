@@ -11,6 +11,10 @@ return [
         'rule_violation' => '',
     ],
 
+    'cover' => [
+        'deleted' => '',
+    ],
+
     'download' => [
         'limit_exceeded' => '',
     ],
@@ -62,6 +66,7 @@ return [
             'favourite_login' => '',
             'logged-out' => 'Jums nepieciešams pierakstīties pirms lejupielādēt jebkuru bītkarti!',
             'mapped_by' => 'kartēja :mapper',
+            'mapped_by_guest' => '',
             'unfavourite' => '',
             'updated_timeago' => 'pēdējo reizi atjaonots :timeago',
 
@@ -120,7 +125,9 @@ return [
             'genre' => 'Žanrs',
             'language' => 'Valoda',
             'no_scores' => 'Rezultāti joprojām tiek aprēķināti...',
+            'nominators' => '',
             'nsfw' => '',
+            'offset' => '',
             'points-of-failure' => 'Izkrišanas punkti',
             'source' => 'Avots',
             'storyboard' => '',
@@ -143,6 +150,7 @@ return [
         'scoreboard' => [
             'achieved' => 'sasniegts :when',
             'country' => 'Valsts rangi',
+            'error' => '',
             'friend' => 'Draugu rangi',
             'global' => 'Pasaules rangi',
             'supporter-link' => '',
@@ -154,11 +162,12 @@ return [
                 'combo' => '',
                 'miss' => 'Netrāpījumi',
                 'mods' => 'Modifikācijas',
+                'pin' => '',
                 'player' => 'Spēlētājs',
                 'pp' => '',
                 'rank' => 'Rangs',
-                'score_total' => 'Kopējais punktu skaits',
                 'score' => 'Rezultāts',
+                'score_total' => 'Kopējais punktu skaits',
                 'time' => '',
             ],
 
@@ -173,6 +182,10 @@ return [
                 'first' => 'Vadībā',
                 'own' => 'Tavs labākais',
             ],
+            'supporter_link' => [
+                '_' => '',
+                'here' => '',
+            ],
         ],
 
         'stats' => [
@@ -186,6 +199,7 @@ return [
             'bpm' => 'BPM',
             'count_circles' => 'Apļu skaits',
             'count_sliders' => 'Slīdņu skaits',
+            'offset' => '',
             'user-rating' => 'Lietotāju vērtējums',
             'rating-spread' => 'Vērtējumu izplatījums',
             'nominations' => 'Nominācijas',
@@ -201,5 +215,9 @@ return [
             'pending' => '',
             'graveyard' => '',
         ],
+    ],
+
+    'spotlight_badge' => [
+        'label' => '',
     ],
 ];

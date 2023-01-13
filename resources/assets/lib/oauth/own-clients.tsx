@@ -1,21 +1,28 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BigButton from 'big-button';
-import { action } from 'mobx';
+import BigButton from 'components/big-button';
+import Modal from 'components/modal';
+import { action, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
-import { Modal } from 'modal';
 import { ClientDetails } from 'oauth/client-details';
 import { NewClient } from 'oauth/new-client';
 import { OwnClient } from 'oauth/own-client';
 import core from 'osu-core-singleton';
 import * as React from 'react';
+import { trans } from 'utils/lang';
 
 const store = core.dataStore.ownClientStore;
 const uiState = core.dataStore.uiState;
 
 @observer
 export class OwnClients extends React.Component {
+  constructor(props: Record<string, never>) {
+    super(props);
+
+    makeObservable(this);
+  }
+
   @action
   handleModalClose = () => {
     uiState.account.client = null;
@@ -39,7 +46,7 @@ export class OwnClients extends React.Component {
             id: 'new-oauth-application',
             onClick: this.handleNewClientClicked,
           }}
-          text={osu.trans('oauth.own_clients.new')}
+          text={trans('oauth.own_clients.new')}
         />
 
         {this.renderModaledComponents()}
@@ -56,7 +63,7 @@ export class OwnClients extends React.Component {
   }
 
   renderEmpty() {
-    return <div className='oauth-clients__client'>{osu.trans('oauth.own_clients.none')}</div>;
+    return <div className='oauth-clients__client'>{trans('oauth.own_clients.none')}</div>;
   }
 
   renderModaledComponents() {
@@ -70,7 +77,7 @@ export class OwnClients extends React.Component {
     }
 
     return (
-      <Modal onClose={this.handleModalClose} visible>
+      <Modal onClose={this.handleModalClose}>
         {component}
       </Modal>
     );

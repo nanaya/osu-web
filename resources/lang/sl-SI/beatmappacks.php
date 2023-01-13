@@ -6,18 +6,12 @@
 return [
     'index' => [
         'description' => 'Zapakirane zbirke beatmapov na skupno temo.',
-        'nav_title' => '',
+        'nav_title' => 'seznam',
         'title' => 'Paketi beatmapov',
 
         'blurb' => [
             'important' => 'PREBERITE TO, PREDEN PRENESETE',
-            'instruction' => [
-                '_' => "Namestitev: Ko ste prenesli paket, skopirajte vsebino datoteke .rar v svoj osu! direktorij z imenom Songs.
-                    Vse pesmi v paketu so še zmeraj zapakirane v .zip ali .osz datoteki, zato bo moral !osu beatmape izvleči ven naslednjič, ko greste v igralni način.
-                    :scary razširite .zip / .osz datotek sami,
-                    ali pa bodo beatmapi nepravilno prikazani in osu! ne bo pravilno deloval.",
-                'scary' => 'NE',
-            ],
+            'install_instruction' => 'Namestitev: Ko je paket prenesen, ekstrahiraj vsebino paketa v osu! Songs mapo in osu! bo storil vse ostalo potrebno.',
             'note' => [
                 '_' => 'Pomnite, da je zelo priporočljivo, da :scary, saj so starejši mapi veliko manj kvalitetni kot najnovejši.',
                 'scary' => 'prenesete najprej najnovejše pakete',
@@ -32,8 +26,8 @@ return [
             'not_cleared' => 'neopravljeno',
         ],
         'no_diff_reduction' => [
-            '_' => '',
-            'link' => '',
+            '_' => ':link se ne sme uporabiti za opravljanje tega paketa.',
+            'link' => 'Modifikatorji za znižanje težavnosti',
         ],
     ],
 

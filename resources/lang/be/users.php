@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'Вы заблакавалі гэтага карыстальніка.',
+        'comment_text' => '',
         'blocked_count' => 'заблакаваныя карыстальнікі (:count)',
         'hide_profile' => 'схаваць профіль',
+        'hide_comment' => '',
         'not_blocked' => 'Гэты карыстальнік не заблакаваны.',
         'show_profile' => 'паказаць профіль',
+        'show_comment' => '',
         'too_many' => 'Дасягнуты ліміт блакавання.',
         'button' => [
             'block' => 'заблакаваць',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'Загрузка...',
         'send_message' => 'адправіць паведамленне',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -159,6 +178,10 @@ return [
             '_' => 'Апублікавана :link',
             'count' => ':count_delimited каментарый|:count_delimited каментарыі',
         ],
+        'cover' => [
+            'to_0' => 'Схаваць вокладку',
+            'to_1' => 'Паказаць вокладку',
+        ],
         'edit' => [
             'cover' => [
                 'button' => 'Змяніць фон профілю',
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Закінутыя бітмапы',
                 ],
+                'guest' => [
+                    'title' => 'Гасцявыя ўдзелы ў картах',
+                ],
                 'loved' => [
                     'title' => 'Любімыя бітмапы',
+                ],
+                'nominated' => [
+                    'title' => '',
                 ],
                 'pending' => [
                     'title' => 'Чаканыя бітмапы',
@@ -301,8 +330,8 @@ return [
                 'recent' => 'Апошнія',
                 'title' => 'Медалі',
             ],
-            'multiplayer' => [
-                'title' => 'Мультыплэерныя гульні',
+            'playlists' => [
+                'title' => 'Плэйлістовыя гульні',
             ],
             'posts' => [
                 'title' => 'Паведамленні',
@@ -312,9 +341,12 @@ return [
             'recent_activity' => [
                 'title' => 'Нядаўняя актыўнасць',
             ],
+            'realtime' => [
+                'title' => 'Мультыплэерныя гульні',
+            ],
             'top_ranks' => [
                 'download_replay' => 'Спампаваць паўтор',
-                'not_ranked' => 'Адзінкі прадукцыйнасці даюцца толькі бітмапам, якія набылі ранг.',
+                'not_ranked' => 'PP даюцца толькі на рэйтынгавых картах.',
                 'pp_weight' => 'узважана :percentage',
                 'view_details' => 'Паглядзець падрабязнасці',
                 'title' => 'Рэйтынгі',
@@ -324,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'Першыя месцы ў рэйтынгу',
+                ],
+                'pin' => [
+                    'to_0' => 'Адмацаваць',
+                    'to_0_done' => 'Адмацаваны вынік',
+                    'to_1' => 'Замацаваць',
+                    'to_1_done' => 'Замацаваны вынік',
+                ],
+                'pinned' => [
+                    'title' => 'Замацаваныя Вынікі',
                 ],
             ],
             'votes' => [
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'Заблакіраваць',
                         'silence' => 'Зацішаны',
+                        'tournament_ban' => '',
                         'note' => 'Нататка',
                     ],
                 ],
@@ -388,9 +430,10 @@ return [
         ],
         'rank' => [
             'country' => 'Рэйтынг краін для :mode',
-            'country_simple' => 'Рэйтынг краін',
+            'country_simple' => 'Рэйтынг па краіне',
             'global' => 'Глабальны рэйтынг для :mode',
             'global_simple' => 'Глабальны рэйтынг',
+            'highest' => '',
         ],
         'stats' => [
             'hit_accuracy' => 'Дакладнасць трапленняў',
@@ -424,6 +467,8 @@ return [
         'offline' => 'Не ў сетцы',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'Карыстальнік створаны',
     ],
     'verify' => [

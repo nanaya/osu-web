@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'Blokkoltad ezt a felhasználót.',
+        'comment_text' => 'Ez a hozzászólás rejtett.',
         'blocked_count' => '(:count) blokkolt felhasználók',
         'hide_profile' => 'profil elrejtése',
+        'hide_comment' => 'elrejtés',
         'not_blocked' => 'Ez a felhasználó nincs blokkolva.',
         'show_profile' => 'profil megjelenítése',
+        'show_comment' => 'mutatás',
         'too_many' => 'Blokkolási limit elérve.',
         'button' => [
             'block' => 'tiltás',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'Betöltés...',
         'send_message' => 'üzenet küldése',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -159,6 +178,10 @@ return [
             '_' => ':link posztolva',
             'count' => ':count_delimited komment|:count_delimited komment',
         ],
+        'cover' => [
+            'to_0' => 'Lefedés',
+            'to_1' => 'Felfedés',
+        ],
         'edit' => [
             'cover' => [
                 'button' => 'Profil Borító Változtatása',
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Eltemetett beatmapek',
                 ],
+                'guest' => [
+                    'title' => 'Vendég részvételi beatmapek',
+                ],
                 'loved' => [
                     'title' => 'Szeretett beatmapek',
+                ],
+                'nominated' => [
+                    'title' => 'Nominált rangsorolt beatmapek',
                 ],
                 'pending' => [
                     'title' => 'Függő beatmapek',
@@ -301,8 +330,8 @@ return [
                 'recent' => 'Legújabb',
                 'title' => 'Medálok',
             ],
-            'multiplayer' => [
-                'title' => 'Többjátékos mód',
+            'playlists' => [
+                'title' => 'Játéklistás játékok',
             ],
             'posts' => [
                 'title' => 'Bejegyzések',
@@ -311,6 +340,9 @@ return [
             ],
             'recent_activity' => [
                 'title' => 'Legutóbbi',
+            ],
+            'realtime' => [
+                'title' => 'Többjátékos játékok',
             ],
             'top_ranks' => [
                 'download_replay' => 'Replay letöltése',
@@ -324,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'Első Helyezéses Eredmények',
+                ],
+                'pin' => [
+                    'to_0' => 'Rögzítés feloldása',
+                    'to_0_done' => 'Nem rögzített eredmény',
+                    'to_1' => 'Rögzítés',
+                    'to_1_done' => 'Rögzített eredmény',
+                ],
+                'pinned' => [
+                    'title' => 'Rögzített eredmények',
                 ],
             ],
             'votes' => [
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'Kitiltás',
                         'silence' => 'Némítás',
+                        'tournament_ban' => 'Bajnoksági kitiltás',
                         'note' => 'Megjegyzés',
                     ],
                 ],
@@ -391,6 +433,7 @@ return [
             'country_simple' => 'Országos Rangsor',
             'global' => 'Globális rank a :mode-ra/re',
             'global_simple' => 'Globális Rangsor',
+            'highest' => 'Legnagyobb rank: :rank elérve :date dátumkor',
         ],
         'stats' => [
             'hit_accuracy' => 'Találati Pontosság',
@@ -424,6 +467,8 @@ return [
         'offline' => 'Nem elérhető',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'Felhasználó létrehozva',
     ],
     'verify' => [

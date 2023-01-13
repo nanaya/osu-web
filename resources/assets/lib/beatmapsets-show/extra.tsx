@@ -1,19 +1,31 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import { computed, makeObservable } from 'mobx';
+import { observer } from 'mobx-react';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
+import { formatNumber } from 'utils/html';
+import { trans } from 'utils/lang';
+import Controller from './controller';
 
 interface Props {
-  beatmap: BeatmapExtendedJson;
-  beatmapset: BeatmapsetExtendedJson;
+  controller: Controller;
 }
 
+@observer
 export default class Extra extends React.PureComponent<Props> {
+  private get beatmap() {
+    return this.props.controller.currentBeatmap;
+  }
+
+  private get beatmapset() {
+    return this.props.controller.beatmapset;
+  }
+
+  @computed
   private get userRating() {
-    return this.props.beatmapset.ratings.slice(1).reduce(
+    return this.beatmapset.ratings.slice(1).reduce(
       (result, count, rating) => {
         result[rating < 5 ? 'negative' : 'positive'] += count;
         return result;
@@ -22,29 +34,35 @@ export default class Extra extends React.PureComponent<Props> {
     );
   }
 
+  @computed
   private get successRate() {
-    if (this.props.beatmap.playcount === 0) {
+    if (this.beatmap.playcount === 0) {
       return 0;
     }
 
-    return (this.props.beatmap.passcount / this.props.beatmap.playcount) * 100;
+    return (this.beatmap.passcount / this.beatmap.playcount) * 100;
+  }
+
+  constructor(props: Props) {
+    super(props);
+    makeObservable(this);
   }
 
   render() {
     return (
       <div className='beatmapset-extra'>
         <div className='beatmapset-extra__item'>
-          {osu.trans('beatmapsets.show.info.success-rate')}
+          {trans('beatmapsets.show.info.success-rate')}
         </div>
         <div className='beatmapset-extra__item beatmapset-extra__item--value beatmapset-extra__item--success-rate'>
-          {osu.formatNumber(this.successRate, 2)}%
+          {formatNumber(this.successRate, 2)}%
         </div>
         <div className='beatmapset-extra__item beatmapset-extra__item--bar'>
           {this.renderBar(this.successRate)}
         </div>
 
         <div className='beatmapset-extra__item'>
-          {osu.trans('beatmapsets.show.stats.user-rating')}
+          {trans('beatmapsets.show.stats.user-rating')}
         </div>
         <div className='beatmapset-extra__item beatmapset-extra__item--value beatmapset-extra__item--user-rating'>
           <div>{this.userRating.negative}</div>
@@ -54,13 +72,13 @@ export default class Extra extends React.PureComponent<Props> {
           {this.renderBar((this.userRating.positive * 100) / (this.userRating.positive + this.userRating.negative), true)}
         </div>
 
-        {this.props.beatmapset.is_scoreable && (
+        {this.beatmapset.is_scoreable && (
           <>
             <div className='beatmapset-extra__item'>
-              {osu.trans('beatmapsets.show.stats.rating-spread')}
+              {trans('beatmapsets.show.stats.rating-spread')}
             </div>
             <div className='beatmapset-extra__item beatmapset-extra__item--chart'>
-              {this.renderChart(this.props.beatmapset.ratings.slice(1))}
+              {this.renderChart(this.beatmapset.ratings.slice(1))}
             </div>
           </>
         )}
@@ -88,7 +106,7 @@ export default class Extra extends React.PureComponent<Props> {
         className='beatmapset-extra__chart-bar'
         style={{
           '--background-position': `${idx * 10}%`,
-          '--bar-height': `${rating === 0 ? 0 : osu.formatNumber((rating / maxRating) * 100, 2)}%`,
+          '--bar-height': `${rating === 0 ? 0 : formatNumber((rating / maxRating) * 100, 2)}%`,
         } as React.CSSProperties}
       />
     ));

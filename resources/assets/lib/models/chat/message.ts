@@ -7,21 +7,27 @@ import { action, computed, makeObservable, observable } from 'mobx';
 import User from 'models/user';
 import * as moment from 'moment';
 import core from 'osu-core-singleton';
+import { uuid } from 'utils/seq';
+import { linkify } from 'utils/url';
+
+export const maxLength = 1024;
 
 export default class Message {
   @observable channelId = -1;
   @observable content = '';
   @observable errored = false;
   @observable isAction = false;
-  @observable messageId: number | string = osu.uuid();
+  @observable messageId: number | string = uuid();
   @observable persisted = false;
   @observable senderId = -1;
   @observable timestamp: string = moment().toISOString();
   @observable uuid = this.messageId;
 
+  @observable private contentHtml?: string;
+
   @computed
-  get parsedContent(): string {
-    return osu.linkify(escape(this.content), true);
+  get parsedContent() {
+    return this.contentHtml ?? linkify(escape(this.content), true);
   }
 
   @computed
@@ -33,24 +39,26 @@ export default class Message {
     makeObservable(this);
   }
 
-  static fromJson(json: MessageJson): Message {
+  static fromJson(this: void, json: MessageJson): Message {
     const message = new Message();
-    return Object.assign(message, {
-      channelId: json.channel_id,
-      content: json.content,
-      isAction: json.is_action,
-      messageId: json.message_id,
-      persisted: true,
-      senderId: json.sender_id,
-      timestamp: json.timestamp,
-      uuid: osu.uuid(),
-    });
+    message.channelId = json.channel_id;
+    message.content = json.content;
+    message.contentHtml = json.content_html;
+    message.isAction = json.is_action;
+    message.messageId = json.message_id;
+    message.persisted = true;
+    message.senderId = json.sender_id;
+    message.timestamp = json.timestamp;
+    message.uuid = json.uuid ?? message.uuid;
+
+    return message;
   }
 
   @action
-  persist(): Message {
+  persist(json: MessageJson) {
+    if (this.persisted) return;
+    this.messageId = json.message_id;
+    this.timestamp = json.timestamp;
     this.persisted = true;
-
-    return this;
   }
 }

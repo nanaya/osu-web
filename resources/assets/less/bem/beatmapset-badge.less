@@ -12,18 +12,26 @@
   white-space: nowrap;
   .link-plain();
 
+  --colour: hsl(var(--hsl-c1));
+  --colour-hover: var(--colour);
+  color: var(--colour);
+
+  .link-hover({
+    color: var(--colour-hover);
+  });
+
   &--featured-artist {
-    color: hsl(var(--hsl-blue-1));
+    --colour: hsl(var(--hsl-blue-2));
+    --colour-hover: hsl(var(--hsl-blue-1));
   }
 
   &--nsfw {
-    color: hsl(var(--hsl-orange-2));
+    --colour: hsl(var(--hsl-orange-2));
   }
 
   &--cover {
     .center-content();
     background-color: hsla(var(--hsl-b5), 0.8);
-    color: #fff;
     font-size: inherit;
     font-weight: 800;
     padding: 0 15px;
@@ -35,12 +43,14 @@
     font-size: inherit;
     padding: 0 10px;
     margin: 0;
-    color: #fff;
   }
 
   &--panel {
-    position: relative;
-    bottom: 0.2em;
-    margin-left: auto;
+    margin-left: 5px;
+  }
+
+  &--spotlight {
+    --colour: hsl(var(--hsl-green-2));
+    --colour-hover: hsl(var(--hsl-green-1));
   }
 }

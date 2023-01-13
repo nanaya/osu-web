@@ -30,13 +30,14 @@ return [
         'nomination_reset' => 'Vấn đề mới :discussion đã khiến cho đề cử bị hoàn lại.',
         'nomination_reset_received' => ' Đề cử bởi :user đã được đặt lại bởi :source_user (:text)',
         'nomination_reset_received_profile' => ' Đề cử đã được đặt lại bởi :user (:text)',
+        'offset_edit' => 'Độ trễ chơi online đã thay đổi từ :old thành:new.',
         'qualify' => 'Beatmap này đã đạt được số đề cử (nominations) cần thiết và đã qualified.',
         'rank' => 'Đã được xếp hạng (Ranked).',
         'remove_from_loved' => 'Yêu thích bị loại bỏ bởi :user. (:text)',
 
         'nsfw_toggle' => [
-            'to_0' => 'Xóa nội dung',
-            'to_1' => 'Đã đánh dấu có nội dung người lớn',
+            'to_0' => 'Đã xóa đánh dấu nội dung không lành mạnh',
+            'to_1' => 'Đã đánh dấu có nội dung không lành mạnh',
         ],
     ],
 
@@ -76,7 +77,8 @@ return [
         'nominate' => 'Đề cử',
         'nomination_reset' => 'Đặt lại đề cử',
         'nomination_reset_received' => 'Đã nhận được đặt lại đề cử',
-        'nsfw_toggle' => 'Dấu rõ ràng',
+        'nsfw_toggle' => 'Đánh dấu không lành mạnh',
+        'offset_edit' => 'Chính sửa độ trễ',
         'qualify' => 'Qualification',
         'rank' => 'Xếp hạng',
         'remove_from_loved' => 'Yêu thích loại bỏ',

@@ -32,11 +32,14 @@ return [
     ],
 
     'blocks' => [
-        'banner_text' => 'Anda telah memblokir pengguna ini.',
+        'banner_text' => 'Kamu telah memblokir pengguna ini.',
+        'comment_text' => 'Komentar ini disembunyikan.',
         'blocked_count' => 'pengguna yang diblokir (:count)',
         'hide_profile' => 'Sembunyikan profil',
+        'hide_comment' => 'sembunyikan',
         'not_blocked' => 'Pengguna ini tidak diblokir.',
-        'show_profile' => 'tampilkan profil',
+        'show_profile' => 'Tampilkan profil',
+        'show_comment' => 'tampilkan',
         'too_many' => 'Batas pemblokiran tercapai.',
         'button' => [
             'block' => 'Blokir',
@@ -46,24 +49,40 @@ return [
 
     'card' => [
         'loading' => 'Memuat...',
-        'send_message' => 'kirim pesan',
+        'send_message' => 'Kirim pesan',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
-        'title' => 'Uh-oh! Sepertinya akun Anda telah dinonaktifkan.',
-        'warning' => "Apabila Anda telah melakukan suatu pelanggaran yang berdampak langsung terhadap status akun Anda, akun Anda akan dikondisikan di dalam masa hukuman percobaan selama satu bulan di mana selama satu bulan ini kami tidak akan menggubris segala laporan dan permintaan yang masuk terkait dengan akun Anda. Setelah masa hukuman ini berakhir, Anda baru akan kemudian dapat mengontak kami apabila Anda ingin kembali bermain dengan akun Anda. Mohon diperhatikan bahwa membuat akun baru di kala akun utama Anda sedang dibatasi <strong>akan menambah masa hukuman Anda</strong>, dan <strong>masa hukuman ini akan senantiasa bertambah panjang dengan setiap akun baru yang Anda coba untuk buat</strong>. Kami harap Anda dapat memetik pelajaran dari kasus ini dan tidak akan melakukan pelanggaran lagi ke depannya!",
+        'title' => 'Uh-oh! Sepertinya akunmu telah dinonaktifkan.',
+        'warning' => "Apabila kamu melanggar peraturan, akunmu akan ditempatkan pada masa percobaan selama satu bulan, di mana dalam rentang waktu ini kami tidak akan menanggapi permintaan apa pun yang terkait dengan akun Anda. Setelah masa ini berakhir, Anda baru akan dapat menghubungi kami untuk mengembalikan akunmu. Mohon diperhatikan bahwa membuat akun baru <strong>hanya akan menambah masa hukumanmu</strong>, dan <strong>masa hukumanmu akan bertambah panjang untuk setiap akun baru yang kamu buat</strong>. Kami harap kamu dapat belajar dari kesalahanmu!",
 
         'if_mistake' => [
-            '_' => 'Apabila Anda merasa hal ini merupakan sebuah kesalahpahaman, Anda dianjurkan untuk mengontak kami sesegera mungkin (melalui :email atau tombol "?" yang tersedia pada pojok kanan bawah halaman ini). Mohon diperhatikan bahwa segala keputusan yang kami ambil terkait dengan akun Anda selalu berdasar pada data-data konkrit yang kami punya dan senantiasa diambil dengan penuh keyakinan. Selain itu, kami juga berhak untuk tidak menindaklanjuti laporan Anda lebih lanjut apabila kami merasa Anda dengan sengaja berbohong kepada kami dalam aduan yang Anda ajukan.',
+            '_' => 'Apabila kamu merasa bahwa hal ini merupakan sebuah kesalahan, kamu disarankan untuk mengontak kami (baik melalui :email atau tombol "?" yang terletak pada pojok kanan bawah layar) sesegera mungkin. Mohon diperhatikan bahwa segala keputusan yang kami ambil selalu berdasar pada data yang konkrit dan diambil dengan penuh keyakinan. Di samping itu, kami juga berhak untuk tidak menindaklanjuti aduanmu lebih lanjut apabila kami merasa kamu dengan sengaja telah berbohong kepada kami.',
             'email' => 'email',
         ],
 
         'reasons' => [
-            'compromised' => 'Akun Anda terindikasi telah disalahgunakan oleh pihak-pihak yang tidak bertanggung jawab untuk hal-hal yang membahayakan. Akun Anda akan dinonaktifkan untuk sementara waktu hingga identitas pengguna akun telah terkonfirmasi.',
-            'opening' => 'Ada sejumlah alasan yang dapat menyebabkan akun Anda dinonaktifkan:',
+            'compromised' => 'Akunmu terindikasi telah disalahgunakan oleh pihak lain. Akun ini akan dinonaktifkan untuk sementara waktu hingga identitas pengguna akun telah terkonfirmasi.',
+            'opening' => 'Terdapat sejumlah alasan yang dapat menyebabkan akunmu dinonaktifkan:',
 
             'tos' => [
-                '_' => 'Anda telah melakukan pelanggaran terhadap satu atau lebih poin yang tercantum pada :community_rules atau :tos kami.',
+                '_' => 'Kamu telah melakukan pelanggaran terhadap satu atau lebih poin yang tertera pada :community_rules atau :tos kami.',
                 'community_rules' => 'peraturan komunitas',
                 'tos' => 'ketentuan layanan',
             ],
@@ -76,7 +95,7 @@ return [
 
     'force_reactivation' => [
         'reason' => [
-            'inactive_different_country' => "Akun Anda telah lama tidak digunakan.",
+            'inactive_different_country' => "Akunmu telah lama tidak digunakan.",
         ],
     ],
 
@@ -84,11 +103,11 @@ return [
         '_' => 'Masuk',
         'button' => 'Masuk',
         'button_posting' => 'Mencoba masuk...',
-        'email_login_disabled' => 'Anda tidak lagi dapat masuk dengan menggunakan alamat email. Silakan masuk dengan menggunakan nama pengguna.',
+        'email_login_disabled' => 'Alamat email untuk saat ini tidak dapat digunakan untuk masuk. Silakan masuk dengan menggunakan nama pengguna.',
         'failed' => 'Gagal masuk',
         'forgot' => 'Lupa kata sandi?',
-        'info' => 'Silakan sign in untuk melanjutkan',
-        'invalid_captcha' => 'Anda telah berulang kali gagal memasukkan kredensial pengguna yang valid. Harap selesaikan captcha berikut dan coba lagi. (Muat ulang laman ini apabila captcha tidak terlihat)',
+        'info' => 'Silakan masuk untuk melanjutkan',
+        'invalid_captcha' => 'Kamu telah berulang kali gagal memasukkan kredensial pengguna yang valid. Harap selesaikan captcha yang muncul dan coba lagi. (Muat ulang laman ini apabila captcha tidak terlihat)',
         'locked_ip' => 'Alamat IP Anda dikunci. Mohon tunggu beberapa menit.',
         'password' => 'Kata Sandi',
         'register' => "Belum memiliki akun osu!? Buat sekarang",
@@ -97,8 +116,8 @@ return [
         'username' => 'Nama Pengguna',
 
         'beta' => [
-            'main' => 'Akses beta saat ini hanya terbuka kepada pengguna-pengguna tertentu.',
-            'small' => '(osu!supporter akan segera masuk)',
+            'main' => 'Akses beta saat ini hanya tersedia bagi para pengguna dengan hak khusus.',
+            'small' => '(para pemilik osu!supporter akan segera masuk)',
         ],
     ],
 
@@ -110,15 +129,15 @@ return [
         'login_link' => 'klik untuk masuk',
         'login_text' => 'masuk',
         'username' => 'Tamu',
-        'error' => 'Anda harus masuk terlebih dahulu untuk dapat melakukan tindakan ini.',
+        'error' => 'Kamu harus masuk untuk melakukan tindakan ini.',
     ],
-    'logout_confirm' => 'Apa Anda yakin ingin keluar? :(',
+    'logout_confirm' => 'Apakah kamu yakin ingin keluar? :(',
     'report' => [
         'button_text' => 'Laporkan',
         'comments' => 'Komentar Tambahan',
-        'placeholder' => 'Mohon berikan informasi apa pun yang Anda yakini dapat bermanfaat.',
+        'placeholder' => 'Mohon berikan informasi apa pun yang kamu yakini dapat bermanfaat.',
         'reason' => 'Alasan',
-        'thanks' => 'Terima kasih atas laporan Anda!',
+        'thanks' => 'Terima kasih atas laporanmu!',
         'title' => 'Laporkan :username?',
 
         'actions' => [
@@ -132,42 +151,46 @@ return [
             'insults' => 'Menghina saya / orang lain',
             'spam' => 'Spam',
             'unwanted_content' => 'Menautkan konten yang tidak pantas',
-            'nonsense' => 'Berperilaku buruk',
+            'nonsense' => 'Beromong kosong',
             'other' => 'Lainnya (ketik di bawah)',
         ],
     ],
     'restricted_banner' => [
         'title' => 'Akun Anda telah di-restrict!',
-        'message' => 'Selama akun Anda di-restrict, Anda tidak dapat berinteraksi dengan para pengguna lain dan skor-skor yang telah Anda raih hanya akan dapat dilihat oleh diri Anda sendiri. Hal ini pada umumnya merupakan efek samping dari proses yang dilakukan oleh sistem secara otomatis dan akan diangkat dalam 24 jam apabila Anda memang terbukti tidak melakukan pelanggaran apapun terhadap aturan-aturan yang berlaku. Jika Anda ingin mengajukan banding atas status akun Anda, mohon <a href="mailto:accounts@ppy.sh">hubungi layanan dukungan</a>.',
+        'message' => 'Selama di-restrict, kamu tidak dapat berinteraksi dengan pengguna lain dan skormu hanya akan dapat dilihat oleh dirimu sendiri. Hal ini biasanya terproses secara otomatis dan akan diangkat dalam 24 jam. Apabila kamu ingin mengajukan banding, mohon <a href="mailto:accounts@ppy.sh">hubungi layanan dukungan</a>.',
     ],
     'show' => [
         'age' => ':age tahun',
-        'change_avatar' => 'ganti avatar Anda!',
+        'change_avatar' => 'ubah avatar Anda!',
         'first_members' => 'Di sini sejak awal',
         'is_developer' => 'osu!developer',
         'is_supporter' => 'osu!supporter',
-        'joined_at' => 'Bergabung :date',
+        'joined_at' => 'Bergabung pada :date',
         'lastvisit' => 'Terakhir terlihat :date',
         'lastvisit_online' => 'Saat ini online',
-        'missingtext' => 'Mungkin Anda salah ketik! (atau pengguna ini telah di-ban)',
+        'missingtext' => 'Mungkin kamu salah ketik! (atau pengguna ini telah di-ban)',
         'origin_country' => 'Dari :country',
-        'previous_usernames' => 'dulu dikenal sebagai',
+        'previous_usernames' => 'sebelumnya dikenal sebagai',
         'plays_with' => 'Bermain menggunakan :devices',
         'title' => "profil :username",
 
         'comments_count' => [
-            '_' => 'Telah menulis :link',
+            '_' => 'Telah mengirimkan :link',
             'count' => ':count_delimited komentar|:count_delimited komentar',
+        ],
+        'cover' => [
+            'to_0' => 'Sembunyikan sampul',
+            'to_1' => 'Tampilkan sampul',
         ],
         'edit' => [
             'cover' => [
-                'button' => 'Ganti Sampul Profil',
+                'button' => 'Ubah Sampul Profil',
                 'defaults_info' => 'Pilihan sampul lainnya akan tersedia di masa mendatang',
                 'upload' => [
                     'broken_file' => 'Gagal memproses gambar. Mohon periksa kembali gambar yang diunggah dan coba lagi.',
                     'button' => 'Unggah gambar',
                     'dropzone' => 'Letakkan di sini untuk mengunggah',
-                    'dropzone_info' => 'Anda juga dapat meletakkan gambar Anda di sini untuk mengunggah.',
+                    'dropzone_info' => 'Kamu juga dapat meletakkan gambar di sini untuk mengunggah',
                     'size_info' => 'Ukuran gambar sampul yang disarankan adalah 2400x640',
                     'too_large' => 'Berkas yang diunggah terlalu besar.',
                     'unsupported_format' => 'Format tidak didukung.',
@@ -181,7 +204,7 @@ return [
 
             'default_playmode' => [
                 'is_default_tooltip' => 'mode permainan utama',
-                'set' => 'atur :mode sebagai mode permainan utama Anda',
+                'set' => 'atur :mode sebagai mode permainan utamamu',
             ],
         ],
 
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Beatmap Graveyard',
                 ],
+                'guest' => [
+                    'title' => 'Beatmap dengan Kontribusi Guest Difficulty',
+                ],
                 'loved' => [
                     'title' => 'Beatmap Loved',
+                ],
+                'nominated' => [
+                    'title' => 'Beatmap Ranked yang Dinominasikan',
                 ],
                 'pending' => [
                     'title' => 'Beatmap Pending',
@@ -216,12 +245,12 @@ return [
             ],
             'discussions' => [
                 'title' => 'Diskusi',
-                'title_longer' => 'Topik-Topik Diskusi Terkini',
+                'title_longer' => 'Topik Diskusi Terkini',
                 'show_more' => 'lihat lebih banyak diskusi',
             ],
             'events' => [
                 'title' => 'Aktivitas',
-                'title_longer' => 'Aktivitas-Aktivitas Terkini',
+                'title_longer' => 'Aktivitas Terkini',
                 'show_more' => 'lihat lebih banyak aktivitas',
             ],
             'historical' => [
@@ -233,14 +262,14 @@ return [
                 ],
                 'most_played' => [
                     'count' => 'jumlah dimainkan',
-                    'title' => 'Beatmap yang Paling Banyak Dimainkan',
+                    'title' => 'Beatmap yang Paling Sering Dimainkan',
                 ],
                 'recent_plays' => [
                     'accuracy' => 'akurasi: :percentage',
-                    'title' => 'Rekam Jejak Permainan Terbaru (24 jam)',
+                    'title' => 'Rekam Jejak Permainan Terkini (24 jam)',
                 ],
                 'replays_watched_counts' => [
-                    'title' => 'Riwayat Jumlah Tayangan Ulang yang Ditonton',
+                    'title' => 'Riwayat Pemutaran Tayangan Ulang',
                     'count_label' => 'Kali Tayangan Ulang Ditonton',
                 ],
             ],
@@ -251,11 +280,11 @@ return [
 
                 'entry' => [
                     'amount' => ':amount kudosu',
-                    'empty' => "Pengguna ini belum tercatat pernah menerima kudosu! sebelumnya.",
+                    'empty' => "Pengguna ini belum pernah menerima kudosu! sebelumnya.",
 
                     'beatmap_discussion' => [
                         'allow_kudosu' => [
-                            'give' => 'Menerima :amount atas pembatalan penolakan kudosu di post modding :post',
+                            'give' => 'Memperoleh :amount atas dibatalkannya penganuliran kudosu pada topik diskusi :post',
                         ],
 
                         'deny_kudosu' => [
@@ -263,28 +292,28 @@ return [
                         ],
 
                         'delete' => [
-                            'reset' => 'Kehilangan :amount atas penghapusan post di post modding :post',
+                            'reset' => 'Kehilangan :amount atas penghapusan topik diskusi :post',
                         ],
 
                         'restore' => [
-                            'give' => 'Menerima :amount atas pengembalian post di post modding :post',
+                            'give' => 'Memperoleh :amount atas dipulihkannya topik diskusi :post',
                         ],
 
                         'vote' => [
-                            'give' => 'Mendapatkan :amount dari suara yang diperoleh pada topik diskusi :post',
+                            'give' => 'Memperoleh :amount dari suara yang didapat pada topik diskusi :post',
                             'reset' => 'Kehilangan :amount dari suara yang hilang pada topik diskusi :post',
                         ],
 
                         'recalculate' => [
-                            'give' => 'Menerima :amount atas penilaian ulang suara di post modding :post',
-                            'reset' => 'Kehilangan :amount atas penilaian ulang suara di post modding :post',
+                            'give' => 'Memperoleh :amount atas penghitungan ulang suara pada topik diskusi :post',
+                            'reset' => 'Kehilangan :amount atas penghitungan ulang suara pada topik diskusi :post',
                         ],
                     ],
 
                     'forum_post' => [
-                        'give' => 'Menerima :amount dari :giver untuk posting di :post',
-                        'reset' => 'Kudosu disetel ulang oleh :giver untuk posting di :post',
-                        'revoke' => 'Kudosu ditolak oleh :giver untuk posting di :post',
+                        'give' => 'Memperoleh :amount dari :giver untuk mod yang diberikan pada beatmap :post',
+                        'reset' => 'Kudosu untuk mod yang diberikan pada beatmap :post diatur ulang oleh :giver ',
+                        'revoke' => 'Kudosu untuk mod yang diberikan pada beatmap :post ditolak oleh :giver ',
                     ],
                 ],
 
@@ -301,16 +330,19 @@ return [
                 'recent' => 'Terbaru',
                 'title' => 'Medali',
             ],
-            'multiplayer' => [
-                'title' => 'Pertandingan-Pertandingan Multiplayer',
+            'playlists' => [
+                'title' => 'Permainan Playlist',
             ],
             'posts' => [
                 'title' => 'Posting',
-                'title_longer' => 'Postingan-Postingan Terkini',
+                'title_longer' => 'Postingan Terkini',
                 'show_more' => 'lihat lebih banyak post',
             ],
             'recent_activity' => [
-                'title' => 'Terbaru',
+                'title' => 'Aktivitas Terkini',
+            ],
+            'realtime' => [
+                'title' => 'Permainan Multiplayer',
             ],
             'top_ranks' => [
                 'download_replay' => 'Unduh Tayangan Ulang',
@@ -325,6 +357,15 @@ return [
                 'first' => [
                     'title' => 'Peringkat Pertama',
                 ],
+                'pin' => [
+                    'to_0' => 'Lepas Sematan',
+                    'to_0_done' => 'Sematan skor berhasil dilepas',
+                    'to_1' => 'Sematkan',
+                    'to_1_done' => 'Skor berhasil disematkan',
+                ],
+                'pinned' => [
+                    'title' => 'Skor yang Disematkan',
+                ],
             ],
             'votes' => [
                 'given' => 'Suara Diberikan (3 bulan terakhir)',
@@ -335,21 +376,22 @@ return [
             ],
             'account_standing' => [
                 'title' => 'Kondisi Akun',
-                'bad_standing' => "Akun <strong>:username</strong> tidak dalam kondisi baik :(",
-                'remaining_silence' => '<strong>:username</strong> akan dapat kembali berbicara dalam :duration.',
+                'bad_standing' => "Akun :username tidak sedang berada dalam kondisi yang baik :(",
+                'remaining_silence' => ':username akan dapat kembali berbicara :duration.',
 
                 'recent_infringements' => [
-                    'title' => 'Pelanggaran Terbaru',
-                    'date' => 'tanggal',
-                    'action' => 'tindakan',
+                    'title' => 'Pelanggaran Terkini',
+                    'date' => 'waktu',
+                    'action' => 'tindak lanjut',
                     'length' => 'durasi',
                     'length_permanent' => 'Permanen',
-                    'description' => 'deskripsi',
+                    'description' => 'keterangan',
                     'actor' => 'oleh :username',
 
                     'actions' => [
                         'restriction' => 'Ban',
                         'silence' => 'Silence',
+                        'tournament_ban' => 'Larangan turnamen',
                         'note' => 'Catatan',
                     ],
                 ],
@@ -367,23 +409,23 @@ return [
         'not_found' => [
             'reason_1' => 'Pengguna ini telah mengubah nama penggunanya.',
             'reason_2' => 'Pengguna ini telah dinonaktifkan untuk sementara waktu karena memiliki riwayat masalah yang berhubungan dengan keamanan atau penyalahgunaan akun.',
-            'reason_3' => 'Atau mungkin Anda salah ketik!',
+            'reason_3' => 'Atau mungkin kamu salah ketik!',
             'reason_header' => 'Ada beberapa kemungkinan mengapa hal ini bisa terjadi:',
             'title' => 'Pengguna tidak ditemukan! ;_;',
         ],
         'page' => [
             'button' => 'Sunting laman profil',
-            'description' => '<strong>saya!</strong> adalah area pribadi yang dapat dimodifikasi di laman profil Anda.',
+            'description' => '<strong>saya!</strong> merupakan area pada laman profilmu yang dapat kamu modifikasi sesuka hati.',
             'edit_big' => 'Sunting saya!',
             'placeholder' => 'Ketik konten laman di sini',
 
             'restriction_info' => [
-                '_' => 'Anda harus menjadi seorang :link untuk dapat menggunakan fitur ini.',
+                '_' => 'Kamu harus menjadi seorang :link untuk menggunakan fitur ini.',
                 'link' => 'osu!supporter',
             ],
         ],
         'post_count' => [
-            '_' => 'Telah berkontribusi terhadap :link',
+            '_' => 'Berkontribusi pada :link',
             'count' => ':count_delimited postingan forum|:count_delimited postingan forum',
         ],
         'rank' => [
@@ -391,17 +433,18 @@ return [
             'country_simple' => 'Peringkat Negara',
             'global' => 'Peringkat global untuk :mode',
             'global_simple' => 'Peringkat Global',
+            'highest' => 'Peringkat tertinggi: :rank pada :date',
         ],
         'stats' => [
             'hit_accuracy' => 'Akurasi Hit',
             'level' => 'Level :level',
-            'level_progress' => 'Persentase pencapaian untuk menuju ke level selanjutnya',
+            'level_progress' => 'Persentase pencapaian menuju level berikutnya',
             'maximum_combo' => 'Kombo Maksimum',
             'medals' => 'Jumlah Medali',
             'play_count' => 'Jumlah Main',
             'play_time' => 'Telah Bermain Selama',
             'ranked_score' => 'Skor Ranked',
-            'replays_watched_by_others' => 'Jumlah Tayangan Ulang yang Ditonton',
+            'replays_watched_by_others' => 'Jumlah Pemutaran Tayangan Ulang',
             'score_ranks' => 'Peringkat Skor',
             'total_hits' => 'Jumlah Hit',
             'total_score' => 'Jumlah Skor',
@@ -414,8 +457,8 @@ return [
     ],
 
     'silenced_banner' => [
-        'title' => 'Anda sedang di-silence.',
-        'message' => 'Anda tidak dapat melakukan tindakan-tindakan tertentu.',
+        'title' => 'Kamu sedang di-silence.',
+        'message' => 'Kamu sedang tidak dapat melakukan tindakan tertentu.',
     ],
 
     'status' => [
@@ -424,6 +467,8 @@ return [
         'offline' => 'Offline',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'Pengguna dibuat',
     ],
     'verify' => [
@@ -431,7 +476,7 @@ return [
     ],
 
     'view_mode' => [
-        'brick' => 'Tampilan batu bata',
+        'brick' => 'Tampilan susun bata',
         'card' => 'Tampilan kartu',
         'list' => 'Tampilan daftar',
     ],

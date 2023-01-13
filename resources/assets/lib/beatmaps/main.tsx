@@ -1,15 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BackToTop } from 'back-to-top';
 import AvailableFilters from 'beatmaps/available-filters';
-import HeaderV4 from 'header-v4';
+import { SearchContent } from 'beatmaps/search-content';
+import { BackToTop } from 'components/back-to-top';
+import HeaderV4 from 'components/header-v4';
 import { isEqual } from 'lodash';
 import { reaction } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { SearchContent } from 'react/beatmaps/search-content';
+import { onError } from 'utils/ajax';
 import { nextVal } from 'utils/seq';
 import { SearchStatus } from './beatmapset-search-controller';
 
@@ -22,7 +23,7 @@ interface Props {
 @observer
 export class Main extends React.Component<Props> {
   readonly backToTop = React.createRef<BackToTop>();
-  readonly backToTopAnchor = React.createRef<HTMLElement>();
+  readonly backToTopAnchor = React.createRef<HTMLDivElement>();
 
   private readonly eventId = `beatmapsets-index-${nextVal()}`;
 
@@ -77,7 +78,7 @@ export class Main extends React.Component<Props> {
 
   private searchStatusErrorHandler = (value: SearchStatus) => {
     if (value.error != null) {
-      osu.ajaxError(value.error);
+      onError(value.error);
     }
   };
 }

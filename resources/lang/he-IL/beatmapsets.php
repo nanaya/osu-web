@@ -11,6 +11,10 @@ return [
         'rule_violation' => 'חלק מהקבצים של המפה הוסרו אחרי שהגדרו כלא מתאימים לשימוש ב-!osu.',
     ],
 
+    'cover' => [
+        'deleted' => '',
+    ],
+
     'download' => [
         'limit_exceeded' => '',
     ],
@@ -62,6 +66,7 @@ return [
             'favourite_login' => '',
             'logged-out' => 'אתה צריך להתחבר לפני הורדת מפות כלשהן!',
             'mapped_by' => 'נוצרה על ידי :mapper',
+            'mapped_by_guest' => '',
             'unfavourite' => 'הסר מפה ממועדפות',
             'updated_timeago' => 'עודכנה לאחרונה :timeago',
 
@@ -120,7 +125,9 @@ return [
             'genre' => 'ז\'אנר',
             'language' => 'שפה',
             'no_scores' => 'נתונים עדיין מחושבים...',
+            'nominators' => '',
             'nsfw' => '',
+            'offset' => '',
             'points-of-failure' => 'נקודות כשל',
             'source' => 'מקור',
             'storyboard' => '',
@@ -143,6 +150,7 @@ return [
         'scoreboard' => [
             'achieved' => 'הושג :when',
             'country' => 'דירוג מדינה',
+            'error' => '',
             'friend' => 'דירוג חברים',
             'global' => 'דירוג עולמי',
             'supporter-link' => 'לחץ <a href=":link">כאן</a> כדי לראות את כל הפיצ\'רים המגניבים שאתה מקבל!',
@@ -154,11 +162,12 @@ return [
                 'combo' => 'קומבו מירבי',
                 'miss' => 'פספוס',
                 'mods' => 'מודים',
+                'pin' => '',
                 'player' => 'שחקן',
                 'pp' => '',
                 'rank' => 'דירוג',
-                'score_total' => 'ציון כולל',
                 'score' => 'ציון',
+                'score_total' => 'ציון כולל',
                 'time' => 'זמן',
             ],
 
@@ -173,6 +182,10 @@ return [
                 'first' => 'מוביל',
                 'own' => 'הכי טוב שלך',
             ],
+            'supporter_link' => [
+                '_' => '',
+                'here' => '',
+            ],
         ],
 
         'stats' => [
@@ -186,6 +199,7 @@ return [
             'bpm' => 'BPM',
             'count_circles' => 'מספר עיגולים',
             'count_sliders' => 'מספר סליידרים',
+            'offset' => '',
             'user-rating' => 'דירוג משתמשים',
             'rating-spread' => 'התפרסות דירוג',
             'nominations' => 'מינויים',
@@ -201,5 +215,9 @@ return [
             'pending' => 'בהמתנה',
             'graveyard' => 'ננטש',
         ],
+    ],
+
+    'spotlight_badge' => [
+        'label' => '',
     ],
 ];

@@ -1,6 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+import ShowMoreLink from 'components/show-more-link';
 import { observer } from 'mobx-react';
 import Notification from 'models/notification';
 import NotificationStack from 'models/notification-stack';
@@ -11,7 +12,7 @@ import { NotificationContext } from 'notifications-context';
 import NotificationDeleteButton from 'notifications/notification-delete-button';
 import NotificationReadButton from 'notifications/notification-read-button';
 import * as React from 'react';
-import ShowMoreLink from 'show-more-link';
+import { trans, transChoice } from 'utils/lang';
 import Item from './item';
 import ItemCompact from './item-compact';
 
@@ -81,13 +82,13 @@ export default class ItemGroup extends React.Component<Props, State> {
 
     return (
       <button
-        className='show-more-link show-more-link--notification-group'
+        className='show-more-link show-more-link--notification-group u-hover'
         onClick={this.toggleExpand}
         type='button'
       >
         <span className='show-more-link__label'>
           <span className='show-more-link__label-text'>
-            {osu.transChoice(transKey, count)}
+            {transChoice(transKey, count)}
           </span>
           <span className='show-more-link__label-icon'>
             <span className={`fas fa-angle-${this.state.expanded ? 'up' : 'down'}`} />
@@ -141,7 +142,7 @@ export default class ItemGroup extends React.Component<Props, State> {
         callback={this.handleShowLess}
         direction='up'
         hasMore
-        label={osu.trans('common.buttons.show_less')}
+        label={trans('common.buttons.show_less')}
         modifiers={['notification-group']}
       />
     );

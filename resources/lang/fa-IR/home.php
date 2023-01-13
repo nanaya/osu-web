@@ -5,24 +5,24 @@
 
 return [
     'landing' => [
-        'download' => '',
-        'online' => '',
-        'peak' => '',
-        'players' => '',
-        'title' => '',
-        'see_more_news' => '',
+        'download' => 'همین حالا دانلود کنید',
+        'online' => '<strong>:players</strong> نفر هم اکنون در <strong>:games</strong> بازی آنلاین هستند',
+        'peak' => 'بالاترین، :count کاربر آنلاین',
+        'players' => '<strong>:count</strong> کاربر ثبت نامی',
+        'title' => 'خوش آمدید',
+        'see_more_news' => 'دیدن خبر های بیشتر',
 
         'slogan' => [
-            'main' => '',
-            'sub' => '',
+            'main' => 'بهترین بازی ریتمی رایگان برای برنده شدن',
+            'sub' => 'ریتم یک کلیک فاصله دارد',
         ],
     ],
 
     'search' => [
-        'advanced_link' => '',
-        'button' => '',
-        'empty_result' => '',
-        'keyword_required' => '',
+        'advanced_link' => 'جستجوی پیشرفته',
+        'button' => 'جستجو',
+        'empty_result' => 'چیزی پیدا نشد!',
+        'keyword_required' => 'یک کلمه کلیدی برای جستجو لازم است',
         'placeholder' => '',
         'title' => '',
 
@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "",
         'action' => '',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => '',
+        'mirror' => '',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "",
+        'video-guide' => '',
 
         'help' => [
             '_' => '',
@@ -86,8 +99,6 @@ return [
             'macos' => '',
             'linux' => '',
         ],
-        'mirror' => '',
-        'macos-fallback' => '',
         'steps' => [
             'register' => [
                 'title' => '',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => '',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => '',
             'store' => '',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => '',
-        'subtitle' => '',
-        'body' => [
-            'part-1' => '',
-            'part-2' => '',
-        ],
-        'find-out-more' => '',
-        'download-starting' => "",
     ],
 ];

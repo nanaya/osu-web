@@ -15,7 +15,6 @@ return [
         ],
 
         'email' => [
-            'current' => 'aktuelle e-mail',
             'new' => 'neue e-mail',
             'new_confirmation' => 'e-mail bestätigen',
             'title' => 'E-Mail',
@@ -50,7 +49,7 @@ return [
     'notifications' => [
         'beatmapset_discussion_qualified_problem' => 'erhalte benachrichtigungen für neue probleme auf qualifizierten beatmaps der folgenden modi',
         'beatmapset_disqualify' => 'erhalte benachrichtigungen, wenn beatmaps der folgenden modi disqualifiziert werden',
-        'comment_reply' => 'erhalte Benachrichtigungen für antworten auf deine Kommentare',
+        'comment_reply' => 'Erhalte Benachrichtigungen für Antworten auf deine Kommentare',
         'title' => 'Benachrichtigungen',
         'topic_auto_subscribe' => 'automatisch benachrichtigungen zu den von dir erstellten forenthreads aktivieren',
 
@@ -64,7 +63,7 @@ return [
             'mail' => 'mail',
             'mapping' => 'beatmap-mapper',
             'push' => 'push',
-            'user_achievement_unlock' => 'medaille freigeschaltet',
+            'user_achievement_unlock' => 'Medaille freigeschaltet',
         ],
     ],
 
@@ -80,7 +79,7 @@ return [
         'title' => 'Optionen',
 
         'beatmapset_download' => [
-            '_' => 'Bevorzugter Betmap-Download Typ',
+            '_' => 'bevorzugter beatmap-download typ',
             'all' => 'mit Video, falls verfügbar',
             'direct' => 'in osu!direct öffnen',
             'no_video' => 'ohne video',

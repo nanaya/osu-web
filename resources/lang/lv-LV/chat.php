@@ -4,6 +4,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
+    'loading_users' => '',
     'talking_in' => '',
     'talking_with' => 'runā ar :name',
     'title_compact' => 'čats',
@@ -11,22 +12,47 @@ return [
     'cannot_send' => [
         'channel' => '',
         'user' => '',
-        'reasons' => [
-            'blocked' => 'Adresāts Jūs ir bloķējis',
-            'channel_moderated' => '',
-            'friends_only' => '',
-            'not_enough_plays' => '',
-            'not_verified' => '',
-            'restricted' => 'Tu pašlaik esi ierobežots',
-            'silenced' => '',
-            'target_restricted' => '',
+    ],
+
+    'channels' => [
+        'confirm_part' => '',
+        'create' => '',
+
+        'list' => [
+            'title' => [
+                'ANNOUNCE' => '',
+                'GROUP' => '',
+                'PM' => '',
+                'PUBLIC' => '',
+            ],
         ],
     ],
+
+    'form' => [
+        'title' => [
+            'announcement' => '',
+        ],
+
+        'labels' => [
+            'description' => '',
+            'name' => '',
+            'users' => '',
+        ],
+    ],
+
+    'not_found' => [
+        'message' => '',
+        'title' => '',
+    ],
+
     'input' => [
+        'create' => '',
         'disabled' => 'neizdevās nosūtīt ziņu...',
+        'disconnected' => 'Atvienots',
         'placeholder' => 'rakstīt ziņu...',
         'send' => 'Sūtīt',
     ],
+
     'no-conversations' => [
         'howto' => "",
         'lazer' => '',

@@ -4,8 +4,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
-    'page_description' => 'Mga itinatampok na artista sa osu!',
-    'title' => 'Mga Itinatampok na Artista',
+    'page_description' => 'Mga tampok na artista sa osu!',
+    'title' => 'Mga Tampok na Artista',
 
     'admin' => [
         'hidden' => 'ANG ARTISTA NA ITO AY KASALUKUYANG NAKATAGO',
@@ -13,8 +13,8 @@ return [
 
     'beatmaps' => [
         '_' => 'Mga beatmap',
-        'download' => 'I-download ang Beatmap Template',
-        'download-na' => 'Ang Beatmap Template na ito ay hindi pa makukuha',
+        'download' => 'I-download ang Template ng Beatmap',
+        'download-na' => 'Ang Template ng Beatmap ay hindi pa available',
     ],
 
     'index' => [
@@ -29,14 +29,34 @@ return [
 
     'songs' => [
         '_' => 'Mga kanta',
-        'count' => ':count_delimited na kanta|:count_delimited mga kanta',
-        'original' => 'osu! original',
+        'count' => ':count_delimited na kanta|:count_delimited na mga kanta',
+        'original' => 'osu! orihinal',
+        'original_badge' => 'ORIHINAL',
     ],
 
     'tracklist' => [
         'title' => 'pamagat',
         'length' => 'haba',
         'bpm' => 'bpm',
-        'genre' => 'genre',
+        'genre' => 'dyanra',
+    ],
+
+    'tracks' => [
+        'index' => [
+            '_' => 'paghahanap ng mga track',
+
+            'form' => [
+                'advanced' => 'Advanced na Paghahanap',
+                'album' => 'Album',
+                'artist' => 'Artista',
+                'bpm_gte' => 'Pinakamababang BPM',
+                'bpm_lte' => 'Pinakamataasang PM',
+                'empty' => 'Walang mga track na nakitang tumutugma sa pamantayan sa paghahanap.',
+                'genre' => 'Dyanra',
+                'genre_all' => 'Lahat',
+                'length_gte' => 'Pinakamababang Haba',
+                'length_lte' => 'Pinakamataasang Haba',
+            ],
+        ],
     ],
 ];

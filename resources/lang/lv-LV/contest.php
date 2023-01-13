@@ -31,6 +31,12 @@ return [
         'progress' => [
             '_' => '',
         ],
+
+        'requirement' => [
+            'playlist_beatmapsets' => [
+                'incomplete_play' => '',
+            ],
+        ],
     ],
     'entry' => [
         '_' => 'ieraksts',
@@ -44,6 +50,7 @@ return [
             'beatmap' => 'Šajā konkursā tiek pieņem tikai .osu failus.',
             'music' => 'Šajā konkursā tiek pieņem tikai .mp3 failus.',
         ],
+        'wrong_dimensions' => '',
         'too_big' => '',
     ],
     'beatmaps' => [

@@ -7,12 +7,6 @@ return [
     'admin' => [
         '_' => 'admin',
     ],
-    'admin_forum' => [
-        '_' => 'admin',
-    ],
-    'admin_store' => [
-        '_' => 'admin',
-    ],
     'error' => [
         'error' => [
             '400' => 'ugyldig forespørsel',
@@ -29,13 +23,12 @@ return [
     ],
     'forum' => [
         '_' => 'forum',
-        'topic_watches_controller' => [
-            'index' => 'dashbord',
+        'topic_logs_controller' => [
+            'index' => '',
         ],
     ],
     'main' => [
         'account_controller' => [
-            'edit' => 'dashbord',
             'verify_link' => 'kontobekreftelse',
         ],
         'artists_controller' => [
@@ -56,9 +49,6 @@ return [
         'beatmapset_events_controller' => [
             '_' => 'beatmaphistorie',
         ],
-        'beatmapset_watches_controller' => [
-            'index' => 'dashbord',
-        ],
         'beatmapsets_controller' => [
             'discussion' => 'beatmapdiskusjon',
             'index' => 'beatmapliste',
@@ -75,12 +65,6 @@ return [
         ],
         'contests_controller' => [
             '_' => 'konkurranser',
-        ],
-        'follows_controller' => [
-            'index' => '',
-        ],
-        'friends_controller' => [
-            'index' => 'dashbord',
         ],
         'groups_controller' => [
             'show' => 'grupper',
@@ -116,23 +100,16 @@ return [
         'scores_controller' => [
             '_' => 'gjennomføring',
         ],
-        'store_controller' => [
-            '_' => 'butikk',
-        ],
         'tournaments_controller' => [
             '_' => 'turneringer',
         ],
         'users_controller' => [
             '_' => 'spillerinfo',
+            'create' => '',
             'disabled' => 'varsel',
         ],
         'wiki_controller' => [
             '_' => 'wiki',
-        ],
-    ],
-    'multiplayer' => [
-        'rooms_controller' => [
-            '_' => 'rangering',
         ],
     ],
     'passport' => [

@@ -25,6 +25,11 @@ return [
             'index' => 'liste',
         ],
 
+        'beatmapsets' => [
+            'show' => '',
+            'discussions' => '',
+        ],
+
         'changelog' => [
             'index' => 'liste',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'modding',
-            'multiplayer' => '',
+            'playlists' => '',
+            'realtime' => '',
             'show' => 'info',
         ],
     ],
@@ -69,7 +75,7 @@ return [
         ],
         'help' => [
             '_' => 'hjelp',
-            'getAbuse' => '',
+            'getAbuse' => 'rapporter misbruk',
             'getFaq' => 'faq',
             'getRules' => 'regler',
             'getSupport' => 'nei, virkelig, jeg trenger hjelp!',

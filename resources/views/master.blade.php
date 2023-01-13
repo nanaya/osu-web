@@ -40,7 +40,7 @@
     $currentLocaleMeta ??= current_locale_meta();
 @endphp
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#" lang="{{ $currentLocaleMeta->html() }}">
+<html prefix="og: http://ogp.me/ns#" lang="{{ $contentLocale ?? $currentLocaleMeta->html() }}">
     <head>
         @include("layout.metadata")
         <title>{!! $title !!}</title>
@@ -80,19 +80,7 @@
             </div>
         @endif
         <div class="osu-layout__section osu-layout__section--full js-content {{ $currentSection }}_{{ $currentAction }}">
-            @include("layout.popup")
-            @if (View::hasSection('content'))
-                @yield('content')
-            @else
-                <div class="osu-layout__row osu-layout__row--page">
-                    <h1 class="text-center">
-                        <span class="dark">{{ $currentSection }}</span>
-                        /
-                        <span class="dark">{{ $currentAction }}</span>
-                        is <span class="normal">now printing</span> <span class="light">♪</span>
-                    </h1>
-                </div>
-            @endif
+            @yield('content')
         </div>
         @if (!isset($blank))
             @include("layout.gallery_window")

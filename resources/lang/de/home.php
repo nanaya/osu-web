@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "lass uns<br>loslegen!",
         'action' => 'osu! herunterladen',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'macOS-benutzer',
+        'mirror' => 'mirror',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "lass uns<br>loslegen!",
+        'video-guide' => 'Videoanleitung (Englisch)',
 
         'help' => [
             '_' => 'wenn du probleme mit dem starten des spiels oder der registrierung deines accounts hast, :help_forum_link oder :support_button.',
@@ -86,8 +99,6 @@ return [
             'macos' => 'für macOS',
             'linux' => 'für Linux',
         ],
-        'mirror' => 'mirror',
-        'macos-fallback' => 'macOS-benutzer',
         'steps' => [
             'register' => [
                 'title' => 'erstell einen account',
@@ -105,14 +116,13 @@ return [
                 ],
             ],
         ],
-        'video-guide' => 'Videoanleitung (Englisch)',
     ],
 
     'user' => [
         'title' => 'dashboard',
         'news' => [
             'title' => 'News',
-            'error' => 'News konnten nicht geladen werden. Versuche, die Seite neu zu laden...?',
+            'error' => 'News konnten nicht geladen werden. Versuche, die Seite neu zu laden?...',
         ],
         'header' => [
             'stats' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'osu! unterstützen',
             'store' => 'osu!store',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'Wow!',
-        'subtitle' => 'Dir scheint es ja richtig Spaß zu machen! :D',
-        'body' => [
-            'part-1' => 'Wusstest du, dass osu! ohne Werbung läuft und sich für seine Entwicklungs- und andere laufende Kosten auf die Unterstützung durch seine Spieler verlässt?',
-            'part-2' => 'Wusstest du auch, dass du fürs Unterstützen eine Menge nützlicher Features wie <strong>Beatmapdownloads innerhalb des Spiels</strong> (die im Mehrspieler oder beim Zuschauen automatisch starten) erhältst?',
-        ],
-        'find-out-more' => 'Hier klicken, um mehr herauszufinden!',
-        'download-starting' => "Oh, und keine Sorge - dein Download wurde schon für dich gestartet ;)",
     ],
 ];

@@ -31,6 +31,12 @@ return [
         'progress' => [
             '_' => ':used / :max szavazás használva',
         ],
+
+        'requirement' => [
+            'playlist_beatmapsets' => [
+                'incomplete_play' => 'Szavazás előtt, először játszanod kell az összes beatmappel a kiválasztott játéklistákban',
+            ],
+        ],
     ],
     'entry' => [
         '_' => 'jelentkezés',
@@ -44,6 +50,7 @@ return [
             'beatmap' => 'Csak .osu kiterjesztésű fájlok engedélyezettek erre a versenyre.',
             'music' => 'Csak .mp3 kiterjesztésű fájlok engedélyezettek erre a versenyre.',
         ],
+        'wrong_dimensions' => 'A beküldéseknek erre a versenyre :widthx:height méretűnek kell lennie',
         'too_big' => 'A jelentkezések száma erre a versenyre csak :limit lehet.',
     ],
     'beatmaps' => [

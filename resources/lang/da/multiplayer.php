@@ -4,19 +4,27 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
-    'empty' => '',
+    'empty' => [
+        '_' => 'Ingen osu!(lazer) :type_group spil spillet endnu!',
+        'playlists' => 'playlist',
+        'realtime' => 'multiplayer',
+    ],
 
     'room' => [
-        'hosted_by' => '',
-        'invalid_password' => '',
-        'map_count' => '',
-        'player_count' => '',
-        'time_left' => '',
+        'hosted_by' => 'ejet af :user',
+        'invalid_password' => 'Ugyldig adgangskode til rummet',
+        'map_count' => ':count_delimited map|:count_delimited maps',
+        'player_count' => ':count_delimited spillere|:count_delimited spillere',
+        'time_left' => ':time tilbage',
+
+        'errors' => [
+            'duration_too_long' => 'Varigheden er for lang.',
+        ],
 
         'status' => [
-            'active' => '',
-            'ended' => '',
-            'soon' => '',
+            'active' => 'aktiv',
+            'ended' => 'afsluttet',
+            'soon' => 'afslutter snart',
         ],
     ],
 ];

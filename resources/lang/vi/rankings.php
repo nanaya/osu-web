@@ -13,16 +13,16 @@ return [
         'title' => 'Hiển thị',
 
         'variant' => [
-            'title' => '',
+            'title' => 'Biến thể',
         ],
     ],
 
     'type' => [
-        'charts' => 'Tiêu điểm',
+        'charts' => 'tiêu điểm',
         'country' => 'Quốc gia',
-        'multiplayer' => '',
-        'performance' => 'Performance',
-        'score' => 'Điểm',
+        'multiplayer' => 'nhiều người chơi',
+        'performance' => 'thành tích',
+        'score' => 'số điểm',
     ],
 
     'spotlight' => [
@@ -37,11 +37,11 @@ return [
         'active_users' => 'Số người đang hoạt động',
         'country' => 'Quốc gia',
         'play_count' => 'Số lần chơi',
-        'performance' => 'Performance',
+        'performance' => 'Thành tích',
         'total_score' => 'Tổng số điểm',
         'ranked_score' => 'Điểm được xếp hạng',
         'average_score' => 'Điểm trung bình',
-        'average_performance' => 'pp Trung Bình',
+        'average_performance' => 'Thành tích trung bình',
         'ss' => '',
         's' => '',
         'a' => '',

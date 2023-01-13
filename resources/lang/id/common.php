@@ -4,8 +4,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
-    'confirmation' => 'Apakah Anda yakin?',
-    'confirmation_unsaved' => 'Perubahan-perubahan yang tidak disimpan akan hilang. Apakah Anda yakin?',
+    'confirmation' => 'Apakah kamu yakin?',
+    'confirmation_unsaved' => 'Segala perubahan yang tidak disimpan akan hilang. Apakah kamu yakin?',
     'saved' => 'Tersimpan',
 
     'array_and' => [
@@ -44,10 +44,11 @@ return [
         'reply_resolve' => 'Balas dan Tutup',
         'reset' => 'Atur Ulang',
         'restore' => 'Pulihkan',
+        'retry' => 'Coba lagi',
         'save' => 'Simpan',
         'saving' => 'Menyimpan...',
         'search' => 'Cari',
-        'see_more' => 'perlihatkan lebih banyak',
+        'see_more' => 'tampilkan lebih banyak',
         'show' => 'tampilkan',
         'show_deleted' => 'Tampilkan yang telah dihapus',
         'show_less' => 'tampilkan lebih sedikit',
@@ -59,8 +60,8 @@ return [
         'upload_image' => 'unggah gambar',
 
         'watch' => [
-            'to_0' => 'Batalkan Pantauan',
-            'to_1' => 'Pantau',
+            'to_0' => 'Berhenti Ikuti',
+            'to_1' => 'Ikuti',
         ],
     ],
 
@@ -156,7 +157,7 @@ return [
     ],
 
     'wrong_user' => [
-        '_' => 'Anda terdaftar masuk sebagai :user. :logout_link.',
+        '_' => 'Kamu terdaftar masuk sebagai :user. :logout_link.',
         'logout_link' => 'Klik di sini untuk masuk sebagai pengguna lain',
     ],
 ];

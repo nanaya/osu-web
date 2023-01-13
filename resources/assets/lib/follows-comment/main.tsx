@@ -1,32 +1,29 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import FollowToggle from 'follow-toggle';
-import FollowsSubtypes from 'follows-subtypes';
-import HeaderV4 from 'header-v4';
+import FollowToggle from 'components/follow-toggle';
+import FollowsSubtypes from 'components/follows-subtypes';
+import HeaderV4 from 'components/header-v4';
+import StringWithComponent from 'components/string-with-component';
+import TimeWithTooltip from 'components/time-with-tooltip';
 import homeLinks from 'home-links';
+import CurrentUserJson from 'interfaces/current-user-json';
 import FollowCommentJson from 'interfaces/follow-comment-json';
-import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import * as React from 'react';
-import StringWithComponent from 'string-with-component';
-import TimeWithTooltip from 'time-with-tooltip';
+import { trans } from 'utils/lang';
 
 interface Props {
   follows: FollowCommentJson[];
-  user: UserJson;
+  user: CurrentUserJson;
 }
 
 export default class Main extends React.PureComponent<Props> {
-  static defaultProps = {
-    user: currentUser,
-  };
-
   render() {
     return (
       <div className='osu-layout osu-layout--full'>
         <HeaderV4
-          backgroundImage={this.props.user.cover?.url}
+          backgroundImage={this.props.user.cover.url}
           links={homeLinks('follows.index')}
           theme='settings'
         />
@@ -35,7 +32,7 @@ export default class Main extends React.PureComponent<Props> {
           <FollowsSubtypes currentSubtype='comment' />
 
           {this.props.follows.length === 0
-            ? osu.trans('follows.comment.empty')
+            ? trans('follows.comment.empty')
             : (
               <table className='follows-table'>
                 <tbody>
@@ -56,7 +53,7 @@ export default class Main extends React.PureComponent<Props> {
       <tr key={key} className='follows-table__row'>
         <td className='follows-table__data'>
           <div className='type-badge'>
-            {osu.trans(`comments.commentable_name.${follow.notifiable_type}`)}
+            {trans(`comments.commentable_name.${follow.notifiable_type}`)}
           </div>
         </td>
 
@@ -75,10 +72,10 @@ export default class Main extends React.PureComponent<Props> {
                   time: <TimeWithTooltip dateTime={follow.latest_comment.created_at} relative />,
                   username: follow.latest_comment.user?.username ?? '???',
                 }}
-                pattern={osu.trans('follows.comment.table.latest_comment_value')}
+                pattern={trans('follows.comment.table.latest_comment_value')}
               />
             </a>
-          ) : osu.trans('follows.comment.table.latest_comment_empty')}
+          ) : trans('follows.comment.table.latest_comment_empty')}
         </td>
 
         <td className='follows-table__data'>

@@ -3,6 +3,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+declare(strict_types=1);
+
 namespace Tests\Controllers\Solo;
 
 use App\Models\Beatmap;
@@ -13,46 +15,111 @@ use Tests\TestCase;
 
 class ScoreTokensControllerTest extends TestCase
 {
+    private Build $build;
+    private User $user;
+
     /**
      * @dataProvider dataProviderForTestStore
      */
-    public function testStore($beatmapState, $passRulesetId, $hashParam, $status)
+    public function testStore(string $beatmapState, int $status): void
     {
-        $user = User::factory()->create();
         $beatmap = Beatmap::factory()->$beatmapState()->create();
-        $build = Build::factory()->create(['allow_ranking' => true]);
-        $initialScoreTokenCount = ScoreToken::count();
 
-        $this->actAsScopedUser($user, ['*']);
+        $routeParams = [
+            'beatmap' => $beatmap->getKey(),
+            'ruleset_id' => $beatmap->playmode,
+        ];
+        $bodyParams = [
+            'beatmap_hash' => $beatmap->checksum,
+            'version_hash' => bin2hex($this->build->hash),
+        ];
 
-        $routeParams = ['beatmap' => $beatmap->getKey()];
-        if ($passRulesetId) {
-            $routeParams['ruleset_id'] = $beatmap->playmode;
-        }
+        $this->expectCountChange(fn () => ScoreToken::count(), $status >= 200 && $status < 300 ? 1 : 0);
 
-        $bodyParams = [];
-        if ($hashParam !== null) {
-            $bodyParams['version_hash'] = $hashParam ? bin2hex($build->hash) : md5('invalid_');
-        }
-
+        $this->actAsScopedUser($this->user, ['*']);
         $this->json(
             'POST',
             route('api.beatmaps.solo.score-tokens.store', $routeParams),
             $bodyParams
         )->assertStatus($status);
-
-        $countDiff = ((string) $status)[0] === '2' ? 1 : 0;
-
-        $this->assertSame($initialScoreTokenCount + $countDiff, ScoreToken::count());
     }
 
-    public function dataProviderForTestStore()
+    /**
+     * @dataProvider dataProviderForTestStoreInvalidParameter
+     */
+    public function testStoreInvalidParameter(string $paramKey, ?string $paramValue, int $status): void
+    {
+        $beatmap = Beatmap::factory()->ranked()->create();
+
+        $this->actAsScopedUser($this->user, ['*']);
+
+        $params = [
+            'beatmap' => $beatmap->getKey(),
+            'ruleset_id' => $beatmap->playmode,
+            'version_hash' => bin2hex($this->build->hash),
+            'beatmap_hash' => $beatmap->checksum,
+        ];
+        $params[$paramKey] = $paramValue;
+
+        $routeParams = [
+            'beatmap' => $params['beatmap'],
+            'ruleset_id' => $params['ruleset_id'],
+        ];
+        $bodyParams = [
+            'beatmap_hash' => $params['beatmap_hash'],
+            'version_hash' => $params['version_hash'],
+        ];
+
+        $this->expectCountChange(fn () => ScoreToken::count(), 0);
+
+        $errorMessage = $paramValue === null ? 'missing' : 'invalid';
+        $errorMessage .= ' ';
+        $errorMessage .= $paramKey === 'version_hash'
+            ? ($paramValue === null
+                ? 'client version'
+                : 'client hash'
+            ) : $paramKey;
+
+        $this->json(
+            'POST',
+            route('api.beatmaps.solo.score-tokens.store', $routeParams),
+            $bodyParams
+        )->assertStatus($status)
+        ->assertJson([
+            'error' => $errorMessage,
+        ]);
+    }
+
+    public function dataProviderForTestStore(): array
     {
         return [
-            'ok' => ['ranked', true, true, 200],
-            'pending beatmap' => ['wip', true, true, 404],
-            'missing ruleset id' => ['ranked', false, true, 422],
-            'invalid hash' => ['ranked', true, false, 422],
+            ['deleted', 404],
+            ['deletedBeatmapset', 404],
+            ['inactive', 404],
+            ['ranked', 200],
+            ['wip', 200],
         ];
+    }
+
+    public function dataProviderForTestStoreInvalidParameter(): array
+    {
+        return [
+            'invalid build hash' => ['version_hash', md5('invalid_'), 422],
+            'missing build hash' => ['version_hash', null, 422],
+
+            'invalid ruleset id' => ['ruleset_id', '5', 422],
+            'missing ruleset id' => ['ruleset_id', null, 422],
+
+            'invalid beatmap hash' => ['beatmap_hash', 'xxx', 422],
+            'missing beatmap hash' => ['beatmap_hash', null, 422],
+        ];
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+        $this->build = Build::factory()->create(['allow_ranking' => true]);
     }
 }

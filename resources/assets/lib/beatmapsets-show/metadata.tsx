@@ -1,95 +1,100 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import Modal from 'components/modal';
+import TimeWithTooltip from 'components/time-with-tooltip';
+import { UserLink } from 'components/user-link';
+import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
-import { Modal } from 'modal';
-import { deletedUser } from 'models/user';
+import { action, computed, makeObservable, observable } from 'mobx';
+import { observer } from 'mobx-react';
 import * as moment from 'moment';
 import * as React from 'react';
-import TimeWithTooltip from 'time-with-tooltip';
-import { UserLink } from 'user-link';
+import { trans } from 'utils/lang';
+import Controller from './controller';
 import MetadataEditor from './metadata-editor';
 
 interface Props {
-  beatmapset: BeatmapsetExtendedJson;
+  controller: Controller;
 }
 
-interface State {
-  isEditing: boolean;
-}
+@observer
+export default class Metadata extends React.PureComponent<Props> {
+  @observable private isEditing = false;
 
-export default class Metadata extends React.PureComponent<Props, State> {
+  private get beatmapset() {
+    return this.props.controller.beatmapset;
+  }
+
+  @computed
+  private get nominators() {
+    const ret: UserJson[] = [];
+    const usersById = this.props.controller.usersById;
+    for (const nomination of this.props.controller.beatmapset.current_nominations) {
+      const user = usersById[nomination.user_id];
+      if (user != null) {
+        ret.push(user);
+      }
+    }
+
+    return ret;
+  }
+
   constructor(props: Props) {
     super(props);
-
-    this.state = {
-      isEditing: false,
-    };
+    makeObservable(this);
   }
 
   render() {
-    const tags = this.props.beatmapset.tags.split(' ');
-    const canEdit = this.props.beatmapset.current_user_attributes?.can_edit_metadata ?? false;
-    const nominators = this.props.beatmapset.beatmapset_nominations?.filter((n) => n.reset === 0).map((n) => n.user ?? deletedUser.toJson());
+    const tags = this.beatmapset.tags.split(' ');
+    const canEdit = this.beatmapset.current_user_attributes?.can_edit_metadata ?? false;
+    const nominators = this.nominators;
 
     return (
       <div className='beatmapset-metadata u-fancy-scrollbar'>
-        {this.state.isEditing && (
-          <Modal onClose={this.toggleEditing} visible>
-            <MetadataEditor beatmapset={this.props.beatmapset} onClose={this.toggleEditing} />
+        {this.isEditing && (
+          <Modal onClose={this.toggleEditing}>
+            <MetadataEditor controller={this.props.controller} onClose={this.toggleEditing} />
           </Modal>
         )}
 
-        <div>
-          {osu.trans('beatmapsets.show.info.creator')}
-        </div>
-        <div className='beatmapset-metadata__value'>
-          <UserLink
-            user={{
-              id: this.props.beatmapset.user_id,
-              username: this.props.beatmapset.creator,
-            }}
-          />
-        </div>
-
-        {this.props.beatmapset.source !== '' && (
+        {this.beatmapset.source !== '' && (
           <>
             <div>
-              {osu.trans('beatmapsets.show.info.source')}
+              {trans('beatmapsets.show.info.source')}
             </div>
             <div className='beatmapset-metadata__value'>
-              <a href={route('beatmapsets.index', { q: this.props.beatmapset.source })}>
-                {this.props.beatmapset.source}
+              <a href={route('beatmapsets.index', { q: this.beatmapset.source })}>
+                {this.beatmapset.source}
               </a>
             </div>
           </>
         )}
 
         <div>
-          {osu.trans('beatmapsets.show.info.genre')}
+          {trans('beatmapsets.show.info.genre')}
         </div>
         <div className='beatmapset-metadata__value'>
-          <a href={route('beatmapsets.index', { g: this.props.beatmapset.genre.id })}>
-            {this.props.beatmapset.genre.name}
+          <a href={route('beatmapsets.index', { g: this.beatmapset.genre.id })}>
+            {this.beatmapset.genre.name}
           </a>
         </div>
 
         <div className='beatmapset-metadata__spacer' />
 
         <div>
-          {osu.trans('beatmapsets.show.info.language')}
+          {trans('beatmapsets.show.info.language')}
         </div>
         <div className='beatmapset-metadata__value'>
-          <a href={route('beatmapsets.index', { l: this.props.beatmapset.language.id })}>
-            {this.props.beatmapset.language.name}
+          <a href={route('beatmapsets.index', { l: this.beatmapset.language.id })}>
+            {this.beatmapset.language.name}
           </a>
         </div>
 
         {tags.length > 0 && (
           <>
             <div>
-              {osu.trans('beatmapsets.show.info.tags')}
+              {trans('beatmapsets.show.info.tags')}
             </div>
             <div className='beatmapset-metadata__value beatmapset-metadata__value--tags'>
               {tags.map((tag, idx) => (
@@ -109,7 +114,7 @@ export default class Metadata extends React.PureComponent<Props, State> {
         {nominators != null && nominators.length > 0 && (
           <>
             <div>
-              {osu.trans('beatmapsets.show.info.nominators')}
+              {trans('beatmapsets.show.info.nominators')}
             </div>
             <div className='beatmapset-metadata__value'>
               {nominators.map((nominator, idx) => (
@@ -122,29 +127,33 @@ export default class Metadata extends React.PureComponent<Props, State> {
           </>
         )}
 
-        <div>
-          {osu.trans('beatmapsets.show.info.submitted')}
-        </div>
-        <div className='beatmapset-metadata__value'>
-          {this.renderDate(this.props.beatmapset.submitted_date)}
-        </div>
-
-        {this.props.beatmapset.ranked > 0 ? (
+        {this.beatmapset.submitted_date != null && (
           <>
             <div>
-              {osu.trans(`beatmapsets.show.info.${this.props.beatmapset.status}`)}
+              {trans('beatmapsets.show.info.submitted')}
             </div>
             <div className='beatmapset-metadata__value'>
-              {this.renderDate(this.props.beatmapset.ranked_date)}
+              {this.renderDate(this.beatmapset.submitted_date)}
+            </div>
+          </>
+        )}
+
+        {this.beatmapset.ranked > 0 && this.beatmapset.ranked_date != null ? (
+          <>
+            <div>
+              {trans(`beatmapsets.show.info.${this.beatmapset.status}`)}
+            </div>
+            <div className='beatmapset-metadata__value'>
+              {this.renderDate(this.beatmapset.ranked_date)}
             </div>
           </>
         ) : (
           <>
             <div>
-              {osu.trans('beatmapsets.show.info.updated')}
+              {trans('beatmapsets.show.info.updated')}
             </div>
             <div className='beatmapset-metadata__value'>
-              {this.renderDate(this.props.beatmapset.last_updated)}
+              {this.renderDate(this.beatmapset.last_updated)}
             </div>
           </>
         )}
@@ -175,7 +184,8 @@ export default class Metadata extends React.PureComponent<Props, State> {
     );
   }
 
-  private toggleEditing = () => {
-    this.setState({ isEditing: !this.state.isEditing });
+  @action
+  private readonly toggleEditing = () => {
+    this.isEditing = !this.isEditing;
   };
 }

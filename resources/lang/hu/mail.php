@@ -15,6 +15,7 @@ return [
         'closing' => 'Üdvözlettel',
         'hello' => 'Üdvözöllek :user',
         'report' => 'Kérlek válaszolj erre az emailre AZZONAL, ha nem szeretnéd ezt a változást.',
+        'ignore' => 'Ha nem te kérted ezt, nyugodtan figyelmen kívül hagyhatod ezt az e-mailt.',
     ],
 
     'donation_thanks' => [
@@ -66,6 +67,7 @@ return [
         'duration' => 'Nekik köszönhetően, hozzáférésed van az osu!directhez és egyéb támogatói előnyökhöz egészen :duration-ig.',
         'features' => 'További adatokat itt találhatsz:',
         'gifted' => 'Valaki ajándékba adott egy osu!támogatói címet!',
+        'gift_message' => 'Az ajándékozód ezt az üzenetet hagyta: ',
         'subject' => 'osu!támogatói címet kaptál!',
     ],
 

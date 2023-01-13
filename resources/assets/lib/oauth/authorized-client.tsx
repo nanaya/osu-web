@@ -1,12 +1,14 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BigButton from 'big-button';
+import BigButton from 'components/big-button';
+import StringWithComponent from 'components/string-with-component';
+import { UserLink } from 'components/user-link';
 import { observer } from 'mobx-react';
 import { Client } from 'models/oauth/client';
 import * as React from 'react';
-import StringWithComponent from 'string-with-component';
-import { UserLink } from 'user-link';
+import { onError } from 'utils/ajax';
+import { trans } from 'utils/lang';
 
 interface Props {
   client: Client;
@@ -28,7 +30,7 @@ export class AuthorizedClient extends React.Component<Props> {
               mappings={{
                 user: <UserLink user={client.user} />,
               }}
-              pattern={osu.trans('oauth.authorized_clients.owned_by')}
+              pattern={trans('oauth.authorized_clients.owned_by')}
             />
           </span>
           <div className='oauth-client__scopes'>
@@ -44,7 +46,7 @@ export class AuthorizedClient extends React.Component<Props> {
             props={{
               onClick: this.revokeClicked,
             }}
-            text={osu.trans(`oauth.authorized_clients.revoked.${client.revoked}`)}
+            text={trans(`oauth.authorized_clients.revoked.${client.revoked}`)}
           />
         </div>
       </div>
@@ -55,13 +57,13 @@ export class AuthorizedClient extends React.Component<Props> {
     const scopes = Array.from(this.props.client.scopes).sort();
     return (
       <>
-        <div>{osu.trans('oauth.authorized_clients.scopes_title')}</div>
+        <div>{trans('oauth.authorized_clients.scopes_title')}</div>
         <ul className='oauth-scopes'>
           {
             scopes.map((scope) => (
               <li key={scope}>
                 <span className='oauth-scopes__icon'><span className='fas fa-check' /></span>
-                {osu.trans(`api.scopes.${scope}`)}
+                {trans(`api.scopes.${scope}`)}
               </li>
             ))
           }
@@ -71,8 +73,8 @@ export class AuthorizedClient extends React.Component<Props> {
   }
 
   revokeClicked = () => {
-    if (!confirm(osu.trans('oauth.authorized_clients.confirm_revoke'))) return;
+    if (!confirm(trans('oauth.authorized_clients.confirm_revoke'))) return;
 
-    this.props.client.revoke().catch(osu.ajaxError);
+    this.props.client.revoke().fail(onError);
   };
 }

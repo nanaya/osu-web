@@ -11,12 +11,16 @@ return [
         'rule_violation' => 'Iilang bagay sa map na ito ang tinanggal pagkatapos ituring na hindi angkop para gamitin sa osu!.',
     ],
 
+    'cover' => [
+        'deleted' => 'Tinanggal na beatmap',
+    ],
+
     'download' => [
         'limit_exceeded' => 'Hinay lang, maglaro ka muna.',
     ],
 
     'featured_artist_badge' => [
-        'label' => 'Featured artist',
+        'label' => 'Itinatampok na artista',
     ],
 
     'index' => [
@@ -36,7 +40,7 @@ return [
     ],
 
     'nominate' => [
-        'hybrid_requires_modes' => 'Kailangan mong pumili ng kahit isang playmode na i-nonominate sa hybrid na mga beatmap.',
+        'hybrid_requires_modes' => 'Ang isang hybrid na beatmap ay kinailangan na ikaw ay pumili ng kahit isang playmode upang makanominate.',
         'incorrect_mode' => 'Wala kang pahintulot na mag-nominate para sa mode :mode',
         'full_bn_required' => 'Kailangan mong maging full nominator para maisagawa ang qualifying nomination na ito.',
         'too_many' => 'Nabuo na ang pangangailangan sa nominasyon.',
@@ -62,6 +66,7 @@ return [
             'favourite_login' => 'Mag-sign in para i-favourite ang beatmap na ito',
             'logged-out' => 'Kailangan mong mag-sign-in bago ka pwedeng mag-download ng mga beatmap!',
             'mapped_by' => 'minapa ni :mapper',
+            'mapped_by_guest' => '',
             'unfavourite' => 'I-unfavorite ang beatmap na ito',
             'updated_timeago' => 'huling na-update sa :timeago',
 
@@ -120,7 +125,9 @@ return [
             'genre' => 'Dyanre',
             'language' => 'Wika',
             'no_scores' => 'Kinakalkula pa ang mga datos...',
+            'nominators' => 'Mga nominador',
             'nsfw' => 'Maselang nilalaman',
+            'offset' => 'Online na offset',
             'points-of-failure' => 'Mga punto ng pagkabigo',
             'source' => 'Pinagmulan',
             'storyboard' => 'Ang beatmap na ito ay may storyboard',
@@ -143,6 +150,7 @@ return [
         'scoreboard' => [
             'achieved' => 'nakamit nang :when',
             'country' => 'Ranggong Pambansa',
+            'error' => 'Hindi ma-load ang ranking',
             'friend' => 'Ranggo sa Kaibigan',
             'global' => 'Pandaigdigang Ranggo',
             'supporter-link' => 'I-click <a href=":link">ito</a> para makita ang mga feature na iyong matatamasa!',
@@ -154,11 +162,12 @@ return [
                 'combo' => 'Pinakamahabang Combo',
                 'miss' => 'Miss',
                 'mods' => 'Mods',
+                'pin' => 'Pin',
                 'player' => 'Manlalaro',
                 'pp' => '',
                 'rank' => 'Rank',
-                'score_total' => 'Kabuuang Puntos',
                 'score' => 'Puntos',
+                'score_total' => 'Kabuuang Puntos',
                 'time' => 'Oras',
             ],
 
@@ -173,6 +182,10 @@ return [
                 'first' => 'Nangunguna',
                 'own' => 'Iyong Best',
             ],
+            'supporter_link' => [
+                '_' => 'Pindutin :here para makita ang mga fancy features na makukuha mo!',
+                'here' => 'ito',
+            ],
         ],
 
         'stats' => [
@@ -186,6 +199,7 @@ return [
             'bpm' => 'BPM',
             'count_circles' => 'Bilang ng Bilog',
             'count_sliders' => 'Bilang ng Slider',
+            'offset' => 'Online na offset: :offset',
             'user-rating' => 'Rating ng mga User',
             'rating-spread' => 'Pagkakalatag ng Rating',
             'nominations' => 'Mga Nominasyon',
@@ -201,5 +215,9 @@ return [
             'pending' => 'Nakabinbin',
             'graveyard' => 'Abandunado',
         ],
+    ],
+
+    'spotlight_badge' => [
+        'label' => 'Ang Spotlight',
     ],
 ];

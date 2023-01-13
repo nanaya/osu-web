@@ -2,22 +2,28 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BeatmapList from 'beatmap-discussions/beatmap-list';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import StringWithComponent from 'components/string-with-component';
+import { UserLink } from 'components/user-link';
+import BeatmapJson from 'interfaces/beatmap-json';
 import { route } from 'laroute';
+import { observer } from 'mobx-react';
 import * as React from 'react';
-import StringWithComponent from 'string-with-component';
-import { UserLink } from 'user-link';
 import { getArtist, getTitle } from 'utils/beatmap-helper';
+import { generate as generateHash } from 'utils/beatmapset-page-hash';
+import { trans } from 'utils/lang';
 import BeatmapPicker from './beatmap-picker';
+import Controller from './controller';
 
 interface Props {
-  beatmaps: BeatmapExtendedJson[];
-  beatmapset: BeatmapsetExtendedJson;
-  currentBeatmap: BeatmapExtendedJson;
+  controller: Controller;
 }
 
-export default class Header extends React.PureComponent<Props> {
+@observer
+export default class Header extends React.Component<Props> {
+  private get controller() {
+    return this.props.controller;
+  }
+
   render() {
     return (
       <div className='beatmapset-header'>
@@ -25,16 +31,16 @@ export default class Header extends React.PureComponent<Props> {
           <div
             className='beatmapset-status beatmapset-status--header'
             style={{
-              '--bg': `var(--beatmapset-${this.props.currentBeatmap.status}-bg)`,
-              '--colour': `var(--beatmapset-${this.props.currentBeatmap.status}-colour)`,
+              '--bg': `var(--beatmapset-${this.controller.currentBeatmap.status}-bg)`,
+              '--colour': `var(--beatmapset-${this.controller.currentBeatmap.status}-colour)`,
             } as React.CSSProperties}
           >
-            {osu.trans(`beatmapsets.show.status.${this.props.currentBeatmap.status}`)}
+            {trans(`beatmapsets.show.status.${this.controller.currentBeatmap.status}`)}
           </div>
 
-          {this.props.beatmapset.nsfw && (
-            <div className='nsfw-badge nsfw-badge--header'>
-              {osu.trans('beatmapsets.nsfw_badge.label')}
+          {this.controller.beatmapset.nsfw && (
+            <div className='beatmapset-badge beatmapset-badge--header beatmapset-badge--nsfw'>
+              {trans('beatmapsets.nsfw_badge.label')}
             </div>
           )}
         </div>
@@ -43,25 +49,24 @@ export default class Header extends React.PureComponent<Props> {
           <div className='beatmapset-header__title u-ellipsis-overflow'>
             <a
               className='beatmapset-header__text-link'
-              href={route('beatmapsets.index', { q: getTitle(this.props.beatmapset) })}
+              href={route('beatmapsets.index', { q: getTitle(this.controller.beatmapset) })}
             >
-              {getTitle(this.props.beatmapset)}
+              {getTitle(this.controller.beatmapset)}
             </a>
           </div>
 
           <div className='beatmapset-header__artist u-ellipsis-overflow'>
             <StringWithComponent
               mappings={{
-                ':artist':
+                artist:
                   <a
-                    key='artist'
                     className='beatmapset-header__text-link'
-                    href={route('beatmapsets.index', { q: getArtist(this.props.beatmapset) })}
+                    href={route('beatmapsets.index', { q: getArtist(this.controller.beatmapset) })}
                   >
-                    {getArtist(this.props.beatmapset)}
+                    {getArtist(this.controller.beatmapset)}
                   </a>,
               }}
-              pattern={osu.trans('beatmapsets.show.details.by_artist')}
+              pattern={trans('beatmapsets.show.details.by_artist')}
             />
           </div>
         </div>
@@ -69,42 +74,49 @@ export default class Header extends React.PureComponent<Props> {
         <div className='beatmapset-header__creator'>
           <StringWithComponent
             mappings={{
-              ':creator':
+              creator:
                 <UserLink
-                  key='creator'
-                  user={{ id: this.props.beatmapset.user_id, username: this.props.beatmapset.creator }}
+                  user={{ id: this.controller.beatmapset.user_id, username: this.controller.beatmapset.creator }}
                 />,
             }}
-            pattern={osu.trans('beatmapsets.show.details.created_by')}
+            pattern={trans('beatmapsets.show.details.created_by')}
           />
         </div>
 
         <div className='beatmapset-header__chooser'>
           <div className='beatmapset-header__chooser-list'>
             <BeatmapList
-              beatmaps={this.props.beatmaps}
-              beatmapset={this.props.beatmapset}
-              currentBeatmap={this.props.currentBeatmap}
+              beatmaps={this.controller.currentBeatmaps}
+              beatmapset={this.controller.beatmapset}
+              createLink={this.generateBeatmapLink}
+              currentBeatmap={this.controller.currentBeatmap}
               large={false}
-              modifiers={['beatmapset-show']}
+              modifiers='beatmapset-show'
               onSelectBeatmap={this.onSelectBeatmap}
+              users={this.controller.usersById}
             />
           </div>
 
           <div className='beatmapset-header__chooser-picker'>
-            <BeatmapPicker
-              beatmaps={this.props.beatmaps}
-              currentBeatmap={this.props.currentBeatmap}
-            />
+            <BeatmapPicker controller={this.controller} />
           </div>
         </div>
       </div>
     );
   }
 
-  private onSelectBeatmap = (beatmapId: number) => {
-    const selectedBeatmap = this.props.beatmaps.find((beatmap) => beatmap.id === beatmapId);
+  private readonly generateBeatmapLink = (beatmap: BeatmapJson) => generateHash({
+    beatmap,
+    ruleset: this.controller.currentBeatmap.mode,
+  });
 
-    $.publish('beatmapset:beatmap:set', { beatmap: selectedBeatmap });
+  private onSelectBeatmap = (beatmapId: number) => {
+    const selectedBeatmap = this.controller.currentBeatmaps.find((beatmap) => beatmap.id === beatmapId);
+
+    if (selectedBeatmap == null) {
+      throw new Error('invalid beatmapId specified');
+    }
+
+    this.controller.setCurrentBeatmap(selectedBeatmap);
   };
 }

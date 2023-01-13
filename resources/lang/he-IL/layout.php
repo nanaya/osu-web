@@ -25,6 +25,11 @@ return [
             'index' => 'רשימה',
         ],
 
+        'beatmapsets' => [
+            'show' => '',
+            'discussions' => '',
+        ],
+
         'changelog' => [
             'index' => 'רשימה',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'מודינג',
-            'multiplayer' => '',
+            'playlists' => '',
+            'realtime' => '',
             'show' => 'מידע',
         ],
     ],

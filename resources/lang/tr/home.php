@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "haydi seni<br>oyuna hazırlayalım!",
         'action' => 'osu!\'yu indir',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'macOS kullanıcıları',
+        'mirror' => 'alternatif',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "haydi seni<br>oyuna hazırlayalım!",
+        'video-guide' => 'video kılavuzu',
 
         'help' => [
             '_' => 'oyunu çalıştırırken ya da hesap oluştururken herhangi bir sorun yaşıyorsanız, :help_forum_link veya :support_button.',
@@ -86,8 +99,6 @@ return [
             'macos' => 'macOS için',
             'linux' => 'Linux için',
         ],
-        'mirror' => 'alternatif',
-        'macos-fallback' => 'macOS kullanıcıları',
         'steps' => [
             'register' => [
                 'title' => 'bir hesap oluştur',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => 'video kılavuzu',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'osu!\'yu destekle',
             'store' => 'osu!store',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'Vay canına!',
-        'subtitle' => 'İyi vakit geçiriyor gibi görünüyorsunuz! :D',
-        'body' => [
-            'part-1' => 'Osu!\'nun reklamsız çalıştığını, geliştirme ve yürütme masraflarının karşılanmasında ise kendi oyuncularının desteğine güvendiğini biliyor muydun?',
-            'part-2' => 'Ayrıca, osu!\'yu destekleyerek, izleme modunda ve çoklu oyunculu oyunlarda otomatik olarak devreye giren <strong>oyun içi indirme</strong> özelliği gibi bir çok yararlı özelliklere sahip olabileceğini de biliyor muydun?',
-        ],
-        'find-out-more' => 'Daha fazlasını öğrenmek için buraya tıkla!',
-        'download-starting' => "Ah, bu arada, endişelenme! - indirme işlemin senin için çoktan başladı bile ;)",
     ],
 ];

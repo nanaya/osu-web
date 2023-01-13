@@ -42,7 +42,7 @@ return [
 
             'label' => [
                 'forum' => '在論壇中搜尋',
-                'forum_children' => '包含小主題',
+                'forum_children' => '包括小主題',
                 'topic_id' => '主題 #',
                 'username' => '作者',
             ],
@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "讓我們<br>開始吧！",
         'action' => '下載 osu!',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'macOS 使用者',
+        'mirror' => '鏡像站',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "讓我們<br>開始吧！",
+        'video-guide' => '影片教學',
 
         'help' => [
             '_' => '如果您在啟動遊戲或註冊帳號時遇到問題，請:help_forum_link或:support_button。',
@@ -86,8 +99,6 @@ return [
             'macos' => 'macOS 版',
             'linux' => 'Linux 版',
         ],
-        'mirror' => '鏡像站',
-        'macos-fallback' => 'macOS 使用者',
         'steps' => [
             'register' => [
                 'title' => '註冊帳號',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => '影片教學',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => '贊助 osu!',
             'store' => 'osu! 商店',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => '哇！',
-        'subtitle' => '看起來你玩得很開心！',
-        'body' => [
-            'part-1' => '你知道嗎？ osu! 是一款沒有廣告，完全依賴玩家贊助以維持開發及營運的遊戲。',
-            'part-2' => '如果你選擇給 osu! 捐贈，就可以解鎖額外的功能，例如<strong>遊戲內自動下載</strong>。',
-        ],
-        'find-out-more' => '點擊這裡以瞭解更多',
-        'download-starting' => "喔 ! 別擔心 - 下載已經開始了 ;)",
     ],
 ];

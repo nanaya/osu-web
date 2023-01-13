@@ -10,7 +10,7 @@ return [
         'peak' => 'Κορύφωση, :count συνδεδεμένοι χρήστες',
         'players' => '<strong>:count</strong> εγγεγραμμένοι παίκτες',
         'title' => 'καλώς ήρθατε',
-        'see_more_news' => '',
+        'see_more_news' => 'δείτε περισσότερα νέα',
 
         'slogan' => [
             'main' => 'το καλυτερότερο free-to-win ρυθμικό παιχνίδι',
@@ -27,7 +27,7 @@ return [
         'title' => 'Αναζήτηση',
 
         'beatmapset' => [
-            'login_required' => '',
+            'login_required' => 'Συνδεθείτε για να αναζητήσετε beatmaps',
             'more' => ':count περισσότερα αποτελέσματα αναζήτησης beatmap',
             'more_simple' => 'Δείτε περισσότερα αποτελέσματα αναζήτησης beatmap',
             'title' => 'Beatmaps',
@@ -57,7 +57,7 @@ return [
         ],
 
         'user' => [
-            'login_required' => '',
+            'login_required' => 'Συνδεθείτε για να αναζητήσετε χρήστες',
             'more' => ':count περισσότερα αποτελέσματα αναζήτησης παίκτη',
             'more_simple' => 'Δείτε περισσότερα αποτελέσματα αναζήτησης παίκτη',
             'more_hidden' => 'Αναζήτηση παικτών περιορίζεται σε :max παίκτες. Δοκιμάστε να βελτιώσετε το ερώτημα αναζήτησης.',
@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "ας<br>αρχίσουμε!",
         'action' => 'Λήψη osu!',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'χρήστες macOS',
+        'mirror' => 'mirror',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "ας<br>αρχίσουμε!",
+        'video-guide' => 'οδηγός βίντεο',
 
         'help' => [
             '_' => '',
@@ -86,8 +99,6 @@ return [
             'macos' => 'για macOS',
             'linux' => 'για Linux',
         ],
-        'mirror' => 'mirror',
-        'macos-fallback' => 'χρήστες macOS',
         'steps' => [
             'register' => [
                 'title' => 'αποκτήστε ένα λογαριασμό',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => 'οδηγός βίντεο',
     ],
 
     'user' => [
@@ -124,23 +134,12 @@ return [
         'beatmaps' => [
             'new' => 'Νέα Ranked Beatmaps',
             'popular' => 'Δημοφιλή Beatmaps',
-            'by_user' => '',
+            'by_user' => 'από :user',
         ],
         'buttons' => [
             'download' => 'Λήψη osu!',
             'support' => 'Υποστηρίξτε το osu!',
             'store' => 'osu!κατάστημα',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'Ουάου!',
-        'subtitle' => 'Φαίνεται να περνάτε καλά! :D',
-        'body' => [
-            'part-1' => 'Ξέρατε ότι το osu! τρέχει χωρίς διαφημίσεις και βασίζεται στους παίκτες για την υποστήριξη της ανάπτυξης και το κόστος λειτουργίας;',
-            'part-2' => 'Ξέρατε επίσης ότι υποστηρίζοντας το osu! παίρνετε ένα σωρό χρήσιμες λειτουργίες, όπως η <strong>λήψη εντός παιχνιδιού</strong> η οποία ενεργοποιείται αυτόματα στο spectator και στα multiplayer λόμπυ;',
-        ],
-        'find-out-more' => 'Κάντε κλικ εδώ για να μάθετε περισσότερα!',
-        'download-starting' => "Ω, και μην ανησυχείτε - η λήψη σας έχει ήδη ξεκινήσει ;)",
     ],
 ];

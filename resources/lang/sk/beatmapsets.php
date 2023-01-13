@@ -11,6 +11,10 @@ return [
         'rule_violation' => '',
     ],
 
+    'cover' => [
+        'deleted' => '',
+    ],
+
     'download' => [
         'limit_exceeded' => '',
     ],
@@ -62,6 +66,7 @@ return [
             'favourite_login' => '',
             'logged-out' => 'Pre sťahovanie beatmap sa najskôr musíš prihlásiť!',
             'mapped_by' => 'beatmapu vytvoril :mapper',
+            'mapped_by_guest' => '',
             'unfavourite' => 'Odobrať z mojich obľúbených',
             'updated_timeago' => 'naposledy aktualizované :timeago',
 
@@ -105,11 +110,11 @@ return [
             ],
 
             'disqualify' => [
-                '_' => '',
+                '_' => 'Ak nájdete problém s touto mapou, prosím diskvalifikujte ju :link.',
             ],
 
             'report' => [
-                '_' => '',
+                '_' => 'Ak nájdete problém s touto mapou, prosím nahláste ho :link, aby ste to nahlásili týmu.',
                 'button' => 'Nahlásiť problém',
                 'link' => 'tu',
             ],
@@ -120,7 +125,9 @@ return [
             'genre' => 'Žáner',
             'language' => 'Jazyk',
             'no_scores' => 'Vypočítavajú sa dáta...',
+            'nominators' => '',
             'nsfw' => '',
+            'offset' => '',
             'points-of-failure' => 'Body Neúspechu',
             'source' => 'Zdroj',
             'storyboard' => '',
@@ -143,6 +150,7 @@ return [
         'scoreboard' => [
             'achieved' => 'dosiahol :when',
             'country' => 'Rebríček Krajiny',
+            'error' => '',
             'friend' => 'Rebríček Priateľov',
             'global' => 'Celosvetový Rebríčok',
             'supporter-link' => 'Kliknite <a href=":link">tu</a> pre zobrazenie všetkych výhod, ktoré dostanete!',
@@ -154,11 +162,12 @@ return [
                 'combo' => 'Maximálne Kombo',
                 'miss' => 'Minutie',
                 'mods' => 'Módy',
+                'pin' => '',
                 'player' => 'Hráč',
                 'pp' => '',
                 'rank' => 'Hodnotenie',
-                'score_total' => 'Celkové skóre',
                 'score' => 'Skóre',
+                'score_total' => 'Celkové skóre',
                 'time' => '',
             ],
 
@@ -173,6 +182,10 @@ return [
                 'first' => 'Vo Vedení',
                 'own' => 'Tvoje Najlepšie',
             ],
+            'supporter_link' => [
+                '_' => '',
+                'here' => '',
+            ],
         ],
 
         'stats' => [
@@ -186,6 +199,7 @@ return [
             'bpm' => 'BPM',
             'count_circles' => 'Počet kruhov',
             'count_sliders' => 'Počet sliderov',
+            'offset' => '',
             'user-rating' => 'Používateľské hodnotenie',
             'rating-spread' => 'Graf hodnotenia',
             'nominations' => 'Nominácie',
@@ -201,5 +215,9 @@ return [
             'pending' => 'Nevybavené',
             'graveyard' => 'Cintorín',
         ],
+    ],
+
+    'spotlight_badge' => [
+        'label' => '',
     ],
 ];

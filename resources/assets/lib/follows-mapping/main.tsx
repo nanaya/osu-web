@@ -1,26 +1,24 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetListView from 'beatmapset-list-view';
-import FollowToggle from 'follow-toggle';
-import FollowsSubtypes from 'follows-subtypes';
-import HeaderV4 from 'header-v4';
+import BeatmapsetListView from 'components/beatmapset-list-view';
+import FollowToggle from 'components/follow-toggle';
+import FollowsSubtypes from 'components/follows-subtypes';
+import HeaderV4 from 'components/header-v4';
 import homeLinks from 'home-links';
+import CurrentUserJson from 'interfaces/current-user-json';
 import FollowMappingJson from 'interfaces/follow-mapping-json';
-import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import * as React from 'react';
+import { urlPresence } from 'utils/css';
+import { trans } from 'utils/lang';
 
 interface Props {
   follows: FollowMappingJson[];
-  user: UserJson;
+  user: CurrentUserJson;
 }
 
 export default class Main extends React.PureComponent<Props> {
-  static defaultProps = {
-    user: currentUser,
-  };
-
   render() {
     return (
       <div className='osu-layout osu-layout--full'>
@@ -34,7 +32,7 @@ export default class Main extends React.PureComponent<Props> {
           <FollowsSubtypes currentSubtype='mapping' />
 
           {this.props.follows.length === 0
-            ? osu.trans('follows.mapping.empty')
+            ? trans('follows.mapping.empty')
             : (
               <div className='follows-table follows-table--mapping'>
                 {this.props.follows.map(this.renderItem)}
@@ -62,7 +60,7 @@ export default class Main extends React.PureComponent<Props> {
               <span
                 className='avatar avatar--full-rounded'
                 style={{
-                  backgroundImage: osu.urlPresence(follow.user.avatar_url),
+                  backgroundImage: urlPresence(follow.user.avatar_url),
                 }}
               />
             </span>

@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "la oss<br>få deg i gang!",
         'action' => 'Last ned osu!',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'macOS brukere',
+        'mirror' => 'alternativ link',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "la oss<br>få deg i gang!",
+        'video-guide' => 'video veiledning',
 
         'help' => [
             '_' => '',
@@ -86,8 +99,6 @@ return [
             'macos' => 'for macOS',
             'linux' => 'for Linux',
         ],
-        'mirror' => 'alternativ link',
-        'macos-fallback' => 'macOS brukere',
         'steps' => [
             'register' => [
                 'title' => 'opprett en konto',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => 'video veiledning',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'Støtt osu!',
             'store' => 'osu!butikken',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'Wow!',
-        'subtitle' => 'Du ser ut som du trives! :D',
-        'body' => [
-            'part-1' => 'Visste du, at osu! kjører uten reklamering, og er avhengig av spillernes støtte for sin utvikling og driftskostnader?',
-            'part-2' => 'Visste du også, at ved å støtte osu! får du en haug med nyttige funksjoner, som for eksempel <strong>nedlasting i spillet</strong> som automatisk laster ned maps mens du ser på andre eller spiller i flerspillerspill?',
-        ],
-        'find-out-more' => 'Klikk her for å finne ut mer!',
-        'download-starting' => "Åh, og ikke bekymre deg - nedlastingen din har allerede begynt :)",
     ],
 ];

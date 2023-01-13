@@ -25,6 +25,11 @@ return [
             'index' => 'รายการ',
         ],
 
+        'beatmapsets' => [
+            'show' => 'ข้อมูล',
+            'discussions' => 'การสนทนา',
+        ],
+
         'changelog' => [
             'index' => 'รายการ',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'การวิจารณ์บีทแมพ',
-            'multiplayer' => 'โหมดผู้เล่นหลายคน',
+            'playlists' => '',
+            'realtime' => '',
             'show' => 'ข้อมูล',
         ],
     ],

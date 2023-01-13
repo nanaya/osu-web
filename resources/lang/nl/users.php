@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'U hebt deze gebruiker geblokkeerd.',
+        'comment_text' => 'Deze reactie is verdekt.',
         'blocked_count' => 'geblokkeerde gebruikers (:count)',
         'hide_profile' => 'profiel verbergen',
+        'hide_comment' => 'verbergen',
         'not_blocked' => 'Deze gebruiker is niet geblokkeerd.',
         'show_profile' => 'profiel weergeven',
+        'show_comment' => 'tonen',
         'too_many' => 'Blok limiet bereikt.',
         'button' => [
             'block' => 'blokkeren',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'Bezig met laden...',
         'send_message' => 'stuur bericht',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -148,7 +167,7 @@ return [
         'is_supporter' => 'osu!supporter',
         'joined_at' => 'Werd lid op :date',
         'lastvisit' => 'Laatst gezien op :date',
-        'lastvisit_online' => 'Momenteel online',
+        'lastvisit_online' => 'Nu online',
         'missingtext' => 'Je hebt misschien een typfout gemaakt! (of de gebruiker is verbannen)',
         'origin_country' => 'Uit :country',
         'previous_usernames' => 'vroeger bekend als',
@@ -156,8 +175,12 @@ return [
         'title' => "Profiel van :username",
 
         'comments_count' => [
-            '_' => 'Geplaatst op :link',
-            'count' => ':count_delimited commentaar::count_delimited reacties',
+            '_' => 'Heeft :link gepost',
+            'count' => ':count_delimited reactie|:count_delimited reacties',
+        ],
+        'cover' => [
+            'to_0' => 'Omslagfoto verbergen',
+            'to_1' => 'Omslagfoto tonen',
         ],
         'edit' => [
             'cover' => [
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Beatmaps in het kerkhof',
                 ],
+                'guest' => [
+                    'title' => 'Beatmaps met gastdeelname',
+                ],
                 'loved' => [
                     'title' => 'Loved Beatmaps',
+                ],
+                'nominated' => [
+                    'title' => '',
                 ],
                 'pending' => [
                     'title' => 'Afwachtende Beatmaps',
@@ -301,8 +330,8 @@ return [
                 'recent' => 'Recent',
                 'title' => 'Medailles',
             ],
-            'multiplayer' => [
-                'title' => 'Multiplayer Spellen',
+            'playlists' => [
+                'title' => 'Spellen via afspeellijst',
             ],
             'posts' => [
                 'title' => 'Berichten',
@@ -311,6 +340,9 @@ return [
             ],
             'recent_activity' => [
                 'title' => 'Recent',
+            ],
+            'realtime' => [
+                'title' => 'Multiplayerspellen',
             ],
             'top_ranks' => [
                 'download_replay' => 'Download Replay',
@@ -324,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'Eerste Ranks',
+                ],
+                'pin' => [
+                    'to_0' => 'Losmaken',
+                    'to_0_done' => 'Losgemaakte score',
+                    'to_1' => 'Vastzetten',
+                    'to_1_done' => 'Vastgezette score',
+                ],
+                'pinned' => [
+                    'title' => 'Vastgezette Scores',
                 ],
             ],
             'votes' => [
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'Ban',
                         'silence' => 'Silence',
+                        'tournament_ban' => 'Verbannen van toernooien',
                         'note' => 'Opmerking',
                     ],
                 ],
@@ -391,6 +433,7 @@ return [
             'country_simple' => 'Landelijke Ranking',
             'global' => 'Globale rank voor :mode',
             'global_simple' => 'Wereldwijde Ranking',
+            'highest' => 'Hoogste rank: :rank op :date',
         ],
         'stats' => [
             'hit_accuracy' => 'Hit Precisie',
@@ -424,6 +467,8 @@ return [
         'offline' => 'Offline',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'Door gebruiker gemaakt',
     ],
     'verify' => [

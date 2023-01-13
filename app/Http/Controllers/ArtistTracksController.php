@@ -5,10 +5,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\Search\ArtistTrackSearch;
+use App\Libraries\Search\ArtistTrackSearchParamsFromRequest;
 use App\Models\ArtistTrack;
+use App\Transformers\ArtistTrackTransformer;
 
 class ArtistTracksController extends Controller
 {
+    public function index()
+    {
+        $params = ArtistTrackSearchParamsFromRequest::fromArray(request()->all());
+        $search = new ArtistTrackSearch($params);
+
+        $tracks = $search->records();
+        $data = array_merge([
+            'artist_tracks' => json_collection($tracks, new ArtistTrackTransformer(), ['artist', 'album']),
+            'search' => ArtistTrackSearchParamsFromRequest::toArray($params),
+        ], cursor_for_response($search->getSortCursor()));
+
+        if (is_json_request()) {
+            return $data;
+        }
+
+        $availableGenres = cache_remember_mutexed(
+            'artist_track_genres',
+            600,
+            [],
+            fn () => ArtistTrack::distinct()->pluck('genre')->sort()->values(),
+        );
+
+        return ext_view('artist_tracks.index', compact('availableGenres', 'data'));
+    }
+
     public function show($id)
     {
         $track = ArtistTrack::findOrFail($id);

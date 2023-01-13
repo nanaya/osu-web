@@ -1,23 +1,28 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Blackout from 'blackout';
+import BeatmapListItem from 'components/beatmap-list-item';
 import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import BeatmapJson from 'interfaces/beatmap-json';
 import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import UserJson from 'interfaces/user-json';
 import { deletedUser } from 'models/user';
 import * as React from 'react';
+import { blackoutToggle } from 'utils/blackout';
 import { classWithModifiers, Modifiers } from 'utils/css';
+import { formatNumber, isClickable } from 'utils/html';
 import { nextVal } from 'utils/seq';
-import BeatmapListItem from './beatmap-list-item';
 
 interface Props {
   beatmaps: BeatmapExtendedJson[];
   beatmapset: BeatmapsetExtendedJson;
+  createLink: (beatmap: BeatmapJson) => string;
   currentBeatmap: BeatmapExtendedJson;
   getCount?: (beatmap: BeatmapExtendedJson) => number | undefined;
   large: boolean;
   modifiers?: Modifiers;
   onSelectBeatmap: (beatmapId: number) => void;
+  users: Partial<Record<number | string, UserJson>>;
 }
 
 interface State {
@@ -27,9 +32,11 @@ interface State {
 export default class BeatmapList extends React.PureComponent<Props, State> {
   static defaultProps = {
     large: true,
+    users: {},
   };
 
   private readonly eventId = `beatmapset-discussions-show-beatmap-list-${nextVal()}`;
+  private readonly selectorRef = React.createRef<HTMLDivElement>();
 
   constructor(props: Props) {
     super(props);
@@ -54,46 +61,63 @@ export default class BeatmapList extends React.PureComponent<Props, State> {
       <div className={classWithModifiers('beatmap-list', this.props.modifiers, { selecting: this.state.showingSelector })}>
         <div className='beatmap-list__body'>
           <div
+            ref={this.selectorRef}
             className='beatmap-list__item beatmap-list__item--selected beatmap-list__item--large js-beatmap-list-selector'
             onClick={this.toggleSelector}
           >
             <div className='beatmap-list__selected beatmap-list__selected--icons'>
-              {Array.from({ length: 4 }).map((_, idx) => (
-                <i key={idx} className={`fal fa-extra-mode-${this.props.currentBeatmap.mode}`} />
+              {Array.from({ length: 4 }).map((_blank, idx) => (
+                <span key={idx} className='fas fa-circle u-relative' />
               ))}
             </div>
             <div className='beatmap-list__selected beatmap-list__selected--list u-ellipsis-overflow'>
               <BeatmapListItem
                 beatmap={this.props.currentBeatmap}
-                large={this.props.large}
-                mapper={this.props.currentBeatmap.user ?? deletedUser.toJson()}
-                withButton='fas fa-chevron-down'
+                mapper={null}
+                modifiers={{ large: this.props.large }}
               />
+
+              <div className='beatmap-list__item-selector-button'>
+                <span className='fas fa-chevron-down' />
+              </div>
             </div>
           </div>
 
-          <div className='beatmap-list__selector u-fancy-scrollbar'>
-            {this.props.beatmaps.map(this.beatmapListItem)}
+          <div className='beatmap-list__selector-container'>
+            <div className='beatmap-list__selector'>
+              {this.props.beatmaps.map(this.beatmapListItem)}
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  private beatmapListItem = (beatmap: BeatmapExtendedJson) => (
-    <div
-      key={beatmap.id}
-      className={classWithModifiers('beatmap-list__item', { current: beatmap.id === this.props.currentBeatmap.id })}
-      data-id={beatmap.id}
-      onClick={this.selectBeatmap}
-    >
-      <BeatmapListItem
-        beatmap={beatmap}
-        count={this.props.getCount?.(beatmap)}
-        mapper={beatmap.user ?? deletedUser.toJson()}
-      />
-    </div>
-  );
+  private beatmapListItem = (beatmap: BeatmapExtendedJson) => {
+    const count = this.props.getCount?.(beatmap);
+
+    return (
+      <div
+        key={beatmap.id}
+        className={classWithModifiers('beatmap-list__item', { current: beatmap.id === this.props.currentBeatmap.id })}
+        data-id={beatmap.id}
+        onClick={this.selectBeatmap}
+      >
+        <BeatmapListItem
+          beatmap={beatmap}
+          beatmapUrl={this.props.createLink(beatmap)}
+          beatmapset={this.props.beatmapset}
+          mapper={this.props.users[beatmap.user_id] ?? deletedUser}
+          showNonGuestMapper={false}
+        />
+        {count != null &&
+          <div className='beatmap-list__item-count'>
+            {formatNumber(count)}
+          </div>
+        }
+      </div>
+    );
+  };
 
   private hideSelector = () => {
     if (this.state.showingSelector) {
@@ -103,17 +127,19 @@ export default class BeatmapList extends React.PureComponent<Props, State> {
 
   private onDocumentClick = (e: JQuery.ClickEvent) => {
     if (e.button !== 0) return;
-
-    if ($(e.target).closest('.js-beatmap-list-selector').length) {
-      return;
-    }
+    if (isClickable(e.target)) return;
+    if (
+      this.selectorRef.current != null
+      && e.originalEvent != null
+      && e.originalEvent.composedPath().includes(this.selectorRef.current)
+    ) return;
 
     this.hideSelector();
   };
 
   private selectBeatmap = (e: React.MouseEvent<HTMLElement>) => {
     if (e.button !== 0) return;
-    if ($(e.target).is('a')) return;
+    if (isClickable(e.target)) return;
 
     const beatmapId = parseInt(e.currentTarget.dataset.id ?? '', 10);
     this.props.onSelectBeatmap(beatmapId);
@@ -126,12 +152,12 @@ export default class BeatmapList extends React.PureComponent<Props, State> {
   };
 
   private syncBlackout = () => {
-    Blackout.toggle(this.state.showingSelector, 0.5);
+    blackoutToggle(this.state.showingSelector, 0.5);
   };
 
   private toggleSelector = (e: React.MouseEvent<HTMLElement>) => {
     if (e.button !== 0) return;
-    if ($(e.target).is('a')) return;
+    if (isClickable(e.target)) return;
 
     this.setSelector(!this.state.showingSelector);
   };

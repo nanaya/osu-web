@@ -4,7 +4,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
-    'deleted' => '[被删除的用户]',
+    'deleted' => '[已删除的用户]',
 
     'beatmapset_activities' => [
         'title' => ":user 的摸图历史",
@@ -23,20 +23,23 @@ return [
         ],
 
         'votes_received' => [
-            'title_most' => '得赞最多（最近三个月）',
+            'title_most' => '最多获赞（最近三个月）',
         ],
 
         'votes_made' => [
-            'title_most' => '赞数最多（最近三个月）',
+            'title_most' => '最多点赞（最近三个月）',
         ],
     ],
 
     'blocks' => [
         'banner_text' => '你已经屏蔽此用户。',
+        'comment_text' => '此评论已隐藏。',
         'blocked_count' => '被屏蔽的用户 (:count)',
         'hide_profile' => '隐藏用户资料',
+        'hide_comment' => '隐藏',
         'not_blocked' => '此用户未被屏蔽。',
         'show_profile' => '显示用户资料',
+        'show_comment' => '展开',
         'too_many' => '屏蔽用户数量达到最大限制。',
         'button' => [
             'block' => '屏蔽',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => '加载中...',
         'send_message' => '发送消息',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -147,7 +166,7 @@ return [
         'is_developer' => 'osu! 开发者',
         'is_supporter' => 'osu! 支持者',
         'joined_at' => '注册时间：:date',
-        'lastvisit' => '上次登录：:date',
+        'lastvisit' => '最后活跃：:date',
         'lastvisit_online' => '当前在线',
         'missingtext' => '你可能打错字了！（或者该用户已经被封禁）',
         'origin_country' => '来自 :country',
@@ -159,10 +178,14 @@ return [
             '_' => '发表了 :link',
             'count' => ':count_delimited 条评论',
         ],
+        'cover' => [
+            'to_0' => '隐藏封面',
+            'to_1' => '显示封面',
+        ],
         'edit' => [
             'cover' => [
-                'button' => '更换个人资料头图',
-                'defaults_info' => '在将来会有更多头图可用',
+                'button' => '更换个人资料封面',
+                'defaults_info' => '在将来会有更多封面可用',
                 'upload' => [
                     'broken_file' => '上传失败。请检查上传的图片然后重试。',
                     'button' => '上传图片',
@@ -173,7 +196,7 @@ return [
                     'unsupported_format' => '不支持的格式。',
 
                     'restriction_info' => [
-                        '_' => '自定义头图只有 :link 可用',
+                        '_' => '自定义封面只有 :link 可用',
                         'link' => 'osu! 支持者',
                     ],
                 ],
@@ -187,31 +210,37 @@ return [
 
         'extra' => [
             'none' => '无',
-            'unranked' => '最近没有玩过',
+            'unranked' => '最近没玩过',
 
             'achievements' => [
-                'achieved-on' => '达成于 :date',
+                'achieved-on' => ':date 达成',
                 'locked' => '锁定',
                 'title' => '成就',
             ],
             'beatmaps' => [
-                'by_artist' => '曲师：:artist',
+                'by_artist' => 'by :artist',
                 'title' => '谱面',
 
                 'favourite' => [
                     'title' => '收藏的谱面',
                 ],
                 'graveyard' => [
-                    'title' => '坟场里的谱面',
+                    'title' => '已停更的谱面',
+                ],
+                'guest' => [
+                    'title' => '参与客串制作的谱面',
                 ],
                 'loved' => [
-                    'title' => 'Loved 的谱面',
+                    'title' => '社区喜爱 (Loved) 谱面',
+                ],
+                'nominated' => [
+                    'title' => '提名过的上架 (Ranked) 谱面',
                 ],
                 'pending' => [
                     'title' => 'Pending 谱面',
                 ],
                 'ranked' => [
-                    'title' => 'Ranked 谱面',
+                    'title' => '上架 (Ranked) 谱面',
                 ],
             ],
             'discussions' => [
@@ -233,7 +262,7 @@ return [
                 ],
                 'most_played' => [
                     'count' => '游玩次数',
-                    'title' => '最多游玩的谱面',
+                    'title' => '玩得最多的谱面',
                 ],
                 'recent_plays' => [
                     'accuracy' => '准确率：:percentage',
@@ -301,8 +330,8 @@ return [
                 'recent' => '最近取得',
                 'title' => '成就',
             ],
-            'multiplayer' => [
-                'title' => '多人游戏',
+            'playlists' => [
+                'title' => '歌单游戏',
             ],
             'posts' => [
                 'title' => '回复',
@@ -312,9 +341,12 @@ return [
             'recent_activity' => [
                 'title' => '最近活动',
             ],
+            'realtime' => [
+                'title' => '多人游戏',
+            ],
             'top_ranks' => [
                 'download_replay' => '下载回放',
-                'not_ranked' => '只有 ranked 谱面才能得到 pp。',
+                'not_ranked' => '只能在上架 (Ranked) 谱面中获得 pp。',
                 'pp_weight' => '权重：:percentage',
                 'view_details' => '查看详情',
                 'title' => '成绩',
@@ -324,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => '第一名',
+                ],
+                'pin' => [
+                    'to_0' => '取消置顶',
+                    'to_0_done' => '已取消置顶成绩',
+                    'to_1' => '置顶',
+                    'to_1_done' => '已置顶成绩',
+                ],
+                'pinned' => [
+                    'title' => '置顶成绩',
                 ],
             ],
             'votes' => [
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => '封禁',
                         'silence' => '禁言',
+                        'tournament_ban' => '锦标赛封禁',
                         'note' => '注释',
                     ],
                 ],
@@ -384,13 +426,14 @@ return [
         ],
         'post_count' => [
             '_' => '发表了 :link',
-            'count' => ':count 篇帖子',
+            'count' => ':count_delimited 篇帖子|:count_delimited 篇帖子',
         ],
         'rank' => [
-            'country' => ':mode 模式的国内/区内排名',
-            'country_simple' => '国内/区内排名',
+            'country' => ':mode 模式的地区排名',
+            'country_simple' => '地区排名',
             'global' => ':mode 模式的全球排名',
             'global_simple' => '全球排名',
+            'highest' => ':date 达成生涯最高排名 :rank',
         ],
         'stats' => [
             'hit_accuracy' => '准确率',
@@ -400,16 +443,16 @@ return [
             'medals' => '奖章',
             'play_count' => '游戏次数',
             'play_time' => '游戏时间',
-            'ranked_score' => 'Ranked 谱面总分',
+            'ranked_score' => '进榜总分',
             'replays_watched_by_others' => '回放被观看次数',
             'score_ranks' => '得分等级',
             'total_hits' => '总命中次数',
             'total_score' => '总分',
             // modding stats
             'graveyard_beatmapset_count' => '坟场里的谱面',
-            'loved_beatmapset_count' => 'Loved 的谱面',
-            'pending_beatmapset_count' => 'Pending 的谱面',
-            'ranked_beatmapset_count' => 'Ranked 的谱面',
+            'loved_beatmapset_count' => '社区喜爱 (Loved) 谱面',
+            'pending_beatmapset_count' => '待定 (Pending) 谱面',
+            'ranked_beatmapset_count' => '上架 (Ranked) 谱面',
         ],
     ],
 
@@ -424,6 +467,8 @@ return [
         'offline' => '离线',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => '账户已创建',
     ],
     'verify' => [
@@ -431,7 +476,7 @@ return [
     ],
 
     'view_mode' => [
-        'brick' => '方块视图',
+        'brick' => '方块检视',
         'card' => '卡片检视',
         'list' => '列表检视',
     ],

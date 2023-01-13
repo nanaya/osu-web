@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'Você bloqueou este usuário.',
+        'comment_text' => 'Este comentário está oculto.',
         'blocked_count' => 'usuários bloqueados: (:count)',
         'hide_profile' => 'Ocultar perfil',
+        'hide_comment' => 'ocultar',
         'not_blocked' => 'Este usuário não está bloqueado.',
         'show_profile' => 'Exibir perfil',
+        'show_comment' => 'exibir',
         'too_many' => 'Limite de bloqueios atingido.',
         'button' => [
             'block' => 'Bloquear',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'Carregando...',
         'send_message' => 'enviar mensagem',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -159,6 +178,10 @@ return [
             '_' => 'Publicado :link',
             'count' => ':count_delimited comentário|:count_delimited comentários',
         ],
+        'cover' => [
+            'to_0' => 'Ocultar capa',
+            'to_1' => 'Mostrar capa',
+        ],
         'edit' => [
             'cover' => [
                 'button' => 'Mudar Capa de Perfil',
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Beatmaps no Cemitério',
                 ],
+                'guest' => [
+                    'title' => 'Beatmaps de Participação de Visitantes',
+                ],
                 'loved' => [
                     'title' => 'Beatmaps Loved',
+                ],
+                'nominated' => [
+                    'title' => 'Beatmaps Ranqueados Nominados',
                 ],
                 'pending' => [
                     'title' => 'Beatmaps Pendentes',
@@ -301,9 +330,8 @@ return [
                 'recent' => 'Recente',
                 'title' => 'Medalhas',
             ],
-            'multiplayer' => [
-                'title' => 'Jogos multijogador
-',
+            'playlists' => [
+                'title' => 'Jogos da Seleção de Música',
             ],
             'posts' => [
                 'title' => 'Publicações',
@@ -312,6 +340,9 @@ return [
             ],
             'recent_activity' => [
                 'title' => 'Recente',
+            ],
+            'realtime' => [
+                'title' => 'Jogos em Multiplayer',
             ],
             'top_ranks' => [
                 'download_replay' => 'Baixar Replay',
@@ -325,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'Primeiros Lugares',
+                ],
+                'pin' => [
+                    'to_0' => 'Desafixar',
+                    'to_0_done' => 'Pontuação desafixada',
+                    'to_1' => 'Fixar',
+                    'to_1_done' => 'Pontuação fixada',
+                ],
+                'pinned' => [
+                    'title' => 'Pontuações fixadas',
                 ],
             ],
             'votes' => [
@@ -351,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'Banimento',
                         'silence' => 'Silenciamento',
+                        'tournament_ban' => 'Ban do torneio',
                         'note' => 'Nota',
                     ],
                 ],
@@ -392,6 +433,7 @@ return [
             'country_simple' => 'Ranking Nacional',
             'global' => 'Ranking global de :mode',
             'global_simple' => 'Ranking Global',
+            'highest' => 'Maior classificação: :rank em :date',
         ],
         'stats' => [
             'hit_accuracy' => 'Precisão',
@@ -425,6 +467,8 @@ return [
         'offline' => 'Offline',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'Usuário criado',
     ],
     'verify' => [

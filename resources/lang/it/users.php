@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'Hai bloccato questo utente.',
+        'comment_text' => 'Questo commento è nascosto.',
         'blocked_count' => 'utenti bloccati (:count)',
         'hide_profile' => 'Nascondi profilo',
+        'hide_comment' => 'nascondi',
         'not_blocked' => 'Questo utente non è bloccato.',
         'show_profile' => 'Visualizza profilo',
+        'show_comment' => 'mostra',
         'too_many' => 'Limite blocchi raggiunto.',
         'button' => [
             'block' => 'Blocca',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'Caricamento...',
         'send_message' => 'Invia messaggio',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -159,6 +178,10 @@ return [
             '_' => 'Ha postato :link',
             'count' => ':count_delimited commento|:count_delimited commenti',
         ],
+        'cover' => [
+            'to_0' => 'Nascondi copertina',
+            'to_1' => 'Mostra copertina',
+        ],
         'edit' => [
             'cover' => [
                 'button' => 'Cambia copertina del profilo',
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Beatmap Abbandonate',
                 ],
+                'guest' => [
+                    'title' => 'Beatmap Partecipazione Ospite',
+                ],
                 'loved' => [
                     'title' => 'Beatmap Amate',
+                ],
+                'nominated' => [
+                    'title' => 'Beatmap Classificate Nominate',
                 ],
                 'pending' => [
                     'title' => 'Beatmap In Attesa',
@@ -301,8 +330,8 @@ return [
                 'recent' => 'Più recenti',
                 'title' => 'Medaglie',
             ],
-            'multiplayer' => [
-                'title' => 'Partite Multigiocatore',
+            'playlists' => [
+                'title' => 'Partite Playlist',
             ],
             'posts' => [
                 'title' => 'Post',
@@ -312,9 +341,12 @@ return [
             'recent_activity' => [
                 'title' => 'Recenti',
             ],
+            'realtime' => [
+                'title' => 'Partite Multigiocatore',
+            ],
             'top_ranks' => [
                 'download_replay' => 'Scarica Replay',
-                'not_ranked' => 'Solo le mappe classificate danno pp.',
+                'not_ranked' => 'Solo le beatmap classificate conferiscono pp',
                 'pp_weight' => 'valutata :percentage',
                 'view_details' => 'Visualizza Dettagli',
                 'title' => 'Rank',
@@ -324,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'Primi Posti',
+                ],
+                'pin' => [
+                    'to_0' => 'Rimuovi',
+                    'to_0_done' => 'Punteggio rimosso dai fissati',
+                    'to_1' => 'Fissa',
+                    'to_1_done' => 'Punteggio fissato',
+                ],
+                'pinned' => [
+                    'title' => 'Punteggi Fissati',
                 ],
             ],
             'votes' => [
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'Ban',
                         'silence' => 'Silenziato',
+                        'tournament_ban' => 'Ban Torneo',
                         'note' => 'Nota',
                     ],
                 ],
@@ -391,6 +433,7 @@ return [
             'country_simple' => 'Classifica Nazionale',
             'global' => 'Posto globale per :mode',
             'global_simple' => 'Classifica Globale',
+            'highest' => 'Grado più alto: :rank il :date',
         ],
         'stats' => [
             'hit_accuracy' => 'Precisione dei Colpi',
@@ -399,7 +442,7 @@ return [
             'maximum_combo' => 'Combo Massima',
             'medals' => 'Medaglie',
             'play_count' => 'Partite Giocate',
-            'play_time' => 'Tempo totale di gioco',
+            'play_time' => 'Tempo di Gioco',
             'ranked_score' => 'Punteggio Classificato',
             'replays_watched_by_others' => 'Replay Guardati da Altri',
             'score_ranks' => 'Rank dei Punteggi',
@@ -424,6 +467,8 @@ return [
         'offline' => 'Offline',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'Utente creato',
     ],
     'verify' => [

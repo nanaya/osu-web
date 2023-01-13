@@ -2,7 +2,6 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import AchievementJson from 'interfaces/achievement-json';
-import UserAchievementJson from 'interfaces/user-achievement-json';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { mergeModifiers, Modifiers } from 'utils/css';
@@ -11,9 +10,9 @@ import AchievementBadgeIcon from './achievement-badge-icon';
 import AchievementBadgePopup from './achievement-badge-popup';
 
 interface Props {
+  achievedAt?: string;
   achievement: AchievementJson;
   modifiers: Modifiers;
-  userAchievement?: UserAchievementJson | null;
 }
 
 export default class AchievementBadge extends React.PureComponent<Props> {
@@ -25,22 +24,21 @@ export default class AchievementBadge extends React.PureComponent<Props> {
     return (
       <AchievementBadgeIcon
         achievement={this.props.achievement}
-        modifiers={mergeModifiers(this.props.modifiers, { locked: this.props.userAchievement == null })}
+        modifiers={mergeModifiers(this.props.modifiers, { locked: this.props.achievedAt == null })}
         onMouseOver={this.onMouseOver}
       />
     );
   }
 
   private readonly onMouseOver = (event: React.MouseEvent<HTMLImageElement>) => {
-    event.persist();
     const elem = event.currentTarget;
 
     if (elem._tooltip === this.tooltipId) return;
 
     const $content = $(renderToStaticMarkup(
       <AchievementBadgePopup
+        achievedAt={this.props.achievedAt}
         achievement={this.props.achievement}
-        userAchievement={this.props.userAchievement}
       />,
     ));
 

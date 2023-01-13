@@ -1,10 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import HeaderV4 from 'header-v4';
+import HeaderV4 from 'components/header-v4';
+import ShowMoreLink from 'components/show-more-link';
 import HeaderLink from 'interfaces/header-link';
 import { route } from 'laroute';
-import { computed } from 'mobx';
+import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Name as NotificationTypeName, typeNames } from 'models/notification-type';
 import Stack from 'notification-widget/stack';
@@ -15,7 +16,7 @@ import NotificationDeleteButton from 'notifications/notification-delete-button';
 import NotificationReadButton from 'notifications/notification-read-button';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import ShowMoreLink from 'show-more-link';
+import { trans } from 'utils/lang';
 
 @observer
 export class Main extends React.Component {
@@ -29,7 +30,7 @@ export class Main extends React.Component {
     return typeNames.map((name) => ({
       active: this.controller.currentFilter === name,
       data: { 'data-type': name },
-      title: osu.trans(`notifications.filters.${name ?? '_'}`),
+      title: trans(`notifications.filters.${name ?? '_'}`),
       url: route('notifications.index', { type: name }),
     }));
   }
@@ -38,6 +39,8 @@ export class Main extends React.Component {
     super(props);
 
     this.controller = new NotificationController(core.dataStore.notificationStore, context);
+
+    makeObservable(this);
   }
 
   render() {
@@ -124,7 +127,7 @@ export class Main extends React.Component {
       <NotificationDeleteButton
         isDeleting={type.isDeleting}
         onDelete={this.handleDelete}
-        text={osu.trans('notifications.delete', { type: osu.trans(`notifications.filters.${type.name ?? '_'}`) })}
+        text={trans('notifications.delete', { type: trans(`notifications.filters.${type.name ?? '_'}`) })}
       />
     );
   }
@@ -138,7 +141,7 @@ export class Main extends React.Component {
       <NotificationReadButton
         isMarkingAsRead={type.isMarkingAsRead}
         onMarkAsRead={this.handleMarkAsRead}
-        text={osu.trans('notifications.mark_read', { type: osu.trans(`notifications.filters.${type.name ?? '_'}`) })}
+        text={trans('notifications.mark_read', { type: trans(`notifications.filters.${type.name ?? '_'}`) })}
       />
     );
   }

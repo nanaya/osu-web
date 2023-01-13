@@ -5,150 +5,127 @@
 
 return [
     'admin' => [
-        '_' => '',
-    ],
-    'admin_forum' => [
-        '_' => '',
-    ],
-    'admin_store' => [
-        '_' => '',
+        '_' => 'aдмин',
     ],
     'error' => [
         'error' => [
-            '400' => '',
-            '404' => '',
-            '403' => '',
-            '401' => '',
-            '401-verification' => '',
-            '405' => '',
-            '422' => '',
-            '429' => '',
-            '500' => '',
-            '503' => '',
+            '400' => 'неважећи захтев',
+            '404' => 'не постоји',
+            '403' => 'забрањено',
+            '401' => 'неовлашћено',
+            '401-verification' => 'верификација налога',
+            '405' => 'непостојеће',
+            '422' => 'неважећи захтев',
+            '429' => 'превише захтева',
+            '500' => 'нешто се покварило',
+            '503' => 'одржавање',
         ],
     ],
     'forum' => [
-        '_' => '',
-        'topic_watches_controller' => [
-            'index' => '',
+        '_' => 'форум',
+        'topic_logs_controller' => [
+            'index' => 'логови за теме',
         ],
     ],
     'main' => [
         'account_controller' => [
-            'edit' => '',
-            'verify_link' => '',
+            'verify_link' => 'верификација налога',
         ],
         'artists_controller' => [
-            '_' => '',
+            '_' => 'истакнути уметници',
         ],
         'beatmap_discussion_posts_controller' => [
-            '_' => '',
+            '_' => 'објаве за дискусију мапа',
         ],
         'beatmap_discussions_controller' => [
-            '_' => '',
+            '_' => 'дискусија за мапу',
         ],
         'beatmap_packs_controller' => [
-            '_' => '',
+            '_' => 'колекција мапа',
         ],
         'beatmapset_discussion_votes_controller' => [
-            '_' => '',
+            '_' => 'гласови дискусије мапе',
         ],
         'beatmapset_events_controller' => [
-            '_' => '',
-        ],
-        'beatmapset_watches_controller' => [
-            'index' => '',
+            '_' => 'историја мапе',
         ],
         'beatmapsets_controller' => [
-            'discussion' => '',
-            'index' => '',
-            'show' => '',
+            'discussion' => 'дискусија за мапу',
+            'index' => 'листинг мапа',
+            'show' => 'информације о мапи',
         ],
         'changelog_controller' => [
-            '_' => '',
+            '_' => 'списак измена',
         ],
         'chat_controller' => [
-            '_' => '',
+            '_' => 'чет',
         ],
         'comments_controller' => [
-            '_' => '',
+            '_' => 'коментари',
         ],
         'contests_controller' => [
-            '_' => '',
-        ],
-        'follows_controller' => [
-            'index' => '',
-        ],
-        'friends_controller' => [
-            'index' => '',
+            '_' => 'такмичења',
         ],
         'groups_controller' => [
-            'show' => '',
+            'show' => 'групе',
         ],
         'home_controller' => [
-            'get_download' => '',
-            'index' => '',
-            'search' => '',
-            'support_the_game' => '',
-            'testflight' => '',
+            'get_download' => 'преузмите',
+            'index' => 'командна табла',
+            'search' => 'претрага',
+            'support_the_game' => 'подржите игру',
+            'testflight' => 'testflight',
         ],
         'legal_controller' => [
-            '_' => '',
+            '_' => 'информације',
         ],
         'livestreams_controller' => [
-            '_' => '',
+            '_' => 'streams Уживо ',
         ],
         'matches_controller' => [
-            '_' => '',
+            '_' => 'мечеви',
         ],
         'news_controller' => [
-            '_' => '',
+            '_' => 'новости',
         ],
         'notifications_controller' => [
-            '_' => '',
+            '_' => 'историја обавештења',
         ],
         'password_reset_controller' => [
-            '_' => '',
+            '_' => 'ресетовање лозинке',
         ],
         'ranking_controller' => [
-            '_' => '',
+            '_' => 'рангови',
         ],
         'scores_controller' => [
-            '_' => '',
-        ],
-        'store_controller' => [
-            '_' => '',
+            '_' => 'перформансе',
         ],
         'tournaments_controller' => [
-            '_' => '',
+            '_' => 'турнири',
         ],
         'users_controller' => [
-            '_' => '',
-            'disabled' => '',
+            '_' => 'информације о играчу',
+            'create' => '',
+            'disabled' => 'напомена',
         ],
         'wiki_controller' => [
-            '_' => '',
-        ],
-    ],
-    'multiplayer' => [
-        'rooms_controller' => [
-            '_' => '',
+            '_' => 'вики',
         ],
     ],
     'passport' => [
         'authorization_controller' => [
-            '_' => '',
+            '_' => 'ауторизујте апликацију',
         ],
     ],
     'store' => [
-        '_' => '',
+        '_' => 'продавница',
     ],
     'users' => [
         'modding_history_controller' => [
-            '_' => '',
+            '_' => 'информације о модеру',
         ],
         'multiplayer_controller' => [
-            '_' => '',
+            '_' => 'историја мултиплејера',
         ],
     ],
 ];

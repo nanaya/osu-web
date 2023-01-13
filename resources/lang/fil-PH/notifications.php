@@ -28,7 +28,7 @@ return [
             '_' => 'Beatmap',
 
             'beatmap_owner_change' => [
-                '_' => 'Difficulty na gawa ng ibang manlalaro',
+                '_' => 'Guest na difficulty',
                 'beatmap_owner_change' => 'Ikaw na ngayon ang may-ari ng difficulty na ":beatmap" para sa ":title"',
                 'beatmap_owner_change_compact' => 'Ikaw na ang may-ari ng difficulty na :beatmap',
             ],
@@ -52,13 +52,13 @@ return [
                 'beatmapset_discussion_qualified_problem' => 'Ini-ulat ni :username sa ":title": ":content"',
                 'beatmapset_discussion_qualified_problem_empty' => 'Ini-ulat ni :username sa ":title"',
                 'beatmapset_discussion_qualified_problem_compact' => 'Ini-ulat ni :username : ":content"',
-                'beatmapset_discussion_qualified_problem_compact_empty' => 'Ni-report ni :username',
+                'beatmapset_discussion_qualified_problem_compact_empty' => 'Ini-ulat ni :username',
             ],
 
             'beatmapset_state' => [
                 '_' => 'Nagbago ang kalagayan ng beatmap',
                 'beatmapset_disqualify' => '":title" ay na-disqualify',
-                'beatmapset_disqualify_compact' => 'Ang beatmap ay hindi kwalipikado',
+                'beatmapset_disqualify_compact' => 'Ang Beatmap ay nadiskwalipika',
                 'beatmapset_love' => 'Ang ":title" ay na-promote sa loved',
                 'beatmapset_love_compact' => 'Ang beatmap ay na-promote sa loved',
                 'beatmapset_nominate' => '":title" ay na-nominate',
@@ -86,8 +86,19 @@ return [
         'channel' => [
             '_' => 'Chat',
 
+            'announcement' => [
+                '_' => 'Bagong anunsyo',
+
+                'announce' => [
+                    'channel_announcement' => 'sabi ni :username ay ":title"',
+                    'channel_announcement_compact' => ':title',
+                    'channel_announcement_group' => 'Anunsyo galing kay :username',
+                ],
+            ],
+
             'channel' => [
                 '_' => 'Bagong mensahe',
+
                 'pm' => [
                     'channel_message' => '":title", sabi ni :username',
                     'channel_message_compact' => ':title',
@@ -148,6 +159,9 @@ return [
                 'user_beatmapset_new' => 'Bagong beatmap ":title" ni :username',
                 'user_beatmapset_new_compact' => 'Bagong beatmap ":title"',
                 'user_beatmapset_new_group' => 'Mga bagong beatmap ni :username',
+
+                'user_beatmapset_revive' => 'Beatmap ":title" ay binuhay ni :username',
+                'user_beatmapset_revive_compact' => 'Beatmap ":title" ay binuhay',
             ],
         ],
 
@@ -226,6 +240,7 @@ return [
 
             'user_beatmapset_new' => [
                 'user_beatmapset_new' => 'Si :username ay gumawa ng mga bagong beatmap',
+                'user_beatmapset_revive' => 'Muling binuhay ni :username ang mga beatmap',
             ],
         ],
     ],

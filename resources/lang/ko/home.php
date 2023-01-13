@@ -23,7 +23,7 @@ return [
         'button' => '검색',
         'empty_result' => '아무것도 찾지 못했습니다!',
         'keyword_required' => '검색 키워드가 필요합니다',
-        'placeholder' => '검색어를 입력해주세요',
+        'placeholder' => '검색어를 입력하세요',
         'title' => '검색',
 
         'beatmapset' => [
@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "시작해봐요!",
         'action' => 'osu! 다운로드',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'macOS 사용자',
+        'mirror' => '미러',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "시작해봐요!",
+        'video-guide' => '영상 가이드',
 
         'help' => [
             '_' => '게임을 시작하거나 계정을 등록하는데 문제가 있다면, :help_forum_link 하거나 :support_button 해보세요.',
@@ -86,8 +99,6 @@ return [
             'macos' => 'macOS 용',
             'linux' => 'Linux 용',
         ],
-        'mirror' => '미러',
-        'macos-fallback' => 'macOS 사용자',
         'steps' => [
             'register' => [
                 'title' => '계정 만들기',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => '영상 가이드',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'osu! 지원하기',
             'store' => 'osu!store',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => '와!',
-        'subtitle' => '즐거운 시간을 보내고 계신 것 같네요! :D',
-        'body' => [
-            'part-1' => 'osu!가 아무런 광고 수익 없이, 사용자들의 지원으로만 개발 / 운영된다는 사실, 알고 계신가요?',
-            'part-2' => '그리고 또, osu!를 지원하면 게임 내 자동 다운로드 같은 다양한 유용한 기능들을 이용할 수 있다는 점도 알고 계세요?',
-        ],
-        'find-out-more' => '더 알아보려면 여기를 눌러주세요!',
-        'download-starting' => "아, 걱정은 하지마세요 - 요청하신 다운로드는 이미 시작됐으니까요 ;)",
     ],
 ];

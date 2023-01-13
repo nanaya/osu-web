@@ -1,15 +1,20 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapReviewDiscussionType } from 'interfaces/beatmap-discussion-review';
+import { EmbedElement } from 'editor';
 import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
 import BeatmapsetJson from 'interfaces/beatmapset-json';
-import * as _ from 'lodash';
+import { filter } from 'lodash';
+import { Observer } from 'mobx-react';
 import * as React from 'react';
-import { Element as SlateElement, Path, Transforms } from 'slate';
+import { Transforms } from 'slate';
 import { RenderElementProps } from 'slate-react';
 import { ReactEditor } from 'slate-react';
+import { formatTimestamp, nearbyDiscussions, parseTimestamp, timestampRegex } from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';
+import { trans, transArray } from 'utils/lang';
+import { linkHtml } from 'utils/url';
 import { DraftsContext } from './drafts-context';
 import EditorBeatmapSelector from './editor-beatmap-selector';
 import EditorIssueTypeSelector from './editor-issue-type-selector';
@@ -30,6 +35,7 @@ interface Props extends RenderElementProps {
   discussionId?: number;
   discussions: Partial<Record<number, BeatmapsetDiscussionJson>>;
   editMode?: boolean;
+  element: EmbedElement;
   readOnly?: boolean;
 }
 
@@ -57,9 +63,9 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
     const path = this.path();
     let purgeCache = false;
 
-    if (this.props.element.beatmapId) {
-      const content = this.props.element.children[0].text as string;
-      const matches = BeatmapDiscussionHelper.TIMESTAMP_REGEX.exec(content);
+    if (this.props.element.type === 'embed' && this.props.element.beatmapId != null) {
+      const content = this.props.element.children[0].text;
+      const matches = timestampRegex.exec(content);
       let timestamp: string | undefined;
 
       // only extract timestamp if it occurs at the start of the issue
@@ -138,14 +144,14 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
     }
 
     const qtip = $(this.tooltipEl).qtip('api');
-    if (qtip) {
+    if (qtip != null) {
       qtip.destroy();
       this.tooltipEl = undefined;
     }
   };
 
   // FIXME: element should be typed properly instead.
-  discussionType = () => this.props.element.discussionType as BeatmapReviewDiscussionType;
+  discussionType = () => this.props.element.discussionType;
 
   editable = () => !(this.props.editMode && this.props.element.discussionId);
 
@@ -155,23 +161,26 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
 
   nearbyDiscussions = () => {
     const timestamp = this.timestamp();
-    if (timestamp == null) {
+    const beatmapId = this.selectedBeatmap();
+    if (timestamp == null || beatmapId == null) {
       return [];
     }
 
-    if (!this.cache.nearbyDiscussions || this.cache.nearbyDiscussions.timestamp !== timestamp || (this.cache.nearbyDiscussions.beatmap_id !== this.selectedBeatmap())) {
-      const relevantDiscussions = _.filter(this.props.discussions, this.isRelevantDiscussion);
+    if (this.cache.nearbyDiscussions == null
+      || this.cache.nearbyDiscussions.timestamp !== timestamp
+      || this.cache.nearbyDiscussions.beatmap_id !== beatmapId) {
+      const relevantDiscussions = filter(this.props.discussions, this.isRelevantDiscussion);
       this.cache.nearbyDiscussions = {
-        beatmap_id: this.selectedBeatmap(),
-        discussions: BeatmapDiscussionHelper.nearbyDiscussions(relevantDiscussions, timestamp),
+        beatmap_id: beatmapId,
+        discussions: nearbyDiscussions(relevantDiscussions, timestamp),
         timestamp,
       };
     }
 
-    return this.cache.nearbyDiscussions?.discussions;
+    return this.cache.nearbyDiscussions.discussions;
   };
 
-  nearbyDraftEmbeds = (drafts: SlateElement[]) => {
+  nearbyDraftEmbeds = (drafts: EmbedElement[]) => {
     const timestamp = this.timestamp();
     if (timestamp == null || drafts.length === 0) {
       return;
@@ -182,7 +191,7 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
         return false;
       }
 
-      const ts = BeatmapDiscussionHelper.parseTimestamp(embed.timestamp as string);
+      const ts = parseTimestamp(embed.timestamp);
       if (ts == null) {
         return false;
       }
@@ -191,38 +200,37 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
     });
   };
 
-  nearbyIndicator = (drafts: SlateElement[]) => {
-    if (this.timestamp() == null || this.discussionType() === 'praise') {
-      return;
+  nearbyIndicator = (drafts: EmbedElement[]) => {
+    if (!this.editable() || this.timestamp() == null || this.discussionType() === 'praise') {
+      return null;
     }
 
-    const nearbyDiscussions = this.editable() ? this.nearbyDiscussions() : [];
-    const nearbyUnsaved = this.nearbyDraftEmbeds(drafts) || [];
+    const discussions = this.nearbyDiscussions();
+    const nearbyUnsaved = this.nearbyDraftEmbeds(drafts) ?? [];
 
-    if (nearbyDiscussions.length > 0 || nearbyUnsaved.length > 1) {
-      const timestamps =
-        nearbyDiscussions.map((discussion) => {
-          const timestamp = BeatmapDiscussionHelper.formatTimestamp(discussion.timestamp);
-          if (timestamp == null) {
-            return;
-          }
+    if (discussions.length > 0 || nearbyUnsaved.length > 1) {
+      const timestamps: string[] = [];
+      discussions.forEach((discussion) => {
+        if (discussion.timestamp == null) return;
+        const timestamp = formatTimestamp(discussion.timestamp);
 
-          // don't linkify timestamps when in edit mode
-          return this.props.editMode
-            ? timestamp
-            : osu.link(BeatmapDiscussionHelper.url({ discussion }),
-              timestamp,
-              { classNames: ['js-beatmap-discussion--jump'] },
-            );
-        });
+        // don't linkify timestamps when in edit mode
+        timestamps.push(this.props.editMode
+          ? timestamp
+          : linkHtml(BeatmapDiscussionHelper.url({ discussion }),
+            timestamp,
+            { classNames: ['js-beatmap-discussion--jump'] },
+          ),
+        );
+      });
 
       if (nearbyUnsaved.length > 1) {
-        timestamps.push(osu.trans('beatmap_discussions.nearby_posts.unsaved', { count: nearbyUnsaved.length - 1 }));
+        timestamps.push(trans('beatmap_discussions.nearby_posts.unsaved', { count: nearbyUnsaved.length - 1 }));
       }
 
-      const timestampsString = osu.transArray(timestamps);
+      const timestampsString = transArray(timestamps);
 
-      const nearbyText = osu.trans('beatmap_discussions.nearby_posts.notice', {
+      const nearbyText = trans('beatmap_discussions.nearby_posts.notice', {
         existing_timestamps: timestampsString,
         timestamp: this.props.element.timestamp,
       });
@@ -245,25 +253,20 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
         </div>
       );
     }
+
+    return null;
   };
 
-  path = (): Path => ReactEditor.findPath(this.context, this.props.element);
+  path = () => ReactEditor.findPath(this.context, this.props.element);
 
-  render(): React.ReactNode {
+  render() {
     const canEdit = this.editable();
     const classMods = canEdit ? [] : ['read-only'];
 
-    let timestamp = this.props.element.timestamp as string | undefined;
-    let timestampTooltipType: string;
-    if (this.props.element.beatmapId != null) {
-      timestampTooltipType = 'diff';
-    } else {
-      timestampTooltipType = 'all-diff';
-      timestamp = undefined;
-    }
+    const timestampTooltipType = this.props.element.beatmapId != null ? 'diff' : 'all-diff';
 
-    const timestampTooltip = osu.trans(`beatmaps.discussions.review.embed.timestamp.${timestampTooltipType}`, {
-      type: osu.trans(`beatmaps.discussions.message_type.${this.discussionType()}`),
+    const timestampTooltip = trans(`beatmaps.discussions.review.embed.timestamp.${timestampTooltipType}`, {
+      type: trans(`beatmaps.discussions.message_type.${this.discussionType()}`),
     });
 
     const deleteButton =
@@ -273,14 +276,17 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
           contentEditable={false}
           disabled={this.props.readOnly}
           onClick={this.delete}
-          title={osu.trans(`beatmaps.discussions.review.embed.${canEdit ? 'delete' : 'unlink'}`)}
+          title={trans(`beatmaps.discussions.review.embed.${canEdit ? 'delete' : 'unlink'}`)}
         >
           <i className={`fas fa-${canEdit ? 'trash-alt' : 'link'}`} />
         </button>
       );
 
-    const nearbyIndicator =
-      <DraftsContext.Consumer>{this.nearbyIndicator}</DraftsContext.Consumer>;
+    const nearbyIndicator = (
+      <DraftsContext.Consumer>
+        {(drafts) => <Observer>{() => this.nearbyIndicator(drafts)}</Observer>}
+      </DraftsContext.Consumer>
+    );
 
     const unsavedIndicator =
       this.props.editMode && canEdit ?
@@ -288,12 +294,14 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
           <div
             className={`${this.bn}__indicator`}
             contentEditable={false} // workaround for slatejs 'Cannot resolve a Slate point from DOM point' nonsense
-            title={osu.trans('beatmaps.discussions.review.embed.unsaved')}
+            title={trans('beatmaps.discussions.review.embed.unsaved')}
           >
             <i className='fas fa-pencil-alt' />
           </div>
         )
         : null;
+
+    const disabled = this.props.readOnly || !canEdit;
 
     return (
       <div
@@ -308,14 +316,14 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
               className={`${this.bn}__selectors`}
               contentEditable={false} // workaround for slatejs 'Cannot resolve a Slate point from DOM point' nonsense
             >
-              <EditorBeatmapSelector {...this.props} disabled={this.props.readOnly || !canEdit} />
-              <EditorIssueTypeSelector {...this.props} disabled={this.props.readOnly || !canEdit} />
+              <EditorBeatmapSelector {...this.props} disabled={disabled} element={this.props.element} />
+              <EditorIssueTypeSelector {...this.props} disabled={disabled} element={this.props.element} />
               <div
                 className={`${this.bn}__timestamp`}
                 contentEditable={false} // workaround for slatejs 'Cannot resolve a Slate point from DOM point' nonsense
               >
                 <span title={canEdit ? timestampTooltip : ''}>
-                  {timestamp ?? osu.trans('beatmap_discussions.timestamp_display.general')}
+                  {this.props.element.timestamp ?? trans('beatmap_discussions.timestamp_display.general')}
                 </span>
               </div>
               {unsavedIndicator}
@@ -337,7 +345,7 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
     );
   }
 
-  selectedBeatmap = () => this.props.element.beatmapId as number;
+  selectedBeatmap = () => this.props.element.beatmapId;
 
-  timestamp = () => BeatmapDiscussionHelper.parseTimestamp(this.props.element.timestamp as string | undefined);
+  timestamp = () => parseTimestamp(this.props.element.timestamp);
 }

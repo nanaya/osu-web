@@ -25,6 +25,11 @@ return [
             'index' => 'listázás',
         ],
 
+        'beatmapsets' => [
+            'show' => 'információ',
+            'discussions' => 'beszélgetés',
+        ],
+
         'changelog' => [
             'index' => 'listázás',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'modolás',
-            'multiplayer' => 'többjátékos',
+            'playlists' => 'játéklisták',
+            'realtime' => 'többjátékos',
             'show' => 'információ',
         ],
     ],

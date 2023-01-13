@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'Ten użytkownik został zablokowany.',
+        'comment_text' => 'Ten komentarz został ukryty.',
         'blocked_count' => 'zablokowani użytkownicy (:count)',
         'hide_profile' => 'ukryj profil',
+        'hide_comment' => 'ukryj',
         'not_blocked' => 'Ten użytkownik nie jest zablokowany.',
         'show_profile' => 'pokaż profil',
+        'show_comment' => 'pokaż',
         'too_many' => 'Osiągnięto limit zablokowanych użytkowników.',
         'button' => [
             'block' => 'zablokuj',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'Ładowanie...',
         'send_message' => 'Wyślij wiadomość',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -115,7 +134,7 @@ return [
     'logout_confirm' => 'Na pewno chcesz się wylogować? :(',
     'report' => [
         'button_text' => 'Zgłoś',
-        'comments' => 'Dodatkowe informacje',
+        'comments' => 'Opis',
         'placeholder' => 'Podaj wszystkie informacje, które mogą okazać się przydatne.',
         'reason' => 'Powód',
         'thanks' => 'Dziękujemy za zgłoszenie!',
@@ -158,6 +177,10 @@ return [
         'comments_count' => [
             '_' => ':link',
             'count' => ':count_delimited komentarz|:count_delimited komentarze|:count_delimited komentarzy',
+        ],
+        'cover' => [
+            'to_0' => 'Ukryj tło',
+            'to_1' => 'Pokaż tło',
         ],
         'edit' => [
             'cover' => [
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Porzucone beatmapy',
                 ],
+                'guest' => [
+                    'title' => 'Współtworzone beatmapy',
+                ],
                 'loved' => [
                     'title' => 'Ulubione beatmapy społeczności',
+                ],
+                'nominated' => [
+                    'title' => 'Nominowane beatmapy do sekcji rankingowej',
                 ],
                 'pending' => [
                     'title' => 'Oczekujące beatmapy',
@@ -301,8 +330,8 @@ return [
                 'recent' => 'Ostatnie',
                 'title' => 'Medale',
             ],
-            'multiplayer' => [
-                'title' => 'Gry w trybie wieloosobowym',
+            'playlists' => [
+                'title' => 'Gry w trybie asynchronicznym',
             ],
             'posts' => [
                 'title' => 'Posty',
@@ -311,6 +340,9 @@ return [
             ],
             'recent_activity' => [
                 'title' => 'Ostatnie',
+            ],
+            'realtime' => [
+                'title' => 'Gry w trybie wieloosobowym',
             ],
             'top_ranks' => [
                 'download_replay' => 'Pobierz powtórkę',
@@ -324,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'Pierwsze miejsca',
+                ],
+                'pin' => [
+                    'to_0' => 'Odepnij',
+                    'to_0_done' => 'Odpięto wynik',
+                    'to_1' => 'Przypnij',
+                    'to_1_done' => 'Przypięto wynik',
+                ],
+                'pinned' => [
+                    'title' => 'Przypięte wyniki',
                 ],
             ],
             'votes' => [
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'Blokada',
                         'silence' => 'Uciszenie',
+                        'tournament_ban' => 'Blokada turniejowa',
                         'note' => 'Adnotacja',
                     ],
                 ],
@@ -391,6 +433,7 @@ return [
             'country_simple' => 'Ranking krajowy',
             'global' => 'Pozycja w rankingu globalnym dla :mode',
             'global_simple' => 'Ranking globalny',
+            'highest' => 'Najwyższa pozycja: :rank (osiągnięta :date)',
         ],
         'stats' => [
             'hit_accuracy' => 'Celność',
@@ -424,6 +467,8 @@ return [
         'offline' => 'Offline',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'Użytkownik utworzony',
     ],
     'verify' => [

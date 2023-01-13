@@ -25,6 +25,11 @@ return [
             'index' => '',
         ],
 
+        'beatmapsets' => [
+            'show' => '',
+            'discussions' => '',
+        ],
+
         'changelog' => [
             'index' => '',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => '',
-            'multiplayer' => '',
+            'playlists' => '',
+            'realtime' => '',
             'show' => '',
         ],
     ],

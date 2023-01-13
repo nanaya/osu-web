@@ -2,6 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { fadeIn, fadeOut } from 'utils/fade';
+import { isModalShowing } from 'utils/modal-helper';
 
 export default class ClickMenu {
   private current: string | null | undefined = null;
@@ -92,12 +93,11 @@ export default class ClickMenu {
     }
   };
 
-  toggle = (e: JQuery.ClickEvent) => {
+  toggle = (e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>) => {
     const menu = e.currentTarget;
     const tree = this.tree();
 
     e.preventDefault();
-    e.stopPropagation();
 
     const target = menu.dataset.clickMenuTarget;
     let next = target;
@@ -133,14 +133,14 @@ export default class ClickMenu {
     return tree;
   };
 
-  private onDocumentMousedown = (e: JQuery.MouseDownEvent) => {
+  private onDocumentMousedown = (e: JQuery.MouseDownEvent<Document, unknown, Document, HTMLElement | Document>) => {
     this.documentMouseEventTarget = e.button === 0 ? e.target : null;
   };
 
-  private onDocumentMouseup = (e: JQuery.MouseUpEvent) => {
+  private onDocumentMouseup = (e: JQuery.MouseUpEvent<Document, unknown, Document, HTMLElement | Document>) => {
     if (this.documentMouseEventTarget !== e.target) return;
     if (e.button !== 0) return;
-    if (osu.popupShowing()) return;
+    if (isModalShowing()) return;
     if (this.current == null) return;
     if ($(e.target).closest('.js-click-menu').length > 0) return;
 

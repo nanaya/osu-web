@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "hãy<br>bắt đầu!",
         'action' => 'Tải xuống osu!',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'người dùng macOS',
+        'mirror' => 'liên kết phụ',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "hãy<br>bắt đầu!",
+        'video-guide' => 'hướng dẫn bằng video',
 
         'help' => [
             '_' => 'nếu bạn gặp vấn đề khi bắt đầu game hoặc tạo tài khoản, :help_forum_link hoặc :support_button.',
@@ -86,8 +99,6 @@ return [
             'macos' => 'cho macOS',
             'linux' => 'cho Linux',
         ],
-        'mirror' => 'liên kết phụ',
-        'macos-fallback' => 'người dùng macOS',
         'steps' => [
             'register' => [
                 'title' => 'tạo tài khoản',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => 'hướng dẫn bằng video',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'Ủng Hộ osu!',
             'store' => 'osu!store',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'Wow!',
-        'subtitle' => 'Dường như bạn đang có một khoảng thời gian vui vẻ! :D',
-        'body' => [
-            'part-1' => 'Bạn có biết rằng osu! không được vận hành dựa vào lợi nhuận quảng cáo, mà dựa vào sự ủng hộ của người chơi để hỗ trợ sự phát triển và chi phí hoạt động?',
-            'part-2' => 'Bạn có biết rằng bằng cách hỗ trợ osu! bạn sẽ nhận được hàng tá các tính năng hữu ích, chẳng hạn như <strong>tải xuống beatmap ngay trong game</strong> khi bạn theo dõi người chơi khác và trong chế độ multiplayer?',
-        ],
-        'find-out-more' => 'Nhấp vào đây để tìm hiểu thêm!',
-        'download-starting' => "Ồ, và đừng lo lắng - quá trình tải xuống đã được bắt đầu cho bạn rồi ;)",
     ],
 ];

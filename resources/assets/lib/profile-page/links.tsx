@@ -1,15 +1,17 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import ClickToCopy from 'click-to-copy';
+import ClickToCopy from 'components/click-to-copy';
+import StringWithComponent, { Props as StringWithComponentProps } from 'components/string-with-component';
+import TimeWithTooltip from 'components/time-with-tooltip';
 import UserExtendedJson from 'interfaces/user-extended-json';
 import { route } from 'laroute';
 import { compact } from 'lodash';
 import * as moment from 'moment';
+import core from 'osu-core-singleton';
 import * as React from 'react';
-import StringWithComponent, { Props as StringWithComponentProps } from 'string-with-component';
-import TimeWithTooltip from 'time-with-tooltip';
 import { classWithModifiers } from 'utils/css';
+import { trans, transChoice } from 'utils/lang';
 
 // these are ordered in the order they appear in.
 const textKeys = ['join_date', 'last_visit', 'playstyle', 'post_count', 'comments_count'] as const;
@@ -65,12 +67,12 @@ const linkMapping: Record<LinkKey, (user: UserExtendedJson) => LinkProps> = {
 
 const textMapping: Record<TextKey, (user: UserExtendedJson) => StringWithComponentProps> = {
   comments_count: (user: UserExtendedJson) => {
-    const count = osu.transChoice('users.show.comments_count.count', user.comments_count ?? 0);
+    const count = transChoice('users.show.comments_count.count', user.comments_count ?? 0);
     const url = route('comments.index', { user_id: user.id });
 
     return {
       mappings: { link: <a className={classWithModifiers('profile-links__value', 'link')} href={url}>{count}</a> },
-      pattern: osu.trans('users.show.comments_count._'),
+      pattern: trans('users.show.comments_count._'),
     };
   },
   join_date: (user: UserExtendedJson) => {
@@ -82,11 +84,11 @@ const textMapping: Record<TextKey, (user: UserExtendedJson) => StringWithCompone
 
     if (joinDate.isBefore(moment.utc([2008]))) {
       pattern = ':date';
-      text = osu.trans('users.show.first_members');
+      text = trans('users.show.first_members');
     } else {
       className += ' profile-links__value';
-      pattern = osu.trans('users.show.joined_at');
-      text = joinDate.format(osu.trans('common.datetime.year_month.moment'));
+      pattern = trans('users.show.joined_at');
+      text = joinDate.format(trans('common.datetime.year_month.moment'));
     }
 
     const mappings = {
@@ -103,7 +105,7 @@ const textMapping: Record<TextKey, (user: UserExtendedJson) => StringWithCompone
     if (user.is_online) {
       return {
         mappings: {},
-        pattern: osu.trans('users.show.lastvisit_online'),
+        pattern: trans('users.show.lastvisit_online'),
       };
     }
 
@@ -113,24 +115,24 @@ const textMapping: Record<TextKey, (user: UserExtendedJson) => StringWithCompone
           <TimeWithTooltip dateTime={user.last_visit ?? ''} relative />
         </span>
       ) },
-      pattern: osu.trans('users.show.lastvisit'),
+      pattern: trans('users.show.lastvisit'),
     };
   },
   playstyle: (user: UserExtendedJson) => {
-    const playsWith = user.playstyle.map((s) => osu.trans(`common.device.${s}`)).join(', ');
+    const playsWith = user.playstyle.map((s) => trans(`common.device.${s}`)).join(', ');
 
     return {
       mappings: { devices: <span className='profile-links__value'>{playsWith}</span> },
-      pattern: osu.trans('users.show.plays_with'),
+      pattern: trans('users.show.plays_with'),
     };
   },
   post_count: (user: UserExtendedJson) => {
-    const count = osu.transChoice('users.show.post_count.count', user.post_count);
+    const count = transChoice('users.show.post_count.count', user.post_count);
     const url = route('users.posts', { user: user.id });
 
     return {
       mappings: { link: <a className={classWithModifiers('profile-links__value', 'link')} href={url}>{count}</a> },
-      pattern: osu.trans('users.show.post_count._'),
+      pattern: trans('users.show.post_count._'),
     };
   },
 };
@@ -167,9 +169,9 @@ export default class Links extends React.PureComponent<Props> {
         {rows.map((row, index) => (
           <div key={index} className={`profile-links__row profile-links__row--${index}`}>{row}</div>
         ))}
-        {this.props.user.id === currentUser.id && (
+        {this.props.user.id === core.currentUser?.id && (
           <div className='profile-links__edit'>
-            <a className='btn-circle btn-circle--page-toggle' href={route('account.edit')} title={osu.trans('users.show.page.button')}>
+            <a className='btn-circle btn-circle--page-toggle' href={route('account.edit')} title={trans('users.show.page.button')}>
               <span className='fas fa-pencil-alt' />
             </a>
           </div>
@@ -182,7 +184,7 @@ export default class Links extends React.PureComponent<Props> {
     if (this.props.user[key] == null) return null;
 
     const props = linkMapping[key](this.props.user);
-    props.title ??= osu.trans(`users.show.info.${key}`);
+    props.title ??= trans(`users.show.info.${key}`);
 
     return <Link key={key} {...props} />;
   };

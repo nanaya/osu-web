@@ -1,51 +1,72 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetPanel from 'beatmapset-panel';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
-import { route } from 'laroute';
-import { observable } from 'mobx';
+import BeatmapsetPanel from 'components/beatmapset-panel';
+import ProfilePageExtraSectionTitle from 'components/profile-page-extra-section-title';
+import ShowMoreLink from 'components/show-more-link';
+import { observer } from 'mobx-react';
 import * as React from 'react';
-import ShowMoreLink from 'show-more-link';
 import ExtraHeader from './extra-header';
-import { BeatmapsetSection } from './extra-page-props';
-import ExtraPageProps from './extra-page-props';
+import ExtraPageProps, { BeatmapsetSection } from './extra-page-props';
 
-const sectionKeys: [BeatmapsetSection, string][] = [
-  ['favouriteBeatmapsets', 'favourite'],
-  ['rankedBeatmapsets', 'ranked'],
-  ['lovedBeatmapsets', 'loved'],
-  ['pendingBeatmapsets', 'pending'],
-  ['graveyardBeatmapsets', 'graveyard'],
-];
+const sectionKeys = [
+  {
+    key: 'favourite',
+    urlType: 'favouriteBeatmapsets',
+  },
+  {
+    key: 'ranked',
+    urlType: 'rankedBeatmapsets',
+  },
+  {
+    key: 'loved',
+    urlType: 'lovedBeatmapsets',
+  },
+  {
+    key: 'guest',
+    urlType: 'guestBeatmapsets',
+  },
+  {
+    key: 'pending',
+    urlType: 'pendingBeatmapsets',
+  },
+  {
+    key: 'graveyard',
+    urlType: 'graveyardBeatmapsets',
+  },
+  {
+    key: 'nominated',
+    urlType: 'nominatedBeatmapsets',
+  },
+] as const;
 
-type Props = {
-  counts: Record<BeatmapsetSection, number>;
-} & {
-  [key in BeatmapsetSection]: BeatmapsetExtendedJson[];
-} & ExtraPageProps;
-
-export default class Beatmapsets extends React.PureComponent<Props> {
+@observer
+export default class Beatmapsets extends React.Component<ExtraPageProps> {
   render() {
     return (
       <div className='page-extra'>
-        <ExtraHeader name={this.props.name} withEdit={this.props.withEdit} />
-        {sectionKeys.map(([section, key]) => this.renderBeatmapsets(section, key))}
+        <ExtraHeader name={this.props.name} withEdit={this.props.controller.withEdit} />
+        {sectionKeys.map(this.renderBeatmapsets)}
       </div>
     );
   }
 
-  private readonly renderBeatmapsets = (section: BeatmapsetSection, key: string) => {
-    const count = this.props.counts[section];
-    const beatmapsets = this.props[section];
-    const pagination = this.props.pagination[section];
+  private readonly onShowMore = (section: BeatmapsetSection) => {
+    this.props.controller.apiShowMore(section);
+  };
+
+  private readonly renderBeatmapsets = (section: typeof sectionKeys[number]) => {
+    const state = this.props.controller.state.beatmapsets;
+    const count = state[section.key].count;
+    const beatmapsets = state[section.key].items;
+    const pagination = state[section.key].pagination;
 
     return (
-      <React.Fragment key={section}>
-        <h3 className='title title--page-extra-small'>
-          {osu.trans(`users.show.extra.beatmaps.${key}.title`)}
-          <span className='title__count'>{osu.formatNumber(count)}</span>
-        </h3>
+      <React.Fragment key={section.key}>
+        <ProfilePageExtraSectionTitle
+          count={count}
+          titleKey={`users.show.extra.beatmaps.${section.key}.title`}
+        />
 
         {beatmapsets.length > 0 && (
           <div className='osu-layout__col-container osu-layout__col-container--with-gutter js-audio--group'>
@@ -54,22 +75,15 @@ export default class Beatmapsets extends React.PureComponent<Props> {
                 key={beatmapset.id}
                 className='osu-layout__col osu-layout__col--sm-6'
               >
-                <BeatmapsetPanel beatmapset={observable(beatmapset)} />
+                <BeatmapsetPanel beatmapset={beatmapset} />
               </div>
             ))}
 
             <div className='osu-layout__col'>
               <ShowMoreLink
-                data={{
-                  name: section,
-                  url: route('users.beatmapsets', {
-                    type: key,
-                    user: this.props.user.id,
-                  }),
-                }}
-                event='profile:showMore'
-                hasMore={pagination.hasMore}
-                loading={pagination.loading}
+                {...pagination}
+                callback={this.onShowMore}
+                data={section.urlType}
                 modifiers='profile-page'
               />
             </div>

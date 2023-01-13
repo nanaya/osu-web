@@ -11,7 +11,7 @@ use App\Models\DeletedUser;
 
 class BeatmapCompactTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = [
+    protected array $availableIncludes = [
         'beatmapset',
         'checksum',
         'failtimes',
@@ -76,7 +76,7 @@ class BeatmapCompactTransformer extends TransformerAbstract
     public function includeUser(Beatmap $beatmap)
     {
         return $this->item(
-            $beatmap->user ?? (new DeletedUser()),
+            $beatmap->user ?? new DeletedUser(),
             new UserCompactTransformer(),
         );
     }

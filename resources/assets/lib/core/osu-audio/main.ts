@@ -3,6 +3,8 @@
 
 import UserPreferences from 'core/user/user-preferences';
 import { autorun } from 'mobx';
+import { trans } from 'utils/lang';
+import { presence } from 'utils/string';
 import Slider from './slider';
 import { format, TimeFormat } from './time-format';
 
@@ -47,7 +49,7 @@ const createMainPlayer = () => {
     </div>
 
     <div class="audio-player__autoplay-control">
-      <button type="button" class="audio-player__autoplay-button js-audio--toggle-autoplay" title="${osu.trans('layout.audio.autoplay')}"></button>
+      <button type="button" class="audio-player__autoplay-button js-audio--toggle-autoplay" title="${trans('layout.audio.autoplay')}"></button>
     </div>
   `;
 
@@ -101,6 +103,7 @@ export default class Main {
 
   constructor(private userPreferences: UserPreferences) {
     this.audio.volume = 0;
+    this.audio.addEventListener('pause', this.onPause);
     this.audio.addEventListener('playing', this.onPlaying);
     this.audio.addEventListener('ended', this.onEnded);
     this.audio.addEventListener('timeupdate', this.onTimeupdate);
@@ -222,7 +225,7 @@ export default class Main {
     this.reattachPagePlayer(newPlayers);
   };
 
-  private onClickPlay = (e: JQuery.ClickEvent) => {
+  private onClickPlay = (e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>) => {
     e.preventDefault();
 
     const pagePlayer = this.findPlayer(e.currentTarget);
@@ -275,6 +278,10 @@ export default class Main {
     if (this.playerNext != null && this.userPreferences.get('audio_autoplay')) {
       this.load(this.playerNext);
     }
+  };
+
+  private onPause = () => {
+    this.setState('paused');
   };
 
   private onPlaying = () => {
@@ -337,11 +344,6 @@ export default class Main {
     });
   };
 
-  private pause = () => {
-    this.audio.pause();
-    this.setState('paused');
-  };
-
   private reattachPagePlayer = (elems?: Element[]) => {
     this.ensurePagePlayerIsAttached();
 
@@ -363,7 +365,7 @@ export default class Main {
   };
 
   private replaceAudioElem = (elem: HTMLAudioElement) => {
-    const src = osu.presence(elem.src) ?? osu.presence(elem.querySelector('source')?.src);
+    const src = presence(elem.src) ?? presence(elem.querySelector('source')?.src);
 
     if (src == null) {
       throw new Error('audio element is missing src');
@@ -433,8 +435,8 @@ export default class Main {
     this.state = state;
     this.syncState();
 
+    window.clearTimeout(this.hideMainPlayerTimeout);
     if (this.state === 'playing' || this.state === 'loading') {
-      window.clearTimeout(this.hideMainPlayerTimeout);
       if (this.mainPlayer != null) {
         this.mainPlayer.dataset.audioVisible = '1';
       }
@@ -468,7 +470,8 @@ export default class Main {
     this.audio.pause();
     this.currentSlider?.end();
     this.audio.currentTime = 0;
-    this.pause();
+    // manually trigger otherwise the player will have been changed when the event triggers
+    this.onPause();
   };
 
   private syncProgress = () => {
@@ -527,7 +530,7 @@ export default class Main {
     if (this.audio.paused) {
       void this.audio.play();
     } else {
-      this.pause();
+      this.audio.pause();
     }
   };
 

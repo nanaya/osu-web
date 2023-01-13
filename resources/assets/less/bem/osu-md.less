@@ -109,6 +109,7 @@
 
   &__header {
     .default-font();
+    clear: both;
 
     font-weight: bold;
     font-style: normal;
@@ -139,6 +140,8 @@
       .@{_top}--wiki & {
         margin-right: 0;
         margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid hsl(var(--hsl-b3));
       }
     }
 
@@ -153,6 +156,13 @@
 
       .@{_top}--news & {
         font-size: @font-size--title;
+        padding-bottom: 5px;
+        border-bottom: 1px solid hsl(var(--hsl-b3));
+      }
+
+      .@{_top}--wiki & {
+        padding-bottom: 5px;
+        border-bottom: 1px solid hsl(var(--hsl-b3));
       }
     }
 
@@ -211,10 +221,10 @@
 
     @media (min-width: 300px * 2 + @gutter-v2 * 2) {
       float: right;
+      clear: right;
       width: 50%;
       max-width: 300px;
-      margin: 0;
-      margin-left: 10px;
+      margin: 0 0 5px 10px;
     }
 
     > :first-child {

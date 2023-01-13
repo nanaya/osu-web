@@ -45,6 +45,7 @@ return [
         'reply_resolve' => 'Trả lời và giải quyết',
         'reset' => 'Reset',
         'restore' => 'Khôi phục',
+        'retry' => 'Thử lại',
         'save' => 'Lưu',
         'saving' => 'Đang lưu...',
         'search' => 'Tìm Kiếm',

@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'You have blocked this user.',
+        'comment_text' => 'This comment is hidden.',
         'blocked_count' => 'blocked users (:count)',
         'hide_profile' => 'Hide profile',
+        'hide_comment' => 'hide',
         'not_blocked' => 'That user is not blocked.',
         'show_profile' => 'Show profile',
+        'show_comment' => 'show',
         'too_many' => 'Block limit reached.',
         'button' => [
             'block' => 'Block',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'Loading...',
         'send_message' => 'Send message',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => 'password',
+            'password_confirmation' => 'password confirmation',
+            'submit' => 'create account',
+            'user_email' => 'email',
+            'user_email_confirmation' => 'email confirmation',
+            'username' => 'username',
+
+            'tos_notice' => [
+                '_' => 'by creating account you agree to the :link',
+                'link' => 'terms of service',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -115,7 +134,7 @@ return [
     'logout_confirm' => 'Are you sure you want to sign out? :(',
     'report' => [
         'button_text' => 'Report',
-        'comments' => 'Additional Comments',
+        'comments' => 'Comments',
         'placeholder' => 'Please provide any information you believe could be useful.',
         'reason' => 'Reason',
         'thanks' => 'Thanks for your report!',
@@ -158,6 +177,10 @@ return [
         'comments_count' => [
             '_' => 'Posted :link',
             'count' => ':count_delimited comment|:count_delimited comments',
+        ],
+        'cover' => [
+            'to_0' => 'Hide cover',
+            'to_1' => 'Show cover',
         ],
         'edit' => [
             'cover' => [
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Graveyarded Beatmaps',
                 ],
+                'guest' => [
+                    'title' => 'Guest Participation Beatmaps',
+                ],
                 'loved' => [
                     'title' => 'Loved Beatmaps',
+                ],
+                'nominated' => [
+                    'title' => 'Nominated Ranked Beatmaps',
                 ],
                 'pending' => [
                     'title' => 'Pending Beatmaps',
@@ -301,8 +330,8 @@ return [
                 'recent' => 'Latest',
                 'title' => 'Medals',
             ],
-            'multiplayer' => [
-                'title' => 'Multiplayer Games',
+            'playlists' => [
+                'title' => 'Playlist Games',
             ],
             'posts' => [
                 'title' => 'Posts',
@@ -311,6 +340,9 @@ return [
             ],
             'recent_activity' => [
                 'title' => 'Recent',
+            ],
+            'realtime' => [
+                'title' => 'Multiplayer Games',
             ],
             'top_ranks' => [
                 'download_replay' => 'Download Replay',
@@ -324,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'First Place Ranks',
+                ],
+                'pin' => [
+                    'to_0' => 'Unpin',
+                    'to_0_done' => 'Unpinned score',
+                    'to_1' => 'Pin',
+                    'to_1_done' => 'Pinned score',
+                ],
+                'pinned' => [
+                    'title' => 'Pinned Scores',
                 ],
             ],
             'votes' => [
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'Ban',
                         'silence' => 'Silence',
+                        'tournament_ban' => 'Tournament ban',
                         'note' => 'Note',
                     ],
                 ],
@@ -391,6 +433,7 @@ return [
             'country_simple' => 'Country Ranking',
             'global' => 'Global rank for :mode',
             'global_simple' => 'Global Ranking',
+            'highest' => 'Highest rank: :rank on :date',
         ],
         'stats' => [
             'hit_accuracy' => 'Hit Accuracy',
@@ -424,6 +467,8 @@ return [
         'offline' => 'Offline',
     ],
     'store' => [
+        'from_client' => 'please register via the game client instead!',
+        'from_web' => 'please complete registration using the osu! website',
         'saved' => 'User created',
     ],
     'verify' => [

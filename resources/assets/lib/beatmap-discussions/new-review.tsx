@@ -5,15 +5,16 @@ import { DiscussionsContext } from 'beatmap-discussions/discussions-context';
 import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
 import BeatmapsetJson from 'interfaces/beatmapset-json';
 import UserJson from 'interfaces/user-json';
+import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
+import { trans } from 'utils/lang';
 import Editor from './editor';
 
 interface Props {
   beatmaps: BeatmapExtendedJson[];
   beatmapset: BeatmapsetJson;
   currentBeatmap: BeatmapExtendedJson;
-  currentDiscussions: BeatmapsetDiscussionJson[];
   currentUser: UserJson;
   pinned?: boolean;
   setPinned?: (sticky: boolean) => void;
@@ -22,17 +23,6 @@ interface Props {
 
 interface State {
   cssTop: string | number | undefined;
-}
-
-// TODO: move to globals.d.ts
-interface StickyHeader {
-  headerHeight: () => number;
-}
-
-declare global {
-  interface Window {
-    stickyHeader: StickyHeader;
-  }
 }
 
 export default class NewReview extends React.Component<Props, State> {
@@ -59,7 +49,7 @@ export default class NewReview extends React.Component<Props, State> {
       return;
     }
 
-    return window.stickyHeader.headerHeight() + this.props.stickTo?.current?.getBoundingClientRect().height;
+    return core.stickyHeader.headerHeight + this.props.stickTo?.current?.getBoundingClientRect().height;
   };
 
   onFocus = () => this.setSticky(true);
@@ -82,12 +72,12 @@ export default class NewReview extends React.Component<Props, State> {
             <div className='osu-page osu-page--small'>
               <div className='beatmap-discussion-new'>
                 <div className='page-title'>
-                  {osu.trans('beatmaps.discussions.review.new')}
+                  {trans('beatmaps.discussions.review.new')}
                   <span className='page-title__button'>
                     <span
                       className={buttonCssClasses}
                       onClick={this.toggleSticky}
-                      title={osu.trans(`beatmaps.discussions.new.${this.props.pinned ? 'unpin' : 'pin'}`)}
+                      title={trans(`beatmaps.discussions.new.${this.props.pinned ? 'unpin' : 'pin'}`)}
                     >
                       <span className='btn-circle__content'><i className='fas fa-thumbtack' /></span>
                     </span>
@@ -101,14 +91,13 @@ export default class NewReview extends React.Component<Props, State> {
                           beatmaps={this.props.beatmaps}
                           beatmapset={this.props.beatmapset}
                           currentBeatmap={this.props.currentBeatmap}
-                          currentDiscussions={this.props.currentDiscussions}
                           discussions={discussions}
                           onFocus={this.onFocus}
                         />)
                       }
                     </DiscussionsContext.Consumer>
                     :
-                    <div className='beatmap-discussion-new__login-required'>{osu.trans('beatmaps.discussions.require-login')}</div>
+                    <div className='beatmap-discussion-new__login-required'>{trans('beatmaps.discussions.require-login')}</div>
                 }
               </div>
             </div>
@@ -118,7 +107,7 @@ export default class NewReview extends React.Component<Props, State> {
     );
   }
 
-  // TODO: to whoever refactors this - this 'sticky' behaviour was ported from new-discussion.coffee, so remember to refactor that too
+  // TODO: remove sticky when converting to mobx, like in new-discussion.
   setSticky = (sticky = true) => {
     this.setState({
       cssTop: this.cssTop(sticky),

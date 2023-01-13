@@ -25,6 +25,11 @@ return [
             'index' => 'listado',
         ],
 
+        'beatmapsets' => [
+            'show' => 'información',
+            'discussions' => 'discusión',
+        ],
+
         'changelog' => [
             'index' => 'listado',
         ],
@@ -46,15 +51,16 @@ return [
 
         'users' => [
             'modding' => 'modding',
-            'multiplayer' => 'multijugador',
+            'playlists' => 'listas de juego',
+            'realtime' => 'multijugador',
             'show' => 'información',
         ],
     ],
 
     'gallery' => [
         'close' => 'Cerrar (Esc)',
-        'fullscreen' => 'Activar o desactivar pantalla completa',
-        'zoom' => 'Zoom Acercar/Alejar',
+        'fullscreen' => 'Alternar pantalla completa',
+        'zoom' => 'Acercar/Alejar',
         'previous' => 'Anterior (flecha izquierda)',
         'next' => 'Siguiente (flecha derecha)',
     ],
@@ -69,7 +75,7 @@ return [
         ],
         'help' => [
             '_' => 'ayuda',
-            'getAbuse' => 'notificar abuso',
+            'getAbuse' => 'reportar abuso',
             'getFaq' => 'preguntas frecuentes',
             'getRules' => 'reglas',
             'getSupport' => 'no, en serio, ¡necesito ayuda!',
@@ -100,7 +106,7 @@ return [
             'faq' => 'Preguntas frecuentes',
             'forum' => 'Foros de la comunidad',
             'livestreams' => 'Transmisiones en vivo',
-            'report' => 'Informar de un problema',
+            'report' => 'Reportar un problema',
             'wiki' => 'Wiki',
         ],
         'legal' => [
@@ -172,7 +178,7 @@ return [
             'username' => 'nombre de usuario',
 
             'error' => [
-                'email' => "El nombre de usuario o correo electrónico no existe",
+                'email' => "El nombre de usuario o correo no existe",
                 'password' => 'Contraseña incorrecta',
             ],
         ],

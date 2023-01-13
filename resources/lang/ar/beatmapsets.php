@@ -11,12 +11,16 @@ return [
         'rule_violation' => 'تمت إزالة بعض المحتويات من هذه الخريطة بعد معرفة آنها غير ملائمة لـosu!.',
     ],
 
+    'cover' => [
+        'deleted' => 'خريطة محذوفة',
+    ],
+
     'download' => [
         'limit_exceeded' => 'تَمهل, ألعب أكثر.',
     ],
 
     'featured_artist_badge' => [
-        'label' => '',
+        'label' => 'الفنانين المميزين',
     ],
 
     'index' => [
@@ -62,6 +66,7 @@ return [
             'favourite_login' => 'قم بتسجيل الدخول لتفضيل هذه الخريطة',
             'logged-out' => 'تحتاج إلى تسجيل الدخول قبل تنزيل أي خريطة!',
             'mapped_by' => 'نشأت بواسطة :mapper',
+            'mapped_by_guest' => '',
             'unfavourite' => 'إلغاء تفضيل هذه الخريطة',
             'updated_timeago' => 'آخر تحديث :timeago',
 
@@ -80,9 +85,9 @@ return [
 
         'details_date' => [
             'approved' => 'مقبولة :timeago',
-            'loved' => 'محبوب timeago:',
+            'loved' => 'loved :timeago',
             'qualified' => 'مؤهل timeago:',
-            'ranked' => 'مصفوفة :timeago',
+            'ranked' => 'ranked :timeago',
             'submitted' => 'مُقدَمَة :timeago',
             'updated' => 'آخر تحديث :timeago',
         ],
@@ -92,7 +97,7 @@ return [
         ],
 
         'hype' => [
-            'action' => 'اَشِد هذه الخريطة ان احببت لعبها لمساعدتها لاِحتلال حالة <strong>التصفيف</strong>.',
+            'action' => 'اَشِد هذه الخريطة ان احببت لعبها لمساعدتها لاِحتلال حالة <strong>Ranked</strong>.',
 
             'current' => [
                 '_' => 'هذه الخريطة حاليا :status.',
@@ -120,7 +125,9 @@ return [
             'genre' => 'النوع',
             'language' => 'اللغة',
             'no_scores' => 'لا تزال البيانات تُحسب...',
+            'nominators' => '',
             'nsfw' => 'محتوى حساس',
+            'offset' => 'الإزاحة عبر الإنترنت',
             'points-of-failure' => 'نقاط الفشل',
             'source' => 'المصدر',
             'storyboard' => 'تحتوي هذه الخريطة على لوحة قصصية',
@@ -143,6 +150,7 @@ return [
         'scoreboard' => [
             'achieved' => 'احتُلت عند :when',
             'country' => 'ترتيب الدولة',
+            'error' => 'فشل تحميل الترتيب',
             'friend' => 'ترتيب الأصدقاء',
             'global' => 'الترتيب العالمي',
             'supporter-link' => 'اضغط <a href=":link">هنا</a> لمشاهدة كل الميزات الرائعة التي تحصل عليها!',
@@ -151,14 +159,15 @@ return [
 
             'headers' => [
                 'accuracy' => 'الدقة',
-                'combo' => 'اقصى مجموع',
+                'combo' => 'اقصى كومبو',
                 'miss' => 'اِخفاق',
                 'mods' => 'المودات',
+                'pin' => 'ثبّت',
                 'player' => 'اللاعب',
                 'pp' => '',
                 'rank' => 'المرتبه',
-                'score_total' => 'مجموع النقاط',
                 'score' => 'المجموع',
+                'score_total' => 'مجموع النقاط',
                 'time' => 'الوقت',
             ],
 
@@ -167,11 +176,15 @@ return [
                 'friend' => 'لا احد من اصدقائك حصل على نتيجة بهذه الخريطة بعد!',
                 'global' => 'لا نتيجة بعد. ربما عليك الحصول على واحدة؟',
                 'loading' => 'جارِ تحميل النتائج...',
-                'unranked' => 'خريطة غير مصنفة.',
+                'unranked' => 'خريطة ليست مصنفة.',
             ],
             'score' => [
                 'first' => 'في المقدمة',
                 'own' => 'أفضل ما لديك',
+            ],
+            'supporter_link' => [
+                '_' => 'انقر :here لرؤية جميع الميزات الرائعة التي ستحصل عليها!',
+                'here' => 'هتا',
             ],
         ],
 
@@ -183,9 +196,10 @@ return [
             'ar' => 'معدل الوصول',
             'stars' => 'نجوم الصعوبة',
             'total_length' => 'الطول',
-            'bpm' => 'نبضات في الدقيقة',
+            'bpm' => 'BPM',
             'count_circles' => 'عدد الدوائر',
             'count_sliders' => 'عدد المنزلقات',
+            'offset' => 'الإزاحة على الإنترنت: :offset',
             'user-rating' => 'تصنيف المستخدم',
             'rating-spread' => 'انتشار التصنيف',
             'nominations' => 'الترشيحات',
@@ -193,13 +207,17 @@ return [
         ],
 
         'status' => [
-            'ranked' => 'مقيّمة',
+            'ranked' => 'Ranked',
             'approved' => 'مقبولة',
-            'loved' => 'محبوبة',
+            'loved' => 'Loved',
             'qualified' => 'مؤهلة',
             'wip' => 'جارية',
             'pending' => 'معلقة',
             'graveyard' => 'مقبورة',
         ],
+    ],
+
+    'spotlight_badge' => [
+        'label' => 'تسليط الضوء',
     ],
 ];

@@ -1,20 +1,22 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BigButton from 'big-button';
-import BeatmapsetEventJson, { isBeatmapsetNominationEvent } from 'interfaces/beatmapset-event-json';
-import BeatmapsetJson from 'interfaces/beatmapset-json';
+import BigButton from 'components/big-button';
+import Modal from 'components/modal';
+import BeatmapsetEventJson from 'interfaces/beatmapset-event-json';
+import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
 import GameMode from 'interfaces/game-mode';
 import UserExtendedJson from 'interfaces/user-extended-json';
 import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import * as _ from 'lodash';
-import { Modal } from 'modal';
 import * as React from 'react';
+import { onError } from 'utils/ajax';
 import { classWithModifiers } from 'utils/css';
+import { trans } from 'utils/lang';
 
 interface Props {
-  beatmapset: BeatmapsetJson;
+  beatmapset: BeatmapsetExtendedJson;
   currentHype: number;
   currentUser: UserExtendedJson;
   unresolvedIssues: number;
@@ -62,7 +64,7 @@ export class Nominator extends React.PureComponent<Props, State> {
     };
 
     return _.some(this.nominationEvents(), (event) => {
-      if (isBeatmapsetNominationEvent(event)) {
+      if (event.type === 'nominate' && event.comment != null) {
         return event.comment.modes.includes(mode) && eventUserIsFullNominator(event, mode);
       } else {
         return eventUserIsFullNominator(event);
@@ -83,16 +85,18 @@ export class Nominator extends React.PureComponent<Props, State> {
   legacyMode = () => this.props.beatmapset.nominations?.legacy_mode;
 
   mapCanBeNominated = () => {
-    const requiredHype = this.props.beatmapset.hype?.required;
+    if (this.props.beatmapset.hype == null) {
+      return false;
+    }
 
-    return this.props.beatmapset.status === 'pending' && requiredHype && this.props.currentHype >= requiredHype;
+    return this.props.beatmapset.status === 'pending' && this.props.currentHype >= this.props.beatmapset.hype.required;
   };
 
   nominate = () => {
     this.xhr?.abort();
 
-    this.setState({loading: true}, () => {
-      const url = route('beatmapsets.nominate', {beatmapset: this.props.beatmapset.id});
+    this.setState({ loading: true }, () => {
+      const url = route('beatmapsets.nominate', { beatmapset: this.props.beatmapset.id });
       const params = {
         data: {
           playmodes: this.state.selectedModes,
@@ -102,9 +106,9 @@ export class Nominator extends React.PureComponent<Props, State> {
 
       this.xhr = $.ajax(url, params)
         .done((response) => {
-          $.publish('beatmapsetDiscussions:update', {beatmapset: response});
+          $.publish('beatmapsetDiscussions:update', { beatmapset: response });
         })
-        .fail(osu.ajaxError)
+        .fail(onError)
         .always(this.hideNominationModal);
     });
   };
@@ -164,14 +168,14 @@ export class Nominator extends React.PureComponent<Props, State> {
         props={{
           onClick: this.showNominationModal,
         }}
-        text={osu.trans('beatmaps.nominations.nominate')}
+        text={trans('beatmaps.nominations.nominate')}
       />
     );
 
     if (this.props.unresolvedIssues > 0) {
       // add a wrapper for the tooltip (because titles on a disabled button don't show)
       return (
-        <div title={osu.trans('beatmaps.nominations.unresolved_issues')}>
+        <div title={trans('beatmaps.nominations.unresolved_issues')}>
           {button(true)}
         </div>
       );
@@ -184,9 +188,9 @@ export class Nominator extends React.PureComponent<Props, State> {
     const content = this.hybridMode() ? this.modalContentHybrid() : this.modalContentNormal();
 
     return (
-      <Modal onClose={this.hideNominationModal} visible={this.state.visible}>
+      <Modal onClose={this.hideNominationModal}>
         <div className={this.bn}>
-          <div className={`${this.bn}__header`}>{osu.trans('beatmapsets.nominate.dialog.header')}</div>
+          <div className={`${this.bn}__header`}>{trans('beatmapsets.nominate.dialog.header')}</div>
           {content}
           <div className={`${this.bn}__buttons`}>
             <BigButton
@@ -196,7 +200,7 @@ export class Nominator extends React.PureComponent<Props, State> {
               props={{
                 onClick: this.nominate,
               }}
-              text={osu.trans('beatmaps.nominations.nominate')}
+              text={trans('beatmaps.nominations.nominate')}
             />
             <BigButton
               disabled={this.state.loading}
@@ -204,7 +208,7 @@ export class Nominator extends React.PureComponent<Props, State> {
               props={{
                 onClick: this.hideNominationModal,
               }}
-              text={osu.trans('common.buttons.cancel')}
+              text={trans('common.buttons.cancel')}
             />
           </div>
         </div>
@@ -227,11 +231,11 @@ export class Nominator extends React.PureComponent<Props, State> {
     return (curr === (req ?? 0) - 1) && !this.hasFullNomination(mode);
   };
 
-  showNominationModal = () => this.setState({visible: true});
+  showNominationModal = () => this.setState({ visible: true });
 
   updateCheckboxes = () => {
     const checkedBoxes = _.map(this.checkboxContainerRef.current?.querySelectorAll<HTMLInputElement>('input[type=checkbox]:checked'), (node) => node.value);
-    this.setState({selectedModes: checkedBoxes as GameMode[]});
+    this.setState({ selectedModes: checkedBoxes as GameMode[] });
   };
 
   userCanNominate = () => {
@@ -267,7 +271,7 @@ export class Nominator extends React.PureComponent<Props, State> {
 
     return (userId != null && (
       userId === this.props.beatmapset.user_id
-      || (this.props.beatmapset.beatmaps ?? []).some((beatmap) => userId === beatmap.user_id)
+      || (this.props.beatmapset.beatmaps ?? []).some((beatmap) => beatmap.deleted_at == null && userId === beatmap.user_id)
     ));
   };
 
@@ -298,11 +302,11 @@ export class Nominator extends React.PureComponent<Props, State> {
             type='checkbox'
             value={mode}
           />
-          <span className='osu-switch-v2__content'/>
+          <span className='osu-switch-v2__content' />
           <div
             className={classWithModifiers(`${this.bn}__label`, { disabled })}
           >
-            <i className={`fal fa-extra-mode-${mode}`}/> {osu.trans(`beatmaps.mode.${mode}`)}
+            <i className={`fal fa-extra-mode-${mode}`} /> {trans(`beatmaps.mode.${mode}`)}
           </div>
         </label>
       );
@@ -310,18 +314,18 @@ export class Nominator extends React.PureComponent<Props, State> {
 
     return (
       <>
-        {osu.trans('beatmapsets.nominate.dialog.which_modes')}
+        {trans('beatmapsets.nominate.dialog.which_modes')}
         <div ref={this.checkboxContainerRef} className={`${this.bn}__checkboxes`}>
           {renderPlaymodes}
         </div>
         <div className={`${this.bn}__warn`}>
-          {osu.trans('beatmapsets.nominate.dialog.hybrid_warning')}
+          {trans('beatmapsets.nominate.dialog.hybrid_warning')}
         </div>
       </>
     );
   };
 
   private modalContentNormal() {
-    return osu.trans('beatmapsets.nominate.dialog.confirmation');
+    return trans('beatmapsets.nominate.dialog.confirmation');
   }
 }

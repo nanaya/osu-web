@@ -25,6 +25,11 @@ return [
             'index' => 'listing',
         ],
 
+        'beatmapsets' => [
+            'show' => 'info',
+            'discussions' => 'discussion',
+        ],
+
         'changelog' => [
             'index' => 'listing',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'modding',
-            'multiplayer' => 'multiplayer',
+            'playlists' => 'playlists',
+            'realtime' => 'multiplayer',
             'show' => 'info',
         ],
     ],

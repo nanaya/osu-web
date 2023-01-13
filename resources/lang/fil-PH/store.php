@@ -14,7 +14,7 @@ return [
 
         'errors_no_checkout' => [
             'line_1' => 'Naku, may mga problema sa iyong cart na pumipigil sa pag-checkout!',
-            'line_2' => 'Tanggalin o i-update ang mga bagay na nasa itaas upang magpatuloy.',
+            'line_2' => 'Mag-alis o mag-update ng mga aytem sa itaas para maipagpatuloy.',
         ],
 
         'empty' => [
@@ -31,6 +31,7 @@ return [
         'cart_problems_edit' => 'Mag-click dito para i-edit ito.',
         'declined' => 'Nakansela ang bayad.',
         'delayed_shipping' => 'Kami ay punong puno ng mga order! Maari kang maglagay ng order, pero maaring mahintulot ang iyong order ng mga 1-2 linggo habang inaasikaso namin ang mga order sa ngayon.',
+        'hide_from_activity' => 'Itago ang lahat ng mga tag ng osu!supporter sa pagkakasunud-sunod na ito mula sa aking aktibidad',
         'old_cart' => 'Dahil matagal na panahon na ang lumipas, ini-load muli ang iyong kariton, mangyaring subukang muli.',
         'pay' => 'Paglabas gamit ang Paypal',
         'title_compact' => 'checkout',
@@ -50,6 +51,7 @@ return [
 
     'invoice' => [
         'echeck_delay' => 'Dahil ang pagbayad ay eCheck, maari pong magantay ng 10 araw para dumaan ng PayPal ang iyong bayarin!',
+        'hide_from_activity' => 'ang mga tag ng osu!supporter sa pagkakasunud-sunod na ito ay hindi ipinapakita sa iyong kamakailang mga aktibidad.',
         'title_compact' => 'invoice',
 
         'status' => [
@@ -75,10 +77,15 @@ return [
         'shopify_expired' => 'Ang link ng checkout para sa order na ito ay nag-expire na.',
 
         'item' => [
+            'quantity' => 'Dami',
+
             'display_name' => [
                 'supporter_tag' => ':name para kay :username (:duration)',
             ],
-            'quantity' => 'Dami',
+
+            'subtext' => [
+                'supporter_tag' => 'Mensahe: :message',
+            ],
         ],
 
         'not_modifiable_exception' => [
@@ -105,8 +112,8 @@ return [
         'name' => 'Pangalan',
 
         'stock' => [
-            'out' => 'Naubos na ang bagay na ito. Tingnan mo muli mamaya!',
-            'out_with_alternative' => 'Sa kasamaang palad ang item na ito ay wala sa stock. Gamitin ang dropdown upang pumili ng ibang uri o suriin muli sa ibang pagkakataon!',
+            'out' => 'Kasalukuyang wala nang stock ang aytem na ito. Suriin muli sa ibang pagkakataon!',
+            'out_with_alternative' => 'Sa kasamaang palad ang aytem na ito ay wala nang stock. Gamitin ang dropdown upang pumili ng ibang uri o suriin muli sa ibang pagkakataon!',
         ],
 
         'add_to_cart' => 'Idagdag sa kart',
@@ -120,6 +127,8 @@ return [
 
     'supporter_tag' => [
         'gift' => 'regalo sa manlalaro',
+        'gift_message' => 'magdagdag ng opsyonal na mensahe sa iyong regalo! (hanggang sa :length ka mga karakter)',
+
         'require_login' => [
             '_' => 'Kailangan mong :link upang makakuha ng osu! Supporter tag!',
             'link_text' => 'naka-sign in',

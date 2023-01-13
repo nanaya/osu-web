@@ -6,14 +6,14 @@
 return [
     'landing' => [
         'download' => 'Unduh sekarang',
-        'online' => '<strong>:players</strong> pemain saat ini terhubung di dalam <strong>:games</strong> ruang permainan',
-        'peak' => 'Tercatat maksimal sebanyak :count pengguna online',
+        'online' => 'dengan <strong>:players</strong> pemain yang saat ini terhubung dalam <strong>:games</strong> ruang permainan',
+        'peak' => 'Jumlah pengguna online terbanyak: :count',
         'players' => '<strong>:count</strong> pengguna terdaftar',
         'title' => 'selamat datang',
         'see_more_news' => 'lihat lebih banyak berita',
 
         'slogan' => [
-            'main' => 'game ritme free-to-win terbaik',
+            'main' => 'permainan ritme free-to-win terbaik',
             'sub' => 'rhythm is just a click away',
         ],
     ],
@@ -21,20 +21,20 @@ return [
     'search' => [
         'advanced_link' => 'Pencarian lanjutan',
         'button' => 'Cari',
-        'empty_result' => 'Tidak ditemukan!',
+        'empty_result' => 'Tidak ada hasil yang ditemukan!',
         'keyword_required' => 'Kata kunci pencarian diperlukan',
         'placeholder' => 'ketik untuk mulai mencari',
-        'title' => 'Pencarian',
+        'title' => 'pencarian',
 
         'beatmapset' => [
             'login_required' => 'Masuk untuk mencari beatmap',
             'more' => ':count hasil pencarian beatmap lainnya',
             'more_simple' => 'Lihat hasil pencarian beatmap lainnya',
-            'title' => 'Beatmaps',
+            'title' => 'Beatmap',
         ],
 
         'forum_post' => [
-            'all' => 'Semua forum',
+            'all' => 'Seluruh forum',
             'link' => 'Cari di forum',
             'login_required' => 'Masuk untuk mencari forum',
             'more_simple' => 'Lihat hasil pencarian forum lainnya',
@@ -42,9 +42,9 @@ return [
 
             'label' => [
                 'forum' => 'cari di forum',
-                'forum_children' => 'termasuk subforum',
+                'forum_children' => 'sertakan subforum',
                 'topic_id' => 'topik #',
-                'username' => 'pemilik',
+                'username' => 'pembuat post',
             ],
         ],
 
@@ -60,7 +60,7 @@ return [
             'login_required' => 'Masuk untuk mencari pengguna',
             'more' => ':count hasil pencarian pengguna lainnya',
             'more_simple' => 'Lihat hasil pencarian pengguna lainnya',
-            'more_hidden' => 'Pencarian pengguna terbatas untuk :max pengguna saja. Perbaiki kata kunci pencarian Anda.',
+            'more_hidden' => 'Pencarian pengguna terbatas hanya untuk :max pengguna. Cobalah untuk mempersempit kriteria pencarian.',
             'title' => 'Pengguna',
         ],
 
@@ -72,11 +72,24 @@ return [
     ],
 
     'download' => [
-        'tagline' => "mari persiapkan<br>diri Anda!",
         'action' => 'Unduh osu!',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'osu! untuk pengguna macOS',
+        'mirror' => 'tautan alternatif',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "mari persiapkan<br>dirimu!",
+        'video-guide' => 'panduan video',
 
         'help' => [
-            '_' => 'apabila Anda menemui suatu masalah di saat Anda hendak memulai permainan atau mendaftarkan akun, harap :help_forum_link atau :support_button.',
+            '_' => 'apabila kamu menemui masalah pada saat kamu ingin memulai permainan atau mendaftarkan akun, harap :help_forum_link atau :support_button.',
             'help_forum_link' => 'kunjungi sub-forum Help',
             'support_button' => 'hubungi layanan dukungan kami',
         ],
@@ -86,12 +99,10 @@ return [
             'macos' => 'untuk macOS',
             'linux' => 'untuk Linux',
         ],
-        'mirror' => 'tautan alternatif',
-        'macos-fallback' => 'osu! untuk pengguna macOS',
         'steps' => [
             'register' => [
                 'title' => 'buat akun',
-                'description' => 'ikuti petunjuk yang muncul di awal permainan untuk masuk atau membuat akun baru',
+                'description' => 'ikuti petunjuk yang muncul pada awal permainan untuk masuk atau membuat akun baru',
             ],
             'download' => [
                 'title' => 'unduh permainannya',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => 'panduan video',
     ],
 
     'user' => [
@@ -117,13 +127,13 @@ return [
         'header' => [
             'stats' => [
                 'friends' => 'Teman yang Online',
-                'games' => 'Permainan',
+                'games' => 'Ruang Permainan',
                 'online' => 'Pemain yang Online',
             ],
         ],
         'beatmaps' => [
             'new' => 'Beatmap Ranked Terbaru',
-            'popular' => 'Beatmap Populer',
+            'popular' => 'Beatmap Terpopuler Saat Ini',
             'by_user' => 'oleh :user',
         ],
         'buttons' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'Dukung osu!',
             'store' => 'osu!store',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'Wow!',
-        'subtitle' => 'Anda tampaknya sedang bersenang-senang! :D',
-        'body' => [
-            'part-1' => 'Tahukah Anda bahwa osu! beroperasi tanpa iklan, di mana biaya pengembangan dan operasionalnya bergantung sepenuhnya pada donasi sukarela dari para penggunanya?',
-            'part-2' => 'Apakah Anda juga tahu bahwa dengan mendukung osu! Anda juga akan mendapatkan berbagai fitur eksklusif seperti <strong>pengunduh beatmap otomatis di dalam aplikasi osu!</strong> yang akan secara otomatis mengunduh beatmap yang Anda belum miliki di saat sedang menonton pemain lain dan di dalam pertandingan multiplayer?',
-        ],
-        'find-out-more' => 'Klik di sini untuk mengetahui lebih lanjut!',
-        'download-starting' => "Oh, dan jangan khawatir - unduhan Anda sudah dimulai ;)",
     ],
 ];

@@ -1,8 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+import ShowMoreLink from 'components/show-more-link';
 import { route } from 'laroute';
-import { computed } from 'mobx';
+import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import { Name, typeNames } from 'models/notification-type';
 import { NotificationContext } from 'notifications-context';
@@ -11,8 +12,8 @@ import NotificationController from 'notifications/notification-controller';
 import NotificationReadButton from 'notifications/notification-read-button';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import ShowMoreLink from 'show-more-link';
 import { classWithModifiers } from 'utils/css';
+import { trans } from 'utils/lang';
 import Stack from './stack';
 
 interface Link {
@@ -49,7 +50,13 @@ export default class Main extends React.Component<Props, State> {
 
   @computed
   get links() {
-    return this.typeNames.map((type) => ({ title: osu.trans(`notifications.filters.${type ?? '_'}`), type }));
+    return this.typeNames.map((type) => ({ title: trans(`notifications.filters.${type ?? '_'}`), type }));
+  }
+
+  constructor(props: Props) {
+    super(props);
+
+    makeObservable(this);
   }
 
   static getDerivedStateFromError(error: Error) {
@@ -132,7 +139,7 @@ export default class Main extends React.Component<Props, State> {
 
     return (
       <a className='notification-popup__filter' href={route(linkName)}>
-        {osu.trans(`notifications.see_${this.props.only ?? 'all'}`)}
+        {trans(`notifications.see_${this.props.only ?? 'all'}`)}
       </a>
     );
   }
@@ -151,7 +158,7 @@ export default class Main extends React.Component<Props, State> {
       <NotificationReadButton
         isMarkingAsRead={type.isMarkingAsRead}
         onMarkAsRead={this.handleMarkAsRead}
-        text={osu.trans('notifications.mark_read', { type: osu.trans(`notifications.filters.${type.name ?? '_'}`) })}
+        text={trans('notifications.mark_read', { type: trans(`notifications.filters.${type.name ?? '_'}`) })}
       />
     );
   }
@@ -190,7 +197,7 @@ export default class Main extends React.Component<Props, State> {
 
       return (
         <p key='empty' className='notification-popup__empty'>
-          {osu.trans(transKey)}
+          {trans(transKey)}
         </p>
       );
     }

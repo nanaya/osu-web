@@ -1,7 +1,9 @@
 # Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 # See the LICENCE file in the repository root for full licence text.
 
-class @StoreSupporterTagPrice
+import { trans, transChoice } from 'utils/lang'
+
+class window.StoreSupporterTagPrice
   @durationToPrice: (duration) ->
     duration = +duration
     switch
@@ -32,9 +34,6 @@ class @StoreSupporterTagPrice
       when @_price >= 4 then 1
       else 0
 
-  pricePerMonth: ->
-    osu.formatNumber(@_price / @duration(), 2)
-
   discount: ->
     if @duration() >= 12
       46
@@ -43,7 +42,7 @@ class @StoreSupporterTagPrice
       Math.max(0, Math.round(raw, 0))
 
   discountText: ->
-    osu.trans('store.discount', percent: @discount())
+    trans('store.discount', percent: @discount())
 
   durationInYears: ->
     years: Math.floor(@duration() / 12)
@@ -55,9 +54,9 @@ class @StoreSupporterTagPrice
     texts = []
 
     if duration.years > 0
-      texts.push osu.transChoice('common.count.years', duration.years)
+      texts.push transChoice('common.count.years', duration.years)
 
     if duration.months > 0
-      texts.push osu.transChoice('common.count.months', duration.months)
+      texts.push transChoice('common.count.months', duration.months)
 
     texts.join(', ')

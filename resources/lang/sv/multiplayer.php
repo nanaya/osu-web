@@ -4,7 +4,11 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
-    'empty' => 'Inga flerspelarmatcher spelade i osu!(lazer) ännu!',
+    'empty' => [
+        '_' => 'Inga osu!(lazer) :type_group -spel spelade än!',
+        'playlists' => 'spellista',
+        'realtime' => 'flerspelarläge',
+    ],
 
     'room' => [
         'hosted_by' => ':user är värd',
@@ -12,6 +16,10 @@ return [
         'map_count' => ':count_delimited map|:count_delimited maps',
         'player_count' => ':count_delimited spelare|:count_delimited spelare',
         'time_left' => ':time kvar',
+
+        'errors' => [
+            'duration_too_long' => 'Varaktigheten är för lång.',
+        ],
 
         'status' => [
             'active' => 'aktiv',

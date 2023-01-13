@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'חסמת משתמש זה.',
+        'comment_text' => '',
         'blocked_count' => 'משתמשים חסומים (:count)',
         'hide_profile' => 'הסתר פרופיל',
+        'hide_comment' => '',
         'not_blocked' => 'משתמש זה אינו חסום.',
         'show_profile' => 'הצג פרופיל',
+        'show_comment' => '',
         'too_many' => 'הגעת למגבלת החסימות.',
         'button' => [
             'block' => 'חסום',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'טוען...',
         'send_message' => 'שלח הודעה',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -160,6 +179,10 @@ return [
 ',
             'count' => ':count_delimited תגובה|:count_delimited תגובות',
         ],
+        'cover' => [
+            'to_0' => '',
+            'to_1' => '',
+        ],
         'edit' => [
             'cover' => [
                 'button' => 'החלף תמונת פרופיל',
@@ -205,8 +228,14 @@ return [
                 'graveyard' => [
                     'title' => 'מפות בבית הקברות',
                 ],
+                'guest' => [
+                    'title' => '',
+                ],
                 'loved' => [
                     'title' => 'מפות אהובות',
+                ],
+                'nominated' => [
+                    'title' => '',
                 ],
                 'pending' => [
                     'title' => '',
@@ -303,7 +332,7 @@ return [
                 'recent' => 'אחרון',
                 'title' => 'מדליות',
             ],
-            'multiplayer' => [
+            'playlists' => [
                 'title' => '',
             ],
             'posts' => [
@@ -313,6 +342,9 @@ return [
             ],
             'recent_activity' => [
                 'title' => 'אחרון',
+            ],
+            'realtime' => [
+                'title' => '',
             ],
             'top_ranks' => [
                 'download_replay' => 'הורד שידור חוזר',
@@ -326,6 +358,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'דירוגים של מקום ראשון',
+                ],
+                'pin' => [
+                    'to_0' => '',
+                    'to_0_done' => '',
+                    'to_1' => '',
+                    'to_1_done' => '',
+                ],
+                'pinned' => [
+                    'title' => '',
                 ],
             ],
             'votes' => [
@@ -352,6 +393,7 @@ return [
                     'actions' => [
                         'restriction' => 'השעיה',
                         'silence' => 'השתקה',
+                        'tournament_ban' => '',
                         'note' => 'הערה',
                     ],
                 ],
@@ -393,6 +435,7 @@ return [
             'country_simple' => 'דירוג מדינה',
             'global' => 'דירוג עולמי ל- :mode',
             'global_simple' => 'דירוג עולמי',
+            'highest' => '',
         ],
         'stats' => [
             'hit_accuracy' => 'דיוק פגיעה',
@@ -426,6 +469,8 @@ return [
         'offline' => 'מנותק',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'משתמש נוצר',
     ],
     'verify' => [

@@ -5,10 +5,12 @@
 
 namespace App\Http\Controllers\Chat;
 
+use App\Libraries\Chat;
 use App\Models\Chat\Channel;
 use App\Models\Chat\UserChannel;
 use App\Models\User;
 use App\Transformers\Chat\ChannelTransformer;
+use App\Transformers\UserCompactTransformer;
 use Auth;
 
 /**
@@ -16,6 +18,13 @@ use Auth;
  */
 class ChannelsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('require-scopes:chat.write', ['only' => 'store']);
+
+        parent::__construct();
+    }
+
     /**
      * Get Channel List
      *
@@ -60,7 +69,8 @@ class ChannelsController extends Controller
      * @response {
      *   "channel_id": 5,
      *   "current_user_attributes": {
-     *     "can_message": true
+     *     "can_message": true,
+     *     "can_message_error": null
      *   },
      *   "description": "The official osu! channel (english only).",
      *   "icon": "https://a.ppy.sh/2?1519081077.png",
@@ -74,19 +84,17 @@ class ChannelsController extends Controller
     public function join($channelId, $userId)
     {
         $channel = Channel::where('channel_id', $channelId)->firstOrFail();
-        $user = auth()->user();
+        $currentUser = auth()->user();
 
         priv_check('ChatChannelJoin', $channel)->ensureCan();
 
-        if ($user->user_id !== get_int($userId)) {
+        if ($currentUser->getKey() !== get_int($userId)) {
             abort(403);
         }
 
-        if (!$channel->hasUser($user)) {
-            $channel->addUser($user);
-        }
+        $channel->addUser($currentUser);
 
-        return json_item($channel, ChannelTransformer::forUser($user), ChannelTransformer::LISTING_INCLUDES);
+        return json_item($channel, ChannelTransformer::forUser($currentUser), ChannelTransformer::LISTING_INCLUDES);
     }
 
     /**
@@ -141,7 +149,8 @@ class ChannelsController extends Controller
      *   "channel": {
      *     "channel_id": 1337,
      *     "current_user_attributes": {
-     *       "can_message": true
+     *       "can_message": true,
+     *       "can_message_error": null
      *     },
      *     "name": "test channel",
      *     "description": "wheeeee",
@@ -185,37 +194,49 @@ class ChannelsController extends Controller
     public function show($channelId)
     {
         $channel = Channel::where('channel_id', $channelId)->firstOrFail();
+        $user = auth()->user();
 
-        priv_check('ChatChannelRead', $channel)->ensureCan();
+        if (!$channel->hasUser($user)) {
+            abort(404);
+        }
 
         return [
-            'channel' => json_item($channel, ChannelTransformer::forUser(auth()->user()), ChannelTransformer::LISTING_INCLUDES),
+            'channel' => json_item($channel, ChannelTransformer::forUser($user), ChannelTransformer::LISTING_INCLUDES),
             // TODO: probably going to need a better way to list/fetch/update users on larger channels without sending user on every message.
-            'users' => json_collection($channel->visibleUsers(), 'UserCompact'),
+            'users' => json_collection(
+                $channel->visibleUsers($user)->loadMissing(UserCompactTransformer::CARD_INCLUDES_PRELOAD),
+                new UserCompactTransformer(),
+                UserCompactTransformer::CARD_INCLUDES
+            ),
         ];
     }
 
     /**
      * Create Channel
      *
-     * This endpoint creates a new channel if doesn't exist and joins it.
-     * Currently only for rejoining existing PM channels which the user has left.
+     * Creates a new PM or announcement channel.
+     * Rejoins the PM channel if it already exists.
      *
      * ---
      *
      * ### Response Format
      *
-     * Returns [ChatChannel](#chatchannel) with `recent_messages` attribute.
-     * Note that if there's no existing PM channel, most of the fields will be blank.
-     * In that case, [send a message](#create-new-pm) instead to create the channel.
+     * Returns [ChatChannel](#chatchannel) with `recent_messages` attribute; `recent_messages` is deprecated and should not be used.
      *
-     * @bodyParam type string required channel type (currently only supports "PM")
-     * @bodyParam target_id integer target user id for type PM
+     * @bodyParam channel object channel details; required if `type` is `ANNOUNCE`. No-example
+     * @bodyParam channel.name string the channel name; required if `type` is `ANNOUNCE`. No-example
+     * @bodyParam channel.description string the channel description; required if `type` is `ANNOUNCE`. No-example
+     * @bodyParam message string message to send with the announcement; required if `type` is `ANNOUNCE`. No-example
+     * @bodyParam target_id integer target user id; required if `type` is `PM`; ignored, otherwise. Example: 2
+     * @bodyParam target_ids integer[] target user ids; required if `type` is `PM`; ignored, otherwise. No-example
+     * @bodyParam type string required channel type (currently only supports `PM` and `ANNOUNCE`) Example: PM
      *
      * @response {
      *   "channel_id": 1,
+     *   "description": "best channel",
+     *   "icon": "https://a.ppy.sh/2?1519081077.png",
+     *   "moderated": false,
      *   "name": "#pm_1-2",
-     *   "description": "",
      *   "type": "PM",
      *   "recent_messages": [
      *     {
@@ -224,7 +245,18 @@ class ChannelsController extends Controller
      *       "channel_id": 1,
      *       "timestamp": "2020-01-01T00:00:00+00:00",
      *       "content": "Happy new year",
-     *       "is_action": false
+     *       "is_action": false,
+     *       "sender": {
+     *         "id": 2,
+     *         "username": "peppy",
+     *         "profile_colour": "#3366FF",
+     *         "avatar_url": "https://a.ppy.sh/2?1519081077.png",
+     *         "country_code": "AU",
+     *         "is_active": true,
+     *         "is_bot": false,
+     *         "is_online": true,
+     *         "is_supporter": true
+     *       }
      *     }
      *   ]
      * }
@@ -232,14 +264,19 @@ class ChannelsController extends Controller
     public function store()
     {
         $params = get_params(request()->all(), null, [
-            'target_id:number',
+            'channel:any',
+            'message:string',
+            'target_id:int',
+            'target_ids:int[]',
             'type:string',
+            'uuid',
         ], ['null_missing' => true]);
 
         $sender = auth()->user();
-        abort_if($params['target_id'] === null, 422, 'missing target_id parameter');
 
         if ($params['type'] === Channel::TYPES['pm']) {
+            abort_if($params['target_id'] === null, 422, 'missing target_id parameter');
+
             $target = User::findOrFail($params['target_id']);
 
             priv_check('ChatPmStart', $target)->ensureCan();
@@ -249,9 +286,12 @@ class ChannelsController extends Controller
             if ($channel->exists) {
                 $channel->addUser($sender);
             }
+        } else if ($params['type'] === Channel::TYPES['announce']) {
+            $channel = Chat::createAnnouncement($sender, $params);
         }
 
         if (isset($channel)) {
+            // TODO: recent_messages deprecated.
             return json_item($channel, ChannelTransformer::forUser($sender), ['recent_messages.sender']);
         } else {
             abort(422, 'unknown or missing type parameter');

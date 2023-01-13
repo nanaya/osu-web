@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "vágjunk<br>bele!",
         'action' => 'osu! letöltése',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'macOS használók',
+        'mirror' => 'tükör',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "vágjunk<br>bele!",
+        'video-guide' => 'videó útmutató',
 
         'help' => [
             '_' => 'ha meccs indításakor vagy fiók létrehozásánál problémába ütközöl, :help_forum_link vagy :support_button.',
@@ -86,8 +99,6 @@ return [
             'macos' => 'macOS rendszerre',
             'linux' => 'Linux rendszerre',
         ],
-        'mirror' => 'tükör',
-        'macos-fallback' => 'macOS használók',
         'steps' => [
             'register' => [
                 'title' => 'hozz létre fiókot',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => 'videó útmutató',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'osu! támogatása',
             'store' => 'osu!bolt',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'Hűha!',
-        'subtitle' => 'Úgy néz ki nagyon jól szórakozol! :D',
-        'body' => [
-            'part-1' => 'Tudtad, hogy az osu! reklámok nélkül van fenntartva, és teljesen a játékosi támogatásra hagyatkozik a fenntartási és fejlesztési költségekhez?',
-            'part-2' => 'És azt tudtad, hogy az osu! támogatásával egy rakás hasznos funkciót kapsz, mint például a <strong>játékon belüli letöltés</strong> ami automatikusan életbe lép megfigyelőként és többjátékos módban?',
-        ],
-        'find-out-more' => 'További információért kattints ide!',
-        'download-starting' => "Oh, és ne aggódj - a letöltésedet már elindítottuk ;)",
     ],
 ];

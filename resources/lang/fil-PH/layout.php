@@ -25,6 +25,11 @@ return [
             'index' => 'listahan',
         ],
 
+        'beatmapsets' => [
+            'show' => 'info',
+            'discussions' => 'talakayan',
+        ],
+
         'changelog' => [
             'index' => 'listahan',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'modding',
-            'multiplayer' => 'multiplayer',
+            'playlists' => 'mga playlist',
+            'realtime' => 'multiplayer',
             'show' => 'info',
         ],
     ],

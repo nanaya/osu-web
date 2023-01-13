@@ -5,7 +5,32 @@
 
 use App\Libraries\LocaleMeta;
 use App\Models\LoginAttempt;
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
+
+function api_version(): int
+{
+    $request = request();
+    $version = $request->attributes->get('api_version');
+    if ($version === null) {
+        $version = get_int($request->header('x-api-version')) ?? 0;
+        $request->attributes->set('api_version', $version);
+    }
+
+    return $version;
+}
+
+function array_reject_null(iterable $array): array
+{
+    $ret = [];
+    foreach ($array as $item) {
+        if ($item !== null) {
+            $ret[] = $item;
+        }
+    }
+
+    return $ret;
+}
 
 /*
  * Like array_search but returns null if not found instead of false.
@@ -141,7 +166,7 @@ function cache_expire_with_fallback(string $key, int $duration = 2592000)
         return;
     }
 
-    $data['expires_at'] = now()->addHour(-1);
+    $data['expires_at'] = now()->addHours(-1);
     Cache::put($fullKey, $data, $duration);
 }
 
@@ -156,7 +181,7 @@ function captcha_enabled()
     return config('captcha.sitekey') !== '' && config('captcha.secret') !== '';
 }
 
-function captcha_triggered()
+function captcha_login_triggered()
 {
     if (!captcha_enabled()) {
         return false;
@@ -260,29 +285,71 @@ function current_locale_meta(): LocaleMeta
     return locale_meta(app()->getLocale());
 }
 
+function cursor_decode($cursorString): ?array
+{
+    if (is_string($cursorString) && present($cursorString)) {
+        $cursor = json_decode(base64_decode(strtr($cursorString, '-_', '+/'), true), true);
+
+        if (is_array($cursor)) {
+            return $cursor;
+        }
+    }
+
+    return null;
+}
+
+function cursor_encode(?array $cursor): ?string
+{
+    if ($cursor === null) {
+        return null;
+    }
+
+    // url safe base64
+    // reference: https://datatracker.ietf.org/doc/html/rfc4648#section-5
+    return rtrim(strtr(base64_encode(json_encode($cursor)), '+/', '-_'), '=');
+}
+
+function cursor_for_response(?array $cursor): array
+{
+    return [
+        'cursor' => $cursor,
+        'cursor_string' => cursor_encode($cursor),
+    ];
+}
+
+function cursor_from_params($params): ?array
+{
+    if (is_array($params)) {
+        $cursor = cursor_decode($params['cursor_string'] ?? null) ?? $params['cursor'] ?? null;
+
+        if (is_array($cursor)) {
+            return $cursor;
+        }
+    }
+
+    return null;
+}
+
 function datadog_timing(callable $callable, $stat, array $tag = null)
 {
-    $withClockwork = app('clockwork.support')->isEnabled();
+    $startTime = microtime(true);
 
-    if ($withClockwork) {
+    $result = $callable();
+
+    $endTime = microtime(true);
+
+    if (app('clockwork.support')->isEnabled()) {
         // spaces used so clockwork doesn't run across the whole screen.
         $description = $stat
                        .' '.($tag['type'] ?? null)
                        .' '.($tag['index'] ?? null);
 
-        clock()->event($description)->start();
+        $clockworkEvent = clock()->event($description);
+        $clockworkEvent->start = $startTime;
+        $clockworkEvent->end = $endTime;
     }
 
-    $start = microtime(true);
-
-    $result = $callable();
-
-    if ($withClockwork) {
-        clock()->event($description)->end();
-    }
-
-    $duration = microtime(true) - $start;
-    Datadog::microtiming($stat, $duration, 1, $tag);
+    Datadog::microtiming($stat, $endTime - $startTime, 1, $tag);
 
     return $result;
 }
@@ -415,6 +482,25 @@ function markdown($input, $preset = 'default')
     return $converter[$preset]->load($input)->html();
 }
 
+function markdown_chat($input)
+{
+    static $converter;
+
+    if (!isset($converter)) {
+        $environment = new League\CommonMark\Environment\Environment([
+            'allow_unsafe_links' => false,
+            'max_nesting_level' => 20,
+            'renderer' => ['soft_break' => '<br />'],
+        ]);
+
+        $environment->addExtension(new App\Libraries\Markdown\Chat\Extension());
+
+        $converter = new League\CommonMark\MarkdownConverter($environment);
+    }
+
+    return $converter->convert($input)->getContent();
+}
+
 function markdown_plain($input)
 {
     static $converter;
@@ -426,7 +512,7 @@ function markdown_plain($input)
         ]);
     }
 
-    return $converter->convertToHtml($input)->getContent();
+    return $converter->convert($input)->getContent();
 }
 
 function max_offset($page, $limit)
@@ -503,15 +589,6 @@ function pagination($params, $defaults = null)
     $page = 1 + $offset / $limit;
 
     return compact('limit', 'page', 'offset');
-}
-
-function param_string_simple($value)
-{
-    if (is_array($value)) {
-        $value = implode(',', $value);
-    }
-
-    return presence($value);
 }
 
 function product_quantity_options($product, $selected = null)
@@ -608,20 +685,6 @@ function tag($element, $attributes = [], $content = null)
     }
 
     return '<'.$element.$attributeString.'>'.($content ?? '').'</'.$element.'>';
-}
-
-function to_sentence($array, $key = 'common.array_and')
-{
-    switch (count($array)) {
-        case 0:
-            return '';
-        case 1:
-            return (string) $array[0];
-        case 2:
-            return implode(osu_trans("{$key}.two_words_connector"), $array);
-        default:
-            return implode(osu_trans("{$key}.words_connector"), array_slice($array, 0, -1)).osu_trans("{$key}.last_word_connector").array_last($array);
-    }
 }
 
 // Handles case where crowdin fills in untranslated key with empty string.
@@ -749,14 +812,37 @@ function page_description($extra)
     return blade_safe(implode(' » ', array_map('e', $parts)));
 }
 
+// sync with pageTitleMap in header-v4.tsx
 function page_title()
 {
     $currentRoute = app('route-section')->getCurrent();
     $checkLocale = config('app.fallback_locale');
+
+    $actionKey = "{$currentRoute['namespace']}.{$currentRoute['controller']}.{$currentRoute['action']}";
+    $actionKey = match ($actionKey) {
+        'forum.topic_watches_controller.index' => 'main.home_controller.index',
+        'main.account_controller.edit' => 'main.home_controller.index',
+        'main.beatmapset_watches_controller.index' => 'main.home_controller.index',
+        'main.follows_controller.index' => 'main.home_controller.index',
+        'main.friends_controller.index' => 'main.home_controller.index',
+        default => $actionKey,
+    };
+    $controllerKey = "{$currentRoute['namespace']}.{$currentRoute['controller']}._";
+    $controllerKey = match ($controllerKey) {
+        'main.artist_tracks_controller._' => 'main.artists_controller._',
+        'main.store_controller._' => 'store._',
+        'multiplayer.rooms_controller._' => 'main.ranking_controller._',
+        default => $controllerKey,
+    };
+    $namespaceKey = "{$currentRoute['namespace']}._";
+    $namespaceKey = match ($namespaceKey) {
+        'admin_forum._' => 'admin._',
+        default => $namespaceKey,
+    };
     $keys = [
-        "page_title.{$currentRoute['namespace']}.{$currentRoute['controller']}.{$currentRoute['action']}",
-        "page_title.{$currentRoute['namespace']}.{$currentRoute['controller']}._",
-        "page_title.{$currentRoute['namespace']}._",
+        "page_title.{$actionKey}",
+        "page_title.{$controllerKey}",
+        "page_title.{$namespaceKey}",
     ];
 
     foreach ($keys as $key) {
@@ -811,7 +897,7 @@ function link_to_user($id, $username = null, $color = null, $classNames = null)
         $color ?? ($color = $id->user_colour);
         $id = $id->getKey();
     }
-    $id = e($id);
+    $id = presence(e($id));
     $username = e($username);
     $style = user_color_style($color, 'color');
 
@@ -870,6 +956,13 @@ function post_url($topicId, $postId, $jumpHash = true, $tail = false)
     $url = route('forum.topics.show', ['topic' => $topicId, $postIdParamKey => $postId]);
 
     return $url;
+}
+
+function wiki_image_url(string $path, bool $fullUrl = true)
+{
+    static $placeholder = '_WIKI_IMAGE_';
+
+    return str_replace($placeholder, $path, route('wiki.image', ['path' => $placeholder], $fullUrl));
 }
 
 function wiki_url($path = null, $locale = null, $api = null, $fullUrl = true)
@@ -1108,14 +1201,20 @@ function i18n_date($datetime, $format = IntlDateFormatter::LONG, $pattern = null
 
 function i18n_number_format($number, $style = null, $pattern = null, $precision = null, $locale = null)
 {
-    $formatter = NumberFormatter::create(
-        $locale ?? App::getLocale(),
-        $style ?? NumberFormatter::DEFAULT_STYLE,
-        $pattern
-    );
+    if ($style === null && $pattern === null && $precision === null) {
+        static $formatters = [];
+        $locale ??= App::getLocale();
+        $formatter = $formatters[$locale] ??= new NumberFormatter($locale, NumberFormatter::DEFAULT_STYLE);
+    } else {
+        $formatter = new NumberFormatter(
+            $locale ?? App::getLocale(),
+            $style ?? NumberFormatter::DEFAULT_STYLE,
+            $pattern
+        );
 
-    if ($precision !== null) {
-        $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, $precision);
+        if ($precision !== null) {
+            $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, $precision);
+        }
     }
 
     return $formatter->format($number);
@@ -1181,7 +1280,7 @@ function json_item($model, $transformer, $includes = null)
 
 function fast_imagesize($url)
 {
-    $result = Cache::remember("imageSize:{$url}", Carbon\Carbon::now()->addMonth(1), function () use ($url) {
+    $result = Cache::remember("imageSize:{$url}", Carbon\Carbon::now()->addMonths(1), function () use ($url) {
         $curl = curl_init($url);
         curl_setopt_array($curl, [
             CURLOPT_HTTPHEADER => [
@@ -1333,15 +1432,6 @@ function get_class_namespace($className)
     return substr($className, 0, strrpos($className, '\\'));
 }
 
-function get_model_basename($model)
-{
-    if (!is_string($model)) {
-        $model = get_class($model);
-    }
-
-    return str_replace('\\', '', snake_case(substr($model, strlen('App\\Models\\'))));
-}
-
 function ci_file_search($fileName)
 {
     if (file_exists($fileName)) {
@@ -1386,11 +1476,13 @@ function get_param_value($input, $type)
         case 'array':
             return get_arr($input);
         case 'bool':
+        case 'boolean':
             return get_bool($input);
         case 'int':
             return get_int($input);
         case 'file':
             return get_file($input);
+        case 'number':
         case 'float':
             return get_float($input);
         case 'length':
@@ -1418,7 +1510,7 @@ function get_params($input, $namespace, $keys, $options = [])
 
     $params = [];
 
-    if (is_array($input) || ($input instanceof ArrayAccess)) {
+    if (Arr::accessible($input)) {
         $options['null_missing'] = $options['null_missing'] ?? false;
 
         foreach ($keys as $keyAndType) {
@@ -1505,7 +1597,11 @@ function parse_time_to_carbon($value)
     }
 
     if (is_numeric($value)) {
-        return Carbon\Carbon::createFromTimestamp($value);
+        try {
+            return Carbon\Carbon::createFromTimestamp($value);
+        } catch (Carbon\Exceptions\InvalidFormatException $_e) {
+            return;
+        }
     }
 
     if (is_string($value)) {
@@ -1525,9 +1621,9 @@ function parse_time_to_carbon($value)
     }
 }
 
-function format_duration_for_display($seconds)
+function format_duration_for_display(int $seconds)
 {
-    return floor($seconds / 60).':'.str_pad($seconds % 60, 2, '0', STR_PAD_LEFT);
+    return floor($seconds / 60).':'.str_pad((string) ($seconds % 60), 2, '0', STR_PAD_LEFT);
 }
 
 // Converts a standard image url to a retina one
@@ -1721,13 +1817,9 @@ function search_error_message(?Exception $e): ?string
 /**
  * Gets the path to a versioned resource.
  *
- * @param string $resource
- * @param string $manifest
- * @return HtmlString
- *
  * @throws Exception
  */
-function unmix(string $resource)
+function unmix(string $resource): HtmlString
 {
     return app('assets-manifest')->src($resource);
 }

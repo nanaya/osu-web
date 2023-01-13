@@ -1,21 +1,20 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BigButton from 'big-button';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import BigButton from 'components/big-button';
 import { route } from 'laroute';
+import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { createClickCallback } from 'utils/html';
+import { toggleFavourite } from 'utils/beatmapset-helper';
+import { formatNumber } from 'utils/html';
+import { trans } from 'utils/lang';
 import { beatmapDownloadDirect } from 'utils/url';
 import BeatmapsetMenu from './beatmapset-menu';
+import Controller from './controller';
 
 interface Props {
-  beatmapset: BeatmapsetExtendedJson;
-  currentBeatmap: BeatmapExtendedJson;
-  favcount: number;
-  hasFavourited: boolean;
+  controller: Controller;
 }
 
 interface DownloadButtonProps {
@@ -29,43 +28,42 @@ interface DownloadButtonProps {
 const DownloadButton = ({
   bottomTextKey,
   href,
-  osuDirect = false,
   topTextKey = '_',
 }: DownloadButtonProps) => (
   <BigButton
-    extraClasses={!osuDirect ? ['js-beatmapset-download-link'] : undefined}
     href={href}
-    modifiers={['beatmapset-toolbar']}
+    modifiers='beatmapset-toolbar'
     props={{
       'data-turbolinks': false,
     }}
     text={{
-      bottom: bottomTextKey && osu.trans(`beatmapsets.show.details.download.${bottomTextKey}`),
-      top: osu.trans(`beatmapsets.show.details.download.${topTextKey}`),
+      bottom: bottomTextKey && trans(`beatmapsets.show.details.download.${bottomTextKey}`),
+      top: trans(`beatmapsets.show.details.download.${topTextKey}`),
     }}
   />
 );
 
-export default class Toolbar extends React.PureComponent<Props> {
+@observer
+export default class Toolbar extends React.Component<Props> {
   render() {
     return (
       <div className='beatmapset-toolbar'>
         <div className='beatmapset-toolbar__count'>
           <div>
             <div>
-              {osu.trans('beatmapsets.show.details.count.total_play')}
+              {trans('beatmapsets.show.details.count.total_play')}
             </div>
             <div className='beatmapset-toolbar__count-value'>
-              {osu.formatNumber(this.props.beatmapset.play_count)}
+              {formatNumber(this.props.controller.beatmapset.play_count)}
             </div>
           </div>
 
           <div>
             <div>
-              {osu.trans('beatmapsets.show.details.count.diff_play')}
+              {trans('beatmapsets.show.details.count.diff_play')}
             </div>
             <div className='beatmapset-toolbar__count-value'>
-              {osu.formatNumber(this.props.currentBeatmap.playcount)}
+              {formatNumber(this.props.controller.currentBeatmap.playcount)}
             </div>
           </div>
         </div>
@@ -73,7 +71,6 @@ export default class Toolbar extends React.PureComponent<Props> {
         <div className='beatmapset-toolbar__buttons'>
           {this.renderFavouriteButton()}
           {this.renderDownloadButtons()}
-          {this.renderDiscussionButtons()}
           {this.renderLoginButton()}
           {this.renderMenuButton()}
         </div>
@@ -81,56 +78,30 @@ export default class Toolbar extends React.PureComponent<Props> {
     );
   }
 
-  private renderDiscussionButtons() {
-    if (this.props.beatmapset.discussion_enabled) {
-      return (
-        <BigButton
-          href={route('beatmapsets.discussion', { beatmapset: this.props.beatmapset.id })}
-          modifiers={['beatmapset-toolbar']}
-          text={osu.trans('beatmapsets.show.discussion')}
-        />
-      );
-    }
-
-    if (this.props.beatmapset.legacy_thread_url !== null) {
-      return (
-        <BigButton
-          href={this.props.beatmapset.legacy_thread_url}
-          modifiers={['beatmapset-toolbar']}
-          text={osu.trans('beatmapsets.show.discussion')}
-        />
-      );
-    }
-  }
-
   private renderDownloadButtons() {
-    if (currentUser.id && !this.props.beatmapset.availability?.download_disabled) {
+    if (core.currentUser != null && !this.props.controller.beatmapset.availability?.download_disabled) {
       return (
         <>
-          {this.props.beatmapset.video ? (
+          {this.props.controller.beatmapset.video ? (
             <>
               <DownloadButton
-                key='video'
                 bottomTextKey='video'
-                href={route('beatmapsets.download', { beatmapset: this.props.beatmapset.id })}
+                href={route('beatmapsets.download', { beatmapset: this.props.controller.beatmapset.id })}
               />
               <DownloadButton
-                key='no-video'
                 bottomTextKey='no-video'
-                href={route('beatmapsets.download', { beatmapset: this.props.beatmapset.id, noVideo: 1 })}
+                href={route('beatmapsets.download', { beatmapset: this.props.controller.beatmapset.id, noVideo: 1 })}
               />
             </>
           ) : (
             <DownloadButton
-              key='default'
-              href={route('beatmapsets.download', { beatmapset: this.props.beatmapset.id })}
+              href={route('beatmapsets.download', { beatmapset: this.props.controller.beatmapset.id })}
             />
           )}
 
           <DownloadButton
-            key='direct'
-            href={currentUser.is_supporter
-              ? beatmapDownloadDirect(this.props.currentBeatmap.id)
+            href={core.currentUser.is_supporter
+              ? beatmapDownloadDirect(this.props.controller.currentBeatmap.id)
               : route('support-the-game')
             }
             osuDirect
@@ -142,31 +113,37 @@ export default class Toolbar extends React.PureComponent<Props> {
   }
 
   private renderFavouriteButton() {
-    const action = this.props.hasFavourited ? 'unfavourite' : 'favourite';
-    const icon = `${this.props.hasFavourited ? 'fas' : 'far'} fa-heart`;
+    const button = this.props.controller.beatmapset.has_favourited
+      ? {
+        action: 'unfavourite',
+        icon: 'fas fa-heart',
+      } : {
+        action: 'favourite',
+        icon: 'far fa-heart',
+      };
 
     return (
       <button
         className='btn-osu-big btn-osu-big--beatmapset-favourite btn-osu-big--pink'
         onClick={this.toggleFavourite}
-        title={osu.trans(`beatmapsets.show.details.${action}`)}
+        title={trans(`beatmapsets.show.details.${button.action}`)}
       >
-        <i className={icon} />
+        <i className={button.icon} />
         {' '}
-        {osu.formatNumber(this.props.favcount)}
+        {formatNumber(this.props.controller.beatmapset.favourite_count)}
       </button>
     );
   }
 
   private renderLoginButton() {
-    if (!currentUser.id) {
+    if (core.currentUser == null) {
       return (
         <BigButton
           extraClasses={['js-user-link']}
-          modifiers={['beatmapset-toolbar']}
+          modifiers='beatmapset-toolbar'
           text={{
-            bottom: osu.trans('beatmapsets.show.details.login_required.bottom'),
-            top: osu.trans('beatmapsets.show.details.login_required.top'),
+            bottom: trans('beatmapsets.show.details.login_required.bottom'),
+            top: trans('beatmapsets.show.details.login_required.top'),
           }}
         />
       );
@@ -174,22 +151,18 @@ export default class Toolbar extends React.PureComponent<Props> {
   }
 
   private renderMenuButton() {
-    if (currentUser.id && currentUser.id !== this.props.beatmapset.user_id) {
+    if (core.currentUser != null && core.currentUser.id !== this.props.controller.beatmapset.user_id) {
       return (
         <div className='beatmapset-toolbar__menu'>
           <div className='btn-circle btn-circle--page-toggle'>
-            <BeatmapsetMenu beatmapset={this.props.beatmapset} />
+            <BeatmapsetMenu beatmapset={this.props.controller.beatmapset} />
           </div>
         </div>
       );
     }
   }
 
-  private toggleFavourite = (e: React.MouseEvent<HTMLElement>) => {
-    if (core.userLogin.showIfGuest(createClickCallback(e.target))) {
-      return;
-    }
-
-    $.publish('beatmapset:favourite:toggle');
+  private toggleFavourite = () => {
+    toggleFavourite(this.props.controller.beatmapset);
   };
 }

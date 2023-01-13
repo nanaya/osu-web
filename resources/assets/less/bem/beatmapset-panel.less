@@ -125,6 +125,12 @@
     }
   }
 
+  &__badge-container {
+    position: relative;
+    bottom: 0.2em;
+    margin-left: auto;
+  }
+
   &__beatmap-count {
     font-weight: 600;
   }
@@ -149,18 +155,6 @@
     display: flex;
     width: 100%;
     height: var(--main-height);
-  }
-
-  &__cover {
-    .full-size();
-    object-fit: cover;
-    border-radius: var(--border-radius);
-
-    &--default {
-      .at2x('~@images/layout/beatmaps/default-bg.png');
-      background-position: center;
-      background-size: cover;
-    }
   }
 
   &__cover-col {
@@ -197,7 +191,7 @@
       // Adjust radius to prevent bleeding of the underneath cover
       // when hover background (of &__play) is active.
       border-radius: @border-radius--large - 1px;
-      background-color: hsl(var(--hsl-b4));
+      background-color: hsl(var(--hsl-b3));
 
       @media @desktop {
         display: none;

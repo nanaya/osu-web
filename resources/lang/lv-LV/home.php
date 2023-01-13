@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "sagatavosim <br> tevi!",
         'action' => 'Lejuplādēt osu!',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'macOS lietotāji',
+        'mirror' => 'instalācija',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "sagatavosim <br> tevi!",
+        'video-guide' => 'video pamācība',
 
         'help' => [
             '_' => '',
@@ -86,8 +99,6 @@ return [
             'macos' => 'priekš macOS',
             'linux' => 'priekš Linux',
         ],
-        'mirror' => 'instalācija',
-        'macos-fallback' => 'macOS lietotāji',
         'steps' => [
             'register' => [
                 'title' => 'izveido profilu',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => 'video pamācība',
     ],
 
     'user' => [
@@ -131,16 +141,5 @@ return [
             'support' => 'Atbalstīt osu!',
             'store' => 'osu!veikals',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => 'Wow!',
-        'subtitle' => 'Izskatās, ka tu pavadi jauku laiku! :D',
-        'body' => [
-            'part-1' => 'Vai tu zināji, ka osu! darbojās bez reklāmām, un balstās tikai uz spēlētājiem, kas atbalsta spēles attīstību un veiktspējas izmaksas?',
-            'part-2' => 'Vai tu zināji, ka atblastot osu! tu tiec pie kaudzēm noderīgām funkcijām kā piemēram <strong>bītmapju automātisko lejupielādēšanu</strong>, kas notiek, kad skaties citu spēles un kad spēlē multiplayer?',
-        ],
-        'find-out-more' => 'Spiediet šeit, lai uzzinātu vairāk!',
-        'download-starting' => "Neuztraucieties - jūsu lejupielāde ir jau sākusies priekš tevis ;)",
     ],
 ];

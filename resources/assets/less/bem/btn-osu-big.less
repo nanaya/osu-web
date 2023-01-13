@@ -69,9 +69,8 @@
     position: relative;
   }
 
-  &--beatmap-discussion-new {
-    margin-left: 5px;
-    margin-top: 5px;
+  &--artist-track-search {
+    --disabled-bg: hsl(var(--hsl-b2));
   }
 
   &--beatmapset-favourite {
@@ -122,6 +121,7 @@
     min-width: 80px;
     border-radius: 10000px;
     padding: 10px;
+    align-self: flex-end;
 
     --bg: hsl(var(--hsl-h2));
     --hover-bg: hsl(var(--hsl-h1));
@@ -165,27 +165,27 @@
     padding: 10px 5px;
   }
 
-  &--download-page {
+  &--download {
     .default-box-shadow();
     .default-border-radius();
     .center-content();
-    background-image: url("~@images/backgrounds/button.svg");
-    background-size: 150%;
-    background-position: 50% 50%;
     transition: background-position 120ms;
 
     flex: none;
     width: 240px;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+    line-height: 1;
+    gap: 5px;
 
     flex-direction: column;
-    --bg: hsl(var(--hsl-blue-3));
-    --hover-bg: hsl(var(--hsl-blue-3));
+    --bg-colour: hsl(var(--hsl-blue-3));
+    --bg: var(--bg-colour) center/150% url("~@images/backgrounds/button.svg");
+    --hover-bg: var(--bg-colour) calc(50% - 20px) 50%/150% url("~@images/backgrounds/button.svg");
+  }
 
-    .link-hover({
-      background-position: calc(50% - 20px) 50%;
-    });
+  &--download-lazer {
+    --bg-colour: hsl(var(--hsl-purple-3));
   }
 
   &--fileupload {
@@ -309,6 +309,11 @@
 
   &--rounded-thin {
     padding: 8px 15px;
+    border-radius: 100000px;
+  }
+
+  &--rounded-thin-wide {
+    padding: 8px 40px;
     border-radius: 100000px;
   }
 
@@ -495,7 +500,7 @@
   }
 
   &__text-top {
-    .@{top}--download-page & {
+    .@{top}--download & {
       .default-text-shadow();
       font-size: @font-size--large;
       font-weight: 700;
@@ -506,7 +511,7 @@
   &__text-bottom {
     font-size: @font-size--small;
 
-    .@{top}--download-page & {
+    .@{top}--download & {
       .default-text-shadow();
       font-size: @font-size--normal;
     }

@@ -25,6 +25,11 @@ return [
             'index' => '一覧',
         ],
 
+        'beatmapsets' => [
+            'show' => '詳細',
+            'discussions' => 'ディスカッション',
+        ],
+
         'changelog' => [
             'index' => '一覧',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'modding',
-            'multiplayer' => 'マルチプレイヤー',
+            'playlists' => 'プレイリスト',
+            'realtime' => 'マルチプレイヤー',
             'show' => '詳細',
         ],
     ],
@@ -139,7 +145,7 @@ return [
             'description' => '',
         ],
         '429' => [
-            'error' => '試行可能回数の上限に達しました。',
+            'error' => 'レート制限に達しました',
             'description' => '',
         ],
         '500' => [

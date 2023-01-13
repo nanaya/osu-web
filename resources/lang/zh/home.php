@@ -72,8 +72,21 @@ return [
     ],
 
     'download' => [
-        'tagline' => "让我们<br>开始吧！",
         'action' => '下载 osu!',
+        'action_lazer' => '',
+        'action_lazer_description' => '',
+        'action_lazer_info' => '',
+        'action_lazer_title' => '',
+        'action_title' => '',
+        'for_os' => '',
+        'lazer_note' => '',
+        'macos-fallback' => 'macOS 用户',
+        'mirror' => '从镜像服务器下载',
+        'or' => '',
+        'other_os' => '',
+        'quick_start_guide' => '',
+        'tagline' => "让我们<br>开始吧！",
+        'video-guide' => '视频教程',
 
         'help' => [
             '_' => '如果您在开始游戏或注册账户时遇到问题，请 :help_forum_link 或 :support_button。',
@@ -86,8 +99,6 @@ return [
             'macos' => 'macOS 版',
             'linux' => 'Linux 版',
         ],
-        'mirror' => '从镜像服务器下载',
-        'macos-fallback' => 'macOS 用户',
         'steps' => [
             'register' => [
                 'title' => '注册账号',
@@ -105,7 +116,6 @@ return [
                 ],
             ],
         ],
-        'video-guide' => '视频教程',
     ],
 
     'user' => [
@@ -122,7 +132,7 @@ return [
             ],
         ],
         'beatmaps' => [
-            'new' => '新 Ranked 谱面',
+            'new' => '新上架 (Ranked) 谱面',
             'popular' => '热门谱面',
             'by_user' => '作者：:user',
         ],
@@ -131,16 +141,5 @@ return [
             'support' => '支持 osu!',
             'store' => 'osu! 商店',
         ],
-    ],
-
-    'support-osu' => [
-        'title' => '喔！',
-        'subtitle' => '看起来你玩得很开心！',
-        'body' => [
-            'part-1' => '你知道吗？ osu! 是一款没有广告，完全依赖玩家支持以维持开发及运营的游戏。',
-            'part-2' => '如果你支持 osu!，就可以解锁额外的功能，例如<strong>游戏内自动下载</strong>。',
-        ],
-        'find-out-more' => '点击这里以了解更多',
-        'download-starting' => "对了，别担心 - 下载已经开始了 ;)",
     ],
 ];

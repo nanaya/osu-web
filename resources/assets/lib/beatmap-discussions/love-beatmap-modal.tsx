@@ -2,16 +2,19 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BeatmapJson from 'interfaces/beatmap-json';
-import BeatmapsetJson from 'interfaces/beatmapset-json';
+import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
 import GameMode from 'interfaces/game-mode';
 import { route } from 'laroute';
 import { computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { onError } from 'utils/ajax';
 import { group as groupBeatmaps } from 'utils/beatmap-helper';
+import { trans } from 'utils/lang';
+import { hideLoadingOverlay, showLoadingOverlay } from 'utils/loading-overlay';
 
 interface Props {
-  beatmapset: BeatmapsetJson;
+  beatmapset: BeatmapsetExtendedJson;
   onClose: () => void;
 }
 
@@ -41,7 +44,7 @@ export default class LoveConfirmation extends React.Component<Props> {
     return (
       <div className='love-beatmap-modal u-fancy-scrollbar'>
         <div className='love-beatmap-modal__row love-beatmap-modal__row--title'>
-          {osu.trans('beatmaps.nominations.love_choose')}
+          {trans('beatmaps.nominations.love_choose')}
         </div>
 
         <div className='love-beatmap-modal__row love-beatmap-modal__row--content'>
@@ -54,7 +57,7 @@ export default class LoveConfirmation extends React.Component<Props> {
             onClick={this.props.onClose}
             type='button'
           >
-            {osu.trans('common.buttons.close')}
+            {trans('common.buttons.close')}
           </button>
 
           <button
@@ -63,7 +66,7 @@ export default class LoveConfirmation extends React.Component<Props> {
             onClick={this.handleSubmit}
             type='button'
           >
-            {osu.trans('common.buttons.submit')}
+            {trans('common.buttons.submit')}
           </button>
         </div>
       </div>
@@ -101,7 +104,7 @@ export default class LoveConfirmation extends React.Component<Props> {
   };
 
   private handleSubmit = () => {
-    if (!confirm(osu.trans('beatmaps.nominations.love_confirm'))) {
+    if (!confirm(trans('beatmaps.nominations.love_confirm'))) {
       return;
     }
 
@@ -109,7 +112,7 @@ export default class LoveConfirmation extends React.Component<Props> {
       return;
     }
 
-    LoadingOverlay.show();
+    showLoadingOverlay();
 
     const url = route('beatmapsets.love', { beatmapset: this.props.beatmapset.id });
     const params = {
@@ -120,8 +123,8 @@ export default class LoveConfirmation extends React.Component<Props> {
     $.ajax(url, params).done((response) => {
       $.publish('beatmapsetDiscussions:update', { beatmapset: response });
       this.props.onClose();
-    }).fail(osu.ajaxError)
-      .always(LoadingOverlay.hide);
+    }).fail(onError)
+      .always(hideLoadingOverlay);
   };
 
   private renderDiffMode(mode: GameMode, beatmaps: BeatmapJson[]) {
@@ -146,7 +149,7 @@ export default class LoveConfirmation extends React.Component<Props> {
               />
               <span className='osu-switch-v2__content' />
             </div>
-            {osu.trans(`beatmaps.mode.${mode}`)}
+            {trans(`beatmaps.mode.${mode}`)}
           </label>
         </div>
         <ul className='love-beatmap-modal__diff-list'>

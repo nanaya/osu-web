@@ -5,11 +5,11 @@
 
 return [
     'audio' => [
-        'autoplay' => 'Jouer automatiquement le titre suivant',
+        'autoplay' => 'Jouer automatiquement la musique suivante',
     ],
 
     'defaults' => [
-        'page_description' => 'osu ! - Le rythme n\'est plus qu\'à un *clic* !  Avec les modes de jeu Ouendan/EBA, Taiko et original, ainsi qu\'un éditeur de niveaux entièrement fonctionnel.',
+        'page_description' => 'osu! - Rhythm is just a *click* away! Avec les modes de jeu Ouendan/EBA, Taiko et d\'autres modes de jeu originaux, ainsi qu\'un éditeur de niveaux entièrement fonctionnel.',
     ],
 
     'header' => [
@@ -25,6 +25,11 @@ return [
             'index' => 'liste',
         ],
 
+        'beatmapsets' => [
+            'show' => 'informations',
+            'discussions' => 'discussion',
+        ],
+
         'changelog' => [
             'index' => 'liste',
         ],
@@ -37,7 +42,7 @@ return [
         'store' => [
             'cart' => 'panier',
             'orders' => 'historique des commandes',
-            'products' => 'produits',
+            'products' => 'articles',
         ],
 
         'tournaments' => [
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'modding',
-            'multiplayer' => 'multijoueur',
+            'playlists' => 'playlists',
+            'realtime' => 'multijoueur',
             'show' => 'infos',
         ],
     ],
@@ -109,7 +115,7 @@ return [
             'privacy' => 'Confidentialité',
             'server_status' => 'Statut du serveur',
             'source_code' => 'Code source',
-            'terms' => 'Conditions du service',
+            'terms' => 'Conditions d\'utilisation',
         ],
     ],
 

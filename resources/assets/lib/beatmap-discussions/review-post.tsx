@@ -5,6 +5,7 @@ import { PersistedBeatmapDiscussionReview } from 'interfaces/beatmap-discussion-
 import * as React from 'react';
 import * as ReactMarkdown from 'react-markdown';
 import { propsFromHref } from 'utils/beatmapset-discussion-helper';
+import { uuid } from 'utils/seq';
 import { autolinkPlugin } from './autolink-plugin';
 import { disableTokenizersPlugin } from './disable-tokenizers-plugin';
 import { ReviewPostEmbed } from './review-post-embed';
@@ -17,8 +18,8 @@ interface Props {
 export class ReviewPost extends React.Component<Props> {
   embed(id: number) {
     return (
-      <div key={osu.uuid()} className='beatmap-discussion-review-post__block'>
-        <ReviewPostEmbed data={{discussion_id: id}} />
+      <div key={uuid()} className='beatmap-discussion-review-post__block'>
+        <ReviewPostEmbed data={{ discussion_id: id }} />
       </div>
     );
   }
@@ -26,7 +27,7 @@ export class ReviewPost extends React.Component<Props> {
   paragraph(source: string) {
     return (
       <ReactMarkdown
-        key={osu.uuid()}
+        key={uuid()}
         plugins={[
           [
             disableTokenizersPlugin,
@@ -41,9 +42,9 @@ export class ReviewPost extends React.Component<Props> {
         renderers={{
           link: this.linkRenderer,
           paragraph: (props) => (<div className='beatmap-discussion-review-post__block'>
-            <div className='beatmapset-discussion-message' {...props}/>
+            <div className='beatmapset-discussion-message' {...props} />
           </div>),
-          timestamp: (props) => <a className='beatmap-discussion-timestamp-decoration' {...props}/>,
+          timestamp: (props) => <a className='beatmap-discussion-timestamp-decoration' {...props} />,
         }}
         source={source}
         unwrapDisallowed
@@ -72,7 +73,7 @@ export class ReviewPost extends React.Component<Props> {
         }
       });
     } catch (e) {
-      docBlocks.push(<div key={osu.uuid()}>[error parsing review]</div>);
+      docBlocks.push(<div key={uuid()}>[error parsing review]</div>);
     }
 
     return (
@@ -86,6 +87,6 @@ export class ReviewPost extends React.Component<Props> {
   private linkRenderer = (props: Readonly<ReactMarkdown.ReactMarkdownProps> & { href: string }) => {
     const extraProps = propsFromHref(props.href);
 
-    return <a {...props} {...extraProps}/>;
+    return <a {...props} {...extraProps} />;
   };
 }

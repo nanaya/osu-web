@@ -25,6 +25,11 @@ return [
             'index' => 'спіс',
         ],
 
+        'beatmapsets' => [
+            'show' => 'інфармацыя',
+            'discussions' => 'абмеркаванне',
+        ],
+
         'changelog' => [
             'index' => 'спіс',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'модынг',
-            'multiplayer' => 'мультыплэер',
+            'playlists' => 'плэйлісты',
+            'realtime' => 'мультыплэер',
             'show' => 'інфармацыя',
         ],
     ],
@@ -80,7 +86,7 @@ return [
         ],
         'rankings' => [
             '_' => 'рэйтынг',
-            'kudosu' => 'кудосу',
+            'kudosu' => 'па кудосу',
         ],
         'store' => [
             '_' => 'крама',
@@ -91,7 +97,7 @@ return [
         'general' => [
             '_' => 'Агульнае',
             'home' => 'Галоўная',
-            'changelog-index' => 'Спic змен',
+            'changelog-index' => 'Гісторыя змен',
             'beatmaps' => 'Спіс бітмап',
             'download' => 'Спампаваць osu!',
         ],
@@ -187,7 +193,7 @@ return [
     'popup_user' => [
         'links' => [
             'account-edit' => 'Налады',
-            'follows' => 'Спіс праглядаў',
+            'follows' => 'Падпіскі',
             'friends' => 'Сябры',
             'logout' => 'Выйсці',
             'profile' => 'Мой профіль',

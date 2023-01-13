@@ -11,6 +11,10 @@ return [
         'rule_violation' => 'Vissa delar av denna map har tagits bort då de anses vara olämpliga i osu!.',
     ],
 
+    'cover' => [
+        'deleted' => 'Raderad beatmap',
+    ],
+
     'download' => [
         'limit_exceeded' => 'Sakta ner, spela mer.',
     ],
@@ -62,6 +66,7 @@ return [
             'favourite_login' => 'Logga in för att favoritmarkera denna beatmap',
             'logged-out' => 'Du behöver logga in innan du laddar ner beatmaps!',
             'mapped_by' => 'skapad av :mapper',
+            'mapped_by_guest' => '',
             'unfavourite' => 'Ta bort favoritmarkering på detta beatmapset',
             'updated_timeago' => 'senast ändrad :timeago',
 
@@ -120,7 +125,9 @@ return [
             'genre' => 'Genre',
             'language' => 'Språk',
             'no_scores' => 'Data beräknas...',
+            'nominators' => 'Nominatorer',
             'nsfw' => 'Explicit innehåll',
+            'offset' => 'Online-förskjutning',
             'points-of-failure' => 'Punkter av Misslyckande',
             'source' => 'Källa',
             'storyboard' => 'Denna beatmap innehåller storyboard',
@@ -143,6 +150,7 @@ return [
         'scoreboard' => [
             'achieved' => 'uppnått :when',
             'country' => 'Nationell rankning',
+            'error' => 'Det gick inte att ladda ranking',
             'friend' => 'Rankning bland vänner',
             'global' => 'Global rankning',
             'supporter-link' => 'Klicka <a href=":link">här</a> för att se alla fina funktioner du kommer få!',
@@ -154,11 +162,12 @@ return [
                 'combo' => 'Högsta kombo',
                 'miss' => 'Missar',
                 'mods' => 'Tillägg',
+                'pin' => 'Fäst',
                 'player' => 'Spelare',
                 'pp' => '',
                 'rank' => 'Rank',
-                'score_total' => 'Total poäng',
                 'score' => 'Poäng',
+                'score_total' => 'Total poäng',
                 'time' => 'Tid',
             ],
 
@@ -173,6 +182,10 @@ return [
                 'first' => 'Leder',
                 'own' => 'Ditt bästa',
             ],
+            'supporter_link' => [
+                '_' => 'Klicka :here för att se alla fina förmåner som du får!',
+                'here' => 'här',
+            ],
         ],
 
         'stats' => [
@@ -186,6 +199,7 @@ return [
             'bpm' => 'BPM',
             'count_circles' => 'Cirkelantal',
             'count_sliders' => 'Sliderantal',
+            'offset' => 'Online-förskjutning: :offset',
             'user-rating' => 'Användarbetyg',
             'rating-spread' => 'Betygsspridning',
             'nominations' => 'Nomineringar',
@@ -201,5 +215,9 @@ return [
             'pending' => 'Väntande',
             'graveyard' => 'Kyrkogård',
         ],
+    ],
+
+    'spotlight_badge' => [
+        'label' => 'I rampljuset',
     ],
 ];

@@ -15,14 +15,15 @@ return [
         'closing' => 'Pagbati,',
         'hello' => 'Kamusta :user,',
         'report' => 'Tumugon AGAD sa email na ito kung hindi mo nais ang pagbabagong ito.',
+        'ignore' => 'Kapag hindi mo ito ni-request, pwede mo nang hindi pansinin ang email na ito.',
     ],
 
     'donation_thanks' => [
         'benefit_more' => 'Magkakaroon ng mas maraming benepisyo ng supporter sa kinabukasan!',
         'feedback' => "Kapag mayroon ka pang tanong o maipupuna, huwag mag-aalangan na tumugon sa mail na ito; Babalikan ko to sa madaling panahon!",
-        'keep_free' => 'Ito ay salamat sa mga taong katulad mo na ang osu! ay napapanatili na tumatakbo nang maayos nang walang anumang mga adevertisements o sapilitang pagbabayad.',
+        'keep_free' => 'Ito ay salamat sa mga taong katulad mo na ang osu! ay kayang magpanatili sa laro at komunidad na tumakbo nang maayos nang walang anumang mga advertisements o mga sapilitang pagbabayad.',
         'keep_running' => 'Ang iyong suporta ay napapanatili ang osu! ng hanggang :minutes! Ito\'y mukhang mang hindi marami ngunit lahat ito ay dumadagdag :).',
-        'subject' => 'Salamat! <3 ka ni osu',
+        'subject' => 'Salamat! <3 ka ni osu!',
         'translation' => 'Ang sumusunod ay ang pagsalin ng nasa community para sa layuning pang-impormasyon:',
 
         'benefit' => [
@@ -66,6 +67,7 @@ return [
         'duration' => 'Salamat sa kanila, may access ka na sa osu!direct at iba pang osu!supporter na benepisyo para sa sususnod na :duration.',
         'features' => 'Maaari mong malaman ang higit pang mga detalye tungkol sa mga features dito:',
         'gifted' => 'May nagregalo sa\'yo ng osu!supporter tag!',
+        'gift_message' => 'Ang taong nagbigay sa iyo ng tag na ito ay ng-iwan sa iyo ng mensahe:',
         'subject' => 'Ikaw ay binigyan ng osu!supporter tag!',
     ],
 

@@ -4,30 +4,13 @@
 import { route } from 'laroute';
 import core from 'osu-core-singleton';
 import * as React from 'react';
+import { trans } from 'utils/lang';
 
 interface Props {
   onClose: () => void;
 }
 
-interface State {
-  busy: boolean;
-}
-
-export default class NsfwWarning extends React.PureComponent<Props, State> {
-  private xhr?: JQuery.jqXHR;
-
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      busy: false,
-    };
-  }
-
-  componentWillUnmount() {
-    this.xhr?.abort();
-  }
-
+export default class NsfwWarning extends React.PureComponent<Props> {
   render() {
     return (
       <div className='osu-page osu-page--generic'>
@@ -37,36 +20,34 @@ export default class NsfwWarning extends React.PureComponent<Props, State> {
           </div>
 
           <div className='nsfw-warning__row nsfw-warning__row--title'>
-            {osu.trans('beatmapsets.show.nsfw_warning.title')}
+            {trans('beatmapsets.show.nsfw_warning.title')}
           </div>
 
           <div className='nsfw-warning__row'>
-            {osu.trans('beatmapsets.show.nsfw_warning.details')}
+            {trans('beatmapsets.show.nsfw_warning.details')}
           </div>
 
           <div className='nsfw-warning__row nsfw-warning__row--buttons'>
             <button
               className='nsfw-warning__button nsfw-warning__button--show'
-              disabled={this.state.busy}
               onClick={this.props.onClose}
               type='button'
             >
-              {osu.trans('beatmapsets.show.nsfw_warning.buttons.show')}
+              {trans('beatmapsets.show.nsfw_warning.buttons.show')}
             </button>
 
-            {currentUser.id != null &&
+            {core.currentUser != null &&
               <button
                 className='nsfw-warning__button nsfw-warning__button--show'
-                disabled={this.state.busy}
                 onClick={this.disableWarning}
                 type='button'
               >
-                {osu.trans('beatmapsets.show.nsfw_warning.buttons.disable')}
+                {trans('beatmapsets.show.nsfw_warning.buttons.disable')}
               </button>
             }
 
             <a className='nsfw-warning__button' href={route('beatmapsets.index')}>
-              {osu.trans('beatmapsets.show.nsfw_warning.buttons.listing')}
+              {trans('beatmapsets.show.nsfw_warning.buttons.listing')}
             </a>
           </div>
         </div>
@@ -74,16 +55,8 @@ export default class NsfwWarning extends React.PureComponent<Props, State> {
     );
   }
 
-  private disableWarning = () => {
-    this.xhr = core.userPreferences.set('beatmapset_show_nsfw', true);
-
-    if (this.xhr == null) {
-      this.props.onClose();
-    } else {
-      this.setState({ busy: true });
-      this.xhr
-        .always(() => this.setState({ busy: false }))
-        .done(this.props.onClose);
-    }
+  private readonly disableWarning = () => {
+    core.userPreferences.set('beatmapset_show_nsfw', true);
+    this.props.onClose();
   };
 }

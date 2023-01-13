@@ -22,11 +22,11 @@ class ChannelTransformer extends TransformerAbstract
         ...self::CONVERSATION_INCLUDES,
     ];
 
-    protected $availableIncludes = [
+    protected array $availableIncludes = [
         'current_user_attributes',
         'last_message_id',
-        'last_read_id', // deprecated
-        'recent_messages',
+        'last_read_id', // TODO: deprecated
+        'recent_messages', // TODO: deprecated
         'users',
     ];
 
@@ -49,13 +49,17 @@ class ChannelTransformer extends TransformerAbstract
             'moderated' => $channel->moderated,
             'name' => $channel->displayNameFor($this->user),
             'type' => $channel->type,
+            'uuid' => $channel->uuid,
         ];
     }
 
     public function includeCurrentUserAttributes(Channel $channel)
     {
+        $result = $channel->checkCanMessage($this->user);
+
         return $this->primitive([
-            'can_message' => $channel->canMessage($this->user),
+            'can_message' => $result->can(),
+            'can_message_error' => $result->message(),
             'last_read_id' => $channel->lastReadIdFor($this->user),
         ]);
     }
@@ -90,10 +94,18 @@ class ChannelTransformer extends TransformerAbstract
 
     public function includeUsers(Channel $channel)
     {
-        if ($channel->isPM()) {
+        if (
+            $channel->isPM()
+            || $channel->isAnnouncement() && priv_check_user($this->user, 'ChatAnnounce', $channel)->can()
+        ) {
             return $this->primitive($channel->userIds());
         }
 
         return $this->primitive([]);
+    }
+
+    public function includeUuid(Channel $channel)
+    {
+        return $this->primitive($channel->uuid);
     }
 }

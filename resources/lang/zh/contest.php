@@ -16,7 +16,7 @@ return [
     'voting' => [
         'login_required' => '请登录后再投票.',
         'over' => '这场评选的投票已经结束',
-        'show_voted_only' => '显示投票',
+        'show_voted_only' => '仅显示已投票的',
 
         'best_of' => [
             'none_played' => "没有符合此次评选条件的谱面！",
@@ -31,6 +31,12 @@ return [
         'progress' => [
             '_' => ':used / :max 票已用',
         ],
+
+        'requirement' => [
+            'playlist_beatmapsets' => [
+                'incomplete_play' => '必须完成指定歌单中的所有谱面后才能投票',
+            ],
+        ],
     ],
     'entry' => [
         '_' => '列表',
@@ -44,6 +50,7 @@ return [
             'beatmap' => '只接受 .osu 格式的文件.',
             'music' => '只接受 .mp3 格式的文件.',
         ],
+        'wrong_dimensions' => '参与竞赛的数量必须达到 :widthx:height',
         'too_big' => '参赛文件的大小不能超过 :limit.',
     ],
     'beatmaps' => [
@@ -55,11 +62,11 @@ return [
         'points' => ':count_delimited 分',
     ],
     'dates' => [
-        'ended' => '结束于 :date',
+        'ended' => ':date 结束',
         'ended_no_date' => '已结束',
 
         'starts' => [
-            '_' => '开始于 :date',
+            '_' => ':date 开始',
             'soon' => '敬请期待™
 ',
         ],

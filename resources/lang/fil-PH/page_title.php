@@ -7,12 +7,6 @@ return [
     'admin' => [
         '_' => 'admin',
     ],
-    'admin_forum' => [
-        '_' => 'admin',
-    ],
-    'admin_store' => [
-        '_' => 'admin',
-    ],
     'error' => [
         'error' => [
             '400' => 'di-wastong request',
@@ -29,17 +23,16 @@ return [
     ],
     'forum' => [
         '_' => 'forum',
-        'topic_watches_controller' => [
-            'index' => 'dashboard',
+        'topic_logs_controller' => [
+            'index' => 'topic logs',
         ],
     ],
     'main' => [
         'account_controller' => [
-            'edit' => 'dashboard',
             'verify_link' => 'beripikasyon ng account',
         ],
         'artists_controller' => [
-            '_' => 'featured artists',
+            '_' => 'mga tampok na artista',
         ],
         'beatmap_discussion_posts_controller' => [
             '_' => 'beatmap discussion posts',
@@ -55,9 +48,6 @@ return [
         ],
         'beatmapset_events_controller' => [
             '_' => 'beatmap history',
-        ],
-        'beatmapset_watches_controller' => [
-            'index' => 'dashboard',
         ],
         'beatmapsets_controller' => [
             'discussion' => 'beatmap discussion',
@@ -75,12 +65,6 @@ return [
         ],
         'contests_controller' => [
             '_' => 'mga paligsahan',
-        ],
-        'follows_controller' => [
-            'index' => 'dashboard',
-        ],
-        'friends_controller' => [
-            'index' => 'dashboard',
         ],
         'groups_controller' => [
             'show' => 'mga grupo',
@@ -116,28 +100,21 @@ return [
         'scores_controller' => [
             '_' => 'performance',
         ],
-        'store_controller' => [
-            '_' => 'osu!store',
-        ],
         'tournaments_controller' => [
             '_' => 'tournaments',
         ],
         'users_controller' => [
             '_' => 'player info',
+            'create' => '',
             'disabled' => 'abiso',
         ],
         'wiki_controller' => [
             '_' => 'knowledge base',
         ],
     ],
-    'multiplayer' => [
-        'rooms_controller' => [
-            '_' => 'ranking',
-        ],
-    ],
     'passport' => [
         'authorization_controller' => [
-            '_' => '',
+            '_' => 'panhitulutan ang app',
         ],
     ],
     'store' => [

@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'Na-block mo na ang user na ito.',
+        'comment_text' => 'Ang komentong ito ay nakatago.',
         'blocked_count' => 'mga na-block na user (:count)',
         'hide_profile' => 'Itago ang profile',
+        'hide_comment' => 'itago',
         'not_blocked' => 'Hindi naka-block ang user na ito.',
         'show_profile' => 'Ipakita ang profile',
+        'show_comment' => 'ipakita',
         'too_many' => 'Naabot na ang limit ng pag-block.',
         'button' => [
             'block' => 'Harangan',
@@ -47,6 +50,22 @@ return [
     'card' => [
         'loading' => 'Nag lo-load...',
         'send_message' => 'Ipadala ang mensahe',
+    ],
+
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
     ],
 
     'disabled' => [
@@ -87,7 +106,7 @@ return [
         'email_login_disabled' => 'Ang pag sign in gamit ng email ay disabled muna. Gamitin muna ang iyong username.',
         'failed' => 'Maling sign in',
         'forgot' => 'Nakalimutan mo ang password mo?',
-        'info' => 'Mag-sign in upang makapagpatuloy',
+        'info' => 'Paki-sign-in upang makapagpatuloy',
         'invalid_captcha' => 'Madaming palyang tangka sa pag login. Tapusin muna ang captcha at ulitin muli. (I refresh pag hindi makita ang captcha)',
         'locked_ip' => 'Locked ang iyong IP address. Magantay ng ilang minuto.',
         'password' => 'Password',
@@ -159,6 +178,10 @@ return [
             '_' => 'Nag-post sa :link',
             'count' => ':count_delimited na komento|:count_delimited na mga komento',
         ],
+        'cover' => [
+            'to_0' => 'Itago ang cover',
+            'to_1' => 'Ipakita ang cover',
+        ],
         'edit' => [
             'cover' => [
                 'button' => 'Palitan ang cover',
@@ -204,8 +227,14 @@ return [
                 'graveyard' => [
                     'title' => 'Mga Inilibing na Beatmap',
                 ],
+                'guest' => [
+                    'title' => 'Guest Participation na mga Beatmap',
+                ],
                 'loved' => [
                     'title' => 'Mga Minamahal na Beatmap',
+                ],
+                'nominated' => [
+                    'title' => 'Mga nominadong Na-rank na Mga beatmap',
                 ],
                 'pending' => [
                     'title' => 'Pending na mga Beatmap',
@@ -301,8 +330,8 @@ return [
                 'recent' => 'Pinakabago',
                 'title' => 'Mga Medalya',
             ],
-            'multiplayer' => [
-                'title' => 'Mga Laro na Multiplayer',
+            'playlists' => [
+                'title' => 'Playlist Games',
             ],
             'posts' => [
                 'title' => 'Mga Post',
@@ -311,6 +340,9 @@ return [
             ],
             'recent_activity' => [
                 'title' => 'Kamakailan',
+            ],
+            'realtime' => [
+                'title' => 'Multiplayer Games',
             ],
             'top_ranks' => [
                 'download_replay' => 'I-Download ang Replay',
@@ -324,6 +356,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'Nangungunang Ranggo',
+                ],
+                'pin' => [
+                    'to_0' => 'I-unpin',
+                    'to_0_done' => 'Na-unpin na score',
+                    'to_1' => 'Pin',
+                    'to_1_done' => 'Na-pin na score',
+                ],
+                'pinned' => [
+                    'title' => 'Mga na-pin na scores',
                 ],
             ],
             'votes' => [
@@ -350,6 +391,7 @@ return [
                     'actions' => [
                         'restriction' => 'I-ban',
                         'silence' => 'Pagpapatahimik',
+                        'tournament_ban' => 'Pangtorneong pagbabawal',
                         'note' => 'Tala',
                     ],
                 ],
@@ -391,6 +433,7 @@ return [
             'country_simple' => 'Pambansang Ranggo',
             'global' => 'Pandaigdigang ranggo para sa :mode',
             'global_simple' => 'Pambansang Ranggo',
+            'highest' => 'Pinakamataas na ranggo: :rank sa :date',
         ],
         'stats' => [
             'hit_accuracy' => 'Katumpakan sa Pagtama',
@@ -424,6 +467,8 @@ return [
         'offline' => 'Offline',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'Ginawa ng user',
     ],
     'verify' => [

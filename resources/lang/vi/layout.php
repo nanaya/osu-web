@@ -25,6 +25,11 @@ return [
             'index' => 'danh sách',
         ],
 
+        'beatmapsets' => [
+            'show' => 'thông tin',
+            'discussions' => 'thảo luận',
+        ],
+
         'changelog' => [
             'index' => 'danh sách',
         ],
@@ -46,7 +51,8 @@ return [
 
         'users' => [
             'modding' => 'modding',
-            'multiplayer' => 'nhiều người',
+            'playlists' => 'danh sách phát',
+            'realtime' => 'nhiều người chơi',
             'show' => 'thông tin',
         ],
     ],
@@ -61,7 +67,7 @@ return [
 
     'menu' => [
         'beatmaps' => [
-            '_' => 'beatmaps',
+            '_' => 'beatmap',
         ],
         'community' => [
             '_' => 'cộng đồng',
@@ -76,7 +82,7 @@ return [
         ],
         'home' => [
             '_' => 'trang chủ',
-            'team' => 'team',
+            'team' => 'đội',
         ],
         'rankings' => [
             '_' => 'xếp hạng',
@@ -107,7 +113,7 @@ return [
             '_' => 'Pháp Lý & Trạng Thái',
             'copyright' => 'Bản Quyền (DMCA)',
             'privacy' => 'Quyền Riêng Tư',
-            'server_status' => 'Trạng Thái Server',
+            'server_status' => 'Trạng thái máy chủ',
             'source_code' => 'Mã Nguồn',
             'terms' => 'Điều Khoản Và Điều Kiện',
         ],

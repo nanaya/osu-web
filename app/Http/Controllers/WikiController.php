@@ -46,7 +46,7 @@ class WikiController extends Controller
         if (OsuWiki::isImage($path)) {
             $prependPath = $locale === 'images' || $cleanLocale === null ? $locale : null;
 
-            return ujs_redirect(route('wiki.image', concat_path([$prependPath, $path])));
+            return ujs_redirect(wiki_image_url(concat_path([$prependPath, $path])));
         }
 
         // if invalid locale, assume locale to be part of path and
@@ -107,7 +107,12 @@ class WikiController extends Controller
             return json_item($page, 'WikiPage');
         }
 
-        return ext_view($page->template(), compact('page'), null, $status ?? null);
+        return ext_view(
+            $page->template(),
+            ['contentLocale' => $page->locale, 'page' => $page],
+            null,
+            $status ?? null
+        );
     }
 
     public function image($path)

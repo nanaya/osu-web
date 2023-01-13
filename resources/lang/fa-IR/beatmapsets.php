@@ -11,6 +11,10 @@ return [
         'rule_violation' => '',
     ],
 
+    'cover' => [
+        'deleted' => '',
+    ],
+
     'download' => [
         'limit_exceeded' => '',
     ],
@@ -62,6 +66,7 @@ return [
             'favourite_login' => '',
             'logged-out' => '',
             'mapped_by' => '',
+            'mapped_by_guest' => '',
             'unfavourite' => '',
             'updated_timeago' => '',
 
@@ -120,7 +125,9 @@ return [
             'genre' => '',
             'language' => '',
             'no_scores' => '',
+            'nominators' => '',
             'nsfw' => '',
+            'offset' => '',
             'points-of-failure' => '',
             'source' => '',
             'storyboard' => '',
@@ -143,6 +150,7 @@ return [
         'scoreboard' => [
             'achieved' => '',
             'country' => '',
+            'error' => 'بارگزاری رتبه بندی ها شکست خورد',
             'friend' => '',
             'global' => '',
             'supporter-link' => '',
@@ -154,11 +162,12 @@ return [
                 'combo' => '',
                 'miss' => '',
                 'mods' => '',
+                'pin' => '',
                 'player' => '',
                 'pp' => '',
                 'rank' => '',
-                'score_total' => '',
                 'score' => '',
+                'score_total' => '',
                 'time' => '',
             ],
 
@@ -173,6 +182,10 @@ return [
                 'first' => '',
                 'own' => '',
             ],
+            'supporter_link' => [
+                '_' => '',
+                'here' => '',
+            ],
         ],
 
         'stats' => [
@@ -186,6 +199,7 @@ return [
             'bpm' => '',
             'count_circles' => '',
             'count_sliders' => '',
+            'offset' => '',
             'user-rating' => '',
             'rating-spread' => '',
             'nominations' => '',
@@ -201,5 +215,9 @@ return [
             'pending' => '',
             'graveyard' => '',
         ],
+    ],
+
+    'spotlight_badge' => [
+        'label' => '',
     ],
 ];

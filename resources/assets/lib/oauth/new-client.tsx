@@ -1,16 +1,17 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+import { Spinner } from 'components/spinner';
+import StringWithComponent from 'components/string-with-component';
+import { ValidatingInput } from 'components/validating-input';
 import { FormErrors } from 'form-errors';
 import { OwnClientJson } from 'interfaces/own-client-json';
 import { route } from 'laroute';
-import { action } from 'mobx';
+import { action, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { Spinner } from 'spinner';
-import StringWithComponent from 'string-with-component';
-import { ValidatingInput } from 'validating-input';
+import { trans } from 'utils/lang';
 
 const store = core.dataStore.ownClientStore;
 const uiState = core.dataStore.uiState;
@@ -20,6 +21,12 @@ export class NewClient extends React.Component {
   private static readonly inputFields = ['name', 'redirect'];
 
   private errors = new FormErrors();
+
+  constructor(props: Record<string, never>) {
+    super(props);
+
+    makeObservable(this);
+  }
 
   handleCancel = () => {
     uiState.account.newClientVisible = false;
@@ -61,7 +68,7 @@ export class NewClient extends React.Component {
     return (
       <div className='oauth-client-details'>
         <div className='oauth-client-details__header'>
-          {osu.trans('oauth.new_client.header')}
+          {trans('oauth.new_client.header')}
         </div>
 
         <form autoComplete='off' className='oauth-client-details__content'>
@@ -69,7 +76,7 @@ export class NewClient extends React.Component {
 
           {NewClient.inputFields.map((name) => (
             <div key={name} className='oauth-client-details__group'>
-              <div className='oauth-client-details__label'>{osu.trans(`oauth.client.${name}`)}</div>
+              <div className='oauth-client-details__label'>{trans(`oauth.client.${name}`)}</div>
               <ValidatingInput
                 blockName='oauth-client-details'
                 errors={this.errors}
@@ -84,18 +91,18 @@ export class NewClient extends React.Component {
             <StringWithComponent
               mappings={{ link: (
                 <a href={`${process.env.DOCS_URL}#terms-of-use`}>
-                  {osu.trans('oauth.new_client.terms_of_use.link')}
+                  {trans('oauth.new_client.terms_of_use.link')}
                 </a>
               ) }}
-              pattern={osu.trans('oauth.new_client.terms_of_use._')}
+              pattern={trans('oauth.new_client.terms_of_use._')}
             />
           </div>
 
           <div className='oauth-client-details__buttons'>
             <button className='btn-osu-big' onClick={this.handleSubmit} type='button'>
-              {uiState.account.isCreatingNewClient ? <Spinner /> : osu.trans('oauth.new_client.register')}
+              {uiState.account.isCreatingNewClient ? <Spinner /> : trans('oauth.new_client.register')}
             </button>
-            <button className='btn-osu-big' onClick={this.handleCancel} type='button'>{osu.trans('common.buttons.cancel')}</button>
+            <button className='btn-osu-big' onClick={this.handleCancel} type='button'>{trans('common.buttons.cancel')}</button>
           </div>
         </form>
       </div>

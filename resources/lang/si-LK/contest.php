@@ -31,6 +31,12 @@ return [
         'progress' => [
             '_' => '',
         ],
+
+        'requirement' => [
+            'playlist_beatmapsets' => [
+                'incomplete_play' => '',
+            ],
+        ],
     ],
     'entry' => [
         '_' => '',
@@ -44,6 +50,7 @@ return [
             'beatmap' => '',
             'music' => '',
         ],
+        'wrong_dimensions' => '',
         'too_big' => '',
     ],
     'beatmaps' => [

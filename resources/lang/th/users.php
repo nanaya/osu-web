@@ -7,7 +7,7 @@ return [
     'deleted' => '[ผู้ใช้ที่ถูกลบ]',
 
     'beatmapset_activities' => [
-        'title' => ":user's ประวัติการมอด",
+        'title' => "ประวัติการมอดของ :user",
         'title_compact' => 'การวิจารณ์บีทแมพ',
 
         'discussions' => [
@@ -33,10 +33,13 @@ return [
 
     'blocks' => [
         'banner_text' => 'คุณได้บล็อกผู้ใช้รายนี้แล้ว',
+        'comment_text' => 'ความคิดเห็นนี้ถูกซ่อนไว้',
         'blocked_count' => 'บล็อกผู้ใช้งาน (:count)',
         'hide_profile' => 'ซ่อนโปรไฟล์',
+        'hide_comment' => 'ซ่อน',
         'not_blocked' => 'ผู้ใช้นี้ไม่ได้ถูกบล็อก',
         'show_profile' => 'แสดงโปรไฟล์',
+        'show_comment' => 'แสดง',
         'too_many' => 'จำนวนการบล็อกถึงขีดจำกัดแล้ว',
         'button' => [
             'block' => 'บล็อก',
@@ -49,8 +52,24 @@ return [
         'send_message' => 'ส่งข้อความ',
     ],
 
+    'create' => [
+        'form' => [
+            'password' => '',
+            'password_confirmation' => '',
+            'submit' => '',
+            'user_email' => '',
+            'user_email_confirmation' => '',
+            'username' => '',
+
+            'tos_notice' => [
+                '_' => '',
+                'link' => '',
+            ],
+        ],
+    ],
+
     'disabled' => [
-        'title' => 'โอ๊ะโอ บัญชีของคุณถูกระงับ',
+        'title' => 'โอ๊ะโอ ดูเหมือนว่าบัญชีของคุณถูกระงับ',
         'warning' => "ถ้าคุณทำผิดกฎ เราจะบอกว่ามีระยะเวลาเว้นช่วง (Cool-down) หนึ่งเดือน ซึ่งระหว่างนี้เราจะไม่รับคำขอยกโทษ และหลังจากผ่านไปแล้วหนึ่งเดือน คุณค่อยติดต่อเรากลับมา (ถ้าจำเป็น) อีกอย่างคือถ้าสร้างบัญชีเพิ่มอีก (หลังจากอันเก่าโดนระงับ) ก็<strong>จะโดนอีกหนึ่งเดือน</strong> และจะบอกว่า<strong>ยิ่งสร้างบัญชีเพิ่ม ยิ่งทำผิดกฎมากขึ้น</strong> ขอร้องล่ะนะ",
 
         'if_mistake' => [
@@ -160,6 +179,10 @@ return [
             '_' => 'โพสต์ :link',
             'count' => ':count_delimited ความคิดเห็น|:count_delimited ความคิดเห็น',
         ],
+        'cover' => [
+            'to_0' => '',
+            'to_1' => '',
+        ],
         'edit' => [
             'cover' => [
                 'button' => 'เปลี่ยนรูปภาพปก',
@@ -205,8 +228,14 @@ return [
                 'graveyard' => [
                     'title' => 'สุสานบีทแมพ',
                 ],
+                'guest' => [
+                    'title' => '',
+                ],
                 'loved' => [
                     'title' => 'บีทแมพที่ Loved',
+                ],
+                'nominated' => [
+                    'title' => '',
                 ],
                 'pending' => [
                     'title' => 'บีทแมพที่กำลังทำ',
@@ -302,8 +331,8 @@ return [
                 'recent' => 'ล่าสุด',
                 'title' => 'เหรียญตรา',
             ],
-            'multiplayer' => [
-                'title' => 'เกมผู้เล่นหลายคน',
+            'playlists' => [
+                'title' => '',
             ],
             'posts' => [
                 'title' => 'โพสต์',
@@ -313,9 +342,12 @@ return [
             'recent_activity' => [
                 'title' => 'ล่า​สุด',
             ],
+            'realtime' => [
+                'title' => '',
+            ],
             'top_ranks' => [
                 'download_replay' => 'ดาวน์โหลดรีเพลย์',
-                'not_ranked' => 'บีทแมพแรงค์เท่านั้นที่ให้พีพี',
+                'not_ranked' => 'บีทแมพแรงค์เท่านั้นที่ให้ pp',
                 'pp_weight' => 'weighted :percentage',
                 'view_details' => 'ดูรายละเอียดเพิ่มเติม',
                 'title' => 'อันดับ',
@@ -325,6 +357,15 @@ return [
                 ],
                 'first' => [
                     'title' => 'First Place Ranks',
+                ],
+                'pin' => [
+                    'to_0' => '',
+                    'to_0_done' => '',
+                    'to_1' => 'ปักหมุด',
+                    'to_1_done' => '',
+                ],
+                'pinned' => [
+                    'title' => 'คะแนนที่ปักหมุดไว้',
                 ],
             ],
             'votes' => [
@@ -351,6 +392,7 @@ return [
                     'actions' => [
                         'restriction' => 'แบน',
                         'silence' => 'ถูกใบ้',
+                        'tournament_ban' => '',
                         'note' => 'หมายเหตุ',
                     ],
                 ],
@@ -392,6 +434,7 @@ return [
             'country_simple' => 'อันดับในประเทศ',
             'global' => 'อันดับทั่วโลกของ :mode',
             'global_simple' => 'อันดับทั่วโลก',
+            'highest' => '',
         ],
         'stats' => [
             'hit_accuracy' => 'ความแม่นยำเฉลี่ย',
@@ -425,6 +468,8 @@ return [
         'offline' => 'ออฟไลน์',
     ],
     'store' => [
+        'from_client' => '',
+        'from_web' => '',
         'saved' => 'ผู้ใช้ถูกสร้างขึ้น',
     ],
     'verify' => [

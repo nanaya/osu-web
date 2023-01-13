@@ -44,6 +44,7 @@ return [
         'reply_resolve' => 'Sagutin at Lutasin',
         'reset' => 'I-reset',
         'restore' => 'Ibalik',
+        'retry' => 'Ulitin',
         'save' => 'I-save',
         'saving' => 'Sine-save...',
         'search' => 'Hanapin',
