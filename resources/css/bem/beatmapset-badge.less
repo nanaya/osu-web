@@ -2,10 +2,11 @@
 // See the LICENCE file in the repository root for full licence text.
 
 .beatmapset-badge {
+  @_padding-y: 0.2em;
   background-color: hsl(var(--hsl-b5));
   font-size: @font-size--small;
   border-radius: 10000px;
-  padding: 0.2em 1em;
+  padding: @_padding-y 1em;
   margin-left: 10px;
   text-transform: uppercase;
   vertical-align: middle;
@@ -20,9 +21,30 @@
     color: var(--colour-hover);
   });
 
+  &--cover {
+    .center-content();
+    background-color: hsla(var(--hsl-b5), 0.8);
+    font-size: inherit;
+    font-weight: 800;
+    padding: 0 15px;
+    margin: 0;
+  }
+
   &--featured_artist {
     --colour: hsl(var(--hsl-blue-2));
     --colour-hover: hsl(var(--hsl-blue-1));
+  }
+
+  &--header {
+    font-weight: 800;
+    font-size: inherit;
+    padding: 0 10px;
+    margin: 0;
+  }
+
+  &--inline {
+    position: relative;
+    bottom: @_padding-y;
   }
 
   &--nsfw {

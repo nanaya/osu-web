@@ -6,9 +6,20 @@
   color: #fff;
   min-width: 0;
   position: relative;
+  --icons-bg-opacity: 0;
+  --selected-icons-display: none;
+  --selected-list-display: flex;
+
+  &--beatmapset-show {
+    @media @desktop {
+      --selected-icons-display: grid;
+      --selected-list-display: none;
+    }
+  }
 
   &--selecting {
     z-index: @z-index--blackout-visible;
+    --icons-bg-opacity: 1;
   }
 
   &__body {
@@ -46,6 +57,15 @@
       &:hover {
         background-color: @osu-colour-b6;
       }
+
+      .@{top}--beatmapset-show & {
+        box-shadow: none;
+
+        @media @desktop {
+          background-color: transparent;
+          padding: 0;
+        }
+      }
     }
 
     &--current {
@@ -63,8 +83,44 @@
     color: hsl(var(--hsl-b5));
   }
 
+
+  &__item-mapper {
+    color: hsl(var(--hsl-c2));
+    font-weight: normal;
+  }
+
   &__item-selector-button {
     margin-left: auto;
+  }
+
+  &__selected-icons {
+    display: var(--selected-icons-display);
+
+    grid-template-columns: 1fr 1fr;
+    font-size: 9px;
+    gap: 2px;
+    position: relative;
+
+    &::before {
+      .default-border-radius();
+      --padding: 4px;
+      --offset: calc(-1 * var(--padding));
+      --size: calc(100% + 2 * var(--padding));
+      content: '';
+      position: absolute;
+      top: var(--offset);
+      left: var(--offset);
+      width: var(--size);
+      height: var(--size);
+      background-color: hsl(var(--hsl-b5));
+      pointer-events: none;
+      opacity: var(--icons-bg-opacity);
+    }
+  }
+
+  &__selected-list {
+    display: var(--selected-list-display);
+    flex: 1;
   }
 
   &__selector {
@@ -87,8 +143,17 @@
     min-width: 100%;
     width: max-content;
     max-width: ~"max(90vw, 100%)";
-
     display: none;
+
+    .@{top}--beatmapset-show & {
+      @media @desktop {
+        top: 50%;
+        left: 100%;
+        transform: translateY(-50%);
+        margin: 0 0 0 5px;
+      }
+    }
+
     .@{top}--selecting & {
       display: grid;
     }
