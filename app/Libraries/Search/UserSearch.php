@@ -46,7 +46,7 @@ class UserSearch extends RecordSearch
             ->mustNot(['terms' => ['_id' => $this->params->blockedUserIds()]])
             ->mustNot(['term' => ['is_old' => true]])
             ->filter(['term' => ['user_warnings' => 0]])
-            ->filter(['term' => ['user_type' => 0]]);
+            ->mustNot(['term' => ['user_type' => 1]]);
 
         if ($this->params->queryString !== null) {
             $query->shouldMatch(1)

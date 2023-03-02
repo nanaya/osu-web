@@ -505,7 +505,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
         }
 
         if (!$findAll) {
-            $user->where('user_type', 0)->where('user_warnings', 0);
+            $user->default();
         }
 
         $user = $user->first();
@@ -1925,10 +1925,9 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
 
     public function scopeDefault($query)
     {
-        return $query->where([
-            'user_warnings' => 0,
-            'user_type' => 0,
-        ]);
+        return $query
+            ->where('user_warnings', 0)
+            ->where('user_type', '<>', 1);
     }
 
     public function scopeOnline($query)
