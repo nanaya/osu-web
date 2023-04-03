@@ -10,7 +10,7 @@
   "id": 276,
   "legacy_name": null,
   "message": "yes",
-  "message_html": "<div class='osu-md-default'><p class=\"osu-md-default__paragraph\">yes</p>\n</div>",
+  "message_html": "<div class='osu-md-default'><p>yes</p>\n</div>",
   "parent_id": null,
   "pinned": true,
   "replies_count": 0,

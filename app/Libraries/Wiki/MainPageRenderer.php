@@ -12,7 +12,6 @@ use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
 use League\CommonMark\Extension\CommonMark\Node\Inline\AbstractWebResource;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Node\Block\Document;
-use League\CommonMark\Node\Block\Paragraph;
 use League\CommonMark\Node\Node;
 use League\CommonMark\Node\NodeWalkerEvent;
 use League\CommonMark\Parser\MarkdownParser;
@@ -90,9 +89,6 @@ class MainPageRenderer extends Renderer
             switch (get_class($node)) {
                 case Heading::class:
                     $class = "{$blockClass}__heading";
-                    break;
-                case Paragraph::class:
-                    $class = "{$blockClass}__paragraph";
                     break;
                 case Link::class:
                     $class = "{$blockClass}__link";

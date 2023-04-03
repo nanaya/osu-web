@@ -22,7 +22,6 @@ use League\CommonMark\Extension\Table\Table;
 use League\CommonMark\Extension\Table\TableCell;
 use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Node\Block\Paragraph;
 use Symfony\Component\Yaml\Exception\ParseException as YamlParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -360,9 +359,6 @@ class OsuMarkdown
             ],
             ListItem::class => [
                 'class' => "{$blockClass}__list-item",
-            ],
-            Paragraph::class => [
-                'class' => "{$blockClass}__paragraph",
             ],
             StyleBlock\Element::class => [
                 'class' => static fn (StyleBlock\Element $node) => "{$blockClass}__{$node->getClassName()}",

@@ -314,7 +314,7 @@ class ChangelogController extends Controller
      *       "type": "fix",
      *       "category": "Misc",
      *       "title": "Spring is here!",
-     *       "message_html": "<div class='changelog-md'><p class=\"changelog-md__paragraph\">New seasonal backgrounds ahoy! Amazing work by the artists.</p>\n</div>",
+     *       "message_html": "<div class='changelog-md'><p>New seasonal backgrounds ahoy! Amazing work by the artists.</p>\n</div>",
      *       "major": true,
      *       "created_at": "2021-05-20T10:56:49+00:00",
      *       "github_user": {

@@ -36,7 +36,7 @@ class ChangelogEntryTest extends TestCase
         $legacy = new Changelog(['message' => "{$title}\n\n---\n{$message}"]);
         $converted = ChangelogEntry::convertLegacy($legacy);
         $this->assertSame($title, $converted->title);
-        $this->assertSame("<div class='changelog-md'><p class=\"changelog-md__paragraph\">{$message}</p>\n</div>", $converted->publicMessageHtml());
+        $this->assertSame("<div class='changelog-md'><p>{$message}</p>\n</div>", $converted->publicMessageHtml());
     }
 
     public function testConvertLegacyChangelogWithMessage()
@@ -135,13 +135,13 @@ class ChangelogEntryTest extends TestCase
     {
         return [
             ['Hidden', null],
-            ["---\nVisible", "<div class='changelog-md'><p class=\"changelog-md__paragraph\">Visible</p>\n</div>"],
+            ["---\nVisible", "<div class='changelog-md'><p>Visible</p>\n</div>"],
             ["Hidden\n---", null],
             ["Hidden\n\n---", null],
             ["Hidden\n\n---Still hidden", null],
             ["Hidden\n---\n\nStill hidden", null],
             ["Hidden\n---\nStill hidden", null],
-            ["Hidden\n\n---\nVisible", "<div class='changelog-md'><p class=\"changelog-md__paragraph\">Visible</p>\n</div>"],
+            ["Hidden\n\n---\nVisible", "<div class='changelog-md'><p>Visible</p>\n</div>"],
         ];
     }
 }

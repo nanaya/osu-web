@@ -223,10 +223,11 @@ export class Comment extends React.PureComponent
 
         div className: 'comment__container',
           div className: 'comment__message',
-            p className: 'osu-md osu-md--comment osu-md__paragraph',
-              trans('users.blocks.comment_text')
-              ' '
-              @renderForceShowButton()
+            div className: 'osu-md osu-md--comment',
+              p null,
+                trans('users.blocks.comment_text')
+                ' '
+                @renderForceShowButton()
 
 
   renderComment: (comment) =>
