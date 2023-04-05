@@ -20,6 +20,23 @@ return [
             'title' => 'Email',
         ],
 
+        'legacy_api_key' => [
+            'api_key' => 'api key',
+            'app_name' => 'application name',
+            'app_url' => 'application url',
+            'new' => 'Create API Key',
+            'create' => 'Create',
+            'hide_key' => 'Hide Key',
+            'revoke' => 'Revoke API Key',
+            'show_key' => 'Show Key',
+            'title' => 'Legacy API',
+
+            'documentation' => [
+                '_' => 'Documentation is available at :github.',
+                'github' => 'GitHub',
+            ],
+        ],
+
         'password' => [
             'current' => 'current password',
             'new' => 'new password',

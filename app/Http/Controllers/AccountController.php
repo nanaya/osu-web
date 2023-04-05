@@ -15,6 +15,7 @@ use App\Models\OAuth\Client;
 use App\Models\UserAccountHistory;
 use App\Models\UserNotificationOption;
 use App\Transformers\CurrentUserTransformer;
+use App\Transformers\LegacyApiKeyTransformer;
 use Auth;
 use DB;
 use Mail;
@@ -110,6 +111,8 @@ class AccountController extends Controller
 
         $authorizedClients = json_collection(Client::forUser($user), 'OAuth\Client', 'user');
         $ownClients = json_collection($user->oauthClients()->where('revoked', false)->get(), 'OAuth\Client', ['redirect', 'secret']);
+        $legacyApiKey = $user->apiKeys()->available()->first();
+        $legacyApiKeyJson = $legacyApiKey === null || $legacyApiKey->revoked ? null : json_item($legacyApiKey, new LegacyApiKeyTransformer());
 
         $notificationOptions = $user->notificationOptions->keyBy('name');
 
@@ -117,6 +120,7 @@ class AccountController extends Controller
             'authorizedClients',
             'blocks',
             'currentSessionId',
+            'legacyApiKeyJson',
             'notificationOptions',
             'ownClients',
             'sessions'

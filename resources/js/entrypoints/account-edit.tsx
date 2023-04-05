@@ -1,6 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+import AccountLegacyApiKey from 'account-legacy-api-key';
 import { ClientJson } from 'interfaces/client-json';
 import { OwnClientJson } from 'interfaces/own-client-json';
 import { AuthorizedClients } from 'oauth/authorized-clients';
@@ -17,6 +18,11 @@ core.reactTurbolinks.register('authorized-clients', () => {
 
   return <AuthorizedClients />;
 });
+
+core.reactTurbolinks.register(
+  'account-legacy-api-key',
+  (container: HTMLElement) => <AccountLegacyApiKey container={container} />,
+);
 
 core.reactTurbolinks.register('own-clients', () => {
   const json = parseJsonNullable<OwnClientJson[]>('json-own-clients', true);
