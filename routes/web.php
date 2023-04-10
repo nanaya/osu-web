@@ -70,6 +70,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::resource('watches', 'BeatmapsetWatchesController', ['only' => ['update', 'destroy']]);
 
         Route::group(['prefix' => 'discussions', 'as' => 'discussions.'], function () {
+            Route::get('media-url', 'BeatmapDiscussionsController@mediaUrl')->name('media-url');
             Route::put('{discussion}/vote', 'BeatmapDiscussionsController@vote')->name('vote');
             Route::post('{discussion}/restore', 'BeatmapDiscussionsController@restore')->name('restore');
             Route::post('{discussion}/deny-kudosu', 'BeatmapDiscussionsController@denyKudosu')->name('deny-kudosu');
@@ -246,6 +247,9 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::resource('legacy-api-key', 'LegacyApiKeyController', ['only' => ['store']]);
     Route::delete('legacy-api-key', 'LegacyApiKeyController@destroy')->name('legacy-api-key.destroy');
+
+    Route::resource('legacy-irc-key', 'LegacyIrcKeyController', ['only' => ['store']]);
+    Route::delete('legacy-irc-key', 'LegacyIrcKeyController@destroy')->name('legacy-irc-key.destroy');
 
     Route::resource('notifications', 'NotificationsController', ['only' => ['index']]);
     Route::get('notifications/endpoint', 'NotificationsController@endpoint')->name('notifications.endpoint');
