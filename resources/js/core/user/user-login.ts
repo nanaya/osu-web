@@ -99,7 +99,7 @@ export default class UserLogin {
     const callback = this.callback;
 
     if (callback == null) {
-      reloadPage();
+      window.location.reload();
       return;
     }
 
