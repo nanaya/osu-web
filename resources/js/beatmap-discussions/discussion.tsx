@@ -116,8 +116,8 @@ export class Discussion extends React.Component<Props> {
 
     const user = this.props.users[this.props.discussion.user_id] ?? deletedUser.toJson();
     const group = badgeGroup({
+      beatmap: this.props.currentBeatmap,
       beatmapset: this.props.beatmapset,
-      currentBeatmap: this.props.currentBeatmap,
       discussion: this.props.discussion,
       user,
     });

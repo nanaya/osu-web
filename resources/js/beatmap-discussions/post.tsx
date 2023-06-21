@@ -151,8 +151,8 @@ export default class Post extends React.Component<Props> {
           {this.props.type === 'reply' && (
             <UserCard
               group={badgeGroup({
+                beatmap: this.props.beatmap,
                 beatmapset: this.props.beatmapset,
-                currentBeatmap: this.props.beatmap,
                 discussion: this.props.discussion,
                 user: this.props.user,
               })}

@@ -20,8 +20,8 @@ import { linkHtml, openBeatmapEditor } from 'utils/url';
 import { getInt } from './math';
 
 interface BadgeGroupParams {
+  beatmap: BeatmapJson | null;
   beatmapset: BeatmapsetJson;
-  currentBeatmap: BeatmapJson | null;
   discussion: BeatmapsetDiscussionJson;
   user?: UserJson;
 }
@@ -84,7 +84,7 @@ export type NearbyDiscussion<T extends BeatmapsetDiscussionJson> = T & { timesta
 type NearbyDiscussionsCategory = 'd0' | 'd100' | 'd1000' | 'other';
 const nearbyDiscussionsMessageTypes = new Set(['suggestion', 'problem']);
 
-export function badgeGroup({ beatmapset, currentBeatmap, discussion, user }: BadgeGroupParams) {
+export function badgeGroup({ beatmap, beatmapset, discussion, user }: BadgeGroupParams) {
   if (user == null) {
     return null;
   }
@@ -93,7 +93,7 @@ export function badgeGroup({ beatmapset, currentBeatmap, discussion, user }: Bad
     return mapperGroup;
   }
 
-  if (currentBeatmap != null && discussion.beatmap_id === currentBeatmap.id && user.id === currentBeatmap.user_id) {
+  if (beatmap != null && discussion.beatmap_id === beatmap.id && user.id === beatmap.user_id) {
     return guestGroup;
   }
 
