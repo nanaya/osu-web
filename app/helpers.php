@@ -270,7 +270,7 @@ function css_group_colour($group)
     return '--group-colour: '.(optional($group)->colour ?? 'initial');
 }
 
-function css_var_2x(string $key, string $url)
+function css_var_2x(string $key, ?string $url)
 {
     if (!present($url)) {
         return;
@@ -279,7 +279,7 @@ function css_var_2x(string $key, string $url)
     $url = e($url);
     $url2x = retinaify($url);
 
-    return blade_safe("{$key}: url('{$url}'); {$key}-2x: url('{$url2x}')");
+    return blade_safe("{$key}: url('{$url}'); {$key}-2x: url('{$url2x}');");
 }
 
 function current_locale_meta(): LocaleMeta
