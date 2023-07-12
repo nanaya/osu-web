@@ -149,6 +149,9 @@ jobs:
       - name: Generate docs
         run: php artisan scribe:generate
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Run PHPUnit
         run: ./bin/phpunit.sh
 
