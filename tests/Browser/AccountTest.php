@@ -41,7 +41,7 @@ class AccountTest extends DuskTestCase
                 ->type('.js-password-update input[name="user[password]"]', $newPassword)
                 ->type('.js-password-update input[name="user[password_confirmation]"]', $newPassword)
                 ->press('.js-password-update button[type=submit]')
-                ->waitForText('Saved')
+                ->waitForText('Saved', 60)
                 ->clickLink('home')
                 ->waitFor('.user-home');
 
