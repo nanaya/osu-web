@@ -21,7 +21,7 @@ class UserScoreAggregateTest extends TestCase
         $user = User::factory()->create();
         $playlistItem = $this->playlistItem();
 
-        $this->room->startPlay($user, $playlistItem);
+        $this->room->startPlay($user, $playlistItem, 0);
         $agg = UserScoreAggregate::new($user, $this->room);
 
         $this->assertSame(1, $agg->attempts);

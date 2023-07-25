@@ -63,7 +63,7 @@ class ScoresControllerTest extends TestCase
         $playlistItem = PlaylistItem::factory()->create();
         $room = $playlistItem->room;
         $build = Build::factory()->create(['allow_ranking' => true]);
-        $score = $room->startPlay($user, $playlistItem);
+        $score = $room->startPlay($user, $playlistItem, 0);
 
         $this->actAsScopedUser($user, ['*']);
 

@@ -8,9 +8,11 @@ namespace App\Models\Multiplayer;
 use App\Exceptions\GameCompletedException;
 use App\Exceptions\InvariantException;
 use App\Models\Model;
+use App\Models\Solo\Score as SoloScore;
 use App\Models\Solo\ScoreData;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -29,6 +31,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property mixed|null $rank
  * @property Room $room
  * @property int $room_id
+ * @property SoloScore $soloScore
+ * @property int|null $solo_score_id
  * @property \Carbon\Carbon $started_at
  * @property \stdClass|null $statistics
  * @property int|null $total_score
@@ -70,22 +74,56 @@ class Score extends Model
         return $this->belongsTo(Room::class, 'room_id');
     }
 
+    public function soloScore(): BelongsTo
+    {
+        return $this->belongsTo(SoloScore::class, 'solo_score_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function getDataAttribute()
+    public function getAttribute($key)
     {
-        // FIXME: convert this class to the new score table layout
-        $params = $this->getAttributes();
-        $params['mods'] = json_decode($params['mods'], true);
-        $params['passed'] = get_bool($params['passed']);
-        $params['ruleset_id'] = $this->playlistItem->ruleset_id;
-        $params['statistics'] = json_decode($params['statistics'], true);
-        $params['ruleset_id'] = $this->playlistItem->ruleset_id;
+        return match ($key) {
+            'accuracy',
+            'beatmap_id',
+            'build_id',
+            'id',
+            'max_combo',
+            'mods',
+            'passed',
+            'playlist_item_id',
+            'pp',
+            'rank',
+            'room_id',
+            'solo_score_id',
+            'total_score',
+            'user_id' => $this->getRawAttribute($key),
 
-        return new ScoreData($params);
+            'statistics' => json_decode($this->getRawAttribute($key), true),
+
+            'data' => $this->getData(),
+            'ruleset_id' => $this->getRulesetId(),
+
+            'created_at',
+            'deleted_at',
+            'ended_at',
+            'started_at',
+            'updated_at' => $this->getTimeFast($key),
+
+            'created_at_json',
+            'deleted_at_json',
+            'ended_at_json',
+            'started_at_json',
+            'updated_at_json' => $this->getJsonTimeFast($key),
+
+            'playlistItem',
+            'room',
+            'soloScore',
+            'user' => $this->getRelationValue($key),
+        };
     }
 
     public function scopeCompleted($query)
@@ -98,45 +136,69 @@ class Score extends Model
         return $query->where('playlist_item_id', $playlistItemId);
     }
 
-    public function isCompleted()
+    public function isCompleted(): bool
     {
-        return present($this->ended_at);
+        return $this->getSoloScore() !== null;
     }
 
     public function complete(array $params)
     {
-        if ($this->isCompleted()) {
-            throw new GameCompletedException('cannot modify score after submission');
-        }
-
-        $this->fill($params);
-
-        if (!empty($this->playlistItem->required_mods)) {
-            $missingMods = array_diff(
-                array_column($this->playlistItem->required_mods, 'acronym'),
-                array_column($this->mods, 'acronym')
-            );
-
-            if (!empty($missingMods)) {
-                throw new InvariantException('This play does not include the mods required.');
+        $this->getConnection()->transaction(function () use ($params) {
+            if ($this->isCompleted()) {
+                throw new GameCompletedException('cannot modify score after submission');
             }
-        }
 
-        if (!empty($this->playlistItem->allowed_mods)) {
-            $missingMods = array_diff(
-                array_column($this->mods, 'acronym'),
-                array_column($this->playlistItem->required_mods, 'acronym'),
-                array_column($this->playlistItem->allowed_mods, 'acronym')
-            );
+            $soloScore = SoloScore::createFromJsonOrExplode($params);
+            $mods = $soloScore->data->mods;
 
-            if (!empty($missingMods)) {
-                throw new InvariantException('This play includes mods that are not allowed.');
+            if (!empty($this->playlistItem->required_mods)) {
+                $missingMods = array_diff(
+                    array_column($this->playlistItem->required_mods, 'acronym'),
+                    array_column($mods, 'acronym')
+                );
+
+                if (!empty($missingMods)) {
+                    throw new InvariantException('This play does not include the mods required.');
+                }
             }
+
+            if (!empty($this->playlistItem->allowed_mods)) {
+                $missingMods = array_diff(
+                    array_column($mods, 'acronym'),
+                    array_column($this->playlistItem->required_mods, 'acronym'),
+                    array_column($this->playlistItem->allowed_mods, 'acronym')
+                );
+
+                if (!empty($missingMods)) {
+                    throw new InvariantException('This play includes mods that are not allowed.');
+                }
+            }
+
+            $this->soloScore()->associate($soloScore);
+            $this->save();
+        });
+    }
+
+    public function getSoloScore(): ?SoloScore
+    {
+        if ($this->solo_score_id !== null) {
+            return $this->soloScore;
         }
 
-        $this->data->assertCompleted();
+        if ($this->ended_at !== null) {
+            return new SoloScore([
+                'beatmap_id' => $this->beatmap_id,
+                'created_at' => $this->created_at_json,
+                'data' => $this->data,
+                'has_replay' => false,
+                'preseve' => true,
+                'ruleset_id' => $this->ruleset_id,
+                'updated_at' => $this->updated_at_json,
+                'user_id' => $this->user_id,
+            ]);
+        }
 
-        $this->save();
+        return null;
     }
 
     public function userRank()
@@ -153,5 +215,21 @@ class Score extends Model
             ]);
 
         return 1 + $query->count();
+    }
+
+    private function getData(): ScoreData
+    {
+        return new ScoreData([
+            ...$this->getAttributes(),
+            'mods' => $this->mods,
+            'passed' => $this->passed,
+            'ruleset_id' => $this->ruleset_id,
+            'statistics' => $this->statistics,
+        ]);
+    }
+
+    private function getRulesetId(): int
+    {
+        return $this->playlistItem->ruleset_id;
     }
 }

@@ -589,13 +589,13 @@ class Room extends Model
         return $this->fresh();
     }
 
-    public function startPlay(User $user, PlaylistItem $playlistItem)
+    public function startPlay(User $user, PlaylistItem $playlistItem, int $buildId)
     {
         priv_check_user($user, 'MultiplayerScoreSubmit')->ensureCan();
 
         $this->assertValidStartPlay($user, $playlistItem);
 
-        return $this->getConnection()->transaction(function () use ($user, $playlistItem) {
+        return $this->getConnection()->transaction(function () use ($buildId, $user, $playlistItem) {
             $agg = UserScoreAggregate::new($user, $this);
             if ($agg->isNew) {
                 // sanity; if the object isn't saved, laravel will increment the entire table.
@@ -609,10 +609,11 @@ class Room extends Model
             $agg->updateUserAttempts();
 
             return Score::start([
-                'user_id' => $user->getKey(),
-                'room_id' => $this->getKey(),
-                'playlist_item_id' => $playlistItem->getKey(),
                 'beatmap_id' => $playlistItem->beatmap_id,
+                'build_id' => $buildId,
+                'playlist_item_id' => $playlistItem->getKey(),
+                'room_id' => $this->getKey(),
+                'user_id' => $user->getKey(),
             ]);
         });
     }

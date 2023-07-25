@@ -5,14 +5,14 @@
 
 namespace App\Http\Controllers\Multiplayer\Rooms\Playlist;
 
-use App\Exceptions\InvariantException;
 use App\Http\Controllers\Controller as BaseController;
 use App\Libraries\ClientCheck;
 use App\Models\Multiplayer\PlaylistItem;
 use App\Models\Multiplayer\PlaylistItemUserHighScore;
 use App\Models\Multiplayer\Room;
+use App\Models\Solo\Score as SoloScore;
 use App\Transformers\Multiplayer\ScoreTransformer;
-use Carbon\Carbon;
+use App\Transformers\ScoreTransformer as SoloScoreTransformer;
 
 /**
  * @group Multiplayer
@@ -149,14 +149,12 @@ class ScoresController extends BaseController
         $user = auth()->user();
         $params = request()->all();
 
-        ClientCheck::findBuild($user, $params);
+        $buildId = ClientCheck::findBuild($user, $params)?->getKey()
+            ?? config('osu.client.default_build_id');
 
-        $score = $room->startPlay($user, $playlistItem);
+        $score = $room->startPlay($user, $playlistItem, $buildId);
 
-        return json_item(
-            $score,
-            'Multiplayer\Score'
-        );
+        return json_item($score, new ScoreTransformer());
     }
 
     /**
@@ -164,49 +162,35 @@ class ScoresController extends BaseController
      */
     public function update($roomId, $playlistId, $scoreId)
     {
-        $room = Room::findOrFail($roomId);
+        $score = \DB::transaction(function () use ($roomId, $playlistId, $scoreId) {
+            $room = Room::findOrFail($roomId);
 
-        $playlistItem = $room->playlist()
-            ->where('id', $playlistId)
-            ->firstOrFail();
+            $score = $room
+                ->scores()
+                ->where([
+                    'user_id' => \Auth::id(),
+                    'playlist_item_id' => $playlistId,
+                ])->with('playlistItem')
+                ->lockForUpdate()
+                ->findOrFail($scoreId);
 
-        $roomScore = $playlistItem->scores()
-            ->where('user_id', auth()->user()->getKey())
-            ->where('id', $scoreId)
-            ->firstOrFail();
+            $params = SoloScore::extractParams(\Request::all(), $score);
 
-        try {
-            $score = $room->completePlay(
-                $roomScore,
-                $this->extractScoreParams(request()->all(), $playlistItem)
-            );
+            $room->completePlay($score, $params);
 
-            return json_item(
-                $score,
-                'Multiplayer\Score',
-                array_merge(['position', 'scores_around'], ScoreTransformer::BASE_INCLUDES)
-            );
-        } catch (InvariantException $e) {
-            return error_popup($e->getMessage(), $e->getStatusCode());
+            return $score;
+        });
+
+        $soloScore = $score->soloScore;
+        if ($soloScore->wasRecentlyCreated) {
+            $soloScoreJson = json_item($soloScore, new SoloScoreTransformer(SoloScoreTransformer::TYPE_SOLO));
+            $soloScore::queueForProcessing($soloScoreJson);
         }
-    }
 
-    private function extractScoreParams(array $params, PlaylistItem $playlistItem)
-    {
-        $mods = app('mods')->parseInputArray(
-            $playlistItem->ruleset_id,
-            $params['mods'] ?? [],
+        return json_item(
+            $score,
+            new ScoreTransformer(),
+            ['position', 'scores_around', ...ScoreTransformer::BASE_INCLUDES],
         );
-
-        return [
-            'rank' => $params['rank'] ?? null,
-            'total_score' => get_int($params['total_score'] ?? null),
-            'accuracy' => get_float($params['accuracy'] ?? null),
-            'max_combo' => get_int($params['max_combo'] ?? null),
-            'ended_at' => Carbon::now(),
-            'passed' => get_bool($params['passed'] ?? null),
-            'mods' => $mods,
-            'statistics' => $params['statistics'] ?? null,
-        ];
     }
 }

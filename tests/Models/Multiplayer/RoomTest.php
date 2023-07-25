@@ -100,7 +100,7 @@ class RoomTest extends TestCase
         ]);
 
         $this->expectException(InvariantException::class);
-        $room->startPlay($user, $playlistItem);
+        $room->startPlay($user, $playlistItem, 0);
     }
 
     public function testMaxAttemptsReached()
@@ -110,14 +110,14 @@ class RoomTest extends TestCase
         $playlistItem1 = PlaylistItem::factory()->create(['room_id' => $room]);
         $playlistItem2 = PlaylistItem::factory()->create(['room_id' => $room]);
 
-        $room->startPlay($user, $playlistItem1);
+        $room->startPlay($user, $playlistItem1, 0);
         $this->assertTrue(true);
 
-        $room->startPlay($user, $playlistItem2);
+        $room->startPlay($user, $playlistItem2, 0);
         $this->assertTrue(true);
 
         $this->expectException(InvariantException::class);
-        $room->startPlay($user, $playlistItem1);
+        $room->startPlay($user, $playlistItem1, 0);
     }
 
     public function testMaxAttemptsForItemReached()
@@ -134,19 +134,19 @@ class RoomTest extends TestCase
         ]);
 
         $initialCount = $room->scores()->count();
-        $room->startPlay($user, $playlistItem1);
+        $room->startPlay($user, $playlistItem1, 0);
         $this->assertSame($initialCount + 1, $room->scores()->count());
 
         $initialCount = $room->scores()->count();
         try {
-            $room->startPlay($user, $playlistItem1);
+            $room->startPlay($user, $playlistItem1, 0);
         } catch (Exception $ex) {
             $this->assertTrue($ex instanceof InvariantException);
         }
         $this->assertSame($initialCount, $room->scores()->count());
 
         $initialCount = $room->scores()->count();
-        $room->startPlay($user, $playlistItem2);
+        $room->startPlay($user, $playlistItem2, 0);
         $this->assertSame($initialCount + 1, $room->scores()->count());
     }
 
