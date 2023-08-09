@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import core from 'osu-core-singleton';
 import { currentUrl } from 'utils/turbolinks';
 import { linkHtml, openBeatmapEditor } from 'utils/url';
+import { setHas } from './contains';
 import { getInt } from './math';
 
 interface BadgeGroupParams {
@@ -68,9 +69,9 @@ interface PropsFromHrefValue {
 export const defaultFilter = 'total';
 
 // parseUrl and makeUrl lookups
-const filterLookup = new Set<unknown>(filters);
-const generalPages = new Set<unknown>(['events', 'generalAll', 'reviews']);
-const pageLookup = new Set<unknown>(discussionPages);
+const filterLookup = new Set(filters);
+const generalPages = new Set(['events', 'generalAll', 'reviews']);
+const pageLookup = new Set(discussionPages);
 
 const defaultBeatmapId = '-';
 
@@ -130,14 +131,6 @@ export function formatTimestamp(value: number) {
   return `${padStart(m.toString(), 2, '0')}:${padStart(s.toString(), 2, '0')}:${padStart(ms.toString(), 3, '0')}`;
 }
 
-
-function isDiscussionPage(value: string): value is DiscussionPage {
-  return pageLookup.has(value);
-}
-
-function isFilter(value: string): value is Filter {
-  return filterLookup.has(value);
-}
 
 function isNearbyDiscussion<T extends BeatmapsetDiscussionJson>(discussion: T): discussion is NearbyDiscussion<T> {
   return discussion.deleted_at == null
@@ -204,7 +197,7 @@ export function makeUrl(options: MakeUrlOptions) {
   postId = post?.id ?? postId;
 
   const params: Partial<Record<string, string | number | null>> = {
-    beatmap: beatmapId == null || generalPages.has(mode) ? defaultBeatmapId : beatmapId,
+    beatmap: beatmapId == null || setHas(generalPages, mode) ? defaultBeatmapId : beatmapId,
     beatmapset: beatmapsetId,
     mode: mode ?? defaultMode(beatmapId),
   };
@@ -291,9 +284,9 @@ export function parseUrl(urlString?: string | null, discussions?: BeatmapsetDisc
   const ret: ParsedUrlParams = {
     beatmapId,
     beatmapsetId,
-    filter: isFilter(filter) ? filter : 'total',
+    filter: setHas(filterLookup, value) ? filter : 'total',
     // empty path segments are ''
-    mode: isDiscussionPage(mode) ? mode : defaultMode(beatmapId),
+    mode: setHas(pageLookup, value) ? mode : defaultMode(beatmapId),
     user: getInt(url.searchParams.get('user')),
   };
 

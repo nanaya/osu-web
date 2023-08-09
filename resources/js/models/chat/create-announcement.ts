@@ -8,6 +8,7 @@ import { debounce } from 'lodash';
 import { action, autorun, computed, makeObservable, observable, runInAction } from 'mobx';
 import core from 'osu-core-singleton';
 import { onError } from 'utils/ajax';
+import { arrayHas } from 'utils/contains';
 import { uuid } from 'utils/seq';
 import { presence, present } from 'utils/string';
 import { maxMessageLength } from './channel';
@@ -28,7 +29,7 @@ export const maxLengths = Object.freeze({
 });
 
 export function isInputKey(key: string): key is InputKey {
-  return (inputKeys as Readonly<string[]>).includes(key);
+  return arrayHas(inputKeys, key);
 }
 
 // This class is owned by ChatStateStore

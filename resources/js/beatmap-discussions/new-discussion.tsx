@@ -20,6 +20,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 import { onError } from 'utils/ajax';
 import { canModeratePosts, formatTimestamp, makeUrl, NearbyDiscussion, nearbyDiscussions, parseTimestamp, validMessageLength } from 'utils/beatmapset-discussion-helper';
 import { downloadLimited, nominationsCount } from 'utils/beatmapset-helper';
+import { arrayHas } from 'utils/contains';
 import { classWithModifiers } from 'utils/css';
 import { InputEventType, makeTextAreaHandler } from 'utils/input-handler';
 import { joinComponents, trans } from 'utils/lang';
@@ -475,7 +476,7 @@ export class NewDiscussion extends React.Component<Props> {
   private readonly updateStickToHeight = () => this.stickToHeight = this.props.stickTo?.current?.getBoundingClientRect().height;
 
   private validPost(type: string): type is DiscussionType {
-    if (!(discussionTypes as Readonly<string[]>).includes(type)) return false;
+    if (!(arrayHas(discussionTypes, type))) return false;
     if (!validMessageLength(this.message, this.isTimeline)) return false;
     if (!this.isTimeline) return true;
 

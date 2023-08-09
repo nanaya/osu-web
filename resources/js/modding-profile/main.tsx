@@ -27,6 +27,7 @@ import Cover from 'profile-page/cover';
 import DetailBar from 'profile-page/detail-bar';
 import headerLinks from 'profile-page/header-links';
 import * as React from 'react';
+import { arrayHas } from 'utils/contains';
 import { bottomPage } from 'utils/html';
 import { nextVal } from 'utils/seq';
 import { switchNever } from 'utils/switch-never';
@@ -61,8 +62,8 @@ interface Props {
 type Page = ModdingExtraPage | 'main';
 
 function validPage(page: unknown) {
-  if (typeof page === 'string' && (page === 'main' || moddingExtraPages.includes(page as ModdingExtraPage))) {
-    return page as Page;
+  if (typeof page === 'string' && (page === 'main' || arrayHas(moddingExtraPages, page))) {
+    return page;
   }
 
   return null;

@@ -19,6 +19,7 @@ import { debounce, pullAt } from 'lodash';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import core from 'osu-core-singleton';
 import { error, onErrorWithCallback } from 'utils/ajax';
+import { arrayHas } from 'utils/contains';
 import { jsonClone } from 'utils/json';
 import { hideLoadingOverlay, showLoadingOverlay } from 'utils/loading-overlay';
 import { apiShowMore } from 'utils/offset-paginator';
@@ -55,8 +56,8 @@ type TopScoresJson = Record<typeof topScoresKeys[number], PageSectionJson<SoloSc
 // #endregion
 
 export function validPage(page: unknown) {
-  if (typeof page === 'string' && (page === 'main' || profileExtraPages.includes(page as ProfileExtraPage))) {
-    return page as Page;
+  if (typeof page === 'string' && (page === 'main' || arrayHas(profileExtraPages, page))) {
+    return page;
   }
 
   return null;

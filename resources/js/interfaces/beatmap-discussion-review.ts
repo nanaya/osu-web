@@ -1,6 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+import { arrayHas } from 'utils/contains';
+
 export interface DocumentBlock {
   text: string;
   type: 'paragraph' | 'embed';
@@ -32,5 +34,5 @@ export type PersistedBeatmapReviewBlock = DocumentParagraph | PersistedDocumentI
 export type PersistedBeatmapDiscussionReview = PersistedBeatmapReviewBlock[];
 
 export function isBeatmapReviewDiscussionType(type: string): type is BeatmapReviewDiscussionType {
-  return (beatmapReviewDiscussionTypes as Readonly<string[]>).includes(type);
+  return arrayHas(beatmapReviewDiscussionTypes, type);
 }
