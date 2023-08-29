@@ -42,6 +42,7 @@ use App\Models\Notification;
 use App\Models\Score;
 use App\Models\Season;
 use App\Models\Store;
+use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\UpdateStream;
 use App\Models\User;
@@ -269,6 +270,8 @@ class SanityTest extends DuskTestCase
         self::$scaffolding['score'] = Score\Best\Osu::factory()->withReplay()->create();
 
         self::$scaffolding['room'] = Room::factory()->create(['category' => 'spotlight']);
+
+        self::$scaffolding['team'] = Team::factory()->create();
     }
 
     private static function filterLog(array $log)

@@ -128,6 +128,7 @@ use Request;
  * @property-read Collection<Store\Address> $storeAddresses
  * @property-read Collection<UserDonation> $supporterTagPurchases
  * @property-read Collection<UserDonation> $supporterTags
+ * @property-read TeamMember|null $teamMembership
  * @property-read Collection<OAuth\Token> $tokens
  * @property-read Collection<Forum\TopicWatch> $topicWatches
  * @property-read Collection<UserAchievement> $userAchievements
@@ -295,6 +296,16 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
     public function userCountryHistory(): HasMany
     {
         return $this->hasMany(UserCountryHistory::class);
+    }
+
+    public function teamApplication(): HasOne
+    {
+        return $this->hasOne(TeamApplication::class, 'user_id');
+    }
+
+    public function teamMembership(): HasOne
+    {
+        return $this->hasOne(TeamMember::class, 'user_id');
     }
 
     public function getAuthPassword()
@@ -940,6 +951,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
             'storeAddresses',
             'supporterTagPurchases',
             'supporterTags',
+            'teamMembership',
             'tokens',
             'topicWatches',
             'userAchievements',
