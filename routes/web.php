@@ -297,6 +297,13 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('user-cover-presets/batch-activate', 'UserCoverPresetsController@batchActivate')->name('user-cover-presets.batch-activate');
     Route::resource('user-cover-presets', 'UserCoverPresetsController', ['only' => ['index', 'store', 'update']]);
 
+    Route::group(['as' => 'teams.', 'prefix' => 'teams/{team}'], function () {
+        Route::post('applications/{application}/accept', 'Teams\ApplicationsController@accept')->name('applications.accept');
+        Route::resource('applications', 'Teams\ApplicationsController', ['only' => ['create', 'store', 'update']]);
+        Route::resource('members', 'Teams\MembersController', ['only' => ['index']]);
+    });
+    Route::resource('teams', 'TeamsController', ['only' => ['create', 'edit', 'show', 'store', 'update']]);
+
     Route::post('users/check-username-availability', 'UsersController@checkUsernameAvailability')->name('users.check-username-availability');
     Route::get('users/lookup', 'Users\LookupController@index')->name('users.lookup');
     Route::get('users/disabled', 'UsersController@disabled')->name('users.disabled');

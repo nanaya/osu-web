@@ -1,0 +1,25 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
+// See the LICENCE file in the repository root for full licence text.
+
+.team-create-form {
+  display: grid;
+  gap: 20px;
+
+  @media @desktop {
+    gap: 10px;
+  }
+
+  &__help {
+    color: hsl(var(--hsl-c2));
+  }
+
+  &__row {
+    display: grid;
+    gap: 5px;
+
+    @media @desktop {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+  }
+}

@@ -29,6 +29,8 @@ use App\Models\Multiplayer\Room;
 use App\Models\OAuth\Client;
 use App\Models\Score\Best\Model as ScoreBest;
 use App\Models\Solo;
+use App\Models\Team;
+use App\Models\TeamApplication;
 use App\Models\Traits\ReportableInterface;
 use App\Models\User;
 use App\Models\UserContestEntry;
@@ -1875,6 +1877,50 @@ class OsuAuthorize
         }
 
         return 'ok';
+    }
+
+    public function checkTeamApplicationAccept(?User $user, TeamApplication $application): ?string
+    {
+        $this->ensureLoggedIn($user);
+        $conditions = [
+            'is_owner' => true,
+            'user_id' => $user->getKey(),
+        ];
+
+        if ($application->team->members()->where($conditions)->exists()) {
+            return 'ok';
+        }
+    }
+
+    public function checkTeamApply(?User $user, Team $team): ?string
+    {
+        $this->ensureLoggedIn($user);
+
+        if (!$team->is_open) {
+            return 'team.apply.closed';
+        }
+        if ($team->emptySlots() <= 0) {
+            return 'team.apply.full';
+        }
+        if ($user->teamMembership()->exists()) {
+            return 'team.apply.already_member';
+        }
+        if ($user->teamApplications()->where('is_new', true)->exists()) {
+            return 'team.apply.already_applying';
+        }
+
+        return 'ok';
+    }
+
+    public function checkTeamUpdate(?User $user, Team $team): ?string
+    {
+        $this->ensureLoggedIn($user);
+
+        if ($team->members()->where(['user_id' => $user->getKey(), 'is_owner' => true])->exists()) {
+            return 'ok';
+        }
+
+        return null;
     }
 
     public function checkUserGroupEventShowActor(?User $user, UserGroupEvent $event): string

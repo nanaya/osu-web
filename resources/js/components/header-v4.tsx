@@ -44,6 +44,7 @@ const pageTitleMap: Record<`${'action' | 'controller' | 'namespace'}Key`, Partia
   },
   namespaceKey: {
     'admin_forum._': 'admin._',
+    'teams._': 'teams._',
   },
 };
 
