@@ -29,6 +29,10 @@ class BeatmapsetsController extends Controller
     {
         $beatmapset = Beatmapset::findOrFail($id);
 
+        if ($beatmapset->user === null) {
+            throw new \Exception("Trying to revive beatmapset with no user (beatmapset {$id})");
+        }
+
         (new UserBeatmapsetRevive($beatmapset))->dispatch();
 
         return response(null, 204);
