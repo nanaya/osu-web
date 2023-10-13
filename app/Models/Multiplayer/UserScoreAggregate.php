@@ -35,6 +35,10 @@ class UserScoreAggregate extends Model
             ['column' => 'total_score', 'order' => 'ASC'],
             ['column' => 'last_score_link_id', 'order' => 'DESC'],
         ],
+        'score_desc' => [
+            ['column' => 'total_score', 'order' => 'DESC'],
+            ['column' => 'last_score_link_id', 'order' => 'ASC'],
+        ],
     ];
 
     const DEFAULT_SORT = 'score_asc';
@@ -163,10 +167,11 @@ class UserScoreAggregate extends Model
             return;
         }
 
-        $query = static::where('room_id', $this->room_id)->forRanking()
-            ->cursorSort('score_asc', $this);
-
-        return 1 + $query->count();
+        return 1 + static
+            ::where('room_id', $this->room_id)
+            ->forRanking()
+            ->cursorSort('score_desc', $this)
+            ->count();
     }
 
     private function updateUserTotal(ScoreLink $currentScoreLink, PlaylistItemUserHighScore $prev)
