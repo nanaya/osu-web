@@ -14,6 +14,7 @@ use App\Libraries\ChangeUsername;
 use App\Libraries\Elasticsearch\Indexable;
 use App\Libraries\Session\Store as SessionStore;
 use App\Libraries\Transactions\AfterCommit;
+use App\Libraries\User\AvatarHelper;
 use App\Libraries\User\DatadogLoginAttempt;
 use App\Libraries\User\ProfileBeatmapset;
 use App\Libraries\User\UsernamesForDbLookup;
@@ -212,7 +213,7 @@ use Request;
  */
 class User extends Model implements AfterCommit, AuthenticatableContract, HasLocalePreference, Indexable, Traits\ReportableInterface
 {
-    use Authenticatable, HasApiTokens, Memoizes, Traits\Es\UserSearch, Traits\Reportable, Traits\UserAvatar, Traits\UserScoreable, Traits\UserStore, Validatable;
+    use Authenticatable, HasApiTokens, Memoizes, Traits\Es\UserSearch, Traits\Reportable, Traits\UserScoreable, Traits\UserStore, Validatable;
 
     const PLAYSTYLES = [
         'mouse' => 1,
@@ -634,6 +635,11 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
         $this->resetMemoized();
     }
 
+    public function setAvatar(\SplFileInfo $file): void
+    {
+        AvatarHelper::set($this, $file);
+    }
+
     public function setDefaultGroup(Group $group, ?self $actor = null): void
     {
         $this->getConnection()->transaction(function () use ($actor, $group) {
@@ -837,7 +843,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
             'displayed_last_visit' => $this->getDisplayedLastVisit(),
             'osu_playstyle' => $this->getOsuPlaystyle(),
             'playmode' => $this->getPlaymode(),
-            'user_avatar' => $this->getUserAvatar(),
+            'user_avatar' => AvatarHelper::url($this),
             'user_colour' => $this->getUserColour(),
             'user_rank' => $this->getUserRank(),
             'user_website' => $this->getUserWebsite(),
