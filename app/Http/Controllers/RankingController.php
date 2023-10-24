@@ -267,7 +267,7 @@ class RankingController extends Controller
 
         $spotlights = Spotlight::orderBy('chart_id', 'desc')->get();
         if ($chartId === null) {
-            $spotlight = $spotlights->first();
+            $spotlight = $spotlights->firstOrFail();
         } else {
             $spotlight = Spotlight::findOrFail($chartId);
         }
