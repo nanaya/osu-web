@@ -224,11 +224,18 @@ class BeatmapsetQueryParser
         }
     }
 
-    private static function makeTextOption($operator, $value)
+    private static function makeTextOption(string $operator, string $value): ?string
     {
-        if ($operator === '=') {
-            return presence(trim($value, '"'));
+        if ($operator !== '=') {
+            return null;
         }
+
+        $len = strlen($value);
+        if ($len > 1 && $value[0] === '"' && $value[$len - 1] === '"') {
+            $value = substr($value, 1, $len - 2);
+        }
+
+        return presence($value);
     }
 
     private static function statePrefixSearch($value): ?int
