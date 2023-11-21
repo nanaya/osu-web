@@ -303,7 +303,9 @@ class AccountController extends Controller
 
     public function verify()
     {
-        return UserVerification::fromCurrentRequest()->verify();
+        $wat = UserVerification::fromCurrentRequest();
+        \Log::debug(json_encode($wat->state->data()));
+        return $wat->verify();
     }
 
     public function verifyLink()

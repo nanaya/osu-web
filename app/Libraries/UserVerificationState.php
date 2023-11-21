@@ -10,6 +10,7 @@ namespace App\Libraries;
 use App\Events\UserSessionEvent;
 use App\Exceptions\UserVerificationException;
 use App\Libraries\Session\Store;
+use App\Libraries\Session\SessionManager;
 use App\Models\User;
 
 class UserVerificationState
@@ -19,6 +20,7 @@ class UserVerificationState
 
     public static function fromCurrentRequest(): static
     {
+        \Log::debug('wao');
         return new static(\Auth::user(), \Session::instance());
     }
 
@@ -82,15 +84,24 @@ class UserVerificationState
     private function __construct(private ?User $user, private Store $session)
     {
         $currentSession = \Session::instance();
-        $sessionId = $this->session->getId();
-        if ($sessionId === $currentSession->getId()) {
+        $sessionId = $this->session->getKey();
+        if ($sessionId === $currentSession->getKey()) {
             // Override passed session if it's the same as current session
             // otherwise the changes here will be overriden when current
             // session is saved.
             $this->session = $currentSession;
         }
 
-        $this->dataKey = "user_verification:web:{$sessionId}";
+        $this->dataKey = $this->session->get('verification_id') ?? "user_verification:web:{$sessionId}";
+    }
+
+    public function data(): ?\stdClass
+    {
+        if ($this->data === false) {
+            $this->data = \Cache::get($this->dataKey);
+        }
+
+        return $this->data;
     }
 
     public function issue()
@@ -149,6 +160,7 @@ class UserVerificationState
         }
 
         if (!hash_equals($data->key, $inputKey)) {
+            \Log::debug('wheeeeeeeeeeeeeeeeeeeezzz');
             $data->tries++;
             $this->save();
 
@@ -184,18 +196,11 @@ class UserVerificationState
 
         \Cache::put("verification:{$data->linkKey}", [
             'userId' => $this->user->getKey(),
-            'sessionId' => $this->session->getId(),
+            'sessionId' => $this->session->getKey(),
         ], $duration);
+        $this->session->put('verification_id', $this->dataKey);
+        $this->session->save();
 
         \Cache::put($this->dataKey, $data, $duration);
-    }
-
-    private function data(): ?\stdClass
-    {
-        if ($this->data === false) {
-            $this->data = \Cache::get($this->dataKey);
-        }
-
-        return $this->data;
     }
 }

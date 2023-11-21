@@ -15,18 +15,18 @@ use Mail;
 class UserVerification
 {
     private $request;
-    private $state;
+    public $state;
     private $user;
 
     public static function fromCurrentRequest()
     {
-        $request = request();
+        $request = \Request::instance();
         $attributes = $request->attributes;
         $verification = $attributes->get('user_verification');
 
         if ($verification === null) {
             $verification = new static(
-                auth()->user(),
+                \Auth::user(),
                 $request,
                 UserVerificationState::fromCurrentRequest()
             );

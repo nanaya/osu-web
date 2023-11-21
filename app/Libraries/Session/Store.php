@@ -253,16 +253,19 @@ class Store extends \Illuminate\Session\Store
      */
     public function save()
     {
+        \Log::debug('saving state');
         $isGuest = $this->isGuestSession();
 
         if ($this->handler instanceof CacheBasedSessionHandler) {
             $this->handler->setMinutes($isGuest ? 120 : config('session.lifetime'));
+            \Log::debug('saving state cache');
         }
 
         // Overriden to track user sessions in Redis
         parent::save();
 
         if (!$isGuest) {
+            \Log::debug('saving state non guest');
             Redis::sadd(config('cache.prefix').':'.$this->getCurrentKeyPrefix(), $this->getKey());
         }
     }
