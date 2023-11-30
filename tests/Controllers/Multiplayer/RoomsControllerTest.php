@@ -176,7 +176,7 @@ class RoomsControllerTest extends TestCase
     public function testStoreRealtime()
     {
         $token = Token::factory()->create(['scopes' => ['*']]);
-        $type = array_rand_val(Room::REALTIME_TYPES);
+        $type = Arr::random(Room::REALTIME_TYPES);
 
         $roomsCountInitial = Room::count();
         $playlistItemsCountInitial = PlaylistItem::count();
@@ -205,7 +205,7 @@ class RoomsControllerTest extends TestCase
     public function testStoreRealtimeByType()
     {
         $token = Token::factory()->create(['scopes' => ['*']]);
-        $type = array_rand_val(Room::REALTIME_TYPES);
+        $type = Arr::random(Room::REALTIME_TYPES);
 
         $response = $this
             ->actingWithToken($token)
@@ -224,7 +224,7 @@ class RoomsControllerTest extends TestCase
     public function testStoreRealtimeByQueueMode()
     {
         $token = Token::factory()->create(['scopes' => ['*']]);
-        $queueMode = array_rand_val(Room::REALTIME_QUEUE_MODES);
+        $queueMode = Arr::random(Room::REALTIME_QUEUE_MODES);
 
         $response = $this
             ->actingWithToken($token)
@@ -273,7 +273,7 @@ class RoomsControllerTest extends TestCase
                 $this->createBasicStoreParams(),
                 [
                     'password' => $password,
-                    'type' => array_rand_val(Room::REALTIME_TYPES),
+                    'type' => Arr::random(Room::REALTIME_TYPES),
                 ],
             ))->assertSuccessful();
 
@@ -295,7 +295,7 @@ class RoomsControllerTest extends TestCase
             'beatmap_id' => $beatmap->getKey(),
             'ruleset_id' => $beatmap->playmode,
         ];
-        $params['type'] = array_rand_val(Room::REALTIME_TYPES);
+        $params['type'] = Arr::random(Room::REALTIME_TYPES);
 
         $this
             ->actingWithToken($token)
@@ -364,7 +364,7 @@ class RoomsControllerTest extends TestCase
             ->actingWithToken($token)
             ->post(route('api.rooms.store'), array_merge(
                 $this->createBasicStoreParams(),
-                ['type' => array_rand_val(Room::REALTIME_TYPES)],
+                ['type' => Arr::random(Room::REALTIME_TYPES)],
             ))->assertStatus(422);
 
         $this->assertSame($roomsCountInitial, Room::count());
@@ -388,7 +388,7 @@ class RoomsControllerTest extends TestCase
             ->actingWithToken($token)
             ->post(route('api.rooms.store'), array_merge(
                 $this->createBasicStoreParams(),
-                ['type' => array_rand_val(Room::REALTIME_TYPES)],
+                ['type' => Arr::random(Room::REALTIME_TYPES)],
             ))->assertSuccessful();
 
         $this->assertSame($roomsCountInitial + 1, Room::count());

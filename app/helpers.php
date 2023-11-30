@@ -1537,19 +1537,6 @@ function get_params($input, $namespace, $keys, $options = [])
     return $params;
 }
 
-function array_rand_val($array)
-{
-    if ($array instanceof Illuminate\Support\Collection) {
-        $array = $array->all();
-    }
-
-    if (count($array) === 0) {
-        return;
-    }
-
-    return $array[array_rand($array)];
-}
-
 /**
  * Just like original builder's "pluck" but with actual casting.
  * I mean "lists" in 5.1 which then replaced by replaced "pluck"

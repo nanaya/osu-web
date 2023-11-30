@@ -69,7 +69,7 @@ class ContestTest extends TestCase
             $userId = $user->getKey();
             $endedAt = json_time(Carbon::now());
             foreach ($beatmapsets as $beatmapset) {
-                $room = array_rand_val($rooms);
+                $room = $rooms->random();
                 $playlistItem = $room
                     ->playlist()
                     ->whereIn('beatmap_id', array_column($beatmapset->beatmaps->all(), 'beatmap_id'))

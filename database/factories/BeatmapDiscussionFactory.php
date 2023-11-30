@@ -6,6 +6,7 @@
 namespace Database\Factories;
 
 use App\Models\BeatmapDiscussion;
+use Illuminate\Support\Arr;
 
 class BeatmapDiscussionFactory extends Factory
 {
@@ -29,7 +30,7 @@ class BeatmapDiscussionFactory extends Factory
 
     public function definition(): array
     {
-        return array_merge(array_rand_val(static::DEFAULTS), [
+        return array_merge(Arr::random(static::DEFAULTS), [
             'resolved' => false,
         ]);
     }

@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Achievement;
+use Illuminate\Support\Arr;
 
 class AchievementFactory extends Factory
 {
@@ -38,13 +39,13 @@ class AchievementFactory extends Factory
         return [
             'achievement_id' => fn () => $this->faker->unique()->numberBetween(1, 5000),
             'description' => fn () => $this->faker->realText(30),
-            'grouping' => array_rand_val(static::GROUPINGS),
+            'grouping' => Arr::random(static::GROUPINGS),
             'image' => 'http://s.ppy.sh/images/achievements/gamer2.png',
             'name' => fn () => substr($this->faker->catchPhrase(), 0, 40),
             'ordering' => 0,
             'progression' => 0,
             'quest_instructions' => fn () => $this->faker->realText(30),
-            'slug' => array_rand_val(static::SLUGS),
+            'slug' => Arr::random(static::SLUGS),
         ];
     }
 }

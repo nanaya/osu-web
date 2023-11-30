@@ -20,6 +20,7 @@ use App\Models\Solo\ScorePerformance;
 use App\Models\User;
 use App\Models\UserGroup;
 use App\Models\UserGroupEvent;
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 /**
@@ -83,7 +84,7 @@ class RemoveBeatmapsetSoloScoresTest extends TestCase
     private function createScore(Beatmapset $beatmapset, ?int $userId = null, ?int $rulesetId = null): Score
     {
         $params = [
-            'beatmap_id' => array_rand_val($beatmapset->beatmaps),
+            'beatmap_id' => $beatmapset->beatmaps->random(),
             'preserve' => true,
         ];
         if ($userId !== null) {
@@ -94,7 +95,7 @@ class RemoveBeatmapsetSoloScoresTest extends TestCase
         }
 
         return Score::factory()->withData([
-            'rank' => array_rand_val(['A', 'S', 'SH', 'X', 'XH']),
+            'rank' => Arr::random(['A', 'S', 'SH', 'X', 'XH']),
         ])->create($params);
     }
 }

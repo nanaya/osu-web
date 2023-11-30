@@ -10,6 +10,7 @@ namespace Database\Factories;
 use App\Models\Beatmap;
 use App\Models\RankHighest;
 use App\Models\User;
+use Illuminate\Support\Arr;
 
 class RankHighestFactory extends Factory
 {
@@ -18,7 +19,7 @@ class RankHighestFactory extends Factory
     public function definition(): array
     {
         return [
-            'mode' => array_rand_val(Beatmap::MODES),
+            'mode' => Arr::random(Beatmap::MODES),
             'rank' => rand(1, 10000),
             'user_id' => User::factory(),
         ];

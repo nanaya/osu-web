@@ -11,6 +11,7 @@ use App\Models\Language;
 use DB;
 use Exception;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class MiscSeeder extends Seeder
 {
@@ -86,12 +87,12 @@ class MiscSeeder extends Seeder
             $beatmapSlugs = ['all-packs-anime-1', 'all-packs-anime-2', 'all-packs-gamer-1', 'all-packs-gamer-2', 'all-packs-rhythm-1', 'all-packs-rhythm-2'];
             Achievement::factory()->count(5)->create([
                 'grouping' => 'Beatmap Packs',
-                'slug' => array_rand_val($beatmapSlugs),
+                'slug' => Arr::random($beatmapSlugs),
             ]);
             $comboSlugs = ['osu-combo-500', 'osu-combo-750', 'osu-combo-1000', 'osu-combo-2000'];
             Achievement::factory()->count(5)->create([
                 'grouping' => 'Combo',
-                'slug' => array_rand_val($comboSlugs),
+                'slug' => Arr::random($comboSlugs),
             ]);
             //END ACHIEVEMENTS
         } catch (Exception $ex) {

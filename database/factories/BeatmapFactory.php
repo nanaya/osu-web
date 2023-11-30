@@ -10,6 +10,7 @@ namespace Database\Factories;
 use App\Enums\Ruleset;
 use App\Models\Beatmap;
 use App\Models\Beatmapset;
+use Illuminate\Support\Arr;
 
 class BeatmapFactory extends Factory
 {
@@ -31,8 +32,8 @@ class BeatmapFactory extends Factory
             'diff_size' => rand(0, 10),
             'diff_overall' => rand(0, 10),
             'diff_approach' => rand(0, 10),
-            'playmode' => array_rand_val(Beatmap::MODES),
-            'approved' => array_rand_val(Beatmapset::STATES),
+            'playmode' => Arr::random(Beatmap::MODES),
+            'approved' => Arr::random(Beatmapset::STATES),
             'difficultyrating' => rand(0, 5000) / 1000,
             'playcount' => rand(0, 50000),
 

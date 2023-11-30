@@ -11,6 +11,7 @@ use App\Models\Beatmap;
 use App\Models\Solo\Score;
 use App\Models\User;
 use Database\Factories\Factory;
+use Illuminate\Support\Arr;
 
 class ScoreFactory extends Factory
 {
@@ -48,7 +49,7 @@ class ScoreFactory extends Factory
                 'max_combo' => fn (): int => rand(1, Beatmap::find($attr['beatmap_id'])->countNormal),
                 'mods' => [],
                 'passed' => true,
-                'rank' => fn (): string => array_rand_val(['A', 'S', 'B', 'SH', 'XH', 'X']),
+                'rank' => fn (): string => Arr::random(['A', 'S', 'B', 'SH', 'XH', 'X']),
                 'ruleset_id' => $attr['ruleset_id'],
                 'started_at' => fn (): string => json_time(now()->subSeconds(600)),
                 'total_score' => fn (): int => $this->faker->randomNumber(7),

@@ -10,6 +10,7 @@ namespace Database\Factories\Score\Best;
 use App\Models\Beatmap;
 use App\Models\User;
 use Database\Factories\Factory;
+use Illuminate\Support\Arr;
 
 abstract class ModelFactory extends Factory
 {
@@ -21,10 +22,10 @@ abstract class ModelFactory extends Factory
                 'playmode' => Beatmap::modeInt((new $this->model())->getMode()),
             ]),
             'date' => fn () => $this->faker->dateTimeBetween('-5 years'),
-            'enabled_mods' => array_rand_val([0, 16, 24, 64, 72]),
+            'enabled_mods' => Arr::random([0, 16, 24, 64, 72]),
             'score' => rand(50000, 100000000),
             'user_id' => fn () => User::factory(),
-            'rank' => array_rand_val(['A', 'S', 'B', 'SH', 'XH', 'X']),
+            'rank' => Arr::random(['A', 'S', 'B', 'SH', 'XH', 'X']),
 
             // depends on beatmap_id
             'maxcombo' => fn (array $attr) => rand(1, Beatmap::find($attr['beatmap_id'])->countNormal),

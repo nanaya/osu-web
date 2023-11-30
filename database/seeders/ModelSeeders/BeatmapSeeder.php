@@ -13,6 +13,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class BeatmapSeeder extends Seeder
 {
@@ -254,6 +255,6 @@ class BeatmapSeeder extends Seeder
             }
         }
 
-        return array_rand_val($users);
+        return Arr::random($users);
     }
 }

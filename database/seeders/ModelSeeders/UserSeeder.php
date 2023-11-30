@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\UserAccountHistory;
 use App\Models\UserStatistics;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class UserSeeder extends Seeder
 {
@@ -57,7 +58,7 @@ class UserSeeder extends Seeder
                         $rankChange = rand(1, 4) === 1
                             // Extreme improvement today
                             ? 1.5
-                            : array_rand_val($improvementSpeeds);
+                            : Arr::random($improvementSpeeds);
                     } else {
                         // Slight decay
                         $rankChange = rand(998, 999) / 1000;

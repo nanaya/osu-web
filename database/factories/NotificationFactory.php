@@ -9,6 +9,7 @@ namespace Database\Factories;
 
 use App\Libraries\MorphMap;
 use App\Models\Notification;
+use Illuminate\Support\Arr;
 
 class NotificationFactory extends Factory
 {
@@ -20,7 +21,7 @@ class NotificationFactory extends Factory
             'details' => [],
             'name' => array_rand(Notification::NAME_TO_CATEGORY),
             'notifiable_id' => rand(),
-            'notifiable_type' => array_rand_val(MorphMap::MAP),
+            'notifiable_type' => Arr::random(MorphMap::MAP),
         ];
     }
 }
