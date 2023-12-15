@@ -473,6 +473,7 @@ function logout()
     \Session::delete();
     Auth::logout();
     cleanup_cookies();
+    \View::share(['currentUser' => $user]);
 }
 
 function markdown($input, $preset = 'default')

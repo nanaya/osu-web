@@ -18,7 +18,7 @@
     </div>
 
     <div class="account-edit__input-groups">
-        @if ($user->lock_email_changes)
+        @if ($currentUser->lock_email_changes)
             <div class="account-edit__input-group">
                 <div class="account-edit-entry account-edit-entry--no-label">
                     <div>{!! osu_trans('accounts.edit.email.locked._', [

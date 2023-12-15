@@ -3,7 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $user = Auth::user();
+    $currentUser = $currentUser;
 @endphp
 <div class="visible-xs no-print js-header--main">
     <div class="navbar-mobile-before"></div>
@@ -36,21 +36,21 @@
     >
         <div class="mobile-menu__content">
             <div class="mobile-menu__tabs">
-                @if (isset($user))
+                @if (isset($currentUser))
                     <a
-                        href="{{ route('users.show', $user->user_id) }}"
+                        href="{{ route('users.show', $currentUser->user_id) }}"
                         data-click-menu-target="mobile-user"
                         class="mobile-menu-tab mobile-menu-tab--user js-click-menu"
                     >
                         <span class="mobile-menu-tab__avatar">
                             <span
                                 class="avatar avatar--full-rounded"
-                                style="background-image: url('{{ $user->user_avatar }}');"
+                                style="background-image: url('{{ $currentUser->user_avatar }}');"
                             ></span>
                         </span>
 
                         <span class="u-ellipsis-overflow">
-                            {{ $user->username }}
+                            {{ $currentUser->username }}
                         </span>
                     </a>
                 @else
@@ -71,7 +71,7 @@
                     <span class="fas fa-sitemap"></span>
                 </button>
 
-                @if (isset($user))
+                @if (isset($currentUser))
                     <button class="mobile-menu-tab js-click-menu" data-click-menu-target="mobile-search">
                         <span class="fas fa-search"></span>
                     </button>
@@ -114,7 +114,7 @@
                 @include('layout.header_mobile.nav')
             </div>
 
-            @if (isset($user))
+            @if (isset($currentUser))
                 <div class="mobile-menu__item mobile-menu__item--search js-click-menu js-react--quick-search" data-click-menu-id="mobile-search">
                 </div>
 

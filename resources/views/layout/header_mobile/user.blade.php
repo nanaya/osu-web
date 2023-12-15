@@ -3,7 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 <div class="navbar-mobile-item js-click-menu--close">
-    @if (Auth::check())
+    @if ($currentUser !== null)
         <div
             class="navbar-mobile-item__main js-react--user-card"
             data-is-current-user="1"
@@ -11,7 +11,7 @@
 
         <a
             class="navbar-mobile-item__main"
-            href="{{ route('users.show', Auth::user()) }}"
+            href="{{ route('users.show', $currentUser) }}"
         >
             {{ osu_trans('layout.popup_user.links.profile') }}
         </a>

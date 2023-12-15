@@ -3,9 +3,9 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $forum = $forum ?? null;
-    $recursive = $recursive ?? null;
-    $blockClass = $blockClass ?? 'btn-osu-big btn-osu-big--forum-button';
+    $forum ??= null;
+    $recursive ??= null;
+    $blockClass ??= 'btn-osu-big btn-osu-big--forum-button';
 @endphp
 
 <button
@@ -13,8 +13,8 @@
     data-disable-with="{{ osu_trans('forum.mark_as_read.busy') }}"
     data-method="POST"
     data-remote="1"
-    data-url="{{ route('forum.forums.mark-as-read', ['forum_id' => optional($forum)->getKey(), 'recursive' => $recursive]) }}"
-    @if (!auth()->check())
+    data-url="{{ route('forum.forums.mark-as-read', ['forum_id' => $forum?->getKey(), 'recursive' => $recursive]) }}"
+    @if ($currentUser === null)
         disabled
     @endif
 >

@@ -10,7 +10,7 @@
         js-user-login--menu
         js-user-header';
 @endphp
-@if (Auth::user() === null)
+@if ($currentUser === null)
     <button
         class="{{ $class }} avatar--guest"
         data-click-menu-target="nav2-login-box"
@@ -18,9 +18,9 @@
     ></button>
 @else
     <a
-        class="{{ $class }} {{ Auth::user()->isRestricted() ? 'avatar--restricted' : '' }}"
+        class="{{ $class }} {{ $currentUser->isRestricted() ? 'avatar--restricted' : '' }}"
         data-click-menu-target="nav2-user-popup"
-        href="{{ route('users.show', Auth::user()) }}"
-        {!! background_image(Auth::user()->user_avatar, false) !!}
+        href="{{ route('users.show', $currentUser) }}"
+        {!! background_image($currentUser->user_avatar, false) !!}
     ></a>
 @endif

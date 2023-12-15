@@ -24,7 +24,7 @@
     <form
         action="{{ route('forum.topics.reply', $topic->getKey()) }}"
         class="osu-page osu-page--forum-topic-reply js-forum-post-input--form js-forum-topic-reply js-sync-height--reference js-fixed-element"
-        data-force-reload="{{ Auth::check() ? '0' : '1' }}"
+        data-force-reload="{{ $currentUser === null ? '1' : '0'  }}"
         data-remote
         data-sync-height-target="forum-topic-reply"
         method="POST"

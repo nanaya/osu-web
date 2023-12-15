@@ -4,7 +4,7 @@
 --}}
 @extends('master', [
     'titlePrepend' => osu_trans('beatmaps.discussions.show.title', [
-        'title' => $beatmapset->getDisplayTitle(auth()->user()),
+        'title' => $beatmapset->getDisplayTitle($currentUser),
         'mapper' => $beatmapset->user->username ?? '?',
     ]),
 ])

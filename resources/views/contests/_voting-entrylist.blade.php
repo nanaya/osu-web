@@ -8,7 +8,7 @@
     <div class="js-react--contestList" data-src="contest-{{$contest->id}}"></div>
 @endif
 <script id="contest-{{$contest->id}}" type="application/json">
-    {!! $contest->defaultJson(Auth::user()) !!}
+    {!! $contest->defaultJson($currentUser) !!}
 </script>
 
 @if ($contest->type === 'beatmap' && isset($contest->getExtraOptions()['beatmapset_dl']))

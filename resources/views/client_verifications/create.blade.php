@@ -2,10 +2,6 @@
     Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
     See the LICENCE file in the repository root for full licence text.
 --}}
-@php
-    $user = auth()->user();
-@endphp
-
 @extends('master', [
     'blank' => true,
 ])
@@ -15,21 +11,21 @@
         <div class="dialog-form__dialog">
             <div
                 class="dialog-form__row dialog-form__row--header"
-                style="background-image: url('{{ $user->profileCustomization()->cover()->url() }}')"
+                style="background-image: url('{{ $currentUser->profileCustomization()->cover()->url() }}')"
             >
                 <div class="dialog-form__header-overlay"></div>
                 <a
                     class="dialog-form__user-header"
-                    href="{{ route('users.show', ['user' => $user->getKey()]) }}"
+                    href="{{ route('users.show', ['user' => $currentUser->getKey()]) }}"
                 >
                     <div class="dialog-form__user-avatar">
                         <div
                             class="avatar avatar--full-circle"
-                            style="background-image: url('{{ $user->user_avatar }}')"
+                            style="background-image: url('{{ $currentUser->user_avatar }}')"
                         ></div>
                     </div>
 
-                    {{ $user->username }}
+                    {{ $currentUser->username }}
                 </a>
             </div>
 
@@ -46,7 +42,7 @@
 
             <div class="dialog-form__row dialog-form__row--wrong-user">
                 {!! osu_trans('common.wrong_user._', [
-                    'user' => e($user->username),
+                    'user' => e($currentUser->username),
                     'logout_link' => link_to(
                         route('logout'),
                         osu_trans('common.wrong_user.logout_link'),

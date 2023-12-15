@@ -8,17 +8,17 @@
     data-visibility="hidden"
 >
     <a
-        href="{{ route('users.show', Auth::user()) }}"
+        href="{{ route('users.show', $currentUser) }}"
         class="simple-menu__header simple-menu__header--link js-current-user-cover"
-        {!! background_image(Auth::user()->cover(), false) !!}
+        {!! background_image($currentUser->cover(), false) !!}
     >
         <img class="simple-menu__header-icon" src="/images/icons/profile.svg" alt="">
-        <div class="u-relative">{{ Auth::user()->username }}</div>
+        <div class="u-relative">{{ $currentUser->username }}</div>
     </a>
 
     <a
         class="simple-menu__item"
-        href="{{ route('users.show', Auth::user()) }}"
+        href="{{ route('users.show', $currentUser) }}"
     >
         {{ osu_trans('layout.popup_user.links.profile') }}
     </a>

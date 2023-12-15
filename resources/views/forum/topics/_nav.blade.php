@@ -193,7 +193,7 @@
                 </div>
             </div>
             <div class="forum-topic-nav__lock-or-reply forum-topic-nav__lock-or-reply--reply">
-                @if (Auth::check())
+                @if ($currentUser !== null)
                     <button
                         type="button"
                         class="btn-circle btn-circle--topic-nav js-forum-topic-reply--toggle"
@@ -231,7 +231,7 @@
                 </span>
             </a>
 
-            @if (Auth::check())
+            @if ($currentUser !== null)
                 <button
                     type="button"
                     class="btn-osu-big btn-osu-big--forum-reply js-forum-topic-reply--toggle"

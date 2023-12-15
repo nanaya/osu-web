@@ -3,13 +3,12 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $user = Auth::user();
 @endphp
-@if($user === null)
+@if($currentUser === null)
     {!! require_login('store.username_change.require_login._', 'store.username_change.require_login.link_text') !!}
 @else
 <div class="js-username-change username-change">
-    <div style="background-image: url('{{ $user->user_avatar }}');" class="avatar avatar--centered"></div>
+    <div style="background-image: url('{{ $currentUser->user_avatar }}');" class="avatar avatar--centered"></div>
     <div>
         <input type="hidden" name="item[product_id]" value="{{ $product->getKey() }}" />
         <input type="hidden" name="item[quantity]" class="js-store-item-quantity" value="1" />
@@ -25,7 +24,7 @@
         <em class="store-text store-text--emphasis">
             <div id="username-check-status">{{ osu_trans('store.username_change.check') }}</div>
         </em>
-        <div>{{ osu_trans('store.username_change.current', ['username' => $user->username]) }}</div>
+        <div>{{ osu_trans('store.username_change.current', ['username' => $currentUser->username]) }}</div>
     </div>
     <p class="store-text store-text--price" id="username-check-price"></p>
 </div>

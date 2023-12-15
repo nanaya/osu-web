@@ -3,14 +3,13 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $user = Auth::user();
-    $isSilenced = $user->isSilenced();
+    $isSilenced = $currentUser->isSilenced();
 @endphp
 
 @extends('master', ['titlePrepend' => osu_trans('accounts.edit.title_compact')])
 
 @section('content')
-    @if ($isSilenced && !$user->isRestricted())
+    @if ($isSilenced && !$currentUser->isRestricted())
         @include('objects._notification_banner', [
             'type' => 'alert',
             'title' => osu_trans('users.silenced_banner.title'),
@@ -35,7 +34,7 @@
                             {{ osu_trans('accounts.edit.username') }}
                         </div>
                         <div class="account-edit-entry__input">
-                            {{ $user->username }}
+                            {{ $currentUser->username }}
                         </div>
 
                         <div class="account-edit-entry__button">
@@ -87,7 +86,7 @@
                             </div>
 
                             <div class="account-edit-entry__overlay-spinner">
-                                @include('objects._spinner')
+                                {!! spinner() !!}
                             </div>
                         </div>
 

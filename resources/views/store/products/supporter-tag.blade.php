@@ -6,14 +6,14 @@
     use App\Models\Store\ExtraDataSupporterTag;
 @endphp
 
-@if(!Auth::user())
+@if($currentUser === null)
     {!! require_login('store.supporter_tag.require_login._', 'store.supporter_tag.require_login.link_text') !!}
 @else
 <div class="js-store js-store-supporter-tag store-supporter-tag">
     <input type="hidden" name="item[product_id]" value="{{ $product->product_id }}" />
     <input type="hidden" name="item[quantity]" class="js-store-item-quantity" value="1" />
     <input type="hidden" id="supporter-tag-form-price" name="item[cost]" value="4" />
-    <input type="hidden" name="item[extra_data][target_id]" value="{{ Auth::user()->user_id }}" />
+    <input type="hidden" name="item[extra_data][target_id]" value="{{ $currentUser->user_id }}" />
     <div class="store-supporter-tag__user-search">
         <div class="js-react--user-card-store" data-user="null"></div>
         <input

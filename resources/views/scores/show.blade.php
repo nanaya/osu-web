@@ -6,7 +6,7 @@
     $username = $score->user === null || $score->user->trashed() ? osu_trans('users.deleted') : $score->user->username;
     $title = osu_trans('scores.show.title', [
         'username' => $username,
-        'title' => $score->beatmap->beatmapset->getDisplayTitle(auth()->user()),
+        'title' => $score->beatmap->beatmapset->getDisplayTitle($currentUser),
         'version' => $score->beatmap->version,
     ]);
 @endphp

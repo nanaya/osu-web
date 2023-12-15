@@ -46,6 +46,7 @@ abstract class Controller extends BaseController
             $session->markVerified();
         }
         $session->migrate(true);
+        \View::share(['currentUser' => $user]);
     }
 
     protected function logout()

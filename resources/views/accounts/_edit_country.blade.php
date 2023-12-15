@@ -3,10 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    use App\Libraries\User\CountryChangeTarget;
-    use App\Models\Country;
-
-    $countryChangeTarget = CountryChangeTarget::get($user);
+    $countryChangeTarget = App\Libraries\User\CountryChangeTarget::get($currentUser);
 @endphp
 <div class="account-edit-entry account-edit-entry--read-only">
     <div class="account-edit-entry__label account-edit-entry__label--top-pinned">
@@ -15,11 +12,11 @@
     <div class="account-edit-entry__group">
         <p>
             @include('objects._flag_country', [
-                'countryCode' => $user->country_acronym,
+                'countryCode' => $currentUser->country_acronym,
                 'countryName' => null,
                 'modifiers' => 'wiki',
             ])
-            {{ $user->country->name }}
+            {{ $currentUser->country->name }}
         </p>
         @if ($countryChangeTarget !== null)
             <p>

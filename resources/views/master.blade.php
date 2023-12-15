@@ -3,12 +3,13 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
+    // in case this view is being rendered before session is setup
+    $currentUser ??= null;
+
     $currentRoute = app('route-section')->getCurrent();
 
     $currentSection = $currentRoute['section'];
     $currentAction = $currentRoute['action'];
-
-    $currentUser = Auth::user();
 
     $titleTree = [];
 

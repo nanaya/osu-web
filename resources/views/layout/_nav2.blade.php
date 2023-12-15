@@ -93,7 +93,7 @@
             {!! app('layout-cache')->getLocalesDesktop() !!}
         </div>
 
-        @if (Auth::user() !== null)
+        @if ($currentUser !== null)
             <div class="nav2__col nav2__col--notifications">
                 <div class="nav2__notification-container">
                     <a
@@ -145,7 +145,7 @@
             @include('layout._header_user')
 
             <div class="nav-click-popup nav-click-popup--user js-user-header-popup">
-                @if (Auth::user() !== null)
+                @if ($currentUser !== null)
                     @include('layout._popup_user')
                 @endif
             </div>

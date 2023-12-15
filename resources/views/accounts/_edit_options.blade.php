@@ -3,7 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $customization = auth()->user()->profileCustomization();
+    $customization = $currentUser->profileCustomization();
 @endphp
 <div class="account-edit">
     <div class="account-edit__section">
@@ -30,7 +30,7 @@
                             $statusIsRendered = false;
                         @endphp
                         @foreach (App\Models\UserProfileCustomization::BEATMAPSET_DOWNLOAD as $name)
-                            @if ($name === 'direct' && !auth()->user()->isSupporter())
+                            @if ($name === 'direct' && !$currentUser->isSupporter())
                                 @continue
                             @endif
                             <label

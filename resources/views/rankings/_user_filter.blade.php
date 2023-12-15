@@ -2,7 +2,7 @@
     Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
     See the LICENCE file in the repository root for full licence text.
 --}}
-@if (Auth::check())
+@if ($currentUser !== null)
     <div class="js-react--ranking-user-filter u-contents">
         <div class="ranking-filter">
             <div class="ranking-filter__title">
