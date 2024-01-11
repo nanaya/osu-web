@@ -119,11 +119,6 @@ class Score extends Model implements Traits\ReportableInterface
         return $this->belongsTo(Beatmap::class, 'beatmap_id');
     }
 
-    public function performance()
-    {
-        return $this->hasOne(ScorePerformance::class, 'score_id');
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -149,6 +144,7 @@ class Score extends Model implements Traits\ReportableInterface
         return match ($key) {
             'beatmap_id',
             'id',
+            'pp',
             'ruleset_id',
             'unix_updated_at',
             'user_id' => $this->getRawAttribute($key),
@@ -161,8 +157,6 @@ class Score extends Model implements Traits\ReportableInterface
 
             'created_at' => $this->getTimeFast($key),
             'created_at_json' => $this->getJsonTimeFast($key),
-
-            'pp' => $this->performance?->pp,
 
             'beatmap',
             'performance',

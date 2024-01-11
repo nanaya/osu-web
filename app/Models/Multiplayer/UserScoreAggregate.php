@@ -134,7 +134,7 @@ class UserScoreAggregate extends Model
             $scoreLinks = ScoreLink
                 ::whereHas('playlistItem', fn ($q) => $q->where('room_id', $this->room_id))
                 ->where('user_id', $this->user_id)
-                ->with('score.performance')
+                ->with('score')
                 ->get();
             foreach ($scoreLinks as $scoreLink) {
                 $this->addScoreLink(

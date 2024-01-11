@@ -21,6 +21,7 @@ class ScoreFactory extends Factory
         return [
             'beatmap_id' => Beatmap::factory()->ranked(),
             'user_id' => User::factory(),
+            'pp' => fn () => $this->faker->randomFloat(4, 0, 1000),
 
             // depends on beatmap_id
             'ruleset_id' => fn (array $attr) => Beatmap::find($attr['beatmap_id'])->playmode,
