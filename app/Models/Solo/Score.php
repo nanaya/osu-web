@@ -273,7 +273,7 @@ class Score extends Model implements Traits\ReportableInterface
             'pass' => $this->passed,
             'perfect' => $this->passed && $statistics->miss + $statistics->large_tick_miss === 0,
             'rank' => $this->rank,
-            'score' => $this->total_score,
+            'score' => $this->legacy_total_score ?? 0,
             'scorechecksum' => "\0",
             'user_id' => $this->user_id,
         ]);
