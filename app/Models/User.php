@@ -1994,7 +1994,6 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
     public function scopeEagerloadForListing($query)
     {
         return $query->with([
-            'country',
             'supporterTagPurchases',
             'userGroups',
             'userProfileCustomization',
