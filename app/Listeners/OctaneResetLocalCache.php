@@ -7,8 +7,9 @@ namespace App\Listeners;
 
 class OctaneResetLocalCache
 {
-    public function handle($event): void
+    public function handle(): void
     {
+        app('OsuAuthorize')->resetCache();
         app('local-cache-manager')->incrementResetTicker();
     }
 }

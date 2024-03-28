@@ -38,8 +38,9 @@ use Ds;
 
 class OsuAuthorize
 {
-    const REQUEST_ATTRIBUTE_KEY = 'auth_map';
     const REQUEST_IS_INTEROP_KEY = 'interop_request';
+
+    private array $authMap = [];
 
     public static function alwaysCheck($ability)
     {
@@ -58,7 +59,7 @@ class OsuAuthorize
 
     public function resetCache(): void
     {
-        request()->attributes->remove(static::REQUEST_ATTRIBUTE_KEY);
+        $this->authMap = [];
     }
 
     /**
@@ -75,14 +76,7 @@ class OsuAuthorize
             $object === null ? null : [$object->getTable(), $object->getKey()],
         ]);
 
-        $authMap = request()->attributes->get(static::REQUEST_ATTRIBUTE_KEY);
-
-        if ($authMap === null) {
-            $authMap = new Ds\Map();
-            request()->attributes->set(static::REQUEST_ATTRIBUTE_KEY, $authMap);
-        }
-
-        $auth = $authMap->get($cacheKey, null);
+        $auth = $this->authMap[$cacheKey] ?? null;
 
         if ($auth === null) {
             if ($user !== null && $user->isAdmin() && !static::alwaysCheck($ability)) {
@@ -98,7 +92,7 @@ class OsuAuthorize
             }
 
             $auth = new AuthorizationResult($message);
-            $authMap->put($cacheKey, $auth);
+            $this->authMap[$cacheKey] = $auth;
         }
 
         return $auth;

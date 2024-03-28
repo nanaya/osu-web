@@ -10,6 +10,7 @@ use App\Libraries\MorphMap;
 use App\Libraries\OsuCookieJar;
 use App\Libraries\OsuMessageSelector;
 use App\Libraries\RateLimiter;
+use App\Listeners\OctaneResetLocalCache;
 use App\Singletons;
 use Datadog;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -57,8 +58,7 @@ class AppServiceProvider extends ServiceProvider
         $GLOBALS['cfg'] = \Config::all();
 
         Queue::after(function (JobProcessed $event) {
-            app('OsuAuthorize')->resetCache();
-            app('local-cache-manager')->incrementResetTicker();
+            (new OctaneResetLocalCache())->handle();
 
             Datadog::increment(
                 $GLOBALS['cfg']['datadog-helper']['prefix_web'].'.queue.run',
