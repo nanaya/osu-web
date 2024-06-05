@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Tests\Controllers;
 
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\Beatmapset;
 use App\Models\BeatmapsetEvent;
@@ -367,7 +368,7 @@ class BeatmapsControllerTest extends TestCase
         return Beatmap::factory()->create([
             'beatmap_id' => 2177697,
             'beatmapset_id' => Beatmapset::factory(['beatmapset_id' => 918591]),
-            'playmode' => Beatmap::MODES['fruits'],
+            'playmode' => RulesetHelper::NAME_TO_IDS['fruits'],
         ]);
     }
 

@@ -5,6 +5,7 @@
 
 namespace App\Models;
 
+use App\Libraries\RulesetHelper;
 use App\Traits\Validatable;
 
 /**
@@ -72,7 +73,7 @@ class UserNotificationOption extends Model
         if (in_array($this->name, static::BEATMAPSET_DISQUALIFIABLE_NOTIFICATIONS, true)) {
             if (is_array($value['modes'] ?? null)) {
                 $modes = array_filter($value['modes'], 'is_string');
-                $validModes = array_keys(Beatmap::MODES);
+                $validModes = array_keys(RulesetHelper::NAME_TO_IDS);
 
                 $details['modes'] = array_values(array_intersect($modes, $validModes));
             }

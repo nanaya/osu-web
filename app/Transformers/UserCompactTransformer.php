@@ -6,8 +6,8 @@
 namespace App\Transformers;
 
 use App\Libraries\MorphMap;
+use App\Libraries\RulesetHelper;
 use App\Libraries\Search\ScoreSearchParams;
-use App\Models\Beatmap;
 use App\Models\User;
 use App\Models\UserProfileCustomization;
 use Illuminate\Support\Arr;
@@ -353,7 +353,7 @@ class UserCompactTransformer extends TransformerAbstract
     public function includeRankHighest(User $user): ResourceInterface
     {
         $rankHighest = $user->rankHighests()
-            ->where('mode', Beatmap::modeInt($this->mode))
+            ->where('mode', RulesetHelper::toId($this->mode))
             ->first();
 
         return $rankHighest === null
@@ -364,7 +364,7 @@ class UserCompactTransformer extends TransformerAbstract
     public function includeRankHistory(User $user)
     {
         $rankHistoryData = $user->rankHistories()
-            ->where('mode', Beatmap::modeInt($this->mode))
+            ->where('mode', RulesetHelper::toId($this->mode))
             ->first()
             ?->setRelation('user', $user);
 

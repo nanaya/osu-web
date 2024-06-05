@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Database\Factories\Score\Best;
 
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\User;
 use Database\Factories\Factory;
@@ -18,7 +19,7 @@ abstract class ModelFactory extends Factory
         return [
             'beatmap_id' => fn () => Beatmap::factory()->state([
                 // force playmode to match score type
-                'playmode' => Beatmap::modeInt((new $this->model())->getMode()),
+                'playmode' => RulesetHelper::toId((new $this->model())->getMode()),
             ]),
             'date' => fn () => $this->faker->dateTimeBetween('-5 years'),
             'enabled_mods' => array_rand_val([0, 16, 24, 64, 72]),

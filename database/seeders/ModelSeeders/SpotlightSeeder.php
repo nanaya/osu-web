@@ -5,6 +5,7 @@
 
 namespace Database\Seeders\ModelSeeders;
 
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\Score\Best\Model as ScoresBestModel;
 use App\Models\Spotlight;
@@ -83,7 +84,7 @@ class SpotlightSeeder extends Seeder
             // users
             $users = User::orderByRaw('RAND()')->limit(1000)->get();
 
-            foreach (Beatmap::MODES as $ruleset => $rulesetId) {
+            foreach (RulesetHelper::NAME_TO_IDS as $ruleset => $rulesetId) {
                 // beatmaps
                 $beatmaps = Beatmap::where('playmode', $rulesetId)->orderByRaw('RAND()')->limit(rand(4, 10))->get();
                 $beatmapsetIds = array_unique($beatmaps->pluck('beatmapset_id')->toArray());

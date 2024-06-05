@@ -6,7 +6,7 @@
 namespace Tests\Models;
 
 use App\Exceptions\InvariantException;
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Tournament;
 use App\Models\User;
 use App\Models\UserStatistics;
@@ -18,7 +18,7 @@ class TournamentTest extends TestCase
     public function testTournamentUserIsValidRank()
     {
         $user = User::factory()->create();
-        $playModeInt = Beatmap::MODES['osu'];
+        $playModeInt = RulesetHelper::NAME_TO_IDS['osu'];
         $tournament = Tournament::factory()->create([
             'play_mode' => $playModeInt,
             'rank_min' => 1,
@@ -40,8 +40,8 @@ class TournamentTest extends TestCase
     public function testTournamentUserIsValidRankWithVariant()
     {
         $user = User::factory()->create();
-        $playModeInt = Beatmap::MODES['mania'];
-        $playModeVariant = Beatmap::VARIANTS['mania'][0];
+        $playModeInt = RulesetHelper::NAME_TO_IDS['mania'];
+        $playModeVariant = array_rand(RulesetHelper::VARIANTS['mania']);
         $tournament = Tournament::factory()->create([
             'play_mode' => $playModeInt,
             'play_mode_variant' => $playModeVariant,

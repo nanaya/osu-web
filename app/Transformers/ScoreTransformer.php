@@ -7,8 +7,8 @@ declare(strict_types=1);
 
 namespace App\Transformers;
 
+use App\Libraries\RulesetHelper;
 use App\Libraries\Search\ScoreSearchParams;
-use App\Models\Beatmap;
 use App\Models\DeletedUser;
 use App\Models\LegacyMatch;
 use App\Models\Multiplayer\PlaylistItemUserHighScore;
@@ -183,7 +183,7 @@ class ScoreTransformer extends TransformerAbstract
             'id' => $id ?? $score->getKey(),
             'max_combo' => $score->maxcombo,
             'mode' => $mode,
-            'mode_int' => Beatmap::modeInt($mode),
+            'mode_int' => RulesetHelper::toId($mode),
             'mods' => $score->enabled_mods,
             'passed' => $score->pass,
             'perfect' => $perfect ?? $score->perfect,
@@ -203,7 +203,7 @@ class ScoreTransformer extends TransformerAbstract
 
         if ($score->getMode() !== $beatmap->mode) {
             $beatmap->convert = true;
-            $beatmap->playmode = Beatmap::MODES[$score->getMode()];
+            $beatmap->playmode = RulesetHelper::NAME_TO_IDS[$score->getMode()];
         }
 
         return $this->item($beatmap, new BeatmapTransformer());

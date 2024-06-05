@@ -61,7 +61,7 @@
                                 <option>
                                     {{ osu_trans('beatmaps.mode.all') }}
                                 </option>
-                                @foreach (App\Models\Beatmap::MODES as $modeStr => $modeInt)
+                                @foreach (App\Libraries\RulesetHelper::NAME_TO_IDS as $modeStr => $modeInt)
                                     <option
                                         value="{{ $modeStr }}"
                                         {{ isset($search['mode']) && $modeStr === $search['mode'] ? "selected" : "" }}

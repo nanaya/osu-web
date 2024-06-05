@@ -12,6 +12,7 @@ use App\Jobs\EsDocument;
 use App\Libraries\BBCodeForDB;
 use App\Libraries\ChangeUsername;
 use App\Libraries\Elasticsearch\Indexable;
+use App\Libraries\RulesetHelper;
 use App\Libraries\Session\Store as SessionStore;
 use App\Libraries\Transactions\AfterCommit;
 use App\Libraries\Uploader;
@@ -283,7 +284,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
 
     public static function statisticsRelationName(string $ruleset, ?string $variant = null): ?string
     {
-        if (!Beatmap::isModeValid($ruleset) || !Beatmap::isVariantValid($ruleset, $variant)) {
+        if (!RulesetHelper::isValidName($ruleset) || !RulesetHelper::isValidVariant($ruleset, $variant)) {
             return null;
         }
 
@@ -577,7 +578,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
             throw new InvariantException('Group does not allow playmodes');
         }
 
-        $invalidPlaymodes = array_diff($playmodes, array_keys(Beatmap::MODES));
+        $invalidPlaymodes = array_diff($playmodes, array_keys(RulesetHelper::NAME_TO_IDS));
 
         if ($invalidPlaymodes !== []) {
             throw new InvariantException('Invalid playmodes: '.implode(', ', $invalidPlaymodes));
@@ -1383,7 +1384,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
 
     public function scores(string $mode, bool $returnQuery = false)
     {
-        if (!Beatmap::isModeValid($mode)) {
+        if (!RulesetHelper::isValidName($mode)) {
             return;
         }
 
@@ -1414,7 +1415,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
 
     public function scoresFirst(string $mode, bool $returnQuery = false)
     {
-        if (!Beatmap::isModeValid($mode)) {
+        if (!RulesetHelper::isValidName($mode)) {
             return;
         }
 
@@ -1445,7 +1446,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
 
     public function scoresBest(string $mode, bool $returnQuery = false)
     {
-        if (!Beatmap::isModeValid($mode)) {
+        if (!RulesetHelper::isValidName($mode)) {
             return;
         }
 
@@ -1676,7 +1677,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
 
     public function setPlaymodeAttribute($value)
     {
-        $this->osu_playmode = Beatmap::modeInt($value);
+        $this->osu_playmode = RulesetHelper::toId($value);
     }
 
     public function blockedUserIds()
@@ -1918,7 +1919,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
     /**
      * Recommended star difficulty.
      *
-     * @param string $mode one of Beatmap::MODES
+     * @param string $mode one of RulesetHelper::NAME_TO_IDS
      *
      * @return float
      */
@@ -1939,7 +1940,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
         return $this->memoize(__FUNCTION__, function () {
             $unionQuery = null;
 
-            foreach (Beatmap::MODES as $key => $_value) {
+            foreach (RulesetHelper::NAME_TO_IDS as $key => $_value) {
                 $query = $this->statistics($key, true)->selectRaw("'{$key}' AS game_mode, rank_score");
 
                 if ($unionQuery === null) {
@@ -1951,7 +1952,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
 
             $stats = $unionQuery->get()->keyBy('game_mode');
 
-            foreach (Beatmap::MODES as $key => $_value) {
+            foreach (RulesetHelper::NAME_TO_IDS as $key => $_value) {
                 $recs[$key] = UserStatistics\Model::calculateRecommendedStarDifficulty($stats[$key] ?? null);
             }
 
@@ -2141,7 +2142,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
         return $this->memoize(__FUNCTION__, function () {
             $unionQuery = null;
 
-            foreach (Beatmap::MODES as $key => $_value) {
+            foreach (RulesetHelper::NAME_TO_IDS as $key => $_value) {
                 $query = $this->statistics($key, true)->select('playcount');
 
                 if ($unionQuery === null) {
@@ -2444,7 +2445,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
 
     private function getPlaymode()
     {
-        return Beatmap::modeStr($this->osu_playmode);
+        return RulesetHelper::toName($this->osu_playmode);
     }
 
     private function getUserColour()

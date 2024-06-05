@@ -5,6 +5,7 @@
 
 namespace App\Models\LegacyMatch;
 
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 
 /**
@@ -100,7 +101,7 @@ class Game extends Model
             'match_id',
             'match_type' => $this->getRawAttribute($key),
 
-            'mode' => Beatmap::modeStr($this->play_mode),
+            'mode' => RulesetHelper::toName($this->play_mode),
             'mods' => app('mods')->bitsetToIds($this->getRawAttribute($key)),
             'scoring_type' => static::scoringTypeStr($this->getRawAttribute($key)),
             'team_type' => static::teamTypeStr($this->getRawAttribute($key)),
@@ -122,12 +123,12 @@ class Game extends Model
 
     private function getRulesetId(): int
     {
-        $gameRulesetId = $this->getRawAttribute('play_mode') ?? Beatmap::MODES['osu'];
+        $gameRulesetId = $this->getRawAttribute('play_mode') ?? RulesetHelper::NAME_TO_IDS['osu'];
         $beatmapRulesetId = $this->beatmap?->playmode;
 
         // ruleset set at this model is incorrect when playing ruleset
         // specific map with a different selected ruleset.
-        if ($beatmapRulesetId !== null && $beatmapRulesetId !== $gameRulesetId && $beatmapRulesetId !== Beatmap::MODES['osu']) {
+        if ($beatmapRulesetId !== null && $beatmapRulesetId !== $gameRulesetId && $beatmapRulesetId !== RulesetHelper::NAME_TO_IDS['osu']) {
             return $beatmapRulesetId;
         }
 

@@ -5,7 +5,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Ruleset;
+use App\Libraries\RulesetHelper;
 use App\Models\Score\Best\Model as ScoreBest;
 use App\Models\Solo\Score as SoloScore;
 use App\Transformers\ScoreTransformer;
@@ -103,7 +103,7 @@ class ScoresController extends Controller
             }
 
             $scoreQuery = SoloScore::where([
-                'ruleset_id' => Ruleset::tryFromName($rulesetOrSoloId) ?? abort(404, 'unknown ruleset name'),
+                'ruleset_id' => RulesetHelper::toId($rulesetOrSoloId) ?? abort(404, 'unknown ruleset name'),
                 'legacy_score_id' => $legacyId,
             ]);
         }

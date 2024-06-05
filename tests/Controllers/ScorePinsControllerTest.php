@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace Tests\Controllers;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\ScorePin;
 use App\Models\Solo\Score;
 use App\Models\User;
@@ -79,7 +79,7 @@ class ScorePinsControllerTest extends TestCase
         $user = User::factory()->create();
         $pins = collect([0, 1])->map(fn ($order) => ScorePin
             ::factory(['display_order' => $order])
-            ->withScore(static::createScore($user, Beatmap::MODES['osu']))
+            ->withScore(static::createScore($user, RulesetHelper::NAME_TO_IDS['osu']))
             ->create());
 
         $this->actAsUser($user, true);
@@ -99,7 +99,7 @@ class ScorePinsControllerTest extends TestCase
         $user = User::factory()->create();
         $pins = collect([0, 1, 2])->map(fn ($order) => ScorePin
             ::factory(['display_order' => $order])
-            ->withScore(static::createScore($user, Beatmap::MODES['osu']))
+            ->withScore(static::createScore($user, RulesetHelper::NAME_TO_IDS['osu']))
             ->create());
 
         $this->actAsUser($user, true);
@@ -120,7 +120,7 @@ class ScorePinsControllerTest extends TestCase
         $user = User::factory()->create();
         $pins = collect([0, 1])->map(fn ($order) => ScorePin
             ::factory(['display_order' => $order])
-            ->withScore(static::createScore($user, Beatmap::MODES['osu']))
+            ->withScore(static::createScore($user, RulesetHelper::NAME_TO_IDS['osu']))
             ->create());
 
         $this->actAsUser($user, true);
@@ -140,7 +140,7 @@ class ScorePinsControllerTest extends TestCase
         $user = User::factory()->create();
         $pins = collect([0, 1, 2])->map(fn ($order) => ScorePin
             ::factory(['display_order' => $order])
-            ->withScore(static::createScore($user, Beatmap::MODES['osu']))
+            ->withScore(static::createScore($user, RulesetHelper::NAME_TO_IDS['osu']))
             ->create());
 
         $this->actAsUser($user, true);
@@ -199,8 +199,8 @@ class ScorePinsControllerTest extends TestCase
         $user = User::factory()->create([
             'osu_subscriber' => false,
         ]);
-        $score1 = static::createScore($user, Beatmap::MODES['osu']);
-        $score2 = static::createScore($user, Beatmap::MODES['osu']);
+        $score1 = static::createScore($user, RulesetHelper::NAME_TO_IDS['osu']);
+        $score2 = static::createScore($user, RulesetHelper::NAME_TO_IDS['osu']);
         $pin1 = ScorePin::factory()->withScore($score1)->create();
 
         $this->actAsUser($user, true);
@@ -247,8 +247,8 @@ class ScorePinsControllerTest extends TestCase
         $user = User::factory()->create([
             'osu_subscriber' => false,
         ]);
-        $score1 = static::createScore($user, Beatmap::MODES['osu']);
-        $score2 = static::createScore($user, Beatmap::MODES['osu']);
+        $score1 = static::createScore($user, RulesetHelper::NAME_TO_IDS['osu']);
+        $score2 = static::createScore($user, RulesetHelper::NAME_TO_IDS['osu']);
         $pin1 = ScorePin::factory()->withScore($score1)->create();
 
         $this->expectCountChange(fn () => ScorePin::count(), 0);
@@ -267,8 +267,8 @@ class ScorePinsControllerTest extends TestCase
         $user = User::factory()->create([
             'osu_subscriber' => false,
         ]);
-        $score1 = static::createScore($user, Beatmap::MODES['osu']);
-        $score2 = static::createScore($user, Beatmap::MODES['taiko']);
+        $score1 = static::createScore($user, RulesetHelper::NAME_TO_IDS['osu']);
+        $score2 = static::createScore($user, RulesetHelper::NAME_TO_IDS['taiko']);
         $pin1 = ScorePin::factory()->withScore($score1)->create();
 
         $this->expectCountChange(fn () => ScorePin::count(), 1);

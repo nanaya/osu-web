@@ -6,7 +6,7 @@
 namespace App\Libraries\Search;
 
 use App\Libraries\Elasticsearch\SearchParams;
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\User;
 
 class BeatmapsetSearchParams extends SearchParams
@@ -94,7 +94,7 @@ class BeatmapsetSearchParams extends SearchParams
         }
 
         if ($this->recommendedDifficulty === null) {
-            $mode = Beatmap::modeStr($this->mode) ?? $this->user->playmode;
+            $mode = RulesetHelper::toName($this->mode) ?? $this->user->playmode;
             $this->recommendedDifficulty = $this->user->recommendedStarDifficulty($mode);
         }
 

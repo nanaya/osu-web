@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace App\Libraries\Beatmapset;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmapset;
 use Ds\Set;
 
@@ -106,7 +106,7 @@ class BeatmapsetMainRuleset
 
         // clear winner in playmode counts exists.
         if ($groups->count() === 1 || $groups[0]['total'] > $groups[1]['total']) {
-            $this->eligibleRulesets->add(Beatmap::modeStr($groups[0]['playmode']));
+            $this->eligibleRulesets->add(RulesetHelper::toName($groups[0]['playmode']));
 
             return;
         }
@@ -120,7 +120,7 @@ class BeatmapsetMainRuleset
                 || $groupedHostOnly->count() > 1
                     && $groupedHostOnly[0]['total'] > $groupedHostOnly[1]['total']
         ) {
-            $this->eligibleRulesets->add(Beatmap::modeStr($groupedHostOnly[0]['playmode']));
+            $this->eligibleRulesets->add(RulesetHelper::toName($groupedHostOnly[0]['playmode']));
 
             return;
         }
@@ -129,7 +129,7 @@ class BeatmapsetMainRuleset
         $this->eligibleRulesets->add(
             ...$groupedHostOnly
                 ->filter(fn ($group) => $group['total'] === $groupedHostOnly[0]['total'])
-                ->map(fn ($group) => Beatmap::modeStr($group['playmode']))
+                ->map(fn ($group) => RulesetHelper::toName($group['playmode']))
                 ->toArray()
         );
     }

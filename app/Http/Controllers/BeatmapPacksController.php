@@ -5,6 +5,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\RulesetHelper;
 use App\Libraries\Search\ScoreSearchParams;
 use App\Models\Beatmap;
 use App\Models\BeatmapPack;
@@ -100,7 +101,7 @@ class BeatmapPacksController extends Controller
         }
 
         $pack = $query->where('tag', $idOrTag)->firstOrFail();
-        $mode = Beatmap::modeStr($pack->playmode ?? 0);
+        $mode = RulesetHelper::toName($pack->playmode ?? 0);
         $sets = $pack->beatmapsets;
         $currentUser = \Auth::user();
         $userCompletionData = $pack->userCompletionData(

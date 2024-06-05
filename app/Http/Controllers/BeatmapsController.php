@@ -5,10 +5,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Ruleset;
 use App\Exceptions\InvariantException;
 use App\Jobs\Notifications\BeatmapOwnerChange;
 use App\Libraries\BeatmapDifficultyAttributes;
+use App\Libraries\RulesetHelper;
 use App\Libraries\Score\BeatmapScores;
 use App\Libraries\Score\UserRank;
 use App\Libraries\Search\ScoreSearch;
@@ -105,7 +105,7 @@ class BeatmapsController extends Controller
             return null;
         }
 
-        return Ruleset::tryFromName($rulesetName)?->value
+        return RulesetHelper::toId($rulesetName)
             ?? throw new InvariantException('invalid mode specified');
     }
 
@@ -146,13 +146,13 @@ class BeatmapsController extends Controller
 
         $rulesetId = $params['ruleset_id'];
         abort_if(
-            $rulesetId !== null && Beatmap::modeStr($rulesetId) === null,
+            $rulesetId !== null && RulesetHelper::isValidId($rulesetId),
             422,
             'invalid ruleset_id specified'
         );
 
         if ($rulesetId === null && $params['ruleset'] !== null) {
-            $rulesetId = Beatmap::modeInt($params['ruleset']);
+            $rulesetId = RulesetHelper::toId($params['ruleset']);
             abort_if($rulesetId === null, 422, 'invalid ruleset specified');
         }
 
@@ -316,11 +316,8 @@ class BeatmapsController extends Controller
                 'ruleset',
             ], ['null_missing' => true]);
 
-            $ruleset = (
-                Ruleset::tryFromName($params['ruleset'])
-                ?? Ruleset::tryFromName($params['mode'])
-                ?? Ruleset::tryFrom($params['m'] ?? Ruleset::NULL)
-            )?->legacyName();
+            $ruleset = RulesetHelper::validNameOrNull($params['ruleset'] ?? $params['mode'])
+                ?? RulesetHelper::toName($params['m']);
         }
 
         $ruleset ??= $beatmapRuleset;
@@ -489,7 +486,7 @@ class BeatmapsController extends Controller
         $beatmap = Beatmap::scoreable()->findOrFail($beatmapId);
         $ruleset = presence(get_string(request('ruleset'))) ?? presence(get_string(request('mode')));
         if ($ruleset !== null) {
-            $rulesetId = Beatmap::modeInt($ruleset) ?? abort(404, 'unknown ruleset name');
+            $rulesetId = RulesetHelper::toId($ruleset) ?? abort(404, 'unknown ruleset name');
         }
         $params = ScoreSearchParams::fromArray([
             'beatmap_ids' => [$beatmap->getKey()],

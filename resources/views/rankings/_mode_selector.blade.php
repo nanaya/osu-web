@@ -4,7 +4,7 @@
 --}}
 
 <ul class="game-mode">
-    @foreach (App\Models\Beatmap::MODES as $tab => $_int)
+    @foreach (App\Libraries\RulesetHelper::NAME_TO_IDS as $tab => $_int)
         <li>
             <a
                 class="{{ class_with_modifiers('game-mode-link', ['active' => $mode === $tab ]) }}"

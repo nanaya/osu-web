@@ -8,8 +8,8 @@ declare(strict_types=1);
 namespace Tests\Libraries\User;
 
 use App\Exceptions\InvariantException;
+use App\Libraries\RulesetHelper;
 use App\Libraries\User\CountryChange;
-use App\Models\Beatmap;
 use App\Models\Country;
 use App\Models\Score\Best\Model as ScoreBestModel;
 use App\Models\User;
@@ -23,11 +23,11 @@ class CountryChangeTest extends TestCase
     public function testDo(): void
     {
         $user = User::factory();
-        foreach (Beatmap::MODES as $ruleset => $_rulesetId) {
+        foreach (RulesetHelper::NAME_TO_IDS as $ruleset => $_rulesetId) {
             $user = $user->withPlays(rand(1, 20), $ruleset);
         }
         $user = $user->create();
-        foreach (Beatmap::MODES as $ruleset => $_rulesetId) {
+        foreach (RulesetHelper::NAME_TO_IDS as $ruleset => $_rulesetId) {
             ScoreBestModel
                 ::getClass($ruleset)
                 ::factory(['user_id' => $user, 'country_acronym' => $user->country_acronym])
@@ -41,10 +41,10 @@ class CountryChangeTest extends TestCase
 
         $user->refresh();
         $this->assertSame($user->country_acronym, $targetCountry);
-        foreach (Beatmap::MODES as $ruleset => $_rulesetId) {
+        foreach (RulesetHelper::NAME_TO_IDS as $ruleset => $_rulesetId) {
             $this->assertSame($user->statistics($ruleset)->country_acronym, $targetCountry);
 
-            foreach (Beatmap::VARIANTS[$ruleset] ?? [] as $variant) {
+            foreach (RulesetHelper::VARIANTS[$ruleset] ?? [] as $variant) {
                 $this->assertSame(
                     $user->statistics($ruleset, false, $variant)->country_acronym,
                     $targetCountry,

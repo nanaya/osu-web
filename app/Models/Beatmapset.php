@@ -5,7 +5,6 @@
 
 namespace App\Models;
 
-use App\Enums\Ruleset;
 use App\Exceptions\BeatmapProcessorException;
 use App\Exceptions\ImageProcessorServiceException;
 use App\Exceptions\InvariantException;
@@ -27,6 +26,7 @@ use App\Libraries\Beatmapset\NominateBeatmapset;
 use App\Libraries\Commentable;
 use App\Libraries\Elasticsearch\Indexable;
 use App\Libraries\ImageProcessorService;
+use App\Libraries\RulesetHelper;
 use App\Libraries\StorageUrl;
 use App\Libraries\Transactions\AfterCommit;
 use App\Traits\Memoizes;
@@ -362,11 +362,11 @@ class Beatmapset extends Model implements AfterCommit, Commentable, Indexable, T
         $query->where('approved', '>', 0);
     }
 
-    public function scopeToBeRanked(Builder $query, Ruleset $ruleset)
+    public function scopeToBeRanked(Builder $query, int $rulesetId)
     {
         return $query->qualified()
             ->withoutTrashed()
-            ->withModesForRanking($ruleset->value)
+            ->withModesForRanking($rulesetId)
             ->where('queued_at', '<', now()->subDays($GLOBALS['cfg']['osu']['beatmapset']['minimum_days_for_rank']))
             ->whereDoesntHave('beatmapDiscussions', fn ($q) => $q->openIssues());
     }
@@ -1111,12 +1111,7 @@ class Beatmapset extends Model implements AfterCommit, Commentable, Indexable, T
 
     public function playmodesStr()
     {
-        return array_map(
-            static function ($ele) {
-                return Beatmap::modeStr($ele);
-            },
-            $this->playmodes()->toArray()
-        );
+        return array_map(RulesetHelper::toName(...), $this->playmodes()->toArray());
     }
 
     /**

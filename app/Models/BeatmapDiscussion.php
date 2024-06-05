@@ -6,6 +6,7 @@
 namespace App\Models;
 
 use App\Jobs\RefreshBeatmapsetUserKudosu;
+use App\Libraries\RulesetHelper;
 use App\Traits\Validatable;
 use Cache;
 use Carbon\Carbon;
@@ -139,7 +140,7 @@ class BeatmapDiscussion extends Model
             $query->where('beatmap_id', $params['beatmap_id']);
         }
 
-        if (isset($rawParams['mode']) && isset(Beatmap::MODES[$rawParams['mode']])) {
+        if (isset($rawParams['mode']) && isset(RulesetHelper::NAME_TO_IDS[$rawParams['mode']])) {
             $params['mode'] = $rawParams['mode'];
             $query->forMode($params['mode']);
         }
@@ -717,7 +718,7 @@ class BeatmapDiscussion extends Model
      */
     public function scopeForMode($query, string $modeStr)
     {
-        $modeInt = Beatmap::MODES[$modeStr];
+        $modeInt = RulesetHelper::NAME_TO_IDS[$modeStr];
 
         $query->where(function ($q) use ($modeInt) {
             return $q

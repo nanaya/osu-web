@@ -5,7 +5,7 @@
 
 namespace App\Models\LegacyMatch;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Traits\Scoreable;
 
 /**
@@ -57,7 +57,7 @@ class Score extends Model
 
     public function getMode(): string
     {
-        return Beatmap::modeStr($this->game->play_mode);
+        return RulesetHelper::toName($this->game->play_mode);
     }
 
     public function getDateJsonAttribute(): ?string

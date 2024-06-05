@@ -6,6 +6,7 @@
 namespace App\Models;
 
 use App\Exceptions\InvariantException;
+use App\Libraries\RulesetHelper;
 use App\Traits\Memoizes;
 use App\Transformers\ContestEntryTransformer;
 use App\Transformers\ContestTransformer;
@@ -304,7 +305,7 @@ class Contest extends Model
                     ->whereIn('entry_url', function ($query) use ($user) {
                         $query->select('beatmapset_id')
                             ->from('osu_beatmaps')
-                            ->where('osu_beatmaps.playmode', Beatmap::MODES[$this->getExtraOptions()['best_of']['mode'] ?? 'osu'])
+                            ->where('osu_beatmaps.playmode', RulesetHelper::NAME_TO_IDS[$this->getExtraOptions()['best_of']['mode'] ?? 'osu'])
                             ->whereIn('beatmap_id', function ($query) use ($user) {
                                 $query->select('beatmap_id')
                                     ->from('osu_user_beatmap_playcount')

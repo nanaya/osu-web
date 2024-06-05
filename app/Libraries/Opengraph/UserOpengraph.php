@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace App\Libraries\Opengraph;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\User;
 
 class UserOpengraph implements OpengraphInterface
@@ -65,10 +65,8 @@ class UserOpengraph implements OpengraphInterface
                 'rank' => format_rank($stats?->$method()),
             ]);
 
-            $variants = Beatmap::VARIANTS[$ruleset] ?? [];
-
             $variantsTexts = null;
-            foreach ($variants as $variant) {
+            foreach (RulesetHelper::VARIANTS[$ruleset] ?? [] as $variant) {
                 $variantRank = $this->user->statistics($ruleset, false, $variant)?->$method();
                 if ($variantRank !== null) {
                     $variantsTexts[] = $variant.' '.format_rank($variantRank);

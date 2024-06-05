@@ -5,7 +5,7 @@
 
 namespace App\Jobs\Notifications;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Notification;
 use App\Models\UserNotificationOption;
 
@@ -17,7 +17,7 @@ class BeatmapsetDisqualify extends BeatmapsetNotification
 
         $modes = $this->beatmapset->playmodes()->all();
         $modes = array_map(function ($modeInt) {
-            return Beatmap::modeStr($modeInt);
+            return RulesetHelper::toName($modeInt);
         }, $modes);
 
         UserNotificationOption::where(['name' => Notification::BEATMAPSET_DISQUALIFY])

@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Libraries\RulesetHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -23,7 +24,7 @@ class ScorePin extends Model
 
     public function scopeForRuleset($query, string $ruleset): Builder
     {
-        return $query->where('ruleset_id', Beatmap::MODES[$ruleset]);
+        return $query->where('ruleset_id', RulesetHelper::NAME_TO_IDS[$ruleset]);
     }
 
     public function scopeWithVisibleScore($query): Builder

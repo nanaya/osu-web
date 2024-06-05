@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Group;
 use App\Models\User;
 use App\Models\UserGroupEvent;
@@ -35,7 +35,7 @@ class UserGroupEventFactory extends Factory
                 case UserGroupEvent::USER_ADD:
                 case UserGroupEvent::USER_ADD_PLAYMODES:
                 case UserGroupEvent::USER_REMOVE_PLAYMODES:
-                    $defaultDetails['playmodes'] = [array_rand(Beatmap::MODES)];
+                    $defaultDetails['playmodes'] = [array_rand(RulesetHelper::NAME_TO_IDS)];
                     break;
             }
 

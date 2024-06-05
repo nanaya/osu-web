@@ -6,7 +6,7 @@
 namespace Tests\Models\UserStatistics;
 
 use App\Exceptions\ClassNotFoundException;
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\UserStatistics\Model;
 use Tests\TestCase;
 
@@ -45,10 +45,10 @@ class ModelTest extends TestCase
     {
         $modes = [];
 
-        foreach (Beatmap::MODES as $mode => $_modeInt) {
+        foreach (RulesetHelper::NAME_TO_IDS as $mode => $_modeInt) {
             $modes[] = [$mode, null];
 
-            foreach (Beatmap::VARIANTS[$mode] ?? [] as $variant) {
+            foreach (RulesetHelper::VARIANTS[$mode] ?? [] as $variant) {
                 $modes[] = [$mode, $variant];
             }
         }

@@ -5,7 +5,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Country;
 use App\Models\CountryStatistics;
 use Illuminate\Console\Command;
@@ -34,10 +34,10 @@ class RankingsRecalculateCountryStats extends Command
     public function handle()
     {
         $countries = Country::where('rankedscore', '>', 0)->get();
-        $bar = $this->output->createProgressBar(count($countries) * count(Beatmap::MODES));
+        $bar = $this->output->createProgressBar(count($countries) * count(RulesetHelper::NAME_TO_IDS));
 
         foreach ($countries as $country) {
-            foreach (Beatmap::MODES as $mode) {
+            foreach (RulesetHelper::NAME_TO_IDS as $mode) {
                 CountryStatistics::recalculate($country->acronym, $mode);
                 $bar->advance();
             }

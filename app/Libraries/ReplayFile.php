@@ -6,7 +6,6 @@
 namespace App\Libraries;
 
 use App\Exceptions\InvariantException;
-use App\Models\Beatmap;
 use App\Models\Score\Best\Model as ScoreBest;
 use Illuminate\Contracts\Filesystem\Filesystem;
 
@@ -64,7 +63,7 @@ class ReplayFile
             throw new InvariantException('score is missing beatmap');
         }
 
-        $mode = Beatmap::MODES[$score->getMode()];
+        $mode = RulesetHelper::NAME_TO_IDS[$score->getMode()];
         $user = $score->user;
 
         if ($user === null) {

@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace App\Libraries\User;
 
 use App\Exceptions\InvariantException;
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\UserAccountHistory;
@@ -32,10 +32,10 @@ class CountryChange
 
             $newAttrs = ['country_acronym' => $newCountry];
             $user->update($newAttrs);
-            foreach (Beatmap::MODES as $ruleset => $_rulesetId) {
+            foreach (RulesetHelper::NAME_TO_IDS as $ruleset => $_rulesetId) {
                 $user->statistics($ruleset, true)->update($newAttrs);
                 $user->scoresBest($ruleset, true)->update($newAttrs);
-                foreach (Beatmap::VARIANTS[$ruleset] ?? [] as $variant) {
+                foreach (RulesetHelper::VARIANTS[$ruleset] ?? [] as $variant) {
                     $user->statistics($ruleset, true, $variant)->update($newAttrs);
                 }
             }

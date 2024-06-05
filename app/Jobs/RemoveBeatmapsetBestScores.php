@@ -7,7 +7,7 @@ namespace App\Jobs;
 
 use App\Libraries\Elasticsearch\BoolQuery;
 use App\Libraries\Elasticsearch\Es;
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmapset;
 use App\Models\Score\Best\Model;
 use Illuminate\Bus\Queueable;
@@ -33,7 +33,7 @@ class RemoveBeatmapsetBestScores implements ShouldQueue
     {
         $this->beatmapset = $beatmapset;
 
-        foreach (Beatmap::MODES as $mode => $_modeInt) {
+        foreach (RulesetHelper::NAME_TO_IDS as $mode => $_modeInt) {
             $this->maxScoreIds[$mode] = Model::getClass($mode)::max('score_id');
         }
     }
@@ -52,7 +52,7 @@ class RemoveBeatmapsetBestScores implements ShouldQueue
     {
         $beatmapIds = model_pluck($this->beatmapset->beatmaps(), 'beatmap_id');
 
-        foreach (Beatmap::MODES as $mode => $_modeInt) {
+        foreach (RulesetHelper::NAME_TO_IDS as $mode => $_modeInt) {
             $query = new BoolQuery();
             $query->filter(['terms' => ['beatmap_id' => $beatmapIds]]);
             $query->filter(['range' => ['score_id' => ['lte' => $this->maxScoreIds[$mode]]]]);

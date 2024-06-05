@@ -6,8 +6,8 @@
 namespace App\Models\Score\Best;
 
 use App\Libraries\ReplayFile;
+use App\Libraries\RulesetHelper;
 use App\Libraries\Score\UserRankCache;
-use App\Models\Beatmap;
 use App\Models\Country;
 use App\Models\ReplayViewCount;
 use App\Models\Score\Model as BaseModel;
@@ -49,7 +49,7 @@ abstract class Model extends BaseModel implements Traits\ReportableInterface
     {
         $instance = new static();
         $table = $instance->getTable();
-        $modeId = Beatmap::MODES[$instance->getMode()];
+        $modeId = RulesetHelper::NAME_TO_IDS[$instance->getMode()];
 
         $instance->getConnection()->insert(
             "INSERT INTO score_process_queue (score_id, mode, status) SELECT score_id, {$modeId}, 1 FROM {$table} WHERE user_id = {$user->getKey()}"
@@ -164,7 +164,7 @@ abstract class Model extends BaseModel implements Traits\ReportableInterface
             $rank = UserRankCache::fetch(
                 $options,
                 $this->beatmap_id,
-                Beatmap::modeInt($this->getMode()),
+                RulesetHelper::toId($this->getMode()),
                 $this->score,
             );
 
@@ -389,7 +389,7 @@ abstract class Model extends BaseModel implements Traits\ReportableInterface
     protected function newReportableExtraParams(): array
     {
         return [
-            'mode' => Beatmap::modeInt($this->getMode()),
+            'mode' => RulesetHelper::toId($this->getMode()),
             'reason' => 'Cheating',
             'score_id' => $this->getKey(),
             'user_id' => $this->user_id,

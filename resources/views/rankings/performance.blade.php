@@ -5,7 +5,7 @@
 @extends('rankings.index')
 
 @php
-    $variants = App\Models\Beatmap::VARIANTS[$mode] ?? null;
+    $variants = App\Libraries\RulesetHelper::VARIANTS[$mode] ?? null;
 
     if ($variants !== null) {
         array_unshift($variants, 'all');

@@ -5,7 +5,7 @@
 
 namespace Tests\Models\Score\Best;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Score\Best\Model;
 use App\Models\UserStatistics;
 use Tests\TestCase;
@@ -14,7 +14,7 @@ class ModelTest extends TestCase
 {
     private static function getRandomRuleset(): string
     {
-        return array_rand(Beatmap::MODES);
+        return array_rand(RulesetHelper::NAME_TO_IDS);
     }
 
     public function testDelete()

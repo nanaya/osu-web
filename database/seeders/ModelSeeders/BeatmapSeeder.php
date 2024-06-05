@@ -5,6 +5,7 @@
 
 namespace Database\Seeders\ModelSeeders;
 
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\BeatmapDifficulty;
 use App\Models\BeatmapFailtimes;
@@ -184,10 +185,10 @@ class BeatmapSeeder extends Seeder
         // just delete all the old ones and create new ones.
         BeatmapDifficulty::where('beatmap_id', $beatmap->beatmap_id)->delete();
 
-        if ($beatmap->playmode !== Beatmap::MODES['osu']) {
+        if ($beatmap->playmode !== RulesetHelper::NAME_TO_IDS['osu']) {
             $modes = [$beatmap->playmode];
         } else {
-            $modes = array_values(Beatmap::MODES);
+            $modes = array_values(RulesetHelper::NAME_TO_IDS);
         }
 
         foreach ($modes as $mode) {

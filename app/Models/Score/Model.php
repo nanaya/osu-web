@@ -5,9 +5,9 @@
 
 namespace App\Models\Score;
 
-use App\Enums\Ruleset;
 use App\Exceptions\ClassNotFoundException;
 use App\Libraries\Mods;
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\Model as BaseModel;
 use App\Models\Solo\ScoreData;
@@ -34,7 +34,7 @@ abstract class Model extends BaseModel
 
     public static function getClassByRulesetId(int $rulesetId): ?string
     {
-        $ruleset = Beatmap::modeStr($rulesetId);
+        $ruleset = RulesetHelper::toName($rulesetId);
 
         if ($ruleset !== null) {
             return static::getClass($ruleset);
@@ -45,7 +45,7 @@ abstract class Model extends BaseModel
 
     public static function getClass(string $ruleset): string
     {
-        if (!Beatmap::isModeValid($ruleset)) {
+        if (!RulesetHelper::isValidName($ruleset)) {
             throw new ClassNotFoundException();
         }
 
@@ -175,7 +175,7 @@ abstract class Model extends BaseModel
             'legacy_total_score' => $this->score,
             'max_combo' => $this->maxcombo,
             'passed' => $this->pass,
-            'ruleset_id' => Ruleset::tryFromName($this->getMode())->value,
+            'ruleset_id' => RulesetHelper::toId($this->getMode()),
             'started_at_json' => null,
             'total_score' => $this->score,
         };
@@ -194,21 +194,20 @@ abstract class Model extends BaseModel
             'miss' => $this->countmiss,
             'great' => $this->count300,
         ];
-        $ruleset = Ruleset::tryFromName($this->getMode());
-        switch ($ruleset) {
-            case Ruleset::osu:
+        switch ($this->getMode()) {
+            case 'osu':
                 $statistics['ok'] = $this->count100;
                 $statistics['meh'] = $this->count50;
                 break;
-            case Ruleset::taiko:
+            case 'taiko':
                 $statistics['ok'] = $this->count100;
                 break;
-            case Ruleset::catch:
+            case 'catch':
                 $statistics['large_tick_hit'] = $this->count100;
                 $statistics['small_tick_hit'] = $this->count50;
                 $statistics['small_tick_miss'] = $this->countkatu;
                 break;
-            case Ruleset::mania:
+            case 'mania':
                 $statistics['perfect'] = $this->countgeki;
                 $statistics['good'] = $this->countkatu;
                 $statistics['ok'] = $this->count100;

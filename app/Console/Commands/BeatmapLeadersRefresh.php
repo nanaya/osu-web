@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\BeatmapLeader;
 use Illuminate\Console\Command;
@@ -45,7 +46,7 @@ class BeatmapLeadersRefresh extends Command
 
         Beatmap::select('beatmap_id')->scoreable()->chunkById(100, function (Collection $beatmaps) use ($bar): void {
             foreach ($beatmaps as $beatmap) {
-                foreach (Beatmap::MODES as $ruleset => $rulesetId) {
+                foreach (RulesetHelper::NAME_TO_IDS as $ruleset => $rulesetId) {
                     BeatmapLeader::sync($beatmap->getKey(), $rulesetId);
                     $bar->advance();
                 }

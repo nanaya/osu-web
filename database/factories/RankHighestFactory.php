@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\RankHighest;
 use App\Models\User;
 
@@ -18,7 +18,7 @@ class RankHighestFactory extends Factory
     public function definition(): array
     {
         return [
-            'mode' => array_rand_val(Beatmap::MODES),
+            'mode' => array_rand_val(RulesetHelper::NAME_TO_IDS),
             'rank' => rand(1, 10000),
             'user_id' => User::factory(),
         ];

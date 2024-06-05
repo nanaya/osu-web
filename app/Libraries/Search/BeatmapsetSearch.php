@@ -9,8 +9,8 @@ use App\Libraries\Elasticsearch\BoolQuery;
 use App\Libraries\Elasticsearch\FunctionScore;
 use App\Libraries\Elasticsearch\QueryHelper;
 use App\Libraries\Elasticsearch\RecordSearch;
+use App\Libraries\RulesetHelper;
 use App\Models\ArtistTrack;
-use App\Models\Beatmap;
 use App\Models\Beatmapset;
 use App\Models\Follow;
 use App\Models\Solo;
@@ -230,7 +230,7 @@ class BeatmapsetSearch extends RecordSearch
 
         $nestedQuery
             ->filter(['range' => ['beatmaps.diff_size' => $this->params->keys]])
-            ->filter(['term' => ['beatmaps.playmode' => Beatmap::MODES['mania']]]);
+            ->filter(['term' => ['beatmaps.playmode' => RulesetHelper::NAME_TO_IDS['mania']]]);
     }
 
     private function addModeFilter($query)
@@ -470,6 +470,6 @@ class BeatmapsetSearch extends RecordSearch
 
     private function getSelectedModes()
     {
-        return $this->params->mode === null ? array_values(Beatmap::MODES) : [$this->params->mode];
+        return $this->params->mode === null ? array_values(RulesetHelper::NAME_TO_IDS) : [$this->params->mode];
     }
 }

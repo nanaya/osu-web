@@ -5,6 +5,7 @@
 
 namespace App\Models;
 
+use App\Libraries\RulesetHelper;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -159,7 +160,7 @@ class RankHistory extends Model
 
     public function getRulesetAttribute()
     {
-        return Beatmap::modeStr($this->getRawAttribute('mode'));
+        return RulesetHelper::toName($this->getRawAttribute('mode'));
     }
 
     /**

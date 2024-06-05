@@ -5,6 +5,7 @@
 
 namespace Tests\Controllers\Multiplayer;
 
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\Beatmapset;
 use App\Models\Chat\UserChannel;
@@ -466,7 +467,7 @@ class RoomsControllerTest extends TestCase
         $beatmapset = Beatmapset::factory()->create();
         $beatmapParams = ['beatmapset_id' => $beatmapset];
         if ($ruleset !== null) {
-            $beatmapParams['playmode'] = Beatmap::MODES[$ruleset];
+            $beatmapParams['playmode'] = RulesetHelper::NAME_TO_IDS[$ruleset];
         }
         $beatmap = Beatmap::factory()->create($beatmapParams);
 

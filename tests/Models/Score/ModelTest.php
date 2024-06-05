@@ -6,7 +6,7 @@
 namespace Tests\Models\Score;
 
 use App\Exceptions\ClassNotFoundException;
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Score\Model;
 use Tests\TestCase;
 
@@ -14,7 +14,7 @@ class ModelTest extends TestCase
 {
     public function testGetClass(): void
     {
-        foreach (Beatmap::MODES as $ruleset => $_rulesetId) {
+        foreach (RulesetHelper::NAME_TO_IDS as $ruleset => $_rulesetId) {
             $class = Model::getClass($ruleset);
             $this->assertInstanceOf(Model::class, new $class());
         }

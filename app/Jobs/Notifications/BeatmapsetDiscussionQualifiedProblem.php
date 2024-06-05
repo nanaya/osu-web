@@ -5,7 +5,7 @@
 
 namespace App\Jobs\Notifications;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Notification;
 use App\Models\UserNotificationOption;
 
@@ -24,7 +24,7 @@ class BeatmapsetDiscussionQualifiedProblem extends BeatmapsetDiscussionPostNotif
         }
 
         $modes = array_map(function ($modeInt) {
-            return Beatmap::modeStr($modeInt);
+            return RulesetHelper::toName($modeInt);
         }, $modes);
 
         $ids = [];

@@ -14,6 +14,7 @@ use App\Jobs\CheckBeatmapsetCovers;
 use App\Jobs\Notifications\BeatmapsetDisqualify;
 use App\Jobs\Notifications\BeatmapsetResetNominations;
 use App\Libraries\Beatmapset\NominateBeatmapset;
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\BeatmapDiscussion;
 use App\Models\Beatmapset;
@@ -343,7 +344,7 @@ class BeatmapsetTest extends TestCase
      */
     public function testQualifyingNominations(string $initialGroup, string $qualifyingGroup, bool $success)
     {
-        $ruleset = array_rand(Beatmap::MODES);
+        $ruleset = array_rand(RulesetHelper::NAME_TO_IDS);
         $beatmapset = $this->beatmapsetFactory()->withBeatmaps($ruleset)->create();
         $this->fillNominationsExceptLastForMainRuleset($beatmapset, $initialGroup);
 

@@ -5,7 +5,7 @@
 
 namespace Database\Seeders\ModelSeeders;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Country;
 use App\Models\RankHistory;
 use App\Models\User;
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
         // Create 10 users and their stats
         foreach (User::factory()->count(10)->create(['osu_subscriber' => 1]) as $u) {
             // Create statistics and rank histories for all 4 modes
-            foreach (Beatmap::MODES as $ruleset => $rulesetId) {
+            foreach (RulesetHelper::NAME_TO_IDS as $ruleset => $rulesetId) {
                 $rank = rand(1, 500000);
                 UserStatistics\Model::getClass($ruleset)::factory()->make([
                     'rank' => $rank,

@@ -5,7 +5,7 @@
 
 namespace Tests;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\User;
 
 class RouteTest extends TestCase
@@ -59,7 +59,7 @@ class RouteTest extends TestCase
     {
         $rankingTypes = ['performance', 'score', 'country'];
 
-        foreach (Beatmap::MODES as $mode => $enum) {
+        foreach (RulesetHelper::NAME_TO_IDS as $mode => $enum) {
             foreach ($rankingTypes as $type) {
                 $this->assertGetRoutes(["/rankings/{$mode}/{$type}"]);
             }
@@ -73,7 +73,7 @@ class RouteTest extends TestCase
      */
     public function testRankingRedirects()
     {
-        foreach (Beatmap::MODES as $mode => $enum) {
+        foreach (RulesetHelper::NAME_TO_IDS as $mode => $enum) {
             $this->assertRedirect(["/rankings/{$mode}"]);
         }
 

@@ -5,7 +5,7 @@
 
 namespace App\Console\Commands;
 
-use App\Enums\Ruleset;
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmapset;
 use Illuminate\Console\Command;
 
@@ -28,17 +28,17 @@ class ModdingRankCommand extends Command
     private bool $countOnly = false;
     private bool $noWait = false;
 
-    public static function getStats(Ruleset $ruleset)
+    public static function getStats(int $rulesetId)
     {
         $rankedTodayCount = Beatmapset::ranked()
             ->withoutTrashed()
-            ->withModesForRanking($ruleset->value)
+            ->withModesForRanking($rulesetId)
             ->where('approved_date', '>=', now()->subDays())
             ->count();
 
         return [
             'availableQuota' => $GLOBALS['cfg']['osu']['beatmapset']['rank_per_day'] - $rankedTodayCount,
-            'inQueue' => Beatmapset::toBeRanked($ruleset)->count(),
+            'inQueue' => Beatmapset::toBeRanked($rulesetId)->count(),
             'rankedToday' => $rankedTodayCount,
         ];
     }
@@ -59,32 +59,31 @@ class ModdingRankCommand extends Command
             $this->info('Ranking beatmapsets...');
         }
 
-        $rulesets = Ruleset::cases();
+        $rulesetIds = array_values(RulesetHelper::NAME_TO_IDS);
+        shuffle($rulesetIds);
 
-        shuffle($rulesets);
-
-        foreach ($rulesets as $ruleset) {
+        foreach ($rulesetIds as $rulesetId) {
             $this->waitRandom();
 
             if ($this->countOnly) {
-                $stats = static::getStats($ruleset);
-                $this->info($ruleset->name);
+                $stats = static::getStats($rulesetId);
+                $this->info(RulesetHelper::toName($ruleset));
                 foreach ($stats as $key => $value) {
                     $this->line("{$key}: {$value}");
                 }
                 $this->newLine();
             } else {
-                $this->rankAll($ruleset);
+                $this->rankAll($rulesetId);
             }
         }
 
         $this->info('Done');
     }
 
-    private function rankAll(Ruleset $ruleset)
+    private function rankAll(int $rulesetId)
     {
-        $this->info("Ranking beatmapsets with at least mode: {$ruleset->name}");
-        $stats = static::getStats($ruleset);
+        $this->info('Ranking beatmapsets with at least mode: '.RulesetHelper::toName($rulesetId));
+        $stats = static::getStats($rulesetId);
 
         $this->info("{$stats['rankedToday']} beatmapsets ranked last 24 hours. Can rank {$stats['availableQuota']} more");
 
@@ -94,7 +93,7 @@ class ModdingRankCommand extends Command
 
         $toRankLimit = min($GLOBALS['cfg']['osu']['beatmapset']['rank_per_run'], $stats['availableQuota']);
 
-        $toBeRanked = Beatmapset::tobeRanked($ruleset)
+        $toBeRanked = Beatmapset::tobeRanked($rulesetId)
             ->orderBy('queued_at', 'ASC')
             ->limit($toRankLimit)
             ->get();

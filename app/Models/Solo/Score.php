@@ -7,9 +7,9 @@ declare(strict_types=1);
 
 namespace App\Models\Solo;
 
-use App\Enums\Ruleset;
 use App\Enums\ScoreRank;
 use App\Exceptions\InvariantException;
+use App\Libraries\RulesetHelper;
 use App\Libraries\Score\UserRank;
 use App\Libraries\Search\ScoreSearchParams;
 use App\Models\Beatmap;
@@ -161,7 +161,7 @@ class Score extends Model implements Traits\ReportableInterface
 
     public function scopeForRuleset(Builder $query, string $ruleset): Builder
     {
-        return $query->where('ruleset_id', Beatmap::MODES[$ruleset]);
+        return $query->where('ruleset_id', RulesetHelper::NAME_TO_IDS[$ruleset]);
     }
 
     public function scopeIncludeFails(Builder $query, bool $includeFails): Builder
@@ -282,7 +282,7 @@ class Score extends Model implements Traits\ReportableInterface
 
     public function getMode(): string
     {
-        return Beatmap::modeStr($this->ruleset_id);
+        return RulesetHelper::toName($this->ruleset_id);
     }
 
     public function getReplayFile(): ?string
@@ -307,7 +307,7 @@ class Score extends Model implements Traits\ReportableInterface
     {
         // This is best effort as there's no way to re-generate the correct
         // value short of checking the source legacy score.
-        if ($this->ruleset_id === Ruleset::mania->value) {
+        if ($this->ruleset_id === RulesetHelper::NAME_TO_IDS['mania']) {
             if (!$this->passed) {
                 return false;
             }
@@ -376,23 +376,23 @@ class Score extends Model implements Traits\ReportableInterface
             'user_id' => $this->user_id,
         ]);
 
-        switch (Ruleset::from($this->ruleset_id)) {
-            case Ruleset::osu:
+        switch ($this->ruleset_id) {
+            case RulesetHelper::NAME_TO_IDS['osu']:
                 $score->count300 = $statistics->great;
                 $score->count100 = $statistics->ok;
                 $score->count50 = $statistics->meh;
                 break;
-            case Ruleset::taiko:
+            case RulesetHelper::NAME_TO_IDS['taiko']:
                 $score->count300 = $statistics->great;
                 $score->count100 = $statistics->ok;
                 break;
-            case Ruleset::catch:
+            case RulesetHelper::NAME_TO_IDS['catch']:
                 $score->count300 = $statistics->great;
                 $score->count100 = $statistics->large_tick_hit;
                 $score->countkatu = $statistics->small_tick_miss;
                 $score->count50 = $statistics->small_tick_hit;
                 break;
-            case Ruleset::mania:
+            case RulesetHelper::NAME_TO_IDS['mania']:
                 $score->countgeki = $statistics->perfect;
                 $score->count300 = $statistics->great;
                 $score->countkatu = $statistics->good;

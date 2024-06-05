@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\Beatmapset;
 
@@ -30,7 +31,7 @@ class BeatmapFactory extends Factory
             'diff_size' => rand(0, 10),
             'diff_overall' => rand(0, 10),
             'diff_approach' => rand(0, 10),
-            'playmode' => array_rand_val(Beatmap::MODES),
+            'playmode' => array_rand_val(RulesetHelper::NAME_TO_IDS),
             'approved' => array_rand_val(Beatmapset::STATES),
             'difficultyrating' => rand(0, 5000) / 1000,
             'playcount' => rand(0, 50000),
@@ -74,7 +75,7 @@ class BeatmapFactory extends Factory
 
     public function ruleset(string $ruleset): static
     {
-        return $this->state(['playmode' => Beatmap::modeInt($ruleset)]);
+        return $this->state(['playmode' => RulesetHelper::toId($ruleset)]);
     }
 
     public function wip(): static

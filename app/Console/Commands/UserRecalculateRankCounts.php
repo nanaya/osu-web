@@ -5,7 +5,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Score\Best;
 use App\Models\UserStatistics;
 use Exception;
@@ -49,7 +49,7 @@ class UserRecalculateRankCounts extends Command
 
         $start = time();
 
-        foreach (Beatmap::MODES as $mode => $id) {
+        foreach (RulesetHelper::NAME_TO_IDS as $mode => $id) {
             $this->processMode($mode);
         }
 

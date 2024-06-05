@@ -5,6 +5,7 @@
 
 namespace App\Models;
 
+use App\Libraries\RulesetHelper;
 use App\Models\Score\Best as ScoreBest;
 use DB;
 use Illuminate\Database\Schema\Blueprint;
@@ -147,7 +148,7 @@ class Spotlight extends Model
     public function createTables()
     {
         DB::connection('mysql-charts')->transaction(function () {
-            $modes = array_keys(Beatmap::MODES);
+            $modes = array_keys(RulesetHelper::NAME_TO_IDS);
             if ($this->mode_specific) {
                 foreach ($modes as $mode) {
                     static::createBeatmapsetTable($this->beatmapsetsTableName($mode));

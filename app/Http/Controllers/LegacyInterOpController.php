@@ -10,8 +10,8 @@ use App\Jobs\EsDocument;
 use App\Jobs\Notifications\ForumTopicReply;
 use App\Jobs\RegenerateBeatmapsetCover;
 use App\Libraries\Chat;
+use App\Libraries\RulesetHelper;
 use App\Libraries\UserBestScoresCheck;
-use App\Models\Beatmap;
 use App\Models\Beatmapset;
 use App\Models\Chat\Channel;
 use App\Models\Chat\Message;
@@ -302,7 +302,7 @@ class LegacyInterOpController extends Controller
     {
         $user = User::findOrFail($id);
 
-        foreach (Beatmap::MODES as $mode => $_v) {
+        foreach (RulesetHelper::NAME_TO_IDS as $mode => $_v) {
             (new UserBestScoresCheck($user))->run($mode);
         }
 
@@ -315,7 +315,7 @@ class LegacyInterOpController extends Controller
 
         dispatch(new EsDocument($user));
 
-        foreach (Beatmap::MODES as $modeStr => $modeId) {
+        foreach (RulesetHelper::NAME_TO_IDS as $modeStr => $modeId) {
             $class = Best\Model::getClass($modeStr);
             $class::queueIndexingForUser($user);
         }
@@ -332,7 +332,7 @@ class LegacyInterOpController extends Controller
     {
         $user = User::findOrFail($id);
 
-        foreach (Beatmap::MODES as $modeStr => $_modeId) {
+        foreach (RulesetHelper::NAME_TO_IDS as $modeStr => $_modeId) {
             $class = UserStatistics\Model::getClass($modeStr);
             $class::recalculateRankedScoreForUser($user);
         }

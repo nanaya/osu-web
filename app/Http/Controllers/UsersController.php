@@ -11,6 +11,7 @@ use App\Exceptions\ValidationException;
 use App\Http\Middleware\RequestCost;
 use App\Libraries\ClientCheck;
 use App\Libraries\RateLimiter;
+use App\Libraries\RulesetHelper;
 use App\Libraries\Search\ForumSearch;
 use App\Libraries\Search\ForumSearchRequestParams;
 use App\Libraries\Search\ScoreSearchParams;
@@ -387,14 +388,14 @@ class UsersController extends Controller
 
             RequestCost::setCost(count($params['ids']) * ($includeVariantStatistics ? 3 : 1));
 
-            foreach (Beatmap::MODES as $ruleset => $_rulesetId) {
+            foreach (RulesetHelper::NAME_TO_IDS as $ruleset => $_rulesetId) {
                 $includes[] = "statistics_rulesets.{$ruleset}";
                 $preload[] = User::statisticsRelationName($ruleset);
 
                 if ($includeVariantStatistics) {
                     $includes[] = "statistics_rulesets.{$ruleset}.variants";
 
-                    foreach (Beatmap::VARIANTS[$ruleset] ?? [] as $variant) {
+                    foreach (RulesetHelper::VARIANTS[$ruleset] ?? [] as $variant) {
                         $preload[] = User::statisticsRelationName($ruleset, $variant);
                     }
                 }
@@ -410,7 +411,7 @@ class UsersController extends Controller
                 // Preload user on statistics relations that have variants.
                 // See `UserStatisticsTransformer::includeVariants()`
                 foreach ($users as $user) {
-                    foreach (Beatmap::VARIANTS as $ruleset => $_variants) {
+                    foreach (RulesetHelper::VARIANTS as $ruleset => $_variants) {
                         $user->statistics($ruleset)?->setRelation('user', $user);
                     }
                 }
@@ -593,7 +594,7 @@ class UsersController extends Controller
         $user = \Auth::user();
         $currentMode = $mode ?? $user->playmode;
 
-        if (!Beatmap::isModeValid($currentMode)) {
+        if (!RulesetHelper::isValidName($currentMode)) {
             abort(404);
         }
 
@@ -607,7 +608,7 @@ class UsersController extends Controller
                 ...$this->showUserIncludes(),
                 ...array_map(
                     fn (string $ruleset) => "statistics_rulesets.{$ruleset}",
-                    array_keys(Beatmap::MODES),
+                    array_keys(RulesetHelper::NAME_TO_IDS),
                 ),
             ],
         ));
@@ -670,7 +671,7 @@ class UsersController extends Controller
 
         $currentMode = $mode ?? $user->playmode;
 
-        if (!Beatmap::isModeValid($currentMode)) {
+        if (!RulesetHelper::isValidName($currentMode)) {
             abort(404);
         }
 
@@ -736,7 +737,7 @@ class UsersController extends Controller
         $this->user = FindForProfilePage::find(request()->route('user'), 'id');
 
         $this->mode = request()->route('mode') ?? request()->input('mode') ?? $this->user->playmode;
-        if (!Beatmap::isModeValid($this->mode)) {
+        if (!RulesetHelper::isValidName($this->mode)) {
             abort(404);
         }
 
@@ -849,7 +850,7 @@ class UsersController extends Controller
                 $userFirstsQuery = $scoreQuery->select($scoreQuery->qualifyColumn('score_id'));
                 $query = SoloScore
                     ::whereIn('legacy_score_id', $userFirstsQuery)
-                    ->where('ruleset_id', Beatmap::MODES[$this->mode])
+                    ->where('ruleset_id', RulesetHelper::NAME_TO_IDS[$this->mode])
                     ->default()
                     ->reorderBy('id', 'desc')
                     ->with(ScoreTransformer::USER_PROFILE_INCLUDES_PRELOAD);

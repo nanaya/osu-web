@@ -5,7 +5,7 @@
 
 namespace App\Transformers;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\User;
 
 class UserStatisticsRulesetsTransformer extends TransformerAbstract
@@ -14,7 +14,7 @@ class UserStatisticsRulesetsTransformer extends TransformerAbstract
 
     public function __construct()
     {
-        foreach (Beatmap::MODES as $modeStr => $modeInt) {
+        foreach (RulesetHelper::NAME_TO_IDS as $modeStr => $modeInt) {
             $this->availableIncludes[] = $modeStr;
             $this->gameModeIncludes[camel_case("include_{$modeStr}")] = $modeStr;
         }

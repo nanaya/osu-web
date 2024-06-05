@@ -7,7 +7,7 @@ namespace Tests;
 
 use App\Events\NewPrivateNotificationEvent;
 use App\Jobs\Notifications\BeatmapsetDisqualify;
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmapset;
 use App\Models\Notification;
 use App\Models\User;
@@ -152,7 +152,7 @@ class BeatmapsetDisqualifyNotificationsTest extends TestCase
     {
         $this->user->notificationOptions()->create([
             'name' => Notification::BEATMAPSET_DISQUALIFY,
-        ])->update(['details' => ['modes' => array_keys(Beatmap::MODES)]]);
+        ])->update(['details' => ['modes' => array_keys(RulesetHelper::NAME_TO_IDS)]]);
     }
 
     private function disqualify()

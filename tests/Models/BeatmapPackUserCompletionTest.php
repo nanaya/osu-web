@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Tests\Models;
 
+use App\Libraries\RulesetHelper;
 use App\Libraries\Search\ScoreSearch;
 use App\Models\Beatmap;
 use App\Models\BeatmapPack;
@@ -36,7 +37,7 @@ class BeatmapPackUserCompletionTest extends TestCase
 
         static::withDbAccess(function () {
             $beatmap = Beatmap::factory()->ranked()->state([
-                'playmode' => Beatmap::MODES['taiko'],
+                'playmode' => RulesetHelper::NAME_TO_IDS['taiko'],
             ])->create();
             static::$pack = BeatmapPack::factory()->create();
             static::$pack->items()->create(['beatmapset_id' => $beatmap->beatmapset_id]);
@@ -50,7 +51,7 @@ class BeatmapPackUserCompletionTest extends TestCase
 
             Score::factory()->create([
                 'beatmap_id' => $beatmap,
-                'ruleset_id' => Beatmap::MODES['osu'],
+                'ruleset_id' => RulesetHelper::NAME_TO_IDS['osu'],
                 'preserve' => true,
                 'user_id' => static::$users['convertOsu'],
             ]);
@@ -93,7 +94,7 @@ class BeatmapPackUserCompletionTest extends TestCase
     {
         $user = static::$users[$userType];
 
-        $rulesetId = $packRuleset === null ? null : Beatmap::MODES[$packRuleset];
+        $rulesetId = $packRuleset === null ? null : RulesetHelper::NAME_TO_IDS[$packRuleset];
         static::$pack->update(['playmode' => $rulesetId]);
         static::$pack->refresh();
 

@@ -6,6 +6,7 @@
 namespace App\Models;
 
 use App\Exceptions\InvariantException;
+use App\Libraries\RulesetHelper;
 use App\Models\Store\Product;
 use Carbon\Carbon;
 
@@ -148,7 +149,7 @@ class Tournament extends Model
 
     public function playModeStr()
     {
-        return Beatmap::modeStr($this->play_mode);
+        return RulesetHelper::toName($this->play_mode);
     }
 
     public function pageLinks()

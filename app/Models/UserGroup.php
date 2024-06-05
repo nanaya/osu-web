@@ -5,6 +5,8 @@
 
 namespace App\Models;
 
+use App\Libraries\RulesetHelper;
+
 /**
  * @property Group $group
  * @property int $group_id
@@ -46,7 +48,7 @@ class UserGroup extends Model
         static $defaultRulesets;
         // sync with defaultGroupRulesets in resources/js/utils/beatmapset-discussion-helper.ts
         $defaultRulesets ??= [
-            'nat' => array_keys(Beatmap::MODES),
+            'nat' => array_keys(RulesetHelper::NAME_TO_IDS),
         ];
 
         $visibleRulesets = $this->playmodes ?? [];

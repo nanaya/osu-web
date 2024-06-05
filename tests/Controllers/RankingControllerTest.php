@@ -5,7 +5,7 @@
 
 namespace Tests\Controllers;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Count;
 use App\Models\User;
 use App\Models\UserStatistics\Model as UserStatisticsModel;
@@ -51,7 +51,7 @@ class RankingControllerTest extends TestCase
             )
             ->create();
         $user->rankHistories()->create([
-            'mode' => Beatmap::modeInt($ruleset),
+            'mode' => RulesetHelper::toId($ruleset),
             'r0' => 10001,
         ]);
 

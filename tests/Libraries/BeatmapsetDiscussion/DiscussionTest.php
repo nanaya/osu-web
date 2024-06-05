@@ -15,6 +15,7 @@ use App\Jobs\Notifications\BeatmapsetDiscussionQualifiedProblem;
 use App\Jobs\Notifications\BeatmapsetDisqualify;
 use App\Jobs\Notifications\BeatmapsetResetNominations;
 use App\Libraries\BeatmapsetDiscussion\Discussion;
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\BeatmapDiscussion;
 use App\Models\BeatmapDiscussionPost;
@@ -219,7 +220,7 @@ class DiscussionTest extends TestCase
 
         User::factory()->create()->notificationOptions()->create([
             'name' => Notification::BEATMAPSET_DISCUSSION_QUALIFIED_PROBLEM,
-            'details' => ['modes' => array_keys(Beatmap::MODES)],
+            'details' => ['modes' => array_keys(RulesetHelper::NAME_TO_IDS)],
         ]);
 
         (new Discussion($user, $beatmapset, $this->makeParams('problem'), static::TEST_MESSAGE))->handle();
@@ -242,7 +243,7 @@ class DiscussionTest extends TestCase
 
         User::factory()->create()->notificationOptions()->create([
             'name' => Notification::BEATMAPSET_DISCUSSION_QUALIFIED_PROBLEM,
-            'details' => ['modes' => array_keys(Beatmap::MODES)],
+            'details' => ['modes' => array_keys(RulesetHelper::NAME_TO_IDS)],
         ]);
 
         (new Discussion($user, $beatmapset, $this->makeParams('problem'), static::TEST_MESSAGE))->handle();
@@ -259,7 +260,7 @@ class DiscussionTest extends TestCase
     {
         $user = User::factory()->create()->markSessionVerified();
 
-        $beatmapset = $this->beatmapsetFactory(['playmode' => Beatmap::MODES[$mode]])
+        $beatmapset = $this->beatmapsetFactory(['playmode' => RulesetHelper::NAME_TO_IDS[$mode]])
             ->qualified()
             ->create();
 

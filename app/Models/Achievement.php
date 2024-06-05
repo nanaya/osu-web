@@ -5,6 +5,8 @@
 
 namespace App\Models;
 
+use App\Libraries\RulesetHelper;
+
 /**
  * @property int $achievement_id
  * @property string|null $description
@@ -69,6 +71,6 @@ class Achievement extends Model
 
         return $value === null
             ? null
-            : Beatmap::modeStr($value);
+            : RulesetHelper::toName($value);
     }
 }

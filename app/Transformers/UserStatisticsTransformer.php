@@ -5,7 +5,7 @@
 
 namespace App\Transformers;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\UserStatistics;
 use League\Fractal\Resource\ResourceInterface;
 
@@ -100,7 +100,7 @@ class UserStatisticsTransformer extends TransformerAbstract
         }
 
         $mode = $stats->getMode();
-        $variants = Beatmap::VARIANTS[$mode] ?? null;
+        $variants = RulesetHelper::VARIANTS[$mode] ?? null;
 
         if ($variants === null) {
             return;

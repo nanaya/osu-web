@@ -5,6 +5,7 @@
 
 namespace App\Models;
 
+use App\Libraries\RulesetHelper;
 use DB;
 
 /**
@@ -29,7 +30,7 @@ class CountryStatistics extends Model
 
     public static function recalculate($countryAcronym, $modeInt)
     {
-        $stats = UserStatistics\Model::getClass(Beatmap::modeStr($modeInt))
+        $stats = UserStatistics\Model::getClass(RulesetHelper::toName($modeInt))
             ::where('country_acronym', $countryAcronym)
             ->where('rank_score', '>', 0)
             ->whereHas('user', function ($userQuery) {

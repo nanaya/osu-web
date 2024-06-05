@@ -6,7 +6,7 @@
 namespace App\Models\UserStatistics;
 
 use App\Exceptions\ClassNotFoundException;
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Model as BaseModel;
 use App\Models\RankHistory;
 use App\Models\Score\Best;
@@ -48,7 +48,7 @@ abstract class Model extends BaseModel
     {
         return $this
             ->belongsTo(RankHistory::class, 'user_id', 'user_id')
-            ->where('mode', Beatmap::modeInt(static::getMode()));
+            ->where('mode', RulesetHelper::toId(static::getMode()));
     }
 
     public function user()
@@ -100,11 +100,11 @@ abstract class Model extends BaseModel
 
     public static function getClass($modeStr, $variant = null)
     {
-        if (!Beatmap::isModeValid($modeStr)) {
+        if (!RulesetHelper::isValidName($modeStr)) {
             throw new ClassNotFoundException();
         }
 
-        if (!Beatmap::isVariantValid($modeStr, $variant)) {
+        if (!RulesetHelper::isValidVariant($modeStr, $variant)) {
             throw new ClassNotFoundException();
         }
 

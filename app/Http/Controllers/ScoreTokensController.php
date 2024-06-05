@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\InvariantException;
 use App\Http\Controllers\Controller as BaseController;
 use App\Libraries\ClientCheck;
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\ScoreToken;
 use App\Transformers\ScoreTokenTransformer;
@@ -36,7 +37,7 @@ class ScoreTokensController extends BaseController
 
         $checks = [
             'beatmap_hash' => fn (string $value): bool => $value === $beatmap->checksum,
-            'ruleset_id' => fn (int $value): bool => Beatmap::modeStr($value) !== null,
+            'ruleset_id' => fn (int $value): bool => RulesetHelper::toName($value) !== null,
         ];
         foreach ($checks as $key => $testFn) {
             if (!isset($params[$key])) {

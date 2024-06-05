@@ -6,7 +6,7 @@
 namespace App\Transformers;
 
 use App\Libraries\Beatmapset\NominateBeatmapset;
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\BeatmapDiscussion;
 use App\Models\Beatmapset;
 use App\Models\BeatmapsetEvent;
@@ -104,7 +104,7 @@ class BeatmapsetCompactTransformer extends TransformerAbstract
                 continue;
             }
 
-            foreach (Beatmap::MODES as $modeStr => $modeInt) {
+            foreach (RulesetHelper::NAME_TO_IDS as $modeStr => $modeInt) {
                 if ($modeStr === 'osu') {
                     continue;
                 }

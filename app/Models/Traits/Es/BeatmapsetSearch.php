@@ -5,7 +5,7 @@
 
 namespace App\Models\Traits\Es;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use Carbon\Carbon;
 
 trait BeatmapsetSearch
@@ -82,9 +82,9 @@ trait BeatmapsetSearch
 
             $values[] = $beatmapValues;
 
-            if ($beatmap->playmode === Beatmap::MODES['osu']) {
-                foreach (Beatmap::MODES as $modeInt) {
-                    if ($modeInt === Beatmap::MODES['osu']) {
+            if ($beatmap->playmode === RulesetHelper::NAME_TO_IDS['osu']) {
+                foreach (RulesetHelper::NAME_TO_IDS as $modeInt) {
+                    if ($modeInt === RulesetHelper::NAME_TO_IDS['osu']) {
                         continue;
                     }
 

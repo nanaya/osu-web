@@ -5,6 +5,7 @@
 
 namespace Database\Factories;
 
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\BeatmapDiscussion;
 use App\Models\BeatmapDiscussionPost;
@@ -129,7 +130,7 @@ class BeatmapsetFactory extends Factory
                 ->count($count)
                 ->state([
                     'modes' => $modes,
-                    'user_id' => User::factory()->withGroup('bng', array_keys(Beatmap::MODES)),
+                    'user_id' => User::factory()->withGroup('bng', array_keys(RulesetHelper::NAME_TO_IDS)),
                 ]));
     }
 
@@ -138,7 +139,7 @@ class BeatmapsetFactory extends Factory
         return $this
             ->has(Beatmap::factory()
             ->count($count)
-            ->ruleset($ruleset ?? array_rand(Beatmap::MODES))
+            ->ruleset($ruleset ?? array_rand(RulesetHelper::NAME_TO_IDS))
             ->state(fn (array $attr, Beatmapset $set) => [
                 'approved' => $set->approved,
                 'user_id' => $guestMapper?->getKey() ?? $set->user_id,

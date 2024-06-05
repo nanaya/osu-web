@@ -5,9 +5,9 @@
 
 namespace App\Models\Traits;
 
+use App\Libraries\RulesetHelper;
 use App\Libraries\Score\FetchDedupedScores;
 use App\Libraries\Search\ScoreSearchParams;
-use App\Models\Beatmap;
 use App\Models\Solo\Score;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -22,7 +22,7 @@ trait UserScoreable
             'exclude_without_pp' => true,
             'is_legacy' => $legacyOnly,
             'limit' => $size,
-            'ruleset_id' => Beatmap::MODES[$mode],
+            'ruleset_id' => RulesetHelper::NAME_TO_IDS[$mode],
             'sort' => 'pp_desc',
             'user_id' => $this->getKey(),
         ]), "aggregatedScoresBest_{$mode}"))->all();

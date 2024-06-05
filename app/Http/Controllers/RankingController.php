@@ -5,7 +5,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Country;
 use App\Models\CountryStatistics;
 use App\Models\Spotlight;
@@ -68,7 +68,7 @@ class RankingController extends Controller
                 return ujs_redirect(route('rankings', ['mode' => default_mode(), 'type' => 'performance']));
             }
 
-            if (!Beatmap::isModeValid($mode)) {
+            if (!RulesetHelper::isValidName($mode)) {
                 abort(404);
             }
 
@@ -83,7 +83,7 @@ class RankingController extends Controller
             if (isset($this->params['country']) && $type === 'performance') {
                 $this->countryStats = CountryStatistics::where('display', 1)
                     ->where('country_code', $this->params['country'])
-                    ->where('mode', Beatmap::modeInt($mode))
+                    ->where('mode', RulesetHelper::toId($mode))
                     ->first();
 
                 if ($this->countryStats === null) {
@@ -151,7 +151,7 @@ class RankingController extends Controller
             return $this->spotlight($mode);
         }
 
-        $modeInt = Beatmap::modeInt($mode);
+        $modeInt = RulesetHelper::toId($mode);
 
         if ($type === 'country') {
             $stats = CountryStatistics::where('display', 1)
@@ -405,7 +405,7 @@ class RankingController extends Controller
         $type = $this->params['type'] ?? null;
         $mode = $this->params['mode'] ?? null;
 
-        if ($type !== 'performance' || !Beatmap::isVariantValid($mode, $variant)) {
+        if ($type !== 'performance' || !RulesetHelper::isValidVariant($mode, $variant)) {
             $variant = null;
         }
 

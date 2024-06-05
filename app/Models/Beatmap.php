@@ -7,6 +7,7 @@ namespace App\Models;
 
 use App\Exceptions\InvariantException;
 use App\Jobs\EsDocument;
+use App\Libraries\RulesetHelper;
 use App\Libraries\Transactions\AfterCommit;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
@@ -61,41 +62,6 @@ class Beatmap extends Model implements AfterCommit
     ];
 
     public $timestamps = false;
-
-    const MODES = [
-        'osu' => 0,
-        'taiko' => 1,
-        'fruits' => 2,
-        'mania' => 3,
-    ];
-
-    const VARIANTS = [
-        'mania' => ['4k', '7k'],
-    ];
-
-    public static function isModeValid(?string $mode)
-    {
-        return array_key_exists($mode, static::MODES);
-    }
-
-    public static function isVariantValid(?string $mode, ?string $variant)
-    {
-        return $variant === null || in_array($variant, static::VARIANTS[$mode] ?? [], true);
-    }
-
-    public static function modeInt($str): ?int
-    {
-        return static::MODES[$str] ?? null;
-    }
-
-    public static function modeStr($int): ?string
-    {
-        static $lookupMap;
-
-        $lookupMap ??= array_flip(static::MODES);
-
-        return $lookupMap[$int] ?? null;
-    }
 
     public function baseDifficultyRatings()
     {
@@ -219,7 +185,7 @@ class Beatmap extends Model implements AfterCommit
 
     public function canBeConverted()
     {
-        return $this->playmode === static::MODES['osu'];
+        return $this->playmode === RulesetHelper::NAME_TO_IDS['osu'];
     }
 
     public function getAttribute($key)
@@ -349,7 +315,7 @@ class Beatmap extends Model implements AfterCommit
          * - (rounding) https://msdn.microsoft.com/en-us/library/wyk4d9cy(v=vs.110).aspx
          */
         $value = $this->getRawAttribute('diff_size');
-        if ($this->playmode === static::MODES['mania']) {
+        if ($this->playmode === RulesetHelper::NAME_TO_IDS['mania']) {
             $roundedValue = (int) round($value, 0, PHP_ROUND_HALF_EVEN);
 
             if ($this->convert) {
@@ -378,14 +344,14 @@ class Beatmap extends Model implements AfterCommit
 
     private function getMode()
     {
-        return static::modeStr($this->playmode);
+        return RulesetHelper::toName($this->playmode);
     }
 
     private function getScores($modelPath, $mode)
     {
         $mode ?? ($mode = $this->mode);
 
-        if (!static::isModeValid($mode)) {
+        if (!RulesetHelper::isValidName($mode)) {
             throw new InvariantException(osu_trans('errors.beatmaps.invalid_mode'));
         }
 

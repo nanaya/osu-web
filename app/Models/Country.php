@@ -5,6 +5,7 @@
 
 namespace App\Models;
 
+use App\Libraries\RulesetHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -44,7 +45,7 @@ class Country extends Model
             'statistics',
             fn ($q) => $q
                 ->where('display', true)
-                ->where('mode', Beatmap::MODES[$ruleset]),
+                ->where('mode', RulesetHelper::NAME_TO_IDS[$ruleset]),
         );
     }
 

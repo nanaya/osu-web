@@ -8,8 +8,8 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Libraries\Fulfillments\ApplySupporterTag;
+use App\Libraries\RulesetHelper;
 use App\Libraries\User\CountryChangeTarget;
-use App\Models\Beatmap;
 use App\Models\Country;
 use App\Models\User;
 use App\Models\UserAccountHistory;
@@ -150,7 +150,7 @@ class UserFactory extends Factory
             'statistics'.studly_case($ruleset),
         );
 
-        foreach (Beatmap::VARIANTS[$ruleset] ?? [] as $variant) {
+        foreach (RulesetHelper::VARIANTS[$ruleset] ?? [] as $variant) {
             $ret = $ret->has(
                 UserStatisticsModel::getClass($ruleset, $variant)::factory()->state($state),
                 'statistics'.studly_case("{$ruleset}_{$variant}"),

@@ -8,9 +8,9 @@ declare(strict_types=1);
 namespace Tests\Commands;
 
 use App\Console\Commands\ModdingRankCommand;
-use App\Enums\Ruleset;
 use App\Jobs\CheckBeatmapsetCovers;
 use App\Jobs\Notifications\BeatmapsetRank;
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmap;
 use App\Models\BeatmapDiscussion;
 use App\Models\Beatmapset;
@@ -22,7 +22,7 @@ class ModdingRankCommandTest extends TestCase
 {
     public function testCountOnly(): void
     {
-        $this->beatmapset([Ruleset::osu])->create();
+        $this->beatmapset(['osu'])->create();
 
         $this->expectCountChange(fn () => Beatmapset::ranked()->count(), 0);
 
@@ -37,7 +37,7 @@ class ModdingRankCommandTest extends TestCase
      */
     public function testRank(int $qualifiedDaysAgo, int $expected): void
     {
-        $this->beatmapset([Ruleset::osu], $qualifiedDaysAgo)->create();
+        $this->beatmapset(['osu'], $qualifiedDaysAgo)->create();
 
         $this->expectCountChange(fn () => Beatmapset::ranked()->count(), $expected);
 
@@ -56,14 +56,14 @@ class ModdingRankCommandTest extends TestCase
             $this->beatmapset($rulesets)->create();
         }
 
-        foreach (Ruleset::cases() as $ruleset) {
-            $this->assertSame($expectedCounts[$ruleset->value], ModdingRankCommand::getStats($ruleset)['inQueue']);
+        foreach (RulesetHelper::NAME_TO_IDS as $_ruleset => $rulesetId) {
+            $this->assertSame($expectedCounts[$rulesetId], ModdingRankCommand::getStats($rulesetId)['inQueue']);
         }
     }
 
     public function testRankOpenIssue(): void
     {
-        $this->beatmapset([Ruleset::osu])
+        $this->beatmapset(['osu'])
             ->has(BeatmapDiscussion::factory()->general()->problem())
             ->create();
 
@@ -77,7 +77,7 @@ class ModdingRankCommandTest extends TestCase
 
     public function testRankQuota(): void
     {
-        $this->beatmapset([Ruleset::osu])->count(3)->create();
+        $this->beatmapset(['osu'])->count(3)->create();
 
         $this->expectCountChange(fn () => Beatmapset::qualified()->count(), -2);
         $this->expectCountChange(fn () => Beatmapset::ranked()->count(), 2);
@@ -90,11 +90,11 @@ class ModdingRankCommandTest extends TestCase
 
     public function testRankQuotaSeparateRuleset(): void
     {
-        foreach (Ruleset::cases() as $ruleset) {
+        foreach (RulesetHelper::NAME_TO_IDS as $ruleset => $_rulesetId) {
             $this->beatmapset([$ruleset])->create();
         }
 
-        $count = count(Ruleset::cases());
+        $count = count(RulesetHelper::NAME_TO_IDS);
         $this->expectCountChange(fn () => Beatmapset::ranked()->count(), $count);
 
         $this->artisan('modding:rank', ['--no-wait' => true]);
@@ -117,17 +117,17 @@ class ModdingRankCommandTest extends TestCase
     {
         return [
             // hybrid counts as ruleset with lowest enum value
-            [[[Ruleset::osu, Ruleset::taiko, Ruleset::catch, Ruleset::mania]], [1, 0, 0, 0]],
-            [[[Ruleset::taiko, Ruleset::catch, Ruleset::mania]], [0, 1, 0, 0]],
-            [[[Ruleset::catch, Ruleset::mania]], [0, 0, 1, 0]],
-            [[[Ruleset::mania]], [0, 0, 0, 1]],
+            [[['osu', 'taiko', 'catch', 'mania']], [1, 0, 0, 0]],
+            [[['taiko', 'catch', 'mania']], [0, 1, 0, 0]],
+            [[['catch', 'mania']], [0, 0, 1, 0]],
+            [[['mania']], [0, 0, 0, 1]],
 
             // not comprehensive
-            [[[Ruleset::osu, Ruleset::taiko], [Ruleset::osu]], [2, 0, 0, 0]],
-            [[[Ruleset::osu, Ruleset::taiko], [Ruleset::taiko]], [1, 1, 0, 0]],
-            [[[Ruleset::mania, Ruleset::taiko], [Ruleset::taiko]], [0, 2, 0, 0]],
-            [[[Ruleset::mania, Ruleset::taiko], [Ruleset::mania]], [0, 1, 0, 1]],
-            [[[Ruleset::catch, Ruleset::taiko], [Ruleset::mania]], [0, 1, 0, 1]],
+            [[['osu', 'taiko'], ['osu']], [2, 0, 0, 0]],
+            [[['osu', 'taiko'], ['taiko']], [1, 1, 0, 0]],
+            [[['mania', 'taiko'], ['taiko']], [0, 2, 0, 0]],
+            [[['mania', 'taiko'], ['mania']], [0, 1, 0, 1]],
+            [[['catch', 'taiko'], ['mania']], [0, 1, 0, 1]],
         ];
     }
 
@@ -142,7 +142,7 @@ class ModdingRankCommandTest extends TestCase
     }
 
     /**
-     * @param Ruleset[] $rulesets
+     * @param string[] $rulesets
      */
     protected function beatmapset(array $rulesets, int $qualifiedDaysAgo = 2): BeatmapsetFactory
     {
@@ -151,7 +151,7 @@ class ModdingRankCommandTest extends TestCase
             ->qualified(now()->subDays($qualifiedDaysAgo));
 
         foreach ($rulesets as $ruleset) {
-            $factory = $factory->has(Beatmap::factory()->ruleset($ruleset->legacyName()));
+            $factory = $factory->has(Beatmap::factory()->ruleset($ruleset));
         }
 
         return $factory;

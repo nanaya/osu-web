@@ -8,7 +8,7 @@ namespace App\Libraries\Search;
 use App\Libraries\Elasticsearch\BoolQuery;
 use App\Libraries\Elasticsearch\Sort;
 use App\Libraries\Elasticsearch\Utils\SearchAfterParam;
-use App\Models\Beatmap;
+use App\Libraries\RulesetHelper;
 use App\Models\Beatmapset;
 use App\Models\Genre;
 use App\Models\Language;
@@ -96,7 +96,7 @@ class BeatmapsetSearchRequestParams extends BeatmapsetSearchParams
             );
 
             $this->mode = $params['m'];
-            if (!in_array($this->mode, Beatmap::MODES, true)) {
+            if (!in_array($this->mode, RulesetHelper::NAME_TO_IDS, true)) {
                 $this->mode = null;
             }
 
@@ -135,7 +135,7 @@ class BeatmapsetSearchRequestParams extends BeatmapsetSearchParams
         $genres = Genre::listing();
 
         $modes = [['id' => null, 'name' => osu_trans('beatmaps.mode.any')]];
-        foreach (Beatmap::MODES as $name => $id) {
+        foreach (RulesetHelper::NAME_TO_IDS as $name => $id) {
             $modes[] = ['id' => $id, 'name' => osu_trans("beatmaps.mode.{$name}")];
         }
 
