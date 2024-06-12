@@ -6,7 +6,6 @@
 namespace App\Http\Middleware;
 
 use ChaseConey\LaravelDatadogHelper\Middleware\LaravelDatadogMiddleware;
-use Datadog;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,28 +20,22 @@ class DatadogMetrics extends LaravelDatadogMiddleware
      */
     protected static function logDuration(Request $request, Response $response, $startTime)
     {
-        static $hostname;
-        if (!isset($hostname)) {
-            $hostname = gethostname();
-            if (!is_string($hostname)) {
-                $hostname = 'unknown';
-            }
-        }
-
         $duration = microtime(true) - $startTime;
         $tags = [
             'action' => 'error_page',
             'api' => is_api_request() ? 'true' : 'false',
             'controller' => 'error',
             'namespace' => 'error',
-            'pod_name' => $hostname,
-            'section' => 'error',
             'status_code' => $response->getStatusCode(),
-            'status_code_extra' => $request->attributes->get('status_code_extra'),
+            ...app('route-section')->getOriginal(),
         ];
+        unset($tags['section']);
 
-        $tags = array_merge($tags, app('route-section')->getOriginal());
-
-        Datadog::timing($GLOBALS['cfg']['datadog-helper']['prefix_web'].'.request_time', $duration, 1, $tags);
+        \Datadog::timing(
+            $GLOBALS['cfg']['datadog-helper']['prefix_web'].'.request_time',
+            $duration,
+            $GLOBALS['cfg']['datadog-helper']['request_sample_rate'],
+            $tags,
+        );
     }
 }

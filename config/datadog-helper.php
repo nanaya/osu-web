@@ -32,4 +32,6 @@ return [
     'global_tags' => [],
     'max_buffer_length' => 1,
     'middleware_disable_url_tag' => true,
+
+    'request_sample_rate' => get_float(env('DATADOG_REQUEST_SAMPLE_RATE')) ?? 1,
 ];
