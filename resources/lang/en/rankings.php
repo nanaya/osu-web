@@ -60,7 +60,6 @@ return [
         'total_score' => 'Total Score',
         'ranked_score' => 'Ranked Score',
         'average_score' => 'Avg. Score',
-        'average_performance' => 'Avg. Perf.',
         'ss' => 'SS',
         's' => 'S',
         'a' => 'A',
