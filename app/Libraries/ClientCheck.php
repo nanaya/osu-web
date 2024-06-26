@@ -24,7 +24,11 @@ class ClientCheck
 
         try {
             if ($token === null) {
-                throw new ClientCheckParseTokenException('missing token header');
+                $ex = new ClientCheckParseTokenException('missing token header');
+                if ($GLOBALS['cfg']['osu']['client']['log_missing_token']) {
+                    log_error($ex);
+                }
+                throw $ex;
             }
 
             $input = static::splitToken($token);
