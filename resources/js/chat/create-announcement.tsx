@@ -80,17 +80,19 @@ export default class CreateAnnouncement extends React.Component<Props> {
             modifiers='chat'
             {...this.model.inputContainerPropsFor('users')}
           >
-            <div className='chat-form-users'>
-              <UserCardBrick user={core.currentUserOrFail} />
-              <UsernameInput
-                id='chat-form-users'
-                ignoreCurrentUser
-                name='users'
-                onBlur={this.handleBlur}
-                onValidUsersChanged={this.handleValidUsersChanged}
-                onValueChanged={this.handleUsernameInputValueChanged}
-                {...this.usernameInputInitialProps}
-              />
+            <div className='input-text'>
+              <div className='chat-form-users'>
+                <UserCardBrick user={core.currentUserOrFail} />
+                <UsernameInput
+                  id='chat-form-users'
+                  ignoreCurrentUser
+                  name='users'
+                  onBlur={this.handleBlur}
+                  onValidUsersChanged={this.handleValidUsersChanged}
+                  onValueChanged={this.handleUsernameInputValueChanged}
+                  {...this.usernameInputInitialProps}
+                />
+              </div>
             </div>
           </InputContainer>
           <InputContainer

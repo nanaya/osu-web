@@ -4,7 +4,19 @@
 .input-text {
   .reset-input();
   color: hsl(var(--hsl-c1));
-  background: transparent;
+  background: var(--input-bg);
   resize: none;
   width: 100%;
+  height: 100%;
+  padding: var(--input-padding);
+  box-shadow: inset 0 0 0 2px var(--input-border-colour);
+  border-radius: 5px;
+
+  &:hover {
+    --input-border-colour: var(--input-border-hover);
+  }
+
+  &:focus {
+    --input-border-colour: var(--input-border-focus);
+  }
 }

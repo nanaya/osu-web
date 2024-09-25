@@ -3,19 +3,25 @@
 
 .input-container {
   --label-colour: hsl(var(--hsl-c2));
+  --label-height: 25px;
+  --label-pointer-events: auto;
   --input-bg: hsl(var(--hsl-b5));
+  --input-padding: var(--label-height) var(--input-padding-right)
+    var(--input-padding-base) var(--input-padding-base);
+  --input-padding-base: 10px;
+  --input-padding-right: var(--input-padding-base);
+  --input-border-colour: transparent;
+  --input-border-focus: hsl(var(--hsl-l1));
+  --input-border-hover: hsl(var(--hsl-l3));
 
-  display: flex;
-  flex-direction: column;
-  background: var(--input-bg);
-  border-radius: 5px;
   text-transform: initial;
   font-weight: initial;
   font-size: inherit;
 
   margin: 0;
-  padding: 5px 10px 10px;
+  padding: 0;
   width: 100%;
+  position: relative;
 
   &--2 {
     grid-column-end: span 2;
@@ -32,44 +38,67 @@
   &--chat {
     --input-bg: hsl(var(--hsl-b6));
 
-    border: 2px solid transparent;
-    padding: 5px;
     font-size: var(--input-size);
   }
 
   &--error {
-    border-color: hsl(var(--hsl-red-2)) !important;
+    --input-border-colour: hsl(var(--hsl-red-2));
   }
 
   &--fill {
     flex: 1;
     min-height: 150px;
-    display: grid;
-    grid-template-rows: auto 1fr;
   }
 
   &--genre {
     --label-colour: hsl(var(--hsl-c1));
-    background: none;
+    --input-bg: transparent;
   }
 
   &--judging {
     --input-bg: hsl(var(--hsl-b3));
 
-    border: 2px solid transparent;
-    padding: 5px;
     margin: 20px 0;
 
     &:focus-within {
-      border-color: hsl(var(--hsl-l1));
+      --input-border-colour: hsl(var(--hsl-l1));
     }
+  }
+
+  &--select {
+    --arrow-width: calc(var(--input-padding-base) * 2 + 1em);
+    --input-padding-right: var(--arrow-width);
+    --label-pointer-events: none;
+
+    &::after {
+      .fas();
+      .center-content();
+      content: @fa-var-chevron-down;
+      width: var(--arrow-width);
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      pointer-events: none;
+    }
+  }
+
+  &--store {
+    --input-bg: hsl(var(--hsl-b6));
+    margin-bottom: 10px;
   }
 
   &__label {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
     color: var(--label-colour);
     font-size: @font-size--normal;
+    position: absolute;
+    width: 100%;
+    height: var(--label-height);
+    top: 0;
+    left: 0;
+    padding: 5px var(--input-padding-base) 0;
+    pointer-events: var(--label-pointer-events);
   }
 }
