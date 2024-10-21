@@ -117,9 +117,9 @@ class PlaylistItem extends Model
         return parent::save($options);
     }
 
-    public function scorePercentile(): array
+    public function scoreTopNp(): array
     {
-        $key = "playlist_item_score_percentile:{$this->getKey()}";
+        $key = "playlist_item_score_top_np:{$this->getKey()}";
 
         if (!$this->expired && !$this->room->hasEnded()) {
             $key .= ':ongoing';

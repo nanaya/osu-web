@@ -63,7 +63,7 @@ class DailyChallengeUserStats extends Model
             ->orWhereIn('user_id', $highScoresByUserId->keys())
             ->get()
             ->keyBy('user_id');
-        $percentile = $playlist->scorePercentile();
+        $topNp = $playlist->scoreTopNp();
 
         $userIds = new Set([...$statsByUserId->keys(), ...$highScoresByUserId->keys()]);
         foreach ($userIds as $userId) {
@@ -79,7 +79,7 @@ class DailyChallengeUserStats extends Model
                 previousWeek: $previousWeek,
             );
 
-            $stats->updatePercentile($percentile, $highScore, $startTime);
+            $stats->updateTopNp($topNp, $highScore, $startTime);
 
             $stats->save();
         }
@@ -113,7 +113,7 @@ class DailyChallengeUserStats extends Model
             $startTime = $room->starts_at->toImmutable()->startOfDay();
             $this->updateStreak(true, $startTime);
             if ($room->hasEnded()) {
-                $this->updatePercentile($playlistItem->scorePercentile(), $highScore, $startTime);
+                $this->updateTopNp($playlistItem->scoreTopNp(), $highScore, $startTime);
             }
         }
         $streakBreakDay = CarbonImmutable::yesterday();
@@ -167,8 +167,8 @@ class DailyChallengeUserStats extends Model
         }
     }
 
-    private function updatePercentile(
-        array $playlistPercentile,
+    private function updateTopNp(
+        array $playlistTopNp,
         ?PlaylistItemUserHighScore $highScore,
         CarbonImmutable $startTime
     ): void {
@@ -176,9 +176,9 @@ class DailyChallengeUserStats extends Model
             return;
         }
 
-        foreach ($playlistPercentile as $p => $totalScore) {
+        foreach ($playlistTopNp as $np => $totalScore) {
             if ($highScore->total_score >= $totalScore) {
-                $this->{"top_{$p}_placements"}++;
+                $this->{"top_{$np}_placements"}++;
             }
         }
         $this->last_percentile_calculation = $startTime;
