@@ -52,23 +52,15 @@
     transition: opacity 600ms;
     will-change: opacity;
 
-    &::before {
-      .full-size();
-      content: "";
-      background: var(--url);
-      background-position: center;
-      background-size: cover;
-      filter: blur(50px);
-    }
+    .full-size();
+    background: var(--url);
+    background-position: center;
+    background-size: cover;
+    filter: blur(30px);
+    opacity: 0;
 
-    &::after {
-      .full-size();
-      content: "";
-      background-image: linear-gradient(
-        to top,
-        hsla(var(--hsl-b5), 0%),
-        hsl(var(--hsl-b5))
-      );
+    &--active {
+      opacity: 0.5;
     }
   }
 

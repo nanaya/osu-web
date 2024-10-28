@@ -88,10 +88,9 @@ export default class MenuImages extends React.Component<Props> {
         {this.props.images.map((imageJson, i) => (
           <div
             key={imageJson.image_url}
-            className={`${bn}__blur`}
+            className={classWithModifiers(`${bn}__blur`, { active: i === currentIndex })}
             style={{
               '--url': urlPresence(imageJson.image_url),
-              opacity: i === currentIndex ? 1 : 0,
             } as React.CSSProperties}
           />
         ))}

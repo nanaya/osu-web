@@ -12,7 +12,7 @@
 @section('content')
     @include('home._user_header_default')
 
-    <div class="osu-page">
+    <div class="osu-page osu-page--generic-compact">
         @if (count($menuImages) > 0)
             <div class="js-react--menu-images u-contents">
                 <div class="menu-images menu-images--placeholder">
