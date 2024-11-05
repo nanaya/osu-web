@@ -133,7 +133,7 @@ export const transparentGif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH
 export function make2x(url?: string) {
   if (url == null) return;
 
-  return url.replace(/(\.[^.]+)$/, '@2x$1');
+  return url.replace(/(\.[^./]+)$/, '@2x$1');
 }
 
 export function stripTags(str: string) {

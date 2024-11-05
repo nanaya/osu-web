@@ -1732,7 +1732,7 @@ function format_duration_for_display(int $seconds)
 // e.g. https://local.host/test.jpg -> https://local.host/test@2x.jpg
 function retinaify($url)
 {
-    return preg_replace('/(\.[^.]+)$/', '@2x\1', $url);
+    return preg_replace('/(\.[^.\/]+)$/', '@2x\1', $url);
 }
 
 function priv_check($ability, $object = null)
