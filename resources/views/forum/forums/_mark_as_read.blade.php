@@ -14,7 +14,7 @@
     data-method="POST"
     data-remote="1"
     data-url="{{ route('forum.forums.mark-as-read', ['forum_id' => optional($forum)->getKey(), 'recursive' => $recursive]) }}"
-    @if (!auth()->check())
+    @if ($currentUser === null)
         disabled
     @endif
 >

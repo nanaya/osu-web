@@ -811,7 +811,7 @@ function ext_view($view, $data = null, $type = null, $status = null)
 
     return response()->view(
         $view,
-        $data ?? [],
+        [...($data ?? []), 'currentUser' => Auth::user()],
         $status ?? 200,
         ['Content-Type' => $types[$type ?? 'html']]
     );

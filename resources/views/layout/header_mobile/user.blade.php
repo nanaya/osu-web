@@ -13,7 +13,7 @@
 
         <a
             class="navbar-mobile-item__main"
-            href="{{ route('users.show', Auth::user()) }}"
+            href="{{ route('users.show', $currentUser) }}"
         >
             {{ osu_trans('layout.popup_user.links.profile') }}
         </a>

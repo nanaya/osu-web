@@ -5,7 +5,6 @@
 @php
     use App\Libraries\User\UserSignatures;
 
-    $currentUser = Auth::user();
     $currentUserId = $currentUser?->getKey();
     $userSignatures = new UserSignatures();
 

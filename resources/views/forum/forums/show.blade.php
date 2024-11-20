@@ -12,7 +12,6 @@
 ])
 
 @php
-    $currentUser = Auth::user();
     $currentUserId = $currentUser?->getKey();
     $subforums = $forum->subforums;
 @endphp

@@ -5,7 +5,7 @@
 @extends('master')
 
 @php
-    $user = Auth::user();
+    $user = $currentUser;
     $isSupporter = $user?->isSupporter() ?? false;
     $url = $isSupporter
         ? osu_url('testflight.supporter')

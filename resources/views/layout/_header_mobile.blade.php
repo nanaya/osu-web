@@ -3,7 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $user = Auth::user();
+    $user = $currentUser;
 @endphp
 <div class="visible-xs no-print js-header--main">
     <div class="navbar-mobile-before"></div>

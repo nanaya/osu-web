@@ -5,7 +5,7 @@
 @php
     $canEditPoll = $canEditPoll ?? false;
     $canViewResults = priv_check('ForumTopicPollShowResults', $topic)->can();
-    $voted = $topic->poll()->votedBy(auth()->user());
+    $voted = $topic->poll()->votedBy($currentUser);
     $canVote = priv_check('ForumTopicVote', $topic)->can();
 
     $startingPage = ($voted || !$canVote) ? 'results' : 'form';

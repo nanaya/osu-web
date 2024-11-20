@@ -8,7 +8,7 @@
 ])
 
 @php
-    $currentUserId = Auth::user()?->getKey();
+    $currentUserId = $currentUser?->getKey();
 @endphp
 @section('content')
     @include('forum._header')

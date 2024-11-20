@@ -6,7 +6,7 @@
     use App\Models\Store\ExtraDataSupporterTag;
 @endphp
 
-@if(!Auth::user())
+@if(!$currentUser)
     {!! require_login('store.supporter_tag.require_login._', 'store.supporter_tag.require_login.link_text') !!}
 @else
     <div

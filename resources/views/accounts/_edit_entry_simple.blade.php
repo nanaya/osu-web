@@ -3,17 +3,16 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $user = auth()->user();
-    $value = $user->$field;
+    $value = $currentUser->$field;
 @endphp
 <div class="account-edit-entry js-account-edit js-account-edit-auto-submit js-form-error js-form-error--field" data-skip-ajax-error-popup="1">
     <input
         class="account-edit-entry__input js-account-edit__input"
         name="user[{{ $field }}]"
         data-last-value="{{ $value }}"
-        maxlength="{{ $user::MAX_FIELD_LENGTHS[$field] }}"
+        maxlength="{{ $currentUser::MAX_FIELD_LENGTHS[$field] }}"
         value="{{ $value }}"
-        @if ($user->isSilenced())
+        @if ($currentUser->isSilenced())
             disabled
         @endif
     >

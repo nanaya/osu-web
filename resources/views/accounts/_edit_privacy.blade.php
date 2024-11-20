@@ -18,7 +18,7 @@
                 <label class="account-edit-entry__checkbox">
                     @include('objects._switch', ['locals' => [
                         'additionalClass' => 'js-account-edit__input',
-                        'checked' => auth()->user()->pm_friends_only,
+                        'checked' => $currentUser->pm_friends_only,
                         'name' => 'user[pm_friends_only]',
                     ]])
 
@@ -39,7 +39,7 @@
                 <label class="account-edit-entry__checkbox">
                     @include('objects._switch', ['locals' => [
                         'additionalClass' => 'js-account-edit__input',
-                        'checked' => auth()->user()->hide_presence,
+                        'checked' => $currentUser->hide_presence,
                         'name' => 'user[hide_presence]',
                     ]])
 

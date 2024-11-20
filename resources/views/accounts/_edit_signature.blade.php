@@ -25,7 +25,7 @@
                     account-edit-entry__misc-info--signature-preview
                     js-post-preview--preview
                 ">
-                    {!! bbcode(Auth::user()->user_sig, Auth::user()->user_sig_bbcode_uid) !!}
+                    {!! bbcode($currentUser->user_sig, $currentUser->user_sig_bbcode_uid) !!}
                 </div>
             </div>
 
@@ -34,16 +34,16 @@
                     class="account-edit-entry__input js-post-preview--auto js-bbcode-body"
                     name="user[user_sig]"
                     rows=6
-                    @if (Auth::user()->isSilenced())
+                    @if ($currentUser->isSilenced())
                         disabled
                     @endif
-                >{{ bbcode_for_editor(Auth::user()->user_sig, Auth::user()->user_sig_bbcode_uid) }}</textarea>
+                >{{ bbcode_for_editor($currentUser->user_sig, $currentUser->user_sig_bbcode_uid) }}</textarea>
 
             </div>
 
             <div class="account-edit-entry account-edit-entry--wide account-edit-entry--no-label">
                 <div class="account-edit-entry__misc-info">
-                    @include('forum._post_toolbar', ['disabled' => Auth::user()->isSilenced()])
+                    @include('forum._post_toolbar', ['disabled' => $currentUser->isSilenced()])
                 </div>
             </div>
         </div>
@@ -54,7 +54,7 @@
                     class="btn-osu-big btn-osu-big--account-edit"
                     type="submit"
                     data-disable-with="{{ osu_trans('common.buttons.saving') }}"
-                    @if (Auth::user()->isSilenced())
+                    @if ($currentUser->isSilenced())
                         disabled
                     @endif
                 >

@@ -3,7 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $legacyScoreMode ??= App\Libraries\Search\ScoreSearchParams::showLegacyForUser(Auth::user()) === true;
+    $legacyScoreMode ??= App\Libraries\Search\ScoreSearchParams::showLegacyForUser($currentUser) === true;
     $icon = $legacyScoreMode
         ? 'far fa-square'
         : 'fas fa-check-square';

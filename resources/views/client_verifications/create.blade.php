@@ -3,7 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $user = auth()->user();
+    $user = $currentUser;
 @endphp
 
 @extends('master', [

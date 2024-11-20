@@ -3,7 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $user = Auth::user();
+    $user = $currentUser;
 @endphp
 <a class='user-home-beatmapset' href="{{route('beatmapsets.show', $beatmapset->beatmapset_id)}}">
     @include('objects._beatmapset_cover', [

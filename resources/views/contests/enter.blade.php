@@ -10,7 +10,7 @@
     @if (!Auth::check())
       <div class='contest__voting-notice contest__voting-notice--padding'>{{osu_trans('contest.entry.login_required')}}</div>
     @else
-      @if (Auth::user()->isSilenced() || Auth::user()->isRestricted())
+      @if ($currentUser->isSilenced() || $currentUser->isRestricted())
         <div class='contest__voting-notice contest__voting-notice--padding'>{{osu_trans('contest.entry.silenced_or_restricted')}}</div>
       @else
         @if (!$contestMeta->isSubmissionOpen())
@@ -30,10 +30,10 @@
 @section('script')
   @parent
   <script id="json-contest" type="application/json">
-    {!! $contest->defaultJson(Auth::user()) !!}
+    {!! $contest->defaultJson($currentUser) !!}
   </script>
   <script id="json-userEntries" type="application/json">
-    {!! json_encode($contest->userEntries(Auth::user())) !!}
+    {!! json_encode($contest->userEntries($currentUser)) !!}
   </script>
   @include('layout._react_js', ['src' => 'js/contest-entry.js'])
 @stop

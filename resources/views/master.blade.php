@@ -8,8 +8,6 @@
     $currentSection = $currentRoute['section'];
     $currentAction = $currentRoute['action'];
 
-    $currentUser = Auth::user();
-
     $legacyScoreMode = App\Libraries\Search\ScoreSearchParams::showLegacyForUser($currentUser) === true;
 
     $titleTree = [];

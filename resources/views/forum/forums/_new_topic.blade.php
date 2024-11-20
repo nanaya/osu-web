@@ -13,7 +13,7 @@
         $attributes = [
             'href' => route('forum.topics.create', ['forum_id' => $forum]),
         ];
-        if (!auth()->check()) {
+        if ($currentUser === null) {
             $icon = 'fas fa-sign-in-alt';
             $text = osu_trans('forum.topic.new_topic_login');
         }

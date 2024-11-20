@@ -5,7 +5,6 @@
 @php
     use Ds\Set;
 
-    $currentUser = Auth::user();
     $userCompletedBeatmapIds = new Set($userCompletionData['beatmapset_ids']);
 @endphp
 <div class="beatmap-pack-description">

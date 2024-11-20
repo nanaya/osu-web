@@ -19,7 +19,7 @@
                     {{ osu_trans("home.search.mode.{$mode}") }}
                 </span>
 
-                @if ($allSearch->hasQuery() && $search !== null && (!$search->isLoginRequired() || auth()->check()))
+                @if ($allSearch->hasQuery() && $search !== null && (!$search->isLoginRequired() || $currentUser !== null))
                     <span class="page-mode-link__badge">
                         @if ($search->count() < 100)
                             {{ $search->count() }}

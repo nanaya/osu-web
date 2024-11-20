@@ -3,8 +3,6 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $currentUser ??= Auth::user();
-
     $currentUserJson = $currentUser === null
         ? '{}'
         : json_encode(json_item($currentUser, new App\Transformers\CurrentUserTransformer()));

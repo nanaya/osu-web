@@ -19,7 +19,7 @@
                     data-field="user[osu_playstyle]"
                 >
                     @php
-                        $userPlaystyles = new Ds\Set(auth()->user()->osu_playstyle ?? []);
+                        $userPlaystyles = new Ds\Set($currentUser->osu_playstyle ?? []);
                     @endphp
                     @foreach (App\Models\User::PLAYSTYLES as $key => $_value)
                         <label class="account-edit-entry__checkbox">

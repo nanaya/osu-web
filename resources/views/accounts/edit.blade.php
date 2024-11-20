@@ -3,7 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $user = Auth::user();
+    $user = $currentUser;
     $isSilenced = $user->isSilenced();
 @endphp
 

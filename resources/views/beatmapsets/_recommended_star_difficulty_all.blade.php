@@ -3,5 +3,5 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 <script id="json-recommended-star-difficulty-all" type="application/json">
-    {!! json_encode(optional(auth()->user())->recommendedStarDifficultyAll()) !!}
+    {!! json_encode(optional($currentUser)->recommendedStarDifficultyAll()) !!}
 </script>

@@ -3,7 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $user = Auth::user();
+    $user = $currentUser;
 @endphp
 @if($user === null)
     {!! require_login('store.username_change.require_login._', 'store.username_change.require_login.link_text') !!}

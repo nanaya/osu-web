@@ -22,7 +22,7 @@
                 <label class="account-edit-entry__checkbox">
                     @include('objects._switch', ['locals' => [
                         'additionalClass'=> 'js-account-edit__input',
-                        'checked' => auth()->user()->user_notify,
+                        'checked' => $currentUser->user_notify,
                         'name' => 'user[user_notify]',
                     ]])
 

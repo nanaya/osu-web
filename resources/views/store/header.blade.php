@@ -43,7 +43,7 @@
     ];
 
     $showPendingCheckout = $currentNav !== 'cart'
-        && App\Models\Store\Order::pendingForUser(auth()->user())?->exists()
+        && App\Models\Store\Order::pendingForUser($currentUser)?->exists()
         ?? false;
 @endphp
 

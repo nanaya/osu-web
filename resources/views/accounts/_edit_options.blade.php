@@ -3,7 +3,6 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $currentUser ??= Auth::user();
     $customization = App\Models\UserProfileCustomization::forUser($currentUser);
 @endphp
 <div class="account-edit">

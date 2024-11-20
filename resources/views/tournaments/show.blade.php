@@ -89,20 +89,20 @@
                 </div>
 
                 <div class="tournament__body">
-                    @if (!Auth::user())
+                    @if (!$currentUser)
                         <div>{!!
                             osu_trans('tournament.show.login_to_register', [
                                 'login' => '<a href="#" class="js-user-link" title="'.osu_trans("users.anonymous.login_link").'">'.osu_trans("users.anonymous.login_text").'</a>'
                             ])
                         !!}</div>
                     @else
-                        @if($tournament->isValidRank(Auth::user()))
-                            @if($tournament->isSignedUp(Auth::user()))
+                        @if($tournament->isValidRank($currentUser))
+                            @if($tournament->isSignedUp($currentUser))
                                 <div>{!!osu_trans('tournament.show.entered')!!}</div>
                             @else
                                 <div>{{osu_trans('tournament.show.not_yet_entered')}}</div>
                             @endif
-                            @if($tournament->isSignedUp(Auth::user()))
+                            @if($tournament->isSignedUp($currentUser))
                                 <a
                                     href="{{route("tournaments.unregister", $tournament) }}"
                                     class="btn-osu-big btn-osu-big--tournament-register"

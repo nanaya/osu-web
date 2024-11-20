@@ -8,7 +8,7 @@
     </li>
 @else
     @php
-        $currentUserId = Auth::user()?->getKey();
+        $currentUserId = $currentUser?->getKey();
     @endphp
     @foreach($topics as $topic)
         @include($row ?? 'forum.forums._topic', compact('currentUserId'))
