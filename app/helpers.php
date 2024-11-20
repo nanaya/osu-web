@@ -809,7 +809,7 @@ function ext_view($view, $data = null, $type = null, $status = null)
         'rss' => 'application/rss+xml',
     ];
 
-    return response()->view(
+    return Response::view(
         $view,
         [...($data ?? []), 'currentUser' => Auth::user()],
         $status ?? 200,
