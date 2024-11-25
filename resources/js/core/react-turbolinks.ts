@@ -17,8 +17,6 @@ export default class ReactTurbolinks {
   private newVisit = true;
   private pageReady = false;
   private readonly renderedContainers = new Set<HTMLElement>();
-  private scrolled = false;
-  private timeoutScroll?: number;
 
   constructor(private readonly core: OsuCore, private readonly turbolinksReload: TurbolinksReload) {
     $(document).on('turbo:before-cache', this.handleBeforeCache);
@@ -78,7 +76,6 @@ export default class ReactTurbolinks {
 
   private readonly handleBeforeCache = () => {
     this.pageReady = false;
-    window.clearTimeout(this.timeoutScroll);
   };
 
   private readonly handleBeforeRender = (e: TurboBeforeRenderEvent) => {
@@ -103,21 +100,13 @@ export default class ReactTurbolinks {
     window.newBody ??= document.body;
     window.newUrl = null; // location.href should now be correct
     this.pageReady = true;
-    this.scrolled = false;
-    $(window).off('scroll', this.handleWindowScroll);
-    $(window).on('scroll', this.handleWindowScroll);
 
     // Delayed to wait until cacheSnapshot finishes. The delay matches Turbolinks' defer.
     window.setTimeout(() => {
       this.destroy();
       this.loadScripts();
       this.boot();
-      this.timeoutScroll = window.setTimeout(this.scrollOnNewVisit, 100);
     }, 1);
-  };
-
-  private readonly handleWindowScroll = () => {
-    this.scrolled = this.scrolled || window.scrollX !== 0 || window.scrollY !== 0;
   };
 
   private loadScripts() {
@@ -136,20 +125,6 @@ export default class ReactTurbolinks {
 
     return Promise.all(promises);
   }
-
-  private readonly scrollOnNewVisit = () => {
-    $(window).off('scroll', this.handleWindowScroll);
-    const newVisit = this.newVisit;
-    this.newVisit = false;
-
-    if (!newVisit || this.scrolled) return;
-
-    const targetId = decodeURIComponent(currentUrl().hash.substr(1));
-
-    if (targetId === '') return;
-
-    document.getElementById(targetId)?.scrollIntoView();
-  };
 
   private setNewUrl() {
     window.newUrl = Turbo.session.navigator.currentVisit?.redirectedToLocation
