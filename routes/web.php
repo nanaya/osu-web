@@ -9,6 +9,27 @@ Route::get('wiki/images/{path}', 'WikiController@image')->name('wiki.image')->wh
 Route::get('media-url', 'ProxyMediaController')->name('media-url');
 
 Route::group(['middleware' => ['web']], function () {
+    Route::group(['as' => 'account.', 'prefix' => 'account'], function () {
+        Route::post('avatar', 'AccountController@avatar')->name('avatar');
+        Route::put('country', 'AccountController@updateCountry')->name('country');
+        Route::post('cover', 'AccountController@cover')->name('cover');
+        Route::put('email', 'AccountController@updateEmail')->name('email');
+        Route::put('notification-options', 'AccountController@updateNotificationOptions')->name('notification-options');
+        Route::put('options', 'AccountController@updateOptions')->name('options');
+        Route::put('password', 'AccountController@updatePassword')->name('password');
+        Route::post('reissue-code', 'AccountController@reissueCode')->name('reissue-code');
+        Route::resource('sessions', 'Account\SessionsController', ['only' => ['destroy']]);
+        Route::get('verify', 'AccountController@verifyLink');
+        Route::post('verify', 'AccountController@verify')->name('verify');
+
+        Route::put('/', 'AccountController@update')->name('update');
+        Route::get('/', 'AccountController@edit')->name('edit');
+
+        Route::resource('github-users', 'Account\GithubUsersController', ['only' => ['create']]);
+        Route::delete('github-users', 'Account\GithubUsersController@destroy')->name('github-users.destroy');
+    });
+    Route::get('home/account/github-users/callback', 'Account\GithubUsersController@callback')->name('account.github-users.callback');
+
     Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
         Route::get('/beatmapsets/{beatmapset}/covers', 'BeatmapsetsController@covers')->name('beatmapsets.covers');
         Route::post('/beatmapsets/{beatmapset}/covers/regenerate', 'BeatmapsetsController@regenerateCovers')->name('beatmapsets.covers.regenerate');
@@ -202,29 +223,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::resource('groups', 'GroupsController', ['only' => ['show']]);
 
     Route::group(['prefix' => 'home'], function () {
-        Route::group(['as' => 'account.', 'prefix' => 'account'], function () {
-            Route::get('edit', 'AccountController@edit')->name('edit');
-            // Uploading file doesn't quite work with PUT/PATCH.
-            // Reference: https://bugs.php.net/bug.php?id=55815
-            // Note that hhvm behaves differently (the same as POST).
-            Route::post('avatar', 'AccountController@avatar')->name('avatar');
-            Route::put('country', 'AccountController@updateCountry')->name('country');
-            Route::post('cover', 'AccountController@cover')->name('cover');
-            Route::put('email', 'AccountController@updateEmail')->name('email');
-            Route::put('notification-options', 'AccountController@updateNotificationOptions')->name('notification-options');
-            Route::put('options', 'AccountController@updateOptions')->name('options');
-            Route::put('password', 'AccountController@updatePassword')->name('password');
-            Route::post('reissue-code', 'AccountController@reissueCode')->name('reissue-code');
-            Route::resource('sessions', 'Account\SessionsController', ['only' => ['destroy']]);
-            Route::get('verify', 'AccountController@verifyLink');
-            Route::post('verify', 'AccountController@verify')->name('verify');
-            Route::put('/', 'AccountController@update')->name('update');
-
-            Route::get('github-users/callback', 'Account\GithubUsersController@callback')->name('github-users.callback');
-            Route::resource('github-users', 'Account\GithubUsersController', ['only' => ['create']]);
-            Route::delete('github-users', 'Account\GithubUsersController@destroy')->name('github-users.destroy');
-        });
-
         Route::get('quick-search', 'HomeController@quickSearch')->name('quick-search');
         Route::get('search', 'HomeController@search')->name('search');
         Route::post('bbcode-preview', 'HomeController@bbcodePreview')->name('bbcode-preview');
@@ -382,6 +380,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', 'HomeController@index')->name('home');
 
     // redirects go here
+    route_redirect('home/account/edit', 'account.edit');
     route_redirect('forum/p/{post}', 'forum.posts.show');
     route_redirect('po/{post}', 'forum.posts.show:');
     route_redirect('forum/t/{topic}', 'forum.topics.show');

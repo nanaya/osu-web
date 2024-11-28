@@ -551,6 +551,7 @@ class SanityTest extends DuskTestCase
             'chat.index',
             'client-verifications.create',
             'messages.users.show',
+            'redirect:account.edit:user',
             'store.checkout.show',
             'store.invoice.show',
             'store.orders.index',
