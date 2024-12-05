@@ -1765,7 +1765,7 @@ function priv_check($ability, $object = null)
 
 function priv_check_user($user, $ability, $object = null)
 {
-    return app()->make('OsuAuthorize')->doCheckUser($user, $ability, $object);
+    return App\Facades\OsuAuthorize::doCheckUser($user, $ability, $object);
 }
 
 // Used to generate x,y pairs for fancy-chart.coffee
