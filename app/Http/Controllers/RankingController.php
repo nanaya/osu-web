@@ -166,7 +166,6 @@ class RankingController extends Controller
 
         if ($type === 'country') {
             $stats = CountryStatistics::where('display', 1)
-                ->with('country')
                 ->where('mode', $modeInt)
                 ->orderBy('performance', 'desc');
         } else {
@@ -174,7 +173,7 @@ class RankingController extends Controller
             $table = (new $class())->getTable();
             $ppColumn = $class::ppColumn();
             $stats = $class
-                ::with(['user', 'user.country'])
+                ::with('user')
                 ->where($ppColumn, '>', 0)
                 ->whereHas('user', function ($userQuery) {
                     $userQuery->default();

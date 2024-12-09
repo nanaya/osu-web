@@ -7,6 +7,7 @@ namespace App\Models;
 
 class DeletedUser extends User
 {
+    public null $country_acronym = null;
     public $user_avatar = null;
     public $username = '[deleted user]';
 

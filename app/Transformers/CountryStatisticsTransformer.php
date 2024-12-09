@@ -24,8 +24,10 @@ class CountryStatisticsTransformer extends TransformerAbstract
 
     public function includeCountry(CountryStatistics $stat)
     {
-        return $stat->country === null
+        $country = app('countries')->byCode($stat->country_code);
+
+        return $country === null
             ? $this->primitive(null)
-            : $this->item($stat->country, new CountryTransformer());
+            : $this->item($country, new CountryTransformer());
     }
 }

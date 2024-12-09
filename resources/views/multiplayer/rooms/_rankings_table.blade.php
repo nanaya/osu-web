@@ -19,6 +19,9 @@
         </tr>
     </thead>
     <tbody>
+        @php
+            $countries = app('countries');
+        @endphp
         @foreach ([$userScore, ...$scores] as $index => $score)
             @if ($score === null)
                 @continue
@@ -35,10 +38,11 @@
                 </td>
                 <td class="ranking-page-table__column">
                     <div class="ranking-page-table__user-link">
-                        @include('objects._flag_country', [
-                            'country' => $score->user->country,
-                            'modifiers' => 'medium',
-                        ])
+                        <span class="ranking-page-table__flags">
+                            @include('objects._flag_country', [
+                                'country' => $countries->byCode($score->user->country_acronym),
+                            ])
+                        </span>
                         <a
                             href="{{ route('users.show', ['user' => $score->user_id, 'mode' => $mode ?? null]) }}"
                             class="ranking-page-table__user-link-text js-usercard"

@@ -28,7 +28,13 @@
             </tr>
         </thead>
         <tbody>
+            @php
+                $countries = app('countries');
+            @endphp
             @foreach ($scores as $index => $score)
+                @php
+                    $country = $countries->byCode($score->country_code);
+                @endphp
                 <tr class="ranking-page-table__row">
                     <td class="ranking-page-table__column ranking-page-table__column--rank">
                         #{{ $scores->firstItem() + $index }}
@@ -39,14 +45,13 @@
                                 href="{{route('rankings', [
                                     'mode' => $mode,
                                     'type' => 'performance',
-                                    'country' => $score->country->acronym,
+                                    'country' => $country->getKey(),
                             ])}}">
-                                @include('objects._flag_country', [
-                                    'country' => $score->country->acronym,
-                                    'modifiers' => 'medium',
-                                ])
+                                <span class="ranking-page-table__flags">
+                                    @include('objects._flag_country', ['country' => $country])
+                                </span>
                                 <span class="ranking-page-table__country-link-text">
-                                    {{ $score->country->name }}
+                                    {{ $country->name }}
                                 </span>
                             </a>
                         </div>
