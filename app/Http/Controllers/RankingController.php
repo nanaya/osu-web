@@ -174,7 +174,7 @@ class RankingController extends Controller
             $table = (new $class())->getTable();
             $ppColumn = $class::ppColumn();
             $stats = $class
-                ::with(['user', 'user.country'])
+                ::with('user')
                 ->where($ppColumn, '>', 0)
                 ->whereHas('user', function ($userQuery) {
                     $userQuery->default();

@@ -74,7 +74,7 @@ class BeatmapsController extends Controller
             'type' => $type,
             'user' => $currentUser,
         ]);
-        $scores = $esFetch->all()->loadMissing(['beatmap', 'user.country', 'processHistory']);
+        $scores = $esFetch->all()->loadMissing(['beatmap', 'user', 'processHistory']);
         $userScore = $esFetch->userBest();
         $scoreTransformer = new ScoreTransformer($scoreTransformerType);
 
