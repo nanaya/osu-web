@@ -4,6 +4,17 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
+    'applications' => [
+        'create' => [
+            'title' => 'Join Team',
+
+            'form' => [
+                'message' => 'Message (optional)',
+                'message_help' => 'Write message for the team leader as part of your join request.',
+            ],
+        ],
+    ],
+
     'edit' => [
         'saved' => 'Settings saved successfully',
         'title' => 'Team Settings',
@@ -62,6 +73,10 @@ return [
     'show' => [
         'bar' => [
             'settings' => 'Settings',
+        ],
+
+        'button' => [
+            'join' => 'Join Team',
         ],
 
         'info' => [

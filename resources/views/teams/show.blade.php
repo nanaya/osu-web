@@ -13,6 +13,8 @@
     $teamMembers['member'] ??= [];
     $teamMembers['leader'] ??= $toJson([$team->members()->make(['user_id' => $team->leader_id])->userOrDeleted()]);
     $headerUrl = $team->header()->url();
+
+    $currentUser = Auth::user();
 @endphp
 
 @extends('master', [
@@ -69,6 +71,19 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="profile-detail-bar">
+                @if (priv_check('TeamJoin', $team)->can())
+                    <div>
+                        <a
+                            class="user-action-button user-action-button--profile-page"
+                            href="#"
+                            title="{{ osu_trans('teams.show.button.join') }}"
+                        >
+                            <span class="fas fa-file-signature"></span>
+                        </a>
+                    </div>
+                @endif
             </div>
             <div class="user-profile-pages user-profile-pages--no-tabs">
                 <div class="page-extra u-fancy-scrollbar">

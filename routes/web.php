@@ -297,6 +297,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::resource('user-cover-presets', 'UserCoverPresetsController', ['only' => ['index', 'store', 'update']]);
 
     Route::group(['as' => 'teams.', 'prefix' => 'teams/{team}', 'namespace' => 'Teams'], function () {
+        Route::resource('applications', 'ApplicationsController', ['only' => ['create', 'store']]);
         Route::resource('members', 'MembersController', ['only' => ['destroy', 'index']]);
     });
     Route::resource('teams', 'TeamsController', ['only' => ['edit', 'show', 'update']]);

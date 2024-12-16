@@ -191,6 +191,17 @@ return [
         ],
     ],
 
+    'team' => [
+        'application' => [
+            'store' => [
+                'already_member' => "You're already part of the team.",
+                'already_other_member' => "You're already part of a different team.",
+                'currently_applying' => 'You have pending team join request.',
+                'team_full' => "The team is full and can't accept any more members.",
+            ],
+        ],
+    ],
+
     'user' => [
         'page' => [
             'edit' => [

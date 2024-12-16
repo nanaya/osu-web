@@ -1908,6 +1908,27 @@ class OsuAuthorize
         return 'ok';
     }
 
+    public function checkTeamJoin(?User $user, Team $team): ?string
+    {
+        $prefix = 'team.application.store.';
+
+        $this->ensureLoggedIn($user);
+
+        if ($user->team !== null) {
+            return $user->team->getKey() === $team->getKey()
+                ? $prefix.'already_member'
+                : $prefix.'already_other_member';
+        }
+        if ($user->teamApplications()->active()->exists()) {
+            return $prefix.'currently_applying';
+        }
+        if ($team->emptySlots() === 0) {
+            return $prefix.'team_full';
+        }
+
+        return 'ok';
+    }
+
     public function checkTeamUpdate(?User $user, Team $team): ?string
     {
         $this->ensureLoggedIn($user);

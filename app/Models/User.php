@@ -310,6 +310,11 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
         );
     }
 
+    public function teamApplications(): HasMany
+    {
+        return $this->hasMany(TeamApplication::class);
+    }
+
     public function getAuthPassword()
     {
         return $this->user_password;
@@ -967,6 +972,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
             'supporterTagPurchases',
             'supporterTags',
             'team',
+            'teamApplications',
             'tokens',
             'topicWatches',
             'userAchievements',
