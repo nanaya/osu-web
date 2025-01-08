@@ -658,13 +658,24 @@ class Room extends Model
         $this->save();
     }
 
-    public function startPlay(User $user, PlaylistItem $playlistItem, int $buildId)
+    public function startPlay(User $user, PlaylistItem $playlistItem, int $buildId, array $rawParams): ScoreToken
     {
         priv_check_user($user, 'MultiplayerScoreSubmit', $this)->ensureCan();
 
-        $this->assertValidStartPlay($user, $playlistItem);
+        $params = get_params($rawParams, null, [
+            'beatmap_hash',
+            'beatmap_id:int',
+            'ruleset_id:int',
+        ], ['null_missing' => true]);
 
-        return $this->getConnection()->transaction(function () use ($buildId, $user, $playlistItem) {
+        if (!$playlistItem->freestyle) {
+            $params['beatmap_id'] ??= $playlistItem->beatmap_id;
+            $params['ruleset_id'] ??= $playlistItem->ruleset_id;
+        }
+
+        $this->assertValidStartPlay($user, $playlistItem, $params);
+
+        return $this->getConnection()->transaction(function () use ($buildId, $user, $params, $playlistItem) {
             $agg = UserScoreAggregate::new($user, $this);
             if ($agg->wasRecentlyCreated) {
                 $this->incrementInstance('participant_count');
@@ -676,11 +687,10 @@ class Room extends Model
             $playlistItemAgg->updateUserAttempts();
 
             return ScoreToken::create([
-                'beatmap_id' => $playlistItem->beatmap_id,
                 'build_id' => $buildId,
                 'playlist_item_id' => $playlistItem->getKey(),
-                'ruleset_id' => $playlistItem->ruleset_id,
                 'user_id' => $user->getKey(),
+                ...$params,
             ]);
         });
     }
@@ -740,12 +750,22 @@ class Room extends Model
         }
     }
 
-    private function assertValidStartPlay(User $user, PlaylistItem $playlistItem)
+    private function assertValidStartPlay(User $user, PlaylistItem $playlistItem, array $params)
     {
         // todo: check against room's end time (to see if player has enough time to play this beatmap) and is under the room's max attempts limit
-
         if ($this->hasEnded()) {
             throw new InvariantException('Room has already ended.');
+        }
+
+        if ($playlistItem->freestyle) {
+            // assert the beatmap_id is part of playlist item's beatmapset
+            $beatmapsetIdCount = Beatmap
+                ::whereKey([$playlistItem->beatmap_id, $params['beatmap_id']])
+                ->distinct('beatmapset_id')
+                ->count();
+            if ($beatmapsetIdCount !== 1) {
+                throw new InvariantException('Specified beatmap_id is not allowed');
+            }
         }
 
         $userId = $user->getKey();

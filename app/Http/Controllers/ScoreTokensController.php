@@ -34,27 +34,14 @@ class ScoreTokensController extends BaseController
             'ruleset_id:int',
         ]);
 
-        $checks = [
-            'beatmap_hash' => fn (string $value): bool => $value === $beatmap->checksum,
-            'ruleset_id' => fn (int $value): bool => Beatmap::modeStr($value) !== null && $beatmap->canBeConvertedTo($value),
-        ];
-        foreach ($checks as $key => $testFn) {
-            if (!isset($params[$key])) {
-                throw new InvariantException("missing {$key}");
-            }
-            if (!$testFn($params[$key])) {
-                throw new InvariantException("invalid {$key}");
-            }
-        }
-
         $buildId = ClientCheck::parseToken($request)['buildId'];
 
         try {
             $scoreToken = ScoreToken::create([
                 'beatmap_id' => $beatmap->getKey(),
                 'build_id' => $buildId,
-                'ruleset_id' => $params['ruleset_id'],
                 'user_id' => $user->getKey(),
+                ...$params,
             ]);
         } catch (PDOException $e) {
             // TODO: move this to be a validation inside Score model
