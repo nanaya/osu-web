@@ -7,28 +7,26 @@ declare(strict_types=1);
 
 namespace App\Singletons;
 
-use App\Enums\Ip;
 use App\Libraries\Ip2AsnUpdater;
-use Exception;
-use WeakMap;
 
 class Ip2Asn
 {
-    private WeakMap $count;
-    private WeakMap $dbFh;
-    private WeakMap $index;
+    const IP = [
+        'v4' => 'v4',
+        'v6' => 'v6',
+    ];
+
+    private array $count;
+    private array $dbFh;
+    private array $index;
 
     public function __construct()
     {
-        $this->count = new WeakMap();
-        $this->dbFh = new WeakMap();
-        $this->index = new WeakMap();
-
-        foreach (Ip::cases() as $version) {
+        foreach (static::IP as $version) {
             $this->dbFh[$version] = fopen(Ip2AsnUpdater::getDbPath($version), 'r');
             $index = file_get_contents(Ip2AsnUpdater::getIndexPath($version));
             if ($this->dbFh[$version] === false || $index === false) {
-                throw new Exception("failed opening ip2asn {$version} database or index");
+                throw new \Exception("failed opening ip2asn {$version} database or index");
             }
             $this->index[$version] = $index;
 
@@ -41,15 +39,15 @@ class Ip2Asn
     {
         switch (true) {
             case filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false:
-                return $this->lookupByVersion(Ip::V4, $ip);
+                return $this->lookupByVersion(static::IP['v4'], $ip);
             case filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false:
-                return $this->lookupByVersion(Ip::V6, $ip);
+                return $this->lookupByVersion(static::IP['v6'], $ip);
         }
 
         return '0';
     }
 
-    private function lookupByVersion(Ip $version, string $ip): string
+    private function lookupByVersion(string $version, string $ip): string
     {
         $dbFh = $this->dbFh[$version];
         $index = $this->index[$version];

@@ -7,26 +7,26 @@ declare(strict_types=1);
 
 namespace App\Libraries;
 
-use App\Enums\Ip;
+use App\Singletons\Ip2Asn;
 use Log;
 
 class Ip2AsnUpdater
 {
-    public static function getDbPath(Ip $version): string
+    public static function getDbPath(string $version): string
     {
-        return database_path("ip2asn/{$version->value}.tsv");
+        return database_path("ip2asn/{$version}.tsv");
     }
 
-    public static function getIndexPath(Ip $version): string
+    public static function getIndexPath(string $version): string
     {
-        return database_path("ip2asn/{$version->value}.idx");
+        return database_path("ip2asn/{$version}.idx");
     }
 
     public function run(?callable $logger = null): void
     {
-        foreach (Ip::cases() as $version) {
+        foreach (Ip2Asn::IP as $version) {
             $prefixedLogger = function (string $message) use ($logger, $version): void {
-                $prefixedMessage = "[{$version->value}] $message";
+                $prefixedMessage = "[{$version}] $message";
 
                 if (isset($logger)) {
                     $logger($prefixedMessage);
@@ -39,7 +39,7 @@ class Ip2AsnUpdater
         }
     }
 
-    private function update(Ip $version, callable $logger): void
+    private function update(string $version, callable $logger): void
     {
         $logger('Checking db for updates');
 
@@ -60,7 +60,7 @@ class Ip2AsnUpdater
 
         if ($newDb) {
             $logger('Db file is outdated. Downloading');
-            $tsv = gzdecode(file_get_contents("https://iptoasn.com/data/ip2asn-{$version->value}.tsv.gz"));
+            $tsv = gzdecode(file_get_contents("https://iptoasn.com/data/ip2asn-{$version}.tsv.gz"));
         } else {
             $tsv = file_get_contents($dbPath);
         }
