@@ -131,6 +131,15 @@ return [
         ],
     ],
 
+    'team' => [
+        'word_not_allowed' => 'This :attribute choice is not allowed.',
+
+        'attributes' => [
+            'name' => 'name',
+            'short_name' => 'short name',
+        ],
+    ],
+
     'user' => [
         'contains_username' => 'Password may not contain username.',
         'email_already_used' => 'Email address already used.',

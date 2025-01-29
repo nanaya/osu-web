@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ModelNotSavedException;
 use App\Models\Team;
 use App\Transformers\UserCompactTransformer;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,19 @@ class TeamsController extends Controller
     {
         parent::__construct();
         $this->middleware('auth', ['only' => ['part']]);
+    }
+
+    public function create(): Response
+    {
+        $currentUser = \Auth::user();
+        $teamId = $currentUser?->team?->getKey() ?? $currentUser?->teamApplication?->team_id;
+        if ($teamId !== null) {
+            return ujs_redirect(route('teams.show', $teamId));
+        }
+
+        return ext_view('teams.create', [
+            'team' => new Team(),
+        ]);
     }
 
     public function destroy(string $id): Response
@@ -58,6 +72,27 @@ class TeamsController extends Controller
             ))->findOrFail($id);
 
         return ext_view('teams.show', compact('team'));
+    }
+
+    public function store(): Reponse
+    {
+        priv_check('TeamStore')->ensureCan();
+
+        $params = get_params(\Request::all(), 'team', [
+            'name',
+            'short_name',
+        ]);
+
+        $team = new Team($params);
+        try {
+            $team->saveOrExplode();
+        } catch (ModelNotSavedException) {
+            return ext_view('teams.create', compact('team'), status: 422);
+        }
+
+        \Session::flash('popup', osu_trans('teams.store.saved'));
+
+        return ujs_redirect(route('teams.show', $team));
     }
 
     public function update(string $id): Response

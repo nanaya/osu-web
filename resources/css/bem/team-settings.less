@@ -17,6 +17,12 @@
     border-radius: @border-radius-large;
   }
 
+  &__errors {
+    color: hsl(var(--hsl-red-1));
+    margin-top: 1em;
+    padding: 0 0 0 2em;
+  }
+
   &__help {
     color: hsl(var(--hsl-c2));
     font-size: @font-size--normal;
@@ -30,9 +36,10 @@
   }
 
   &__item {
+    align-items: start;
     display: grid;
-    grid-template-columns: 2fr 1fr;
     gap: 15px;
+    grid-template-columns: 2fr 1fr;
 
     &--buttons {
       grid-template-columns: 1fr auto;

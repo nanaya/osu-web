@@ -4,6 +4,23 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
+    'create' => [
+        'submit' => 'Create Team',
+
+        'form' => [
+            'name' => 'Team Name',
+            'name_help' => 'Your team name. No changey',
+            'short_name' => 'Short Name',
+            'short_name_help' => 'What',
+            'title' => "Let's set up a new team",
+        ],
+
+        'intro' => [
+            'description' => "You're not currently in a team! Join a team or create your own team from this page.",
+            'title' => 'Team!',
+        ],
+    ],
+
     'destroy' => [
         'ok' => 'Team removed',
     ],
