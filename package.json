@@ -31,6 +31,7 @@
     "@types/react-transition-group": "^4.4.4",
     "@types/timeago": "^1.6.0",
     "@types/unist": "^2.0.6",
+    "@types/webpack-env": "^1.18.8",
     "autoprefixer": "^10.4.15",
     "autosize": "5.0.2",
     "blueimp-file-upload": "^9.11.2",
