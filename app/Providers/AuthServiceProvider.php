@@ -27,7 +27,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Passport::ignoreMigrations();
         Passport::ignoreRoutes();
 
         // Copied from PassportServiceProvider with the correct

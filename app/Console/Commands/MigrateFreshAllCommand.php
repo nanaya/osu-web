@@ -5,11 +5,15 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Database\Console\Migrations\FreshCommand;
+use Database\Seeders\DatabaseSeeder;
+use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 
-class MigrateFreshAllCommand extends FreshCommand
+class MigrateFreshAllCommand extends Command
 {
+    protected $name = 'migrate:fresh-real';
+    protected $description = 'Drop all tables and re-run all migrations (actually useful version)';
+
     public function handle()
     {
         if (!$this->confirmToProceed()) {
@@ -57,8 +61,11 @@ class MigrateFreshAllCommand extends FreshCommand
             '--no-interaction' => $this->option('no-interaction'),
         ]);
 
-        if ($this->needsSeeding()) {
-            $this->runSeeder(null);
+        if ($this->option('seed') || $this->option('seeder')) {
+            $this->call('db:seed', [
+                '--class' => $this->option('seeder') ?? DatabaseSeeder::class,
+                '--force' => true,
+            ]);
         }
 
         return 0;
