@@ -14,6 +14,7 @@ const rootPath = path.resolve(__dirname, '../../..');
 const buildPath = path.resolve(rootPath, 'resources/builds');
 const localesPath = path.resolve(buildPath, 'locales');
 const messagesPath = path.resolve(buildPath, 'messages.json');
+const sourcePath = path.resolve(rootPath, 'resources/lang');
 
 function extractLanguages() {
   console.log('Extracting localizations...');
@@ -39,7 +40,7 @@ function getAllMesssages() {
 }
 
 function generateTranslations() {
-  spawnSync('php', [path.resolve(rootPath, 'artisan'), 'lang:js', '--json', messagesPath], { stdio: 'inherit' });
+  spawnSync('php', [path.resolve(rootPath, 'artisan'), 'lang:js', '--json', messagesPath, '--source', sourcePath], { stdio: 'inherit' });
 }
 
 function writeTranslations(languages) {

@@ -14,6 +14,10 @@ class MigrationServiceProvider extends BaseProvider
     #[\Override]
     public function registerMigrateFreshCommand()
     {
-        $this->app->singleton(FreshCommand::class, MigrateFreshAllCommand::class);
+        foreach ([FreshCommand::class, MigrateFreshAllCommand::class] as $class) {
+            $this->app->singleton($class, function ($app) {
+                return new MigrateFreshAllCommand($app['migrator']);
+            });
+        }
     }
 }
