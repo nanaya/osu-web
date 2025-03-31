@@ -2,15 +2,16 @@
     Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
     See the LICENCE file in the repository root for full licence text.
 --}}
-@extends('rankings.index')
-
 @php
-    $variants = App\Models\Beatmap::VARIANTS[$mode] ?? null;
+    use App\Http\Controllers\RankingController;
 
+    $variants = App\Models\Beatmap::VARIANTS[$mode] ?? null;
     if ($variants !== null) {
         array_unshift($variants, 'all');
     }
 @endphp
+
+@extends('rankings.index')
 
 @section('ranking-header')
     <div class="osu-page osu-page--ranking-info">
@@ -49,6 +50,24 @@
     </div>
 @endsection
 
+@section('scores-header')
+    <div class="sort">
+        <div class="sort__items">
+            <div class="sort__item sort__item--title">
+                {{ osu_trans('sort._') }}
+            </div>
+            @foreach ([['performance', 'performance'], ['score', 'ranked_score']] as $newSort)
+                <a
+                    class="{{ class_with_modifiers('sort__item', 'button', ['active' => $newSort[0] === $sort]) }}"
+                    href="{{ RankingController::url('global', $mode, $country, sort: $newSort[0], filter: $filter, variant: $variant) }}"
+                >
+                    {{ osu_trans("rankings.stat.{$newSort[1]}") }}
+                </a>
+            @endforeach
+        </div>
+    </div>
+@endsection
+
 @section('scores')
     <table class="ranking-page-table">
         <thead>
@@ -64,7 +83,10 @@
                 <th class="ranking-page-table__heading">
                     {{ osu_trans('rankings.stat.play_count') }}
                 </th>
-                <th class="ranking-page-table__heading ranking-page-table__heading--focused">
+                <th class="{{ class_with_modifiers('ranking-page-table__heading', ['focused' => $sort === 'score']) }}">
+                    {{ osu_trans('rankings.stat.ranked_score') }}
+                </th>
+                <th class="{{ class_with_modifiers('ranking-page-table__heading', ['focused' => $sort === 'performance']) }}">
                     {{ osu_trans('rankings.stat.performance') }}
                 </th>
                 <th class="ranking-page-table__heading ranking-page-table__heading--grade">
@@ -145,7 +167,10 @@
                     <td class="ranking-page-table__column ranking-page-table__column--dimmed">
                         {{ i18n_number_format($score->playcount) }}
                     </td>
-                    <td class="ranking-page-table__column ranking-page-table__column--focused">
+                    <td class="{{ class_with_modifiers('ranking-page-table__column', [$sort === 'score' ? 'focused' : 'dimmed']) }}">
+                        {{ i18n_number_format($score->ranked_score) }}
+                    </td>
+                    <td class="{{ class_with_modifiers('ranking-page-table__column', [$sort === 'performance' ? 'focused' : 'dimmed']) }}">
                         {{ i18n_number_format(round($score->rank_score)) }}
                     </td>
                     <td class="ranking-page-table__column ranking-page-table__column--dimmed">

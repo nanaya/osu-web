@@ -33,12 +33,19 @@ class RankingController extends Controller
 
     const MAX_RESULTS = 10000;
     const PAGE_SIZE = Model::PER_PAGE;
-    const RANKING_TYPES = ['performance', 'charts', 'score', 'country', 'team'];
+    const RANKING_TYPES = [
+        'charts',
+        'country',
+        'global',
+        'team',
+
+        'performance', // deprecated
+        'score', // deprecated
+    ];
     const SPOTLIGHT_TYPES = ['charts'];
     // in display order
     const TYPES = [
-        'performance',
-        'score',
+        'global',
         'country',
         'team',
         'multiplayer',
@@ -68,9 +75,9 @@ class RankingController extends Controller
             $mode = $this->params['mode'] ?? null;
             $type = $this->params['type'] ?? null;
 
-            $this->params['filter'] = $this->params['filter'] ?? null;
+            $this->params['filter'] ??= null;
+            $this->params['variant'] = null;
             $this->friendsOnly = auth()->check() && $this->params['filter'] === 'friends';
-            $this->setVariantParam();
 
             $this->defaultViewVars = array_merge([
                 'hasPager' => !in_array($type, static::SPOTLIGHT_TYPES, true),
@@ -79,7 +86,7 @@ class RankingController extends Controller
             ], $this->params);
 
             if ($mode === null) {
-                return ujs_redirect(route('rankings', ['mode' => default_mode(), 'type' => 'performance']));
+                return ujs_redirect(route('rankings', ['mode' => default_mode(), 'type' => 'global']));
             }
 
             if (!Beatmap::isModeValid($mode)) {
@@ -87,14 +94,17 @@ class RankingController extends Controller
             }
 
             if ($type === null) {
-                return ujs_redirect(route('rankings', ['mode' => $mode, 'type' => 'performance']));
+                return ujs_redirect(route('rankings', ['mode' => $mode, 'type' => 'global']));
             }
 
             if (!in_array($type, static::RANKING_TYPES, true)) {
                 abort(404);
             }
 
-            if (isset($this->params['country']) && static::hasCountryFilter($type)) {
+            // Explicitly include deprecated performance and score type here.
+            // Actual type will be adjusted later.
+            $hasCountryFilter = in_array($type, ['global', 'performance', 'score'], true);
+            if (isset($this->params['country']) && $hasCountryFilter) {
                 $this->countryStats = CountryStatistics::where('display', 1)
                     ->where('country_code', $this->params['country'])
                     ->where('mode', Beatmap::modeInt($mode))
@@ -108,7 +118,7 @@ class RankingController extends Controller
             }
 
             $this->defaultViewVars['country'] = $this->country;
-            if (static::hasCountryFilter($type)) {
+            if ($hasCountryFilter) {
                 $this->defaultViewVars['countries'] = json_collection(
                     Country::whereHasRuleset($mode)->get(),
                     new SelectOptionTransformer(),
@@ -125,6 +135,8 @@ class RankingController extends Controller
         ?Country $country = null,
         ?Spotlight $spotlight = null,
         ?string $sort = null,
+        ?string $filter = null,
+        ?string $variant = null,
     ): string {
         return match ($type) {
             'country' => route('rankings', ['mode' => $rulesetName, 'type' => $type]),
@@ -133,18 +145,17 @@ class RankingController extends Controller
             'multiplayer' => route('multiplayer.rooms.show', ['room' => 'latest']),
             'seasons' => route('seasons.show', ['season' => 'latest']),
             default => route('rankings', [
-                'country' => $country !== null && static::hasCountryFilter($type) ? $country->getKey() : null,
                 'mode' => $rulesetName,
                 'sort' => $sort,
                 'spotlight' => $spotlight !== null && $type === 'charts' ? $spotlight->getKey() : null,
                 'type' => $type,
+                ...($type === 'global' ? [
+                    'country' => $country?->getKey(),
+                    'filter' => $filter,
+                    'variant' => $variant,
+                ] : []),
             ]),
         };
-    }
-
-    private static function hasCountryFilter(string $type): bool
-    {
-        return $type === 'performance' || $type === 'score';
     }
 
     /**
@@ -159,19 +170,37 @@ class RankingController extends Controller
      * Returns [Rankings](#rankings)
      *
      * @urlParam mode string required [Ruleset](#ruleset). Example: mania
-     * @urlParam type string required [RankingType](#rankingtype). Example: performance
+     * @urlParam type string required [RankingType](#rankingtype). Example: global
      *
-     * @queryParam country string Filter ranking by country code. Only available for `type` of `performance`. Example: JP
+     * @queryParam country string Filter ranking by country code. Only available for `type` of `global`. Example: JP
      * @queryParam cursor [Cursor](#cursor). No-example
      * @queryParam filter Either `all` (default) or `friends`. Example: all
      * @queryParam spotlight The id of the spotlight if `type` is `charts`. Ranking for latest spotlight will be returned if not specified. No-example
-     * @queryParam variant Filter ranking to specified mode variant. For `mode` of `mania`, it's either `4k` or `7k`. Only available for `type` of `performance`. Example: 4k
+     * @queryParam variant Filter ranking to specified mode variant. For `mode` of `mania`, it's either `4k` or `7k`. Only available for `type` of `global`. Example: 4k
      */
     public function index($mode, $type, ?string $sort = null)
     {
         if ($type === 'charts') {
             return $this->spotlight($mode);
         }
+
+        $isApi = is_api_request();
+        if ($type === 'performance' || $type === 'score') {
+            $sort = $type;
+            $type = 'global';
+
+            if (!$isApi) {
+                return ujs_redirect(route('rankings', [
+                    'country' => $this->country?->getKey(),
+                    'filter' => $this->params['filter'],
+                    'mode' => $mode,
+                    'sort' => $sort,
+                    'type' => $type,
+                    'variant' => $this->params['variant'],
+                ]));
+            }
+        }
+        $sort = $sort === 'score' ? 'score' : 'performance';
 
         $modeInt = Beatmap::modeInt($mode);
 
@@ -181,7 +210,6 @@ class RankingController extends Controller
                 ->where('mode', $modeInt)
                 ->orderBy('performance', 'desc');
         } elseif ($type === 'team') {
-            $sort = $sort === 'score' ? 'score' : 'performance';
             $sortColumn = $sort === 'score' ? 'ranked_score' : 'performance';
             $stats = TeamStatistics::where('ranked_score', '>', 0)
                 ->where('ruleset_id', $modeInt)
@@ -190,6 +218,9 @@ class RankingController extends Controller
                 ->with('team')
                 ->orderBy($sortColumn, 'desc');
         } else {
+            if (!Beatmap::isVariantValid($mode, $this->params['variant'])) {
+                $this->params['variant'] = null;
+            }
             $class = UserStatistics\Model::getClass($mode, $this->params['variant']);
             $table = (new $class())->getTable();
             $stats = $class
@@ -199,31 +230,21 @@ class RankingController extends Controller
                     $userQuery->default();
                 });
 
-            if ($type === 'performance') {
-                if ($this->country !== null) {
-                    $stats->where('country_acronym', $this->country['acronym']);
-                    // preferrable to rank_score when filtering by country.
-                    // On a few countries the default index is slightly better but much worse on the rest.
-                    $forceIndex = 'country_acronym_2';
-                } else {
-                    // force to order by rank_score instead of sucking down entire users table first.
-                    $forceIndex = 'rank_score';
-                }
-
-                $stats->orderBy('rank_score', 'desc');
-            } else { // 'score'
-                if ($this->country !== null) {
-                    $stats->where('country_acronym', $this->country['acronym']);
-                    // preferrable to ranked_score when filtering by country.
-                    // On a few countries the default index is slightly better but much worse on the rest.
-                    $forceIndex = 'country_ranked_score';
-                } else {
-                    // force to order by ranked_score instead of sucking down entire users table first.
-                    $forceIndex = 'ranked_score';
-                }
-
-                $stats->orderBy('ranked_score', 'desc');
+            if ($this->country === null) {
+                // force to order by rank(ed)_score instead of sucking down entire users table first.
+                $forceIndex = $sort === 'performance'
+                    ? 'rank_score'
+                    : 'ranked_score';
+            } else {
+                $stats->where('country_acronym', $this->country['acronym']);
+                // preferrable to rank(ed)_score when filtering by country.
+                // On a few countries the default index is slightly better but much worse on the rest.
+                $forceIndex = $sort === 'performance'
+                    ? 'country_acronym_2'
+                    : 'country_ranked_score';
             }
+            $sortColumn = $sort === 'score' ? 'ranked_score' : 'rank_score';
+            $stats->orderBy($sortColumn, 'desc');
 
             if ($this->friendsOnly) {
                 $stats->friendsOf(auth()->user());
@@ -246,7 +267,8 @@ class RankingController extends Controller
             ->get();
 
         $showRankChange =
-            $type === 'performance' &&
+            $type === 'global' &&
+            $sort === 'performance' &&
             $this->country === null &&
             !$this->friendsOnly &&
             $this->params['variant'] === null;
@@ -261,7 +283,7 @@ class RankingController extends Controller
             }
         }
 
-        if (is_api_request()) {
+        if ($isApi) {
             switch ($type) {
                 case 'country':
                     $ranking = json_collection($stats, 'CountryStatistics', ['country']);
@@ -455,18 +477,5 @@ class RankingController extends Controller
         }
 
         return $maxResults;
-    }
-
-    private function setVariantParam()
-    {
-        $variant = presence($this->params['variant'] ?? null);
-        $type = $this->params['type'] ?? null;
-        $mode = $this->params['mode'] ?? null;
-
-        if ($type !== 'performance' || !Beatmap::isVariantValid($mode, $variant)) {
-            $variant = null;
-        }
-
-        $this->params['variant'] = $variant;
     }
 }

@@ -9,8 +9,10 @@
     $country ??= null;
     $sort ??= null;
     $spotlight ??= null;
+    $filter ??= null;
+    $variant ??= null;
     $rankingUrl = fn (string $type, string $rulesetName) =>
-        RankingController::url($type, $rulesetName, $country, $spotlight, $sort);
+        RankingController::url($type, $rulesetName, $country, $spotlight, $sort, $filter, $variant);
 
     $links = [];
     foreach (RankingController::TYPES as $tab) {
