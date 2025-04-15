@@ -159,6 +159,9 @@ jobs:
           php artisan es:index-documents --no-interaction
           php artisan es:index-wiki --create-only --no-interaction
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Generate docs
         run: php artisan scribe:generate
 
