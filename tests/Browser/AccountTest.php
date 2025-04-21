@@ -37,6 +37,7 @@ class AccountTest extends DuskTestCase
 
             $browserMain->visit('/_dusk/verify')
                 ->visitRoute('account.edit')
+                ->waitFor('.js-password-update')
                 ->type('.js-password-update input[name="user[current_password]"]', $password)
                 ->type('.js-password-update input[name="user[password]"]', $newPassword)
                 ->type('.js-password-update input[name="user[password_confirmation]"]', $newPassword)
