@@ -14,7 +14,6 @@ use App\Models\Beatmap;
 use App\Models\Beatmapset;
 use App\Models\Follow;
 use App\Models\Solo;
-use App\Models\Tag;
 use App\Models\User;
 use Ds\Set;
 
@@ -413,23 +412,22 @@ class BeatmapsetSearch extends RecordSearch
             return;
         }
 
-        // workaround multi tag parsing when there's an empty tag.
-        $tags = array_reject_null($tags);
-
-        $tagMap = [];
+        $byType = ['exact' => [], 'fuzzy' => []];
         foreach ($tags as $tag) {
-            $key = mb_strtolower(mb_trim($tag, '"'));
-            $tagMap[$key] = $tag;
+            if ($tag !== null) {
+                if ($tag[0] === '"') {
+                    $byType['exact'][] = mb_trim($tag, '"');
+                } else {
+                    $byType['fuzzy'][] = $tag;
+                }
+            }
         }
 
-        $exactTags = Tag::whereIn('name', array_keys($tagMap))->limit(10)->pluck('name');
-
-        foreach ($exactTags as $tag) {
-            $query->filter(['term' => ['beatmaps.top_tags.raw' => $tag]]);
-            unset($tagMap[mb_strtolower($tag)]);
+        foreach ($byType['exact'] as $tag) {
+            $query->filter(['term' => ['beatmaps.top_tags.raw' => ['case_insensitive' => true, 'value' => $tag]]]);
         }
 
-        foreach (array_values($tagMap) as $tag) {
+        foreach ($byType['fuzzy'] as $tag) {
             $query->filter(QueryHelper::queryString($tag, ['beatmaps.top_tags'], 'and'));
         }
     }
