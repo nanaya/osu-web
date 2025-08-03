@@ -161,13 +161,12 @@ class RoomsController extends Controller
         $params = request()->all();
         $params['user'] = auth()->user();
 
-        $includes = ['host.country', 'playlist.beatmap'];
-
         $search = Room::search($params);
-
         $rooms = $search['query']
-            ->with($includes)
-            ->withRecentParticipantIds()
+            ->with([
+                'host.country',
+                'playlist' => fn ($q) => $q->whereHas('beatmap')->with('beatmap'),
+            ])->withRecentParticipantIds()
             ->get();
         Room::preloadRecentParticipants($rooms);
 
