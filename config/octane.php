@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Listeners\OctaneResetLocalCache;
 use App\Providers\AppServiceProvider;
 use Laravel\Octane\Contracts\OperationTerminated;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * All the automated casting in model requires mysqlnd.
  * This function check is inspired by

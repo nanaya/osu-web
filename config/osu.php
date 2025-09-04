@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $profileScoresNotice = presence(env('USER_PROFILE_SCORES_NOTICE'));
 if ($profileScoresNotice !== null) {
     $profileScoresNotice = markdown_plain($profileScoresNotice);

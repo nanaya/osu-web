@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $configOsu = include __DIR__.'/osu.php';
 
 return [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'notification_channel' => env('STORE_NOTIFICATION_CHANNEL'),
     'running_cost' => (int) presence(env('OSU_RUNNING_COST'), 3141592), // arbritary default >_>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'allow_restricted_users' => get_bool(env('STORE_ALLOW_RESTRICTED_USERS')) ?? false,
     'mail' => [

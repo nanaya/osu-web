@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $s3Default = [
     'bucket' => env('S3_BUCKET'),
     'driver' => 's3',

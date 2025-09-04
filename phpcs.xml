@@ -79,7 +79,6 @@
     <rule ref="SlevomatCodingStandard.PHP.UselessParentheses"/>
     <rule ref="SlevomatCodingStandard.PHP.UselessSemicolon"/>
     <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
-        <include-pattern>database/migrations/*</include-pattern>
         <properties>
             <property name="declareOnFirstLine" type="boolean" value="false"/>
             <property name="linesCountBeforeDeclare" value="1"/>
