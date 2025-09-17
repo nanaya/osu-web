@@ -33,6 +33,11 @@ Route::group(['middleware' => ['web']], function () {
         });
     });
 
+    Route::resource('authenticator-app', 'UserTotpController', ['only' => ['create', 'store']]);
+    Route::get('authenticator-app/edit', 'UserTotpController@edit')->name('authenticator-app.edit');
+    Route::delete('authenticator-app', 'UserTotpController@destroy')->name('authenticator-app.destroy');
+    Route::post('authenticator-app/issue-uri', 'UserTotpController@issueUri')->name('authenticator-app.issue-uri');
+
     Route::group(['prefix' => 'beatmaps'], function () {
         // featured artists
         Route::group(['as' => 'artists.', 'prefix' => 'artists'], function () {
@@ -227,6 +232,7 @@ Route::group(['middleware' => ['web']], function () {
             Route::resource('sessions', 'Account\SessionsController', ['only' => ['destroy']]);
             Route::get('verify', 'AccountController@verifyLink');
             Route::post('verify', 'AccountController@verify')->name('verify');
+            Route::post('verify/mail-fallback', 'AccountController@verificationMailFallback')->name('verify.mail-fallback');
             Route::put('/', 'AccountController@update')->name('update');
 
             Route::get('github-users/callback', 'Account\GithubUsersController@callback')->name('github-users.callback');
@@ -422,6 +428,7 @@ Route::group(['as' => 'api.', 'prefix' => 'api', 'middleware' => ['api', Throttl
     Route::group(['prefix' => 'v2'], function () {
         Route::group(['middleware' => ['require-scopes:any']], function () {
             Route::post('session/verify', 'AccountController@verify')->name('verify');
+            Route::post('session/verify/mail-fallback', 'AccountController@verificationMailFallback')->name('verify.mail-fallback');
             Route::post('session/verify/reissue', 'AccountController@reissueCode')->name('verify.reissue');
         });
 
