@@ -15,7 +15,7 @@ class CreatorFilterTest extends TestCase
     public static function dataProvider(): array
     {
         return [
-            'include lookup user' => [['q' => 'creator=mapper'], [0, 1]],
+            'include lookup user' => [['q' => 'creator=mapper'], [1, 0]],
             'include non-lookup user' => [['q' => 'creator=someone'], [0, 3]],
         ];
     }

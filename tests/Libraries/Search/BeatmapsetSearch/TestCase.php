@@ -76,7 +76,7 @@ abstract class TestCase extends BaseTestCase
     #[DataProvider('dataProvider')]
     public function testSearch(array $params, array $expected): void
     {
-        $this->assertEqualsCanonicalizing(
+        $this->assertEquals(
             array_map(fn (int $index) => static::$beatmapsets[$index]->getKey(), $expected),
             new BeatmapsetSearch(new BeatmapsetSearchRequestParams($params))->response()->ids()
         );

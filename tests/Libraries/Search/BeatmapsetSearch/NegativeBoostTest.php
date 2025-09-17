@@ -7,10 +7,7 @@ declare(strict_types=1);
 
 namespace Tests\Libraries\Search\BeatmapsetSearch;
 
-use App\Libraries\Search\BeatmapsetSearch;
-use App\Libraries\Search\BeatmapsetSearchRequestParams;
 use App\Models\Beatmapset;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 class NegativeBoostTest extends TestCase
 {
@@ -36,14 +33,5 @@ class NegativeBoostTest extends TestCase
             ];
         });
         parent::setUpBeforeClass();
-    }
-
-    #[DataProvider('dataProvider')]
-    public function testSearch(array $params, array $expected): void
-    {
-        $this->assertEquals(
-            array_map(fn (int $index) => static::$beatmapsets[$index]->getKey(), $expected),
-            new BeatmapsetSearch(new BeatmapsetSearchRequestParams($params))->response()->ids()
-        );
     }
 }

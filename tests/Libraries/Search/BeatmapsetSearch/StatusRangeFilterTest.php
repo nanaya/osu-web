@@ -32,7 +32,7 @@ class StatusRangeFilterTest extends TestCase
             [['s' => 'any', 'q' => 'status=loved'], [6]],
 
             // weird, but still...
-            [['q' => 'status>ranked'], [4, 6]],
+            [['q' => 'status>ranked'], [6, 4]],
             [['s' => 'qualified', 'q' => 'status>ranked'], [5]],
             [['s' => 'ranked', 'q' => 'status>ranked'], [4]],
         ];

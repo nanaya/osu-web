@@ -15,7 +15,7 @@ class QueryStringTest extends TestCase
     {
         // TODO: support scoring order in tests.
         return [
-            [['q' => ''], [0, 1, 2, 3]],
+            [['q' => ''], [3, 2, 1, 0]],
             [['q' => '2'], [1]], // id only search.
             [['q' => '2 3'], []], // putting more than one id becomes a normal string search.
             [['q' => 'triangles'], [0, 1, 3]],
@@ -26,7 +26,7 @@ class QueryStringTest extends TestCase
             [['q' => 'tri'], [0, 1, 3]],
             [['q' => 'tri -circ'], [0, 1, 3]],
             [['q' => 'tri -circle'], [0, 1, 3]],
-            [['q' => '-tri'], [0, 1, 2, 3]],
+            [['q' => '-tri'], [3, 2, 1, 0]],
         ];
     }
 
@@ -34,7 +34,7 @@ class QueryStringTest extends TestCase
     {
         static::withDbAccess(function () {
             // use something besides empty string so it doesn't match empty string.
-            $factory = Beatmapset::factory()->state(['artist' => 'a', 'creator' => 'a'])->ranked()->withBeatmaps();
+            $factory = Beatmapset::factory()->state(['favourite_count' => 0, 'artist' => 'a', 'creator' => 'a'])->ranked()->withBeatmaps();
             static::$beatmapsets = [
                 $factory->create(['title' => 'Triangles']),
                 $factory->create(['title' => 'Triangles Revival']),

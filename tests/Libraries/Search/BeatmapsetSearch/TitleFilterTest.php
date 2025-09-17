@@ -14,17 +14,17 @@ class TitleFilterTest extends TestCase
     public static function dataProvider(): array
     {
         return [
-            [['q' => 'best'], [0, 1, 2, 3, 4]],
-            [['q' => 'best beatmap'], [0, 1, 2, 3, 4]],
-            [['q' => '"best beatmap"'], [1, 2, 3]],
+            [['q' => 'best'], [0, 4, 3, 2, 1]],
+            [['q' => 'best beatmap'], [3, 2, 1, 0, 4]],
+            [['q' => '"best beatmap"'], [3, 2, 1]],
             [['q' => '-best'], []],
             [['q' => '-best -beatmap'], []],
-            [['q' => '-"best beatmap"'], [0, 4]],
+            [['q' => '-"best beatmap"'], [4, 0]],
 
-            [['q' => 'title=best'], [0, 1, 2, 3]],
-            [['q' => 'title="best beatmap"'], [1, 2, 3]],
+            [['q' => 'title=best'], [0, 3, 2, 1]],
+            [['q' => 'title="best beatmap"'], [3, 2, 1]],
             [['q' => 'title="the beatmap"'], [1, 2]],
-            [['q' => 'title=""best beatmap""'], [1, 2, 3]],
+            [['q' => 'title=""best beatmap""'], [3, 2, 1]],
             [['q' => 'title=""the beatmap""'], []],
         ];
     }
@@ -32,13 +32,19 @@ class TitleFilterTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         static::withDbAccess(function () {
-            $factory = Beatmapset::factory()->ranked()->withBeatmaps();
+            $factory = Beatmapset::factory()->ranked()->withBeatmaps()->state([
+                'artist' => 'an artist',
+                'creator' => 'a creator',
+                'favourite_count' => 0,
+                'tags' => '',
+                'title' => 'a title',
+            ]);
             static::$beatmapsets = [
                 $factory->create(['title' => 'best']),
                 $factory->create(['title' => 'the best beatmap']),
                 $factory->create(['title' => 'the best beatmap', 'title_unicode' => 'ダ best beatmap']),
                 $factory->create(['title' => 'best beatmap']),
-                $factory->create(['artist' => 'the best artist']),
+                $factory->create(['artist' => 'best artist']),
             ];
         });
 
