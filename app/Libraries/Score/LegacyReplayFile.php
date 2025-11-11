@@ -53,8 +53,8 @@ class LegacyReplayFile implements ScoreReplayFileInterface
      */
     public function headerChunk(): string
     {
-        $legacyScore = $this->score->legacyScore();
-        $version = $legacyScore->replayViewCount?->version ?? static::DEFAULT_VERSION;
+        $legacyScore = $this->score->legacyScore;
+        $version = $this->score->legacyReplayViewCount?->version ?? static::DEFAULT_VERSION;
         $beatmap = $legacyScore->beatmap()->withTrashed()->first();
 
         if ($beatmap === null) {

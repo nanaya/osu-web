@@ -29,6 +29,7 @@ use App\Traits\Memoizes;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\CollectedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use LaravelRedis;
 
 /**
@@ -157,6 +158,16 @@ class Score extends Model implements Traits\ReportableInterface
         return $this->belongsTo(Build::class, 'build_id');
     }
 
+    public function legacyScore(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'legacy_score_type', 'legacy_score_best_id');
+    }
+
+    public function legacyReplayViewCount(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'legacy_replay_view_count_type', 'legacy_score_best_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -271,12 +282,29 @@ class Score extends Model implements Traits\ReportableInterface
             'is_perfect_combo' => $this->isPerfectCombo(),
             'legacy_perfect' => $this->isPerfectLegacyCombo(),
 
+            'legacy_replay_view_count_type' => $this->getLegacyReplayViewCountType(),
+            'legacy_score_best_id' => $this->getLegacyScoreBestId(),
+            'legacy_score_type' => $this->getLegacyScoreType(),
+
             'beatmap',
             'build',
+            'legacyReplayViewCount',
+            'legacyScore',
             'performance',
             'processHistory',
             'reportedIn',
             'user' => $this->getRelationValue($key),
+        };
+    }
+
+    #[\Override]
+    public function getAttributeFromArray($key)
+    {
+        return match ($key) {
+            'legacy_replay_view_count_type',
+            'legacy_score_best_id',
+            'legacy_score_type' => $this->getAttribute($key),
+            default => parent::getAttributeFromArray($key),
         };
     }
 
@@ -402,17 +430,6 @@ class Score extends Model implements Traits\ReportableInterface
         $this->collection ??= new ScoreCollection([$this]);
 
         return $this->getKey() <= $this->collection->lastProcessedScoreId();
-    }
-
-    public function legacyScore(): ?LegacyScore\Best\Model
-    {
-        return $this->memoize(__FUNCTION__, function () {
-            $id = $this->legacy_score_id;
-
-            return $id === null || $id === 0
-                ? null
-                : LegacyScore\Best\Model::getClass($this->getMode())::find($id);
-        });
     }
 
     public function makeLegacyEntry(): LegacyScore\Model
@@ -554,6 +571,23 @@ class Score extends Model implements Traits\ReportableInterface
             'reason' => 'Cheating',
             'user_id' => $this->user_id,
         ];
+    }
+
+    private function getLegacyScoreBestId(): ?int
+    {
+        $bestId = $this->legacy_score_id;
+
+        return $bestId === null || $bestId === 0 ? null : $bestId;
+    }
+
+    private function getLegacyReplayViewCountType(): ?string
+    {
+        return 'legacy_replay_view_count_'.Beatmap::modeStr($this->ruleset_id);
+    }
+
+    private function getLegacyScoreType(): ?string
+    {
+        return 'score_best_'.Beatmap::modeStr($this->ruleset_id);
     }
 
     /**

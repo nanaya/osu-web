@@ -82,16 +82,22 @@ class RemoveBeatmapsetSoloScores implements ShouldQueue
         return [new WithoutOverlapping((string) $this->beatmapsetId, $this->timeout, $this->timeout)];
     }
 
-    private function deleteLegacyScoreReplayFiles(Collection $scores): void
+    private function deleteLegacyScores(Collection $scores): void
     {
-        $deletedReplayIds = [];
+        $deletedIds = [];
+        $deletedLegacyIds = [];
         foreach ($scores as $score) {
             if ($score->isLegacy()) {
                 $score->replayFile()?->delete();
-                $deletedReplayIds[] = $score->getKey();
+                $deletedIds[] = $score->getKey();
+                $deletedLegacyIds[$score->ruleset_id][] = $score->legacy_score_best_id;
             }
         }
-        Score::whereKey($deletedReplayIds)->update(['has_replay' => false]);
+        Score::whereKey($deletedIds)->update(['has_replay' => false]);
+
+        foreach ($deletedLegacyIds as $rulesetId => $legacyIds) {
+            $ruleset;
+        }
     }
 
     private function deleteScores(Collection $scores): void

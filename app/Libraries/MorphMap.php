@@ -16,6 +16,7 @@ use App\Models\Forum;
 use App\Models\LegacyMatch;
 use App\Models\Multiplayer\ScoreLink as MultiplayerScoreLink;
 use App\Models\NewsPost;
+use App\Models\ReplayViewCount as LegacyReplayViewCount;
 use App\Models\Score;
 use App\Models\Solo;
 use App\Models\Team;
@@ -33,6 +34,10 @@ class MorphMap
         Forum\Post::class => 'forum_post',
         Forum\Topic::class => 'forum_topic',
         LegacyMatch\Score::class => 'legacy_match_score',
+        LegacyReplayViewCount\Fruits::class => 'legacy_replay_view_count_fruits',
+        LegacyReplayViewCount\Mania::class => 'legacy_replay_view_count_mania',
+        LegacyReplayViewCount\Osu::class => 'legacy_replay_view_count_osu',
+        LegacyReplayViewCount\Taiko::class => 'legacy_replay_view_count_taiko',
         Message::class => 'message',
         MultiplayerScoreLink::class => 'multiplayer_score_link',
         NewsPost::class => 'news_post',
