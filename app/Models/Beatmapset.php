@@ -139,6 +139,8 @@ class Beatmapset extends Model implements AfterCommit, Commentable, Indexable, T
         'video' => 'boolean',
     ];
 
+    protected $visible = ['beatmapset_id','title','artist'];
+
     const HYPEABLE_STATES = [-1, 0, 3];
 
     const MAX_FIELD_LENGTHS = [

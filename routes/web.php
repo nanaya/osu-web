@@ -339,6 +339,8 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::group(['as' => 'users.', 'prefix' => 'users/{user}'], function () {
         Route::get('extra-pages/{page}', 'UsersController@extraPages')->name('extra-page');
+        Route::get('e/2025', 'UsersController@summary')->name('summary');
+        Route::post('e/2025', 'UsersController@summary')->name('generateSummary');
         Route::put('page', 'UsersController@updatePage')->name('page');
         Route::group(['namespace' => 'Users'], function () {
             Route::resource('{typeGroup}', 'MultiplayerController', ['only' => 'index'])->where(['typeGroup' => 'multiplayer|playlists|quickplay|realtime'])->names('multiplayer');
@@ -357,6 +359,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('beatmapsets/{type}', 'UsersController@beatmapsets')->name('beatmapsets');
     });
 
+    Route::get('users/{user}/summary/{year}', 'UsersController@summary')->name('users.summary');
     Route::get('users/{user}/posts', 'UsersController@posts')->name('users.posts');
     Route::get('users/{user}/{mode?}', 'UsersController@show')->name('users.show');
     Route::resource('users', 'UsersController', ['only' => ['store']]);

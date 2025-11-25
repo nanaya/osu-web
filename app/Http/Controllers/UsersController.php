@@ -21,6 +21,7 @@ use App\Models\IpBan;
 use App\Models\Log;
 use App\Models\User;
 use App\Models\UserAccountHistory;
+use App\Models\UserSummary;
 use App\Transformers\CurrentUserTransformer;
 use App\Transformers\ScoreTransformer;
 use App\Transformers\UserCompactTransformer;
@@ -680,6 +681,32 @@ class UsersController extends Controller
             set_opengraph($user, 'show', $currentMode);
 
             return ext_view('users.show', compact('initialData', 'mode', 'user'));
+        }
+    }
+
+    public function summary(string $id, string $year): array
+    {
+        if ($year !== '2025') {
+            abort(403);
+        }
+        $targetUser = User::findOrFail($id);
+        $currentUser = \Auth::user();
+
+        $sum = UserSummary::firstOrCreate(
+            [
+                'user_id' => $targetUser->getKey(),
+                'start_time' => \Carbon\CarbonImmutable::now()->setYear((int) $year)->startOfYear(),
+            ],
+            ['share_key' => 0]
+        );
+
+        return $sum->generate();
+
+        if ($targetUser->getKey() !== $currentUser?->getKey()) {
+            $shareKey = get_params(request('share'));
+            if (!hash_equals($stats->share_key, $shareKey)) {
+                abort(403);
+            }
         }
     }
 
