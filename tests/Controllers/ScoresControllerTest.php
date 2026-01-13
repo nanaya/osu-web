@@ -22,9 +22,9 @@ class ScoresControllerTest extends TestCase
     private User $user;
     private User $otherUser;
 
-    private static function getLegacyScoreReplayViewCount(ScoreBest\Model $legacyScore): int
+    private static function getLegacyScoreReplayViewCount(Score $score): int
     {
-        return $legacyScore->replayViewCount()->first()?->play_count ?? 0;
+        return $score->legacyReplayViewCount()->first()?->play_count ?? 0;
     }
 
     private static function getScoreReplayViewCount(Score $score): int
@@ -122,7 +122,7 @@ class ScoresControllerTest extends TestCase
     {
         [$legacyScore, $score] = $this->createLegacyScore();
 
-        $this->expectCountChange(fn () => static::getLegacyScoreReplayViewCount($legacyScore), 0);
+        $this->expectCountChange(fn () => static::getLegacyScoreReplayViewCount($score), 0);
         $this->expectCountChange(fn () => static::getScoreReplayViewCount($score), 0);
         $this->expectCountChange(fn () => static::getUserReplayPopularity($score), 0);
         $this->expectCountChange(fn () => static::getUserReplaysWatchedCount($score), 0);
@@ -138,7 +138,7 @@ class ScoresControllerTest extends TestCase
     {
         [$legacyScore, $score] = $this->createLegacyScore();
 
-        $this->expectCountChange(fn () => static::getLegacyScoreReplayViewCount($legacyScore), 1);
+        $this->expectCountChange(fn () => static::getLegacyScoreReplayViewCount($score), 1);
         $this->expectCountChange(fn () => static::getScoreReplayViewCount($score), 1);
         $this->expectCountChange(fn () => static::getUserReplayPopularity($score), 1);
         $this->expectCountChange(fn () => static::getUserReplaysWatchedCount($score), 1);

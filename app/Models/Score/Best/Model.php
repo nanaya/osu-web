@@ -137,22 +137,6 @@ abstract class Model extends BaseModel implements Traits\ReportableInterface
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * This doesn't delete the score in elasticsearch.
-     */
-    public function delete()
-    {
-        $result = $this->getConnection()->transaction(function () {
-            $this->replayViewCount?->delete();
-
-            return parent::delete();
-        });
-
-        $this->replayFile()?->delete();
-
-        return $result;
-    }
-
     protected function newReportableExtraParams(): array
     {
         return [

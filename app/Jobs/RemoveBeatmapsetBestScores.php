@@ -54,7 +54,7 @@ class RemoveBeatmapsetBestScores implements ShouldQueue
             $class = Model::getClass($mode);
             // Just delete until no more matching rows.
             $query = $class
-                ::with('user')
+                ::select('score_id')
                 ->whereIn('beatmap_id', $beatmapIds)
                 ->where('score_id', '<=', $this->maxScoreIds[$mode] ?? 0)
                 ->orderBy('score', 'ASC')
@@ -62,7 +62,7 @@ class RemoveBeatmapsetBestScores implements ShouldQueue
             $scores = $query->get();
 
             while ($scores->count() > 0) {
-                $scores->each->delete();
+                $class::whereKey($scores->pluck('score_id'))->delete();
                 $scores = $query->get();
             }
         }
