@@ -56,6 +56,9 @@ jobs:
       - name: Spin up Docker dev environment
         run: ./bin/docker_dev.sh -d
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Wait for migrations to be done
         run: docker compose logs -t -f migrator
 

@@ -49,7 +49,6 @@ fi
 if [ ! -f storage/oauth-public.key ]; then
     echo "Generating passport key pair"
     _run artisan passport:keys
-    chmod 644 storage/oauth-public.key
 fi
 
 if [ ! -f .docker/.my.cnf ]; then
