@@ -298,7 +298,7 @@ function css_var_2x(string $key, ?string $url): ?HtmlString
 
 function current_locale_meta(): LocaleMeta
 {
-    return locale_meta(app()->getLocale());
+    return locale_meta(locale_get());
 }
 
 function cursor_decode($cursorString): ?array
@@ -468,6 +468,19 @@ function img2x(array $attributes)
 function locale_meta(string $locale): LocaleMeta
 {
     return LocaleMeta::find($locale);
+}
+
+function locale_get(): string
+{
+    return $GLOBALS['cfg']['app']['locale'];
+}
+
+function locale_set(string $locale): void
+{
+    App::setLocale($locale);
+    // Carbon setLocale normalizes the locale
+    Carbon\Carbon::setLocale($locale === 'sr' ? 'sr_Cyrl' : $locale);
+    $GLOBALS['cfg']['app']['locale'] = $locale;
 }
 
 function prefix_strings(string $prefix, array $strings): array
@@ -1130,7 +1143,7 @@ function wiki_url($path = null, $locale = null, $api = null, $fullUrl = true)
 
     $params = [
         'path' => 'WIKI_PATH',
-        'locale' => $locale ?? App::getLocale(),
+        'locale' => $locale ?? locale_get(),
     ];
 
     if ($api ?? is_api_request()) {
@@ -1280,7 +1293,7 @@ function footer_landing_links()
 
 function footer_legal_links(): array
 {
-    $locale = app()->getLocale();
+    $locale = locale_get();
 
     $ret = [];
     $ret['rules'] = wiki_url('Rules');
@@ -1341,7 +1354,7 @@ function i18n_date(
     ?string $pattern = null,
 ) {
     $formatter = IntlDateFormatter::create(
-        App::getLocale(),
+        locale_get(),
         $format,
         IntlDateFormatter::NONE
     );
@@ -1357,7 +1370,7 @@ function i18n_date(
 
 function i18n_date_auto(DateTimeInterface $date, string $skeleton): string
 {
-    $locale = App::getLocale();
+    $locale = locale_get();
     $generator = new IntlDatePatternGenerator($locale);
     $pattern = $generator->getBestPattern($skeleton);
 
@@ -1372,11 +1385,11 @@ function i18n_number_format($number, $style = null, $pattern = null, $precision 
 
     if ($style === null && $pattern === null && $precision === null) {
         static $formatters = [];
-        $locale ??= App::getLocale();
+        $locale ??= locale_get();
         $formatter = $formatters[$locale] ??= new NumberFormatter($locale, NumberFormatter::DEFAULT_STYLE);
     } else {
         $formatter = new NumberFormatter(
-            $locale ?? App::getLocale(),
+            $locale ?? locale_get(),
             $style ?? NumberFormatter::DEFAULT_STYLE,
             $pattern
         );
@@ -1892,7 +1905,7 @@ function first_paragraph($html, $split_on = "\n")
 // e.g. 100634983048665 -> 100.63 trillion
 function suffixed_number_format(float|int $number, ?string $locale = null): string
 {
-    $locale ??= App::getLocale();
+    $locale ??= locale_get();
 
     static $formatters = [];
 

@@ -8,11 +8,11 @@
     use App\Transformers\UserCompactTransformer;
 
     $members = [];
-    foreach ($team->members->sortBy('user.username', SORT_STRING | SORT_FLAG_CASE) as $member) {
-        $user = $member->userOrDeleted();
+    //foreach ($team->members->sortBy('user.username', SORT_STRING | SORT_FLAG_CASE) as $member) {
+    foreach (array_reject_null($team->members->map->visibleUser()) as $user) {
         if ($user->getKey() === $team->leader_id) {
             $leader = $user;
-        } elseif (!($user instanceof DeletedUser)) {
+        } else {
             $members[] = $user;
         }
     }
@@ -23,7 +23,7 @@
         UserCompactTransformer::CARD_INCLUDES,
     );
     $leader = json_item(
-        $leader ?? $team->members()->make(['user_id' => $team->leader_id])->userOrDeleted(),
+        $leader ?? $team->leaderOrDeleted(),
         $userTransformer,
         UserCompactTransformer::CARD_INCLUDES,
     );

@@ -3,7 +3,7 @@
     See the LICENCE file in the repository root for full licence text.
 --}}
 @php
-    $userLocale = app()->getLocale();
+    $userLocale = locale_get();
     $displayLocaleMeta = locale_meta($displayLocale);
 
     $menuLocales = $availableLocales->copy();

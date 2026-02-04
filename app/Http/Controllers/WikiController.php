@@ -140,7 +140,7 @@ class WikiController extends Controller
     public function sitemap($locale)
     {
         if (!LocaleMeta::isValid($locale)) {
-            return ujs_redirect(route('wiki.sitemap', ['locale' => app()->getLocale()]));
+            return ujs_redirect(route('wiki.sitemap', ['locale' => locale_get()]));
         }
 
         return ext_view('wiki.sitemap', [

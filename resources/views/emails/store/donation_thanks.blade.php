@@ -16,9 +16,9 @@ If you have any questions or feedback, don't hesitate to reply to this mail; I'l
 
 Regards,
 Dean Herbert (peppy)
-@if (app()->getLocale() !== 'en'
-    && trans_exists('mail.donation_thanks.keep_free', app()->getLocale())
-    && trans_exists('mail.donation_thanks.support.first', app()->getLocale())
+@if (locale_get() !== 'en'
+    && trans_exists('mail.donation_thanks.keep_free', locale_get())
+    && trans_exists('mail.donation_thanks.support.first', locale_get())
 )
 
 {!! osu_trans('mail.donation_thanks.translation') !!}

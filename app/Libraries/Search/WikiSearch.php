@@ -5,7 +5,6 @@
 
 namespace App\Libraries\Search;
 
-use App;
 use App\Libraries\Elasticsearch\BoolQuery;
 use App\Libraries\Elasticsearch\Highlight;
 use App\Libraries\Elasticsearch\RecordSearch;
@@ -58,7 +57,7 @@ class WikiSearch extends RecordSearch
                 'boost' => 1000,
                 'filter' => [
                     'match' => [
-                        'locale' => $this->params->locale ?? App::getLocale(),
+                        'locale' => $this->params->locale ?? locale_get(),
                     ],
                 ],
             ]])

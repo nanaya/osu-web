@@ -5,7 +5,6 @@
 
 namespace App\Http\Controllers;
 
-use App;
 use App\Http\Middleware\VerifyUserAlways;
 use App\Libraries\LocaleMeta;
 use App\Models\Log;
@@ -55,6 +54,6 @@ abstract class Controller extends BaseController
 
     protected function locale()
     {
-        return LocaleMeta::sanitizeCode(request('locale')) ?? App::getLocale();
+        return LocaleMeta::sanitizeCode(request('locale')) ?? locale_get();
     }
 }

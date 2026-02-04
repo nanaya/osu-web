@@ -4,7 +4,7 @@
 --}}
 @php
     $appUrl = $GLOBALS['cfg']['app']['url'];
-    $currentLocale = App::getLocale();
+    $currentLocale = locale_get();
     $fallbackLocale = $GLOBALS['cfg']['app']['fallback_locale'];
     $opengraph = Request::instance()->attributes->get('opengraph');
 

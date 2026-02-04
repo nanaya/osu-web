@@ -41,7 +41,7 @@ class UserNotificationDigest extends Mailable
 
                 if (
                     $this->user->getKey() === $notification->source_user_id
-                    && trans_exists("{$baseKey}_self", app()->getLocale())
+                    && trans_exists("{$baseKey}_self", locale_get())
                 ) {
                     $baseKey = "{$baseKey}_self";
                 }

@@ -124,7 +124,7 @@
                 <p>
                     {!! osu_trans('users.create.form.tos_notice._', [
                         'link' => link_to(
-                            route('legal', ['locale' => app()->getLocale(), 'path' => 'Terms']),
+                            route('legal', ['locale' => locale_get(), 'path' => 'Terms']),
                             osu_trans('users.create.form.tos_notice.link'),
                             ['target' => '_blank']
                         ),

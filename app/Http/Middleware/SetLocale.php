@@ -5,10 +5,8 @@
 
 namespace App\Http\Middleware;
 
-use App;
 use App\Libraries\AcceptHttpLanguage\Parser;
 use Auth;
-use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -39,9 +37,7 @@ class SetLocale
         }
         $locale ??= $this->localeFromHeader($request);
 
-        App::setLocale($locale);
-        // Carbon setLocale normalizes the locale
-        Carbon::setLocale($locale === 'sr' ? 'sr_Cyrl' : $locale);
+        locale_set($locale);
     }
 
     private function localeFromHeader(Request $request): string

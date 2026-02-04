@@ -1010,7 +1010,7 @@ class UsersController extends Controller
         $countryCode = request_country();
         $params['user_ip'] = $ip;
         $params['country_acronym'] = $countryCode;
-        $params['user_lang'] = \App::getLocale();
+        $params['user_lang'] = \locale_get();
 
         $registration = new UserRegistration($params);
 

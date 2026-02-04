@@ -5,7 +5,6 @@
 
 namespace Tests;
 
-use App;
 use App\Models\User;
 
 class LocaleTest extends TestCase
@@ -28,7 +27,7 @@ class LocaleTest extends TestCase
             'key_1.empty_missing' => '',
         ], $fallbackLocale);
 
-        app()->setLocale($fallbackLocale);
+        locale_set($fallbackLocale);
         $this->assertSame('key_1.missing', osu_trans('key_1.missing'));
         $this->assertSame('test', osu_trans('key_1.simple'));
         $this->assertSame('test: stuff', osu_trans('key_1.keyed', ['value' => 'stuff']));
@@ -48,7 +47,7 @@ class LocaleTest extends TestCase
         ], $incompleteLocale);
 
         app('translator')->setFallback($fallbackLocale);
-        app()->setLocale($incompleteLocale);
+        locale_set($incompleteLocale);
         $this->assertSame('key_1.missing', osu_trans('key_1.missing'));
         $this->assertSame('テスト', osu_trans('key_1.simple'));
         $this->assertSame('test 2', osu_trans('key_1.simple_empty'));
@@ -91,7 +90,7 @@ class LocaleTest extends TestCase
             ->withHeaders(['accept-language' => 'ja;q=0.6,es,en-US;q=0.8'])
             ->get(route('api.changelog.index'));
 
-        $this->assertSame('es', App::getLocale());
+        $this->assertSame('es', locale_get());
     }
 
     public function testLocaleApiWithAcceptHeaderMagicRespectsUserLang()
@@ -102,7 +101,7 @@ class LocaleTest extends TestCase
             ->withHeaders(['accept-language' => '*'])
             ->get(route('api.changelog.index'));
 
-        $this->assertSame('de', App::getLocale());
+        $this->assertSame('de', locale_get());
     }
 
     public function testLocaleApiWithAcceptHeaderOverridesUserLang()
@@ -113,7 +112,7 @@ class LocaleTest extends TestCase
             ->withHeaders(['accept-language' => 'ja;q=0.6,es,en-US;q=0.8'])
             ->get(route('api.changelog.index'));
 
-        $this->assertSame('es', App::getLocale());
+        $this->assertSame('es', locale_get());
     }
 
     public function testLocaleWebWithAcceptHeader()
@@ -122,7 +121,7 @@ class LocaleTest extends TestCase
             ->withHeaders(['accept-language' => 'ja;q=0.6,es,en-US;q=0.8'])
             ->get('/');
 
-        $this->assertSame('es', App::getLocale());
+        $this->assertSame('es', locale_get());
     }
 
     public function testLocaleWebWithAcceptHeaderAndGuestCookie()
@@ -132,7 +131,7 @@ class LocaleTest extends TestCase
             ->withHeaders(['accept-language' => 'id;q=0.6,pt,en-US;q=0.8'])
             ->get('/');
 
-        $this->assertSame('ja', App::getLocale());
+        $this->assertSame('ja', locale_get());
     }
 
     public function testLocaleWebWithAcceptHeaderAndUserLang()
@@ -142,7 +141,7 @@ class LocaleTest extends TestCase
             ->withHeaders(['accept-language' => 'ja;q=0.6,es,en-US;q=0.8'])
             ->get('/');
 
-        $this->assertSame('fr', App::getLocale());
+        $this->assertSame('fr', locale_get());
     }
 
     public static function availableLocalesProvider()

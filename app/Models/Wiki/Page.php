@@ -113,7 +113,7 @@ class Page implements WikiObject
                 'boost' => 1000,
                 'filter' => [
                     'match' => [
-                        'locale' => $locale ?? app()->getLocale(),
+                        'locale' => $locale ?? locale_get(),
                     ],
                 ],
             ]];

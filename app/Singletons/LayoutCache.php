@@ -15,13 +15,13 @@ class LayoutCache
 
     public function getBeatmapsetFilters(): string
     {
-        return $this->memoize(__FUNCTION__.':'.app()->getLocale(), fn () =>
+        return $this->memoize(__FUNCTION__.':'.locale_get(), fn () =>
             view('beatmapsets._filters')->render());
     }
 
     public function getLocalesDesktop(): string
     {
-        $currentLocale = app()->getLocale();
+        $currentLocale = locale_get();
         $key = __FUNCTION__.':'.$currentLocale;
 
         return $this->memoize($key, fn () =>
@@ -32,7 +32,7 @@ class LayoutCache
 
     public function getLocalesLanding(): string
     {
-        $currentLocale = app()->getLocale();
+        $currentLocale = locale_get();
         $key = __FUNCTION__.':'.$currentLocale;
 
         return $this->memoize($key, fn () =>
@@ -43,7 +43,7 @@ class LayoutCache
 
     public function getLocalesMobile(): string
     {
-        $currentLocale = app()->getLocale();
+        $currentLocale = locale_get();
         $key = __FUNCTION__.':'.$currentLocale;
 
         return $this->memoize($key, fn () =>

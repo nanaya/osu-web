@@ -22,7 +22,7 @@
                         osu_trans('users.disabled.reasons.tos.community_rules')
                     ),
                     'tos' => link_to(
-                        route('legal', ['locale' => app()->getLocale(), 'path' => 'terms']),
+                        route('legal', ['locale' => locale_get(), 'path' => 'terms']),
                         osu_trans('users.disabled.reasons.tos.tos')
                     ),
                 ]) !!}

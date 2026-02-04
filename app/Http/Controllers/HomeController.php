@@ -5,7 +5,6 @@
 
 namespace App\Http\Controllers;
 
-use App;
 use App\Libraries\CurrentStats;
 use App\Libraries\MenuContent;
 use App\Libraries\Search\AllSearch;
@@ -240,7 +239,7 @@ class HomeController extends Controller
     public function setLocale()
     {
         $newLocale = get_valid_locale(Request::input('locale')) ?? $GLOBALS['cfg']['app']['fallback_locale'];
-        App::setLocale($newLocale);
+        locale_set($newLocale);
 
         if (Auth::check()) {
             Auth::user()->update([
