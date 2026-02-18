@@ -7,6 +7,7 @@ import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers, Modifiers } from 'utils/css';
 import { trans } from 'utils/lang';
+import PopupMenuState from './popup-menu-state';
 
 interface Props {
   leaderUsername: string;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export default function TeamExtraMenu(props: Props) {
+  const popupMenuState = React.useMemo(() => new PopupMenuState(), []);
   if (core.currentUser?.team?.id === props.teamId) return null;
 
   const modifiers = props.modifiers ?? ['page-toggle', 'page-toggle-detail'];
@@ -24,19 +26,17 @@ export default function TeamExtraMenu(props: Props) {
       className={classWithModifiers('btn-circle', modifiers)}
       title={trans('common.buttons.show_more_options')}
     >
-      <PopupMenu>
-        {(dismiss) => (
-          <div className='simple-menu'>
-            <ReportReportable
-              className='simple-menu__item'
-              icon
-              onFormOpen={dismiss}
-              reportableId={props.teamId.toString()}
-              reportableType='team'
-              user={{ username: props.leaderUsername }}
-            />
-          </div>
-        )}
+      <PopupMenu state={popupMenuState}>
+        <div className='simple-menu'>
+          <ReportReportable
+            className='simple-menu__item'
+            icon
+            onFormOpen={popupMenuState.dismiss}
+            reportableId={props.teamId.toString()}
+            reportableType='team'
+            user={{ username: props.leaderUsername }}
+          />
+        </div>
       </PopupMenu>
     </div>
   );

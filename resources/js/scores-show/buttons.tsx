@@ -2,6 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { PopupMenuPersistent } from 'components/popup-menu-persistent';
+import PopupMenuState from 'components/popup-menu-state';
 import { ReportReportable } from 'components/report-reportable';
 import ScorePin from 'components/score-pin';
 import { ScoreJsonForShow } from 'interfaces/score-json';
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export default function Buttons(props: Props) {
+  const popupMenuState = React.useMemo(() => new PopupMenuState(), []);
   const visibleMenuItems = new Set<string>();
 
   if (canBeReported(props.score)) {
@@ -39,27 +41,25 @@ export default function Buttons(props: Props) {
 
       {visibleMenuItems.size > 0 && (
         <div className='score-buttons__menu'>
-          <PopupMenuPersistent>
-            {(dismiss: () => void) => (
-              <div className='simple-menu'>
-                {visibleMenuItems.has('pin') &&
+          <PopupMenuPersistent state={popupMenuState}>
+            <div className='simple-menu'>
+              {visibleMenuItems.has('pin') &&
                   <ScorePin
                     className='simple-menu__item'
-                    onUpdate={dismiss}
+                    onUpdate={popupMenuState.dismiss}
                     score={props.score}
                   />
-                }
-                {visibleMenuItems.has('report') &&
+              }
+              {visibleMenuItems.has('report') &&
                   <ReportReportable
                     className='simple-menu__item'
-                    onFormOpen={dismiss}
+                    onFormOpen={popupMenuState.dismiss}
                     reportableId={props.score.id.toString()}
                     reportableType={props.score.type}
                     user={props.score.user}
                   />
-                }
-              </div>
-            )}
+              }
+            </div>
           </PopupMenuPersistent>
         </div>
       )}

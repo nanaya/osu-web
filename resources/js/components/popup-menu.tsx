@@ -1,50 +1,51 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+import { makeObservable, action, reaction } from 'mobx';
+import { observer } from 'mobx-react';
 import * as React from 'react';
 import { TooltipContext } from 'tooltip-context';
 import { classWithModifiers } from 'utils/css';
 import { isModalShowing } from 'utils/modal-helper';
 import { nextVal } from 'utils/seq';
+import PopupMenuState from './popup-menu-state';
 import Portal from './portal';
 
-type Children = (dismiss: () => void) => React.ReactNode;
-
 export interface Props {
-  children: Children;
-  customRender?: (children: React.ReactNode, ref: React.RefObject<HTMLElement>, toggle: (event: React.MouseEvent<HTMLElement>) => void) => React.ReactNode;
+  children: React.ReactNode;
   direction?: 'left' | 'right';
   onHide?: () => void;
   onShow?: () => void;
+  state: PopupMenuState;
+  withButton?: boolean;
 }
 
-type DefaultProps = Required<Pick<Props, 'children' | 'direction'>>;
+type DefaultProps = Required<Pick<Props, 'direction' | 'withButton'>>;
 type PropsWithDefaults = Props & DefaultProps;
 
-interface State {
-  active: boolean;
-}
-
-export default class PopupMenu extends React.PureComponent<PropsWithDefaults, State> {
+@observer
+export default class PopupMenu extends React.PureComponent<PropsWithDefaults> {
   static readonly contextType = TooltipContext;
   static readonly defaultProps: DefaultProps = {
-    children: () => null,
     direction: 'left',
+    withButton: true,
   };
 
   declare context: React.ContextType<typeof TooltipContext>;
-  state: Readonly<State> = { active: false };
 
-  private readonly buttonRef = React.createRef<HTMLButtonElement>();
+  private activeStateUpdated = false;
+  private readonly disposers: (() => void)[] = [];
   private readonly eventId = `popup-menu-${nextVal()}`;
-  private readonly menuRef = React.createRef<HTMLDivElement>();
-  private readonly menuRootRef = React.createRef<HTMLDivElement>();
   private tooltipHideEvent: unknown;
 
   private get $tooltipElement() {
     const el = this.tooltipElement;
 
     return el == null ? null : $(el);
+  }
+
+  private get mobxState() {
+    return this.props.state;
   }
 
   private get tooltipElement() {
@@ -54,12 +55,26 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
   componentDidMount() {
     this.tooltipHideEvent = this.$tooltipElement?.qtip('option', 'hide.event');
     $(window).on(`resize.${this.eventId}`, this.resize);
+
+    makeObservable(this);
+
+    this.disposers.push(
+      reaction(
+        () => this.mobxState.active,
+        () => {
+          this.activeStateUpdated = true;
+        },
+
+      ),
+    );
   }
 
-  componentDidUpdate(_prevProps: PropsWithDefaults, prevState: State) {
-    if (prevState.active === this.state.active) return;
-
-    if (this.state.active) {
+  componentDidUpdate() {
+    if (!this.activeStateUpdated) {
+      return;
+    }
+    this.activeStateUpdated = false;
+    if (this.mobxState.active) {
       this.resize();
       const $tooltipElement = this.$tooltipElement;
 
@@ -81,35 +96,30 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
   componentWillUnmount() {
     $(document).off(`.${this.eventId}`);
     $(window).off(`.${this.eventId}`);
+    this.disposers.map((d) => d());
   }
 
   render() {
-    if (this.props.customRender) {
-      return this.props.customRender(this.renderMenu(), this.buttonRef, this.toggle);
-    }
+    return this.props.withButton
+      ? (
+        <>
+          <button
+            ref={this.mobxState.setButtonRef}
+            className='popup-menu'
+            onClick={this.mobxState.toggle}
+            type='button'
+          >
+            <span className='fas fa-ellipsis-v' />
+          </button>
 
-    return (
-      <>
-        <button
-          ref={this.buttonRef}
-          className='popup-menu'
-          onClick={this.toggle}
-          type='button'
-        >
-          <span className='fas fa-ellipsis-v' />
-        </button>
-
-        {this.renderMenu()}
-      </>
-    );
+          {this.renderMenu()}
+        </>
+      ) : this.renderMenu();
   }
 
-  private readonly dismiss = () => {
-    this.setState({ active: false });
-  };
-
+  @action
   private readonly hide = (e: JQuery.ClickEvent | JQuery.KeyDownEvent) => {
-    if (!this.state.active || isModalShowing()) return;
+    if (!this.mobxState.active || isModalShowing()) return;
 
     const event = e.originalEvent;
 
@@ -117,13 +127,12 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
     if (event == null) return;
 
     if (('key' in event && event.key === 'Escape') || ('button' in event && event.button === 0 && !this.isMenuInPath(event.composedPath()))) {
-      this.setState({ active: false });
+      this.mobxState.dismiss();
     }
   };
 
   private isMenuInPath(path: EventTarget[]) {
-    for (const ref of ['menuRootRef', 'buttonRef'] as const) {
-      const el = this[ref].current;
+    for (const el of [this.mobxState.menuRootRef.current, this.mobxState.buttonRefCurrent] as const) {
       if (el != null && path.includes(el)) {
         return true;
       }
@@ -134,13 +143,13 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
 
   private renderMenu() {
     // using fadeIn causes rendering glitches from the stacking context due to will-change
-    if (!this.state.active) return null;
+    if (!this.mobxState.active) return null;
 
     return (
       <Portal>
-        <div ref={this.menuRootRef}>
-          <div ref={this.menuRef} className={classWithModifiers('popup-menu-float', this.props.direction)}>
-            {this.props.children(this.dismiss)}
+        <div ref={this.mobxState.menuRootRef}>
+          <div ref={this.mobxState.menuRef} className={classWithModifiers('popup-menu-float', this.props.direction)}>
+            {this.props.children}
           </div>
         </div>
       </Portal>
@@ -148,11 +157,11 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
   }
 
   private readonly resize = () => {
-    if (!this.state.active) return;
+    if (!this.mobxState.active) return;
 
-    const buttonEl = this.buttonRef.current;
-    const menuEl = this.menuRef.current;
-    const menuRootEl = this.menuRootRef.current;
+    const buttonEl = this.mobxState.buttonRefCurrent;
+    const menuEl = this.mobxState.menuRef.current;
+    const menuRootEl = this.mobxState.menuRootRef.current;
     if (buttonEl == null || menuEl == null || menuRootEl == null) {
       throw new Error('missing button and/or menu element');
     }
@@ -188,9 +197,5 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
     if (tooltipElement != null) {
       menuRootEl.style.zIndex = getComputedStyle(tooltipElement).zIndex;
     }
-  };
-
-  private readonly toggle = () => {
-    this.setState({ active: !this.state.active });
   };
 }

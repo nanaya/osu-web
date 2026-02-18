@@ -2,9 +2,15 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import PopupMenu from 'components/popup-menu';
+import PopupMenuState from 'components/popup-menu-state';
+import { observer } from 'mobx-react';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { SlateContext } from './slate-context';
+
+function noop() {
+  // noop
+}
 
 export interface MenuItem {
   icon: React.ReactNode;
@@ -20,47 +26,46 @@ interface Props {
   selected: string;
 }
 
+@observer
 export default class IconDropdownMenu extends React.Component<Props> {
   static contextType = SlateContext;
   declare context: React.ContextType<typeof SlateContext>;
 
-  render(): React.ReactNode {
-    return (
-      <PopupMenu customRender={this.renderButton} direction='right'>
-        {() => (
-          <div className='simple-menu simple-menu--popup-menu-compact'>
-            {this.props.menuOptions.map(this.renderMenuItem)}
-          </div>
-        )}
-      </PopupMenu>
-    );
-  }
+  private readonly popupMenuState = new PopupMenuState();
 
-  renderButton = (children: React.ReactNode, ref: React.RefObject<HTMLDivElement>, toggle: (event: React.MouseEvent<HTMLElement>) => void) => {
+  render(): React.ReactNode {
     const selected: MenuItem = this.props.menuOptions.find((option) => option.id === this.props.selected) ?? this.props.menuOptions[0];
     const bn = 'icon-dropdown-menu';
     const mods = [];
+    let toggle = this.popupMenuState.toggle;
 
     if (this.props.disabled) {
-      toggle = () => { /* do nothing */ };
+      toggle = noop;
       mods.push('disabled');
     }
 
     return (
-      <div
-        ref={ref}
-        className={classWithModifiers(bn, mods)}
-        // workaround for slatejs 'Cannot resolve a Slate point from DOM point' nonsense
-        contentEditable={false}
-        onClick={toggle}
-      >
-        {selected.icon}
-        {children}
-      </div>
-    );
-  };
+      <>
+        <div
+          ref={this.popupMenuState.setButtonRef}
+          className={classWithModifiers(bn, mods)}
+          // workaround for slatejs 'Cannot resolve a Slate point from DOM point' nonsense
+          contentEditable={false}
+          onClick={toggle}
+        >
+          {selected.icon}
+        </div>
 
-  renderMenuItem = (menuItem: MenuItem) => (
+        <PopupMenu direction='right' state={this.popupMenuState}>
+          <div className='simple-menu simple-menu--popup-menu-compact'>
+            {this.props.menuOptions.map(this.renderMenuItem)}
+          </div>
+        </PopupMenu>
+      </>
+    );
+  }
+
+  private readonly renderMenuItem = (menuItem: MenuItem) => (
     <button
       key={menuItem.id}
       className={classWithModifiers('simple-menu__item', { active: menuItem.id === this.props.selected })}
@@ -81,7 +86,7 @@ export default class IconDropdownMenu extends React.Component<Props> {
     </button>
   );
 
-  select = (event: React.MouseEvent<HTMLElement>) => {
+  private readonly select = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
 
     const target = event.currentTarget;

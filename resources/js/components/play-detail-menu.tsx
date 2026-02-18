@@ -11,6 +11,7 @@ import * as React from 'react';
 import { trans } from 'utils/lang';
 import { canBeReported, hasReplay, hasShow } from 'utils/score-helper';
 import { PopupMenuPersistent } from './popup-menu-persistent';
+import PopupMenuState from './popup-menu-state';
 import { ReportReportable } from './report-reportable';
 
 interface Props {
@@ -20,50 +21,48 @@ interface Props {
 
 @observer
 export class PlayDetailMenu extends React.Component<Props> {
+  private readonly mobxState = new PopupMenuState();
+
   render() {
     const { score, user } = this.props;
 
-    const children = (dismiss: () => void) => (
-      <div className='simple-menu'>
-        {core.scorePins.canBePinned(score) && (
-          <ScorePin
-            className='simple-menu__item'
-            onUpdate={dismiss}
-            score={score}
-          />
-        )}
-
-        {hasShow(score) && (
-          <a className='simple-menu__item' href={route('scores.show', { score: score.id })}>
-            {trans('users.show.extra.top_ranks.view_details')}
-          </a>
-        )}
-
-        {hasReplay(score) && (
-          <a
-            className='simple-menu__item js-login-required--click'
-            href={route('scores.download', { score: score.id })}
-            onClick={dismiss}
-          >
-            {trans('users.show.extra.top_ranks.download_replay')}
-          </a>
-        )}
-
-        {canBeReported(score) && (
-          <ReportReportable
-            className='simple-menu__item'
-            onFormOpen={dismiss}
-            reportableId={score.id.toString()}
-            reportableType={score.type}
-            user={user}
-          />
-        )}
-      </div>
-    );
-
     return (
-      <PopupMenuPersistent>
-        {children}
+      <PopupMenuPersistent state={this.mobxState}>
+        <div className='simple-menu'>
+          {core.scorePins.canBePinned(score) && (
+            <ScorePin
+              className='simple-menu__item'
+              onUpdate={this.mobxState.dismiss}
+              score={score}
+            />
+          )}
+
+          {hasShow(score) && (
+            <a className='simple-menu__item' href={route('scores.show', { score: score.id })}>
+              {trans('users.show.extra.top_ranks.view_details')}
+            </a>
+          )}
+
+          {hasReplay(score) && (
+            <a
+              className='simple-menu__item js-login-required--click'
+              href={route('scores.download', { score: score.id })}
+              onClick={this.mobxState.dismiss}
+            >
+              {trans('users.show.extra.top_ranks.download_replay')}
+            </a>
+          )}
+
+          {canBeReported(score) && (
+            <ReportReportable
+              className='simple-menu__item'
+              onFormOpen={this.mobxState.dismiss}
+              reportableId={score.id.toString()}
+              reportableType={score.type}
+              user={user}
+            />
+          )}
+        </div>
       </PopupMenuPersistent>
     );
   }
