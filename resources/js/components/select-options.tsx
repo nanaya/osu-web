@@ -11,29 +11,23 @@ const bn = 'select-options';
 
 export interface Option {
   id: string | number | null;
-  text: string | React.ReactNode;
-}
-
-export interface OptionRenderProps<T extends Option> {
-  children: React.ReactNode;
-  cssClasses: string;
-  onClick: (event: React.MouseEvent) => void;
-  option: T;
+  text: string;
 }
 
 interface ComponentOptionRenderProps<T extends Option> {
-  children: OptionRenderProps<T>['children'];
-  onClick: OptionRenderProps<T>['onClick'];
-  option: OptionRenderProps<T>['option'];
+  onClick: (event: React.MouseEvent) => void;
+  option: T;
   selected?: boolean;
+  withChevron: boolean;
 }
 
 interface Props<T extends Option> {
   blackout: boolean;
+  href?: (option: T) => string;
   modifiers?: Modifiers;
   onChange: (option: T) => void;
   options: T[];
-  renderOption?(props: OptionRenderProps<T>): React.ReactNode;
+  renderOption?(option: T): React.ReactNode;
   selected: T;
 }
 
@@ -68,27 +62,13 @@ export default class SelectOptions<T extends Option> extends React.Component<Pro
       this.props.modifiers,
     );
 
-    const text = this.props.selected?.text;
-
     return (
       <div ref={this.ref} className={className}>
         <div className={`${bn}__select`}>
           {this.renderOption({
-            children: (
-              <>
-                {typeof text === 'string' ? (
-                  <div className='u-ellipsis-overflow'>
-                    {text}
-                  </div>
-                ) : text}
-
-                <div className={`${bn}__decoration`}>
-                  <span className='fas fa-chevron-down' />
-                </div>
-              </>
-            ),
             onClick: this.toggleSelector,
             option: this.props.selected,
+            withChevron: true,
           })}
         </div>
 
@@ -116,37 +96,38 @@ export default class SelectOptions<T extends Option> extends React.Component<Pro
     this.props.onChange?.(option);
   };
 
-  private renderOption({ children, onClick, option, selected = false }: ComponentOptionRenderProps<T>) {
+  private renderOption({ onClick, option, selected = false, withChevron }: ComponentOptionRenderProps<T>) {
     const cssClasses = classWithModifiers(`${bn}__option`, { selected });
 
-    if (this.props.renderOption != null) {
-      return this.props.renderOption({ children, cssClasses, onClick, option });
-    }
+    const text = this.props.renderOption == null
+      ? <div className='u-ellipsis-overflow'>{option.text}</div>
+      : this.props.renderOption(option);
 
     return (
       <a
         key={option.id}
         className={cssClasses}
-        href='#'
+        href={this.props.href?.(option)}
         onClick={onClick}
       >
-        {children}
+        {text}
+        {withChevron && (
+          <div className={`${bn}__decoration`}>
+            <span className='fas fa-chevron-down' />
+          </div>
+        )}
       </a>
     );
   }
 
   private renderOptions() {
     return this.props.options.map((option) => this.renderOption({
-      children: (
-        <div className='u-ellipsis-overflow'>
-          {option.text}
-        </div>
-      ),
       onClick: (event: React.MouseEvent) => {
         this.optionSelected(event, option);
       },
       option,
       selected: this.props.selected?.id === option.id,
+      withChevron: false,
     }));
   }
 

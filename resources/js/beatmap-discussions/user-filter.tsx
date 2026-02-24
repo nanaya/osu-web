@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import mapperGroup from 'beatmap-discussions/mapper-group';
-import SelectOptions, { OptionRenderProps } from 'components/select-options';
+import SelectOptions from 'components/select-options';
 import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
 import UserJson from 'interfaces/user-json';
 import { action, computed, makeObservable } from 'mobx';
@@ -84,6 +84,7 @@ export class UserFilter extends React.Component<Props> {
   render() {
     return (
       <SelectOptions
+        href={this.href}
         modifiers='beatmap-discussions-user-filter'
         onChange={this.handleChange}
         options={this.options}
@@ -104,30 +105,21 @@ export class UserFilter extends React.Component<Props> {
     this.props.discussionsState.selectedUserId = option.id;
   };
 
+  private readonly href = (option: Option) => {
+    const urlOptions = parseUrl();
+    // means it doesn't work on non-beatmapset discussion paths
+    if (urlOptions == null) return '';
+
+    urlOptions.user = option.id ?? undefined;
+
+    return makeUrl(urlOptions);
+  };
+
   private isOwner(user?: Option) {
     return user != null && user.id === this.ownerId;
   }
 
-  private readonly renderOption = ({ cssClasses, children, onClick, option }: OptionRenderProps<Option>) => {
-    const group = this.getGroup(option);
-    const style = groupColour(group);
-
-    const urlOptions = parseUrl();
-    // means it doesn't work on non-beatmapset discussion paths
-    if (urlOptions == null) return null;
-
-    urlOptions.user = option.id ?? undefined;
-
-    return (
-      <a
-        key={option.id}
-        className={cssClasses}
-        href={makeUrl(urlOptions)}
-        onClick={onClick}
-        style={style}
-      >
-        {children}
-      </a>
-    );
-  };
+  private readonly renderOption = (option: Option) => (
+    <span className='u-group-colour' style={groupColour(this.getGroup(option))}>{option.text}</span>
+  );
 }

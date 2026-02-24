@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import SelectOptions, { Option, OptionRenderProps } from 'components/select-options';
+import SelectOptions, { Option } from 'components/select-options';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
@@ -48,29 +48,22 @@ export default class RankingFilter extends React.Component<Props> {
           {trans('rankings.countries.title')}
         </div>
         <SelectOptions
+          href={this.href}
           modifiers='ranking'
           onChange={this.onChange}
           options={this.items}
-          renderOption={this.handleRenderOption}
           selected={this.props.currentItem ?? allCountries}
         />
       </div>
     );
   }
 
-  private readonly handleRenderOption = (props: OptionRenderProps<CountryOption>) => (
-    <a
-      key={props.option.id}
-      className={props.cssClasses}
-      href={updateQueryString(null, { country: props.option.id, page: null })}
-      onClick={props.onClick}
-    >
-      {props.children}
-    </a>
+  private readonly href = (option: CountryOption) => (
+    updateQueryString(null, { country: option.id, page: null })
   );
 
   private readonly onChange = (option: CountryOption) => {
-    navigate(updateQueryString(null, { country: option.id, page: null }));
+    navigate(this.href(option));
   };
 }
 

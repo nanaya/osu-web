@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import SelectOptions, { OptionRenderProps } from 'components/select-options';
+import SelectOptions from 'components/select-options';
 import Ruleset from 'interfaces/ruleset';
 import SelectOptionJson from 'interfaces/select-option-json';
 import { route } from 'laroute';
@@ -28,20 +28,20 @@ export default class BasicSelectOptions extends React.PureComponent<Props> {
   render() {
     return (
       <SelectOptions
+        href={this.href}
         modifiers={this.props.modifiers}
         onChange={this.handleChange}
         options={this.props.items}
-        renderOption={this.renderOption}
         selected={this.props.currentItem}
       />
     );
   }
 
   private readonly handleChange = (option: SelectOptionJson) => {
-    navigate(this.href(option.id));
+    navigate(this.href(option));
   };
 
-  private href(id: number | null) {
+  private readonly href = ({ id }: SelectOptionJson) => {
     switch (this.props.type) {
       case 'daily_challenge':
         return route('daily-challenge.show', { daily_challenge: id ?? fail('missing id parameter') });
@@ -56,16 +56,5 @@ export default class BasicSelectOptions extends React.PureComponent<Props> {
       case 'spotlight':
         return updateQueryString(null, { spotlight: id?.toString() });
     }
-  }
-
-  private readonly renderOption = (props: OptionRenderProps<SelectOptionJson>) => (
-    <a
-      key={props.option.id}
-      className={props.cssClasses}
-      href={this.href(props.option.id)}
-      onClick={props.onClick}
-    >
-      {props.children}
-    </a>
-  );
+  };
 }
