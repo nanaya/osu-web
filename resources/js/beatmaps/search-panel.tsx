@@ -58,11 +58,6 @@ export class SearchPanel extends React.Component<Props> {
     return core.beatmapsetSearchController;
   }
 
-  @computed
-  private get queryRaw() {
-    return this.controller.filters.queryRaw;
-  }
-
   constructor(props: Props) {
     super(props);
 
@@ -108,7 +103,7 @@ export class SearchPanel extends React.Component<Props> {
 
   @action
   private readonly onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.controller.filters.update('query', event.target.value);
+    this.controller.setQuery(event.target.value);
   };
 
   // TODO: deprecated event. Update to onbeforeinput once safari adds it on normal enter
@@ -174,7 +169,7 @@ export class SearchPanel extends React.Component<Props> {
             onKeyPress={this.onKeyPress}
             placeholder={trans('beatmaps.listing.search.prompt')}
             type='search'
-            value={this.queryRaw}
+            value={this.controller.query}
           />
           <div className='beatmapsets-search__icon'>
             <i className='fas fa-search' />
@@ -206,7 +201,7 @@ export class SearchPanel extends React.Component<Props> {
             onKeyPress={this.onKeyPress}
             placeholder={trans('beatmaps.listing.search.prompt')}
             type='search'
-            value={this.queryRaw}
+            value={this.controller.query}
           />
           <button
             ref={this.tagPopupMenuState.setButtonRef}

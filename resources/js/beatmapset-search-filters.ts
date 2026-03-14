@@ -2,11 +2,10 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { invert } from 'lodash';
-import { action, computed, intercept, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import core from 'osu-core-singleton';
 import { presence, present } from 'utils/string';
 import { updateQueryString } from 'utils/url';
-import BeatmapTag from './models/beatmap-tag';
 
 export const charToKey: Record<string, FilterKey> = {
   c: 'general',
@@ -55,7 +54,6 @@ export class BeatmapsetSearchFilters {
   @observable nsfw: FilterValueType = null;
   @observable played: FilterValueType = null;
   @observable query: FilterValueType = null;
-  @observable queryRaw: string = '';
   @observable rank: FilterValueType = null;
   @observable sort: FilterValueType = null;
   @observable status: FilterValueType = null;
@@ -97,16 +95,7 @@ export class BeatmapsetSearchFilters {
       this[key] = value === this.getDefault(key) ? null : value;
     }
 
-    this.queryRaw = this.query ?? '';
-
     makeObservable(this);
-
-    intercept(this, 'query', (change) => {
-      this.queryRaw = change.newValue ?? '';
-      change.newValue = presence((change.newValue)?.trim()) ?? null;
-
-      return change;
-    });
   }
 
   getDefault(key: FilterKey) {
@@ -139,36 +128,6 @@ export class BeatmapsetSearchFilters {
     return this[key] ?? this.getDefault(key);
   }
 
-  @action
-  tagAdd(tag: BeatmapTag) {
-    const currentQuery = this.query;
-    const tagString = tag.toQuery();
-
-    // this appends a space at the end of the newly added tag
-    // so that the user may immediately type in new stuff into
-    // the searchbox
-    const newQuery = currentQuery !== null
-      ? `${currentQuery} ${tagString} `
-      : `${tagString} `;
-
-    this.update('query', newQuery);
-  }
-
-  @action
-  tagRemove(tag: BeatmapTag) {
-    const currentQuery = this.query;
-
-    if (currentQuery === null) {
-      return;
-    }
-
-    const newQuery = currentQuery
-      .replace(tag.toQuery(), '')
-      .replace('  ', ' ')
-      .trim();
-    this.update('query', newQuery);
-  }
-
   toKeyString() {
     return keyNames.map((key) => `${key}=${this.selectedValue(key)}`).join('&');
   }
@@ -176,6 +135,9 @@ export class BeatmapsetSearchFilters {
   @action
   update(key: FilterKey, value: FilterValueType) {
     const oldValue = this[key];
+    if (key === 'query') {
+      value = presence(value?.trim());
+    }
     if (value === oldValue) return;
     if (changesResetSorts.includes(key)) {
       this.sort = null;

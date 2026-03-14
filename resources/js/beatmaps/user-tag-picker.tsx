@@ -57,9 +57,9 @@ const UserTag = observer(function UserTag({ tag }: { tag: BeatmapTag }) {
 
   const onClick = useCallback(() => {
     if (!active) {
-      beatmapsetSearchController.filters.tagAdd(tag);
+      beatmapsetSearchController.tagAdd(tag);
     } else {
-      beatmapsetSearchController.filters.tagRemove(tag);
+      beatmapsetSearchController.tagRemove(tag);
     }
   }, [tag, active]);
 

@@ -8,12 +8,12 @@ import BeatmapsetSearchResponse from 'interfaces/beatmapset-search-response';
 import { route } from 'laroute';
 import { debounce, intersection } from 'lodash';
 import { action, computed, IObjectDidChange, Lambda, makeObservable, observable, observe, runInAction } from 'mobx';
+import BeatmapTag from 'models/beatmap-tag';
 import core from 'osu-core-singleton';
 import { trans, transArray } from 'utils/lang';
 import { popup } from 'utils/popup';
 import { updateHistory, currentUrl } from 'utils/turbolinks';
 import { updateQueryString } from 'utils/url';
-
 
 const expandFilters: FilterKey[] = ['genre', 'language', 'extra', 'rank', 'played'];
 
@@ -34,6 +34,7 @@ export class BeatmapsetSearchController {
   @observable currentResultSet = new ResultSet();
   @observable filters!: BeatmapsetSearchFilters;
   @observable isExpanded = false;
+  @observable query = '';
 
   @observable searchStatus: SearchStatus = {
     error: null,
@@ -153,6 +154,39 @@ export class BeatmapsetSearchController {
   }
 
   @action
+  setQuery(value: string) {
+    this.query = value;
+    this.filters.update('query', value);
+  }
+
+  @action
+  tagAdd(tag: BeatmapTag) {
+    const currentQuery = this.query;
+    const tagString = tag.toQuery();
+
+    // this appends a space at the end of the newly added tag
+    // so that the user may immediately type in new stuff into
+    // the searchbox
+    this.setQuery(currentQuery !== ''
+      ? `${currentQuery} ${tagString} `
+      : `${tagString} `);
+  }
+
+  @action
+  tagRemove(tag: BeatmapTag) {
+    const currentQuery = this.query;
+
+    if (currentQuery === '') {
+      return;
+    }
+
+    this.setQuery(currentQuery
+      .replace(tag.toQuery(), '')
+      .replace('  ', ' ')
+      .trim());
+  }
+
+  @action
   private readonly filterChangedHandler = (change: IObjectDidChange<BeatmapsetSearchFilters>) => {
     if (change.type === 'update' && change.oldValue === change.newValue) return;
 
@@ -179,6 +213,7 @@ export class BeatmapsetSearchController {
       this.filtersObserver();
     }
     this.filters = new BeatmapsetSearchFilters(url);
+    this.query = this.filters.query ?? '';
 
     // normalize url
     updateHistory(updateQueryString(null, { ...this.filters.queryParams }), 'replace');
