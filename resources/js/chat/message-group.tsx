@@ -4,7 +4,7 @@
 import UserAvatar from 'components/user-avatar';
 import UserLink from 'components/user-link';
 import Reportable from 'interfaces/reportable';
-import { last } from 'lodash';
+import last from 'lodash/last';
 import { observer } from 'mobx-react';
 import Message from 'models/chat/message';
 import * as moment from 'moment';

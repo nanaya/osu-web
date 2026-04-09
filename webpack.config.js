@@ -86,7 +86,6 @@ const plugins = [
   new ForkTsCheckerWebpackPlugin(),
   new webpack.ProvidePlugin({
     $: 'jquery',
-    _: 'lodash',
     d3: 'd3', // TODO: d3 is fat and probably should have it's own chunk
     jQuery: 'jquery',
     moment: 'moment',

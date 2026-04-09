@@ -13,7 +13,7 @@ export default class FormConfirmation
 
     fields = {}
 
-    if _.endsWith(el.name, '_confirmation') || _.endsWith(el.name, '_confirmation]')
+    if el.name.endsWith('_confirmation') || el.name.endsWith('_confirmation]')
       mainName = el.name.replace /_confirmation(]?)$/, '$1'
 
       fields.confirmation = el

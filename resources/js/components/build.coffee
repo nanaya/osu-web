@@ -6,14 +6,15 @@ import { a, div, i, iframe, span } from 'react-dom-factories'
 import { classWithModifiers } from 'utils/css'
 import { changelogBuild } from 'utils/url'
 import { ChangelogEntry } from './changelog-entry'
+import groupBy from 'lodash/groupBy'
 
 el = React.createElement
 
 export class Build extends React.PureComponent
   render: =>
     blockClass = classWithModifiers 'build', @props.modifiers
-    entries = _.groupBy(@props.build.changelog_entries, 'category')
-    categories = _(entries).keys().sort().value()
+    entries = groupBy(@props.build.changelog_entries, 'category')
+    categories = Object.keys(entries).sort()
 
     div className: "#{blockClass} t-changelog-stream--#{@props.build.update_stream.name}",
       div className: 'build__version',

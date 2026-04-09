@@ -10,7 +10,7 @@ import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussion
 import UserJson from 'interfaces/user-json';
 import WithBeatmapOwners from 'interfaces/with-beatmap-owners';
 import { route } from 'laroute';
-import { xor } from 'lodash';
+import xor from 'lodash/xor';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import { normaliseUsername } from 'models/user';

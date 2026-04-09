@@ -4,7 +4,7 @@
 import CommentsController, { CommentEditMode } from 'components/comments-controller';
 import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
-import { truncate } from 'lodash';
+import truncate from 'lodash/truncate';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import CommentModel from 'models/comment';

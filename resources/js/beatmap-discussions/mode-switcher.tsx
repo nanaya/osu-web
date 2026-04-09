@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import StringWithComponent from 'components/string-with-component';
-import { snakeCase } from 'lodash';
+import snakeCase from 'lodash/snakeCase';
 import { action } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';

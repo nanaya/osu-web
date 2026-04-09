@@ -4,7 +4,7 @@
 import BeatmapsetDiscussionJson, { BeatmapsetDiscussionJsonForBundle, BeatmapsetDiscussionJsonForShow } from 'interfaces/beatmapset-discussion-json';
 import BeatmapsetDiscussionPostJson from 'interfaces/beatmapset-discussion-post-json';
 import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import { findLast } from 'lodash';
+import findLast from 'lodash/findLast';
 import { action, computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import { deletedUserJson } from 'models/user';

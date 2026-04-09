@@ -4,7 +4,7 @@
 import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
 import TagJson from 'interfaces/tag-json';
 import UserJson from 'interfaces/user-json';
-import { keyBy } from 'lodash';
+import keyBy from 'lodash/keyBy';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { deletedUserJson } from 'models/user';
 import core from 'osu-core-singleton';

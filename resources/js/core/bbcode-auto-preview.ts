@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { route } from 'laroute';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { fail } from 'utils/fail';
 import { htmlElementOrNull } from 'utils/html';
 

@@ -16,7 +16,7 @@ import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store'
 import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
 import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { action, autorun, computed, makeObservable, observable, runInAction } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import { deletedUserJson } from 'models/user';

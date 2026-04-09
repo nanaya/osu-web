@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import Portal from 'components/portal';
-import { throttle } from 'lodash';
+import throttle from 'lodash/throttle';
 import * as React from 'react';
 import { Editor, Element, Node, Range } from 'slate';
 import { ReactEditor } from 'slate-react';

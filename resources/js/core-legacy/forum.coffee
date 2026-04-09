@@ -1,6 +1,8 @@
 # Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 # See the LICENCE file in the repository root for full licence text.
 
+import debounce from 'lodash/debounce'
+import throttle from 'lodash/throttle'
 import core from 'osu-core-singleton'
 import { onError } from 'utils/ajax'
 import { blackoutVisible } from 'utils/blackout'
@@ -13,7 +15,7 @@ replaceUrl = (url) ->
   updateHistory url, 'replace'
 
 # browsers have limit on replaceState calls
-debouncedReplaceUrl = _.debounce replaceUrl, 250
+debouncedReplaceUrl = debounce replaceUrl, 250
 
 export default class Forum
   boot: =>
@@ -30,7 +32,7 @@ export default class Forum
     @_postsProgress = document.getElementsByClassName('js-forum__posts-progress')
     @posts = document.getElementsByClassName('js-forum-post')
     @loadMoreLinks = document.getElementsByClassName('js-forum-posts-show-more')
-    @throttledBoot = _.throttle @boot, 100
+    @throttledBoot = throttle @boot, 100
     @refreshCounterPaused = true
 
     @maxPosts = 250
@@ -318,7 +320,7 @@ export default class Forum
 
       if toRemoveStart < toRemoveEnd
         parent = @posts[0].parentNode
-        parent.removeChild(post) for post in _.slice(@posts, toRemoveStart, toRemoveEnd)
+        parent.removeChild(post) for post in @posts.slice(toRemoveStart, toRemoveEnd)
 
       @refreshLoadMoreLinks()
 

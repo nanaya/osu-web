@@ -5,7 +5,7 @@ import BeatmapJson from 'interfaces/beatmap-json';
 import ChangelogBuild from 'interfaces/changelog-build';
 import Ruleset from 'interfaces/ruleset';
 import { route } from 'laroute';
-import { unescape } from 'lodash';
+import unescape from 'lodash/unescape';
 import { generate } from './beatmapset-page-hash';
 import { currentUrl } from './turbolinks';
 

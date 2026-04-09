@@ -4,7 +4,8 @@
 import CommentJson, { CommentableMetaJson, CommentBundleJson } from 'interfaces/comment-json';
 import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
-import { isEqual, last } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import last from 'lodash/last';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import Comment from 'models/comment';
 import core from 'osu-core-singleton';

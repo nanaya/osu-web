@@ -3,6 +3,7 @@
 
 import { BaseEntryList } from './base-entry-list'
 import { Entry } from './entry'
+import maxBy from 'lodash/maxBy'
 import { VoteSummary } from './vote-summary'
 import * as React from 'react'
 import { div,a,i,span } from 'react-dom-factories'
@@ -32,7 +33,7 @@ export class EntryList extends BaseEntryList
         contest: @state.contest,
         selected: @state.selected,
         stdRange: @props.stdRange
-        winnerVotes: if @state.contest.show_votes then _.maxBy(@state.contest.entries, (i) -> i.results.votes).results.votes
+        winnerVotes: if @state.contest.show_votes then maxBy(@state.contest.entries, (i) -> i.results.votes).results.votes
 
     div className: 'contest-voting-list__table',
       div className: 'contest-voting-list__header',

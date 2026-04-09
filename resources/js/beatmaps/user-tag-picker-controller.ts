@@ -4,7 +4,8 @@
 import { ensureRulesetId, RulesetId } from 'interfaces/ruleset';
 import TagJson from 'interfaces/tag-json';
 import { route } from 'laroute';
-import { groupBy, sortBy } from 'lodash';
+import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
 import { action, computed, makeObservable, observable, onBecomeObserved } from 'mobx';
 import BeatmapTag from 'models/beatmap-tag';
 import core from 'osu-core-singleton';

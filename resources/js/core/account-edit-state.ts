@@ -3,7 +3,7 @@
 
 import CurrentUserJson from 'interfaces/current-user-json';
 import { route } from 'laroute';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import OsuCore from 'osu-core';
 import { onError } from 'utils/ajax';
 

@@ -1,7 +1,8 @@
 # Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 # See the LICENCE file in the repository root for full licence text.
 
-import { isEqual } from 'lodash'
+import isEqual from 'lodash/isEqual'
+import pull from 'lodash/pull'
 import { button, span } from 'react-dom-factories'
 import { trans } from 'utils/lang'
 import { nextVal } from 'utils/seq'
@@ -29,10 +30,10 @@ export class BaseEntryList extends React.Component
   handleVoteClick: (_e, {contest_id, entry_id, callback}) =>
     return unless contest_id == @state.contest.id
 
-    selected = _.clone @state.selected
+    selected = @state.selected.slice()
 
-    if _.includes(selected, entry_id)
-      _.pull selected, entry_id
+    if selected.includes(entry_id)
+      pull selected, entry_id
     else
       selected.push entry_id
 

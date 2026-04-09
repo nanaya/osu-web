@@ -6,6 +6,8 @@ import { createElement } from 'react'
 import { parseJson } from 'utils/json'
 import { ArtEntryList } from 'contest-voting/art-entry-list'
 import { EntryList } from 'contest-voting/entry-list'
+import maxBy from 'lodash/maxBy'
+import minBy from 'lodash/minBy'
 
 propsFunction = (container) ->
   data = parseJson container.dataset.src
@@ -15,11 +17,11 @@ propsFunction = (container) ->
     contest: data.contest
     selected: data.userVotes
     stdRange:
-      max: _.maxBy(data.contest.entries, 'results.score_std')?.results.score_std
-      min: _.minBy(data.contest.entries, 'results.score_std')?.results.score_std
+      max: maxBy(data.contest.entries, 'results.score_std')?.results.score_std
+      min: minBy(data.contest.entries, 'results.score_std')?.results.score_std
     options:
       showPreview: data.contest['type'] == 'music'
-      showLink: data.contest['type'] == 'external' || (data.contest['type'] == 'beatmap' && _.some(data.contest.entries, 'preview'))
+      showLink: data.contest['type'] == 'external' || (data.contest['type'] == 'beatmap' && data.contest.entries.some((e) => e.preview))
   }
 
 core.reactTurbolinks.register 'contestArtList', (container) ->

@@ -5,6 +5,7 @@ import GalleryContest from 'gallery-contest'
 import PhotoSwipe from 'photoswipe'
 import PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default'
 import { fadeIn, fadeOut } from 'utils/fade'
+import zip from 'lodash/zip'
 
 export default class Gallery
   constructor: ->
@@ -41,7 +42,7 @@ export default class Gallery
       history: false
       timeToIdle: null
 
-    if _.startsWith(galleryId, 'contest-')
+    if galleryId.startsWith('contest-')
       new GalleryContest(container, pswp)
 
     pswp.init()
@@ -98,7 +99,7 @@ export default class Gallery
     $previews = $(".js-gallery[data-gallery-id='#{galleryId}']")
     $links = $(".js-gallery-thumbnail[data-gallery-id='#{galleryId}']")
 
-    for pair in _.zip($links, $previews)
+    for pair in zip($links, $previews)
       if index == pair[0].dataset.index
         pair[0].classList.add 'js-gallery-thumbnail--active'
         fadeIn pair[1]

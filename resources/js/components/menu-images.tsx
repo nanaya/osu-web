@@ -2,7 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import MenuImageJson from 'interfaces/menu-image-json';
-import { range, shuffle } from 'lodash';
+import range from 'lodash/range';
+import shuffle from 'lodash/shuffle';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';

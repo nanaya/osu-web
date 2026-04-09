@@ -3,7 +3,7 @@
 
 import BigButton from 'components/big-button';
 import InputContainer from 'components/input-container';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';

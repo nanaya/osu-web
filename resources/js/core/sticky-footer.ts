@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { throttle } from 'lodash';
+import throttle from 'lodash/throttle';
 
 // How to use:
 // 1. create a marker on when it should be fixed, with class including

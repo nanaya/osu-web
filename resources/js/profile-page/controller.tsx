@@ -16,7 +16,8 @@ import { ProfileExtraPage, profileExtraPages } from 'interfaces/user-extended-js
 import UserMonthlyPlaycountJson from 'interfaces/user-monthly-playcount-json';
 import UserReplaysWatchedCountJson from 'interfaces/user-replays-watched-count-json';
 import { route } from 'laroute';
-import { debounce, pullAt } from 'lodash';
+import debounce from 'lodash/debounce';
+import pullAt from 'lodash/pullAt';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import core from 'osu-core-singleton';
 import { error, onErrorWithCallback } from 'utils/ajax';

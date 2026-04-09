@@ -8,7 +8,9 @@ import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussion
 import Ruleset from 'interfaces/ruleset';
 import UserJson from 'interfaces/user-json';
 import WithBeatmapOwners from 'interfaces/with-beatmap-owners';
-import { intersectionWith, maxBy, sum } from 'lodash';
+import intersectionWith from 'lodash/intersectionWith';
+import maxBy from 'lodash/maxBy';
+import sum from 'lodash/sum';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { deletedUserJson } from 'models/user';
 import core from 'osu-core-singleton';

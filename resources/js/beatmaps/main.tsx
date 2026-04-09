@@ -5,7 +5,7 @@ import AvailableFilters from 'beatmaps/available-filters';
 import { SearchContent } from 'beatmaps/search-content';
 import BackToTop from 'components/back-to-top';
 import HeaderV4 from 'components/header-v4';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { reaction } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import core from 'osu-core-singleton';

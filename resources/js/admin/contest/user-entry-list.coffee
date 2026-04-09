@@ -19,8 +19,8 @@ export class UserEntryList extends React.Component
       showDeleted: false
 
   updateEntry: (id, deleted) =>
-    newEntries = _.clone(@state.entries)
-    _.find(newEntries, {'id': id}).deleted = deleted
+    newEntries = @state.entries.slice()
+    newEntries.find((e) => e.id == id).deleted = deleted
 
     @setState entries: newEntries
 
@@ -48,16 +48,16 @@ export class UserEntryList extends React.Component
       if @state.showDeleted
         @state.entries
       else
-        _.filter @state.entries, {'deleted': false}
+        @state.entries.filter((e) => !e.deleted)
 
-    deletedEntries = _.filter @state.entries, {'deleted': true}
+    deletedEntries = @state.entries.filter((e) => e.deleted)
 
     div {},
       div className: 'row',
         div className: 'col-md-6',
           h4 {},
             "#{@state.entries.length} Entries"
-            if !_.isEmpty(deletedEntries)
+            if deletedEntries.length > 0
               ", #{deletedEntries.length} Deleted"
 
         div className: 'col-md-6 text-right',

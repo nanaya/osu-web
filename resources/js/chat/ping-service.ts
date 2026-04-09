@@ -5,7 +5,7 @@ import ChatUpdateSilences from 'actions/chat-update-silences';
 import { dispatch } from 'app-dispatcher';
 import { ack } from 'chat/chat-api';
 import AckResponseJson from 'interfaces/chat/ack-response-json';
-import { maxBy } from 'lodash';
+import maxBy from 'lodash/maxBy';
 import ChannelStore from 'stores/channel-store';
 import RetryDelay from 'utils/retry-delay';
 

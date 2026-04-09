@@ -5,6 +5,7 @@ import { onError } from 'utils/ajax'
 import { hideLoadingOverlay, showLoadingOverlay } from 'utils/loading-overlay'
 import { popup } from 'utils/popup'
 import { reloadPage } from 'utils/turbolinks'
+import { present } from 'utils/string'
 
 $(document).on 'ajax:before', ->
   showLoadingOverlay()
@@ -13,7 +14,7 @@ $(document).on 'ajax:before', ->
 
 $(document).on 'ajax:success', (event, data) ->
   showPopup = ->
-    return if _.isEmpty data?.message
+    return if !present(data?.message)
     popup data.message, 'success'
 
   if event.target.getAttribute('data-reload-on-success') == '1'

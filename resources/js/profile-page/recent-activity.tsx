@@ -6,7 +6,7 @@ import ShowMoreLink from 'components/show-more-link';
 import StringWithComponent from 'components/string-with-component';
 import TimeWithTooltip from 'components/time-with-tooltip';
 import EventJson from 'interfaces/event-json';
-import { snakeCase } from 'lodash';
+import snakeCase from 'lodash/snakeCase';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import ExtraHeader from 'profile-page/extra-header';

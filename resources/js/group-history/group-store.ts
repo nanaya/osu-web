@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import GroupJson from 'interfaces/group-json';
-import { sortBy } from 'lodash';
+import sortBy from 'lodash/sortBy';
 import { action, computed, makeObservable, observable } from 'mobx';
 
 class GroupStore {

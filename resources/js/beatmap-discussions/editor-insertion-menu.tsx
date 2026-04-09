@@ -4,7 +4,7 @@
 import { discussionTypeIcons } from 'beatmap-discussions/discussion-type';
 import Portal from 'components/portal';
 import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import { throttle } from 'lodash';
+import throttle from 'lodash/throttle';
 import * as React from 'react';
 import { Editor as SlateEditor, Element as SlateElement, Node as SlateNode, Point, Text as SlateText, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';

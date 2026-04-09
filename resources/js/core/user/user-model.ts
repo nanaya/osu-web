@@ -2,7 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import UserRelationJson from 'interfaces/user-relation-json';
-import { pull, remove } from 'lodash';
+import pull from 'lodash/pull';
+import remove from 'lodash/remove';
 import { action, computed, makeObservable } from 'mobx';
 import OsuCore from 'osu-core';
 import { fail } from 'utils/fail';

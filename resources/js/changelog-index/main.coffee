@@ -11,11 +11,13 @@ import * as React from 'react'
 import { button, div, h1, p, span } from 'react-dom-factories'
 import { jsonClone } from 'utils/json'
 import { trans } from 'utils/lang'
+import groupBy from 'lodash/groupBy'
+import last from 'lodash/last'
 
 el = React.createElement
 
 groupChangelogBuilds = (builds) ->
-  _.groupBy builds, (build) ->
+  groupBy builds, (build) ->
     # Assumes created_at an iso8601 datetime string and removes the time portion.
     # Example: 2018-07-06T05:43:21+00:00
     build.created_at.substr(0, 10)
@@ -78,7 +80,7 @@ export class Main extends React.PureComponent
     return if !@state.hasMore
 
     search = jsonClone @props.data.search
-    search.max_id = _.last(@state.builds).id - 1
+    search.max_id = last(@state.builds).id - 1
     @setState loading: true
 
     $.get route('changelog.index'), search

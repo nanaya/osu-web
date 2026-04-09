@@ -1,7 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { floor, padStart } from 'lodash';
+import floor from 'lodash/floor';
+import padStart from 'lodash/padStart';
 import { CSSProperties } from 'react';
 import { urlPresence } from './css';
 

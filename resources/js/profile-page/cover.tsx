@@ -9,7 +9,7 @@ import UserGroupBadges from 'components/user-group-badges';
 import Ruleset from 'interfaces/ruleset';
 import UserExtendedJson from 'interfaces/user-extended-json';
 import { route } from 'laroute';
-import { times } from 'lodash';
+import times from 'lodash/times';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';

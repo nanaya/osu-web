@@ -6,6 +6,7 @@ import UserLink from 'components/user-link'
 import * as React from 'react'
 import { div, span, a } from 'react-dom-factories'
 import { trans } from 'utils/lang'
+import escape from 'lodash/escape'
 el = React.createElement
 
 icon =
@@ -30,7 +31,7 @@ userLink = (githubUser) ->
     githubUser.display_name
 
 export ChangelogEntry = ({entry}) =>
-  titleHtml = _.escape(entry.title).replace(/(`+)([^`]+)\1/g, '<code>$2</code>')
+  titleHtml = escape(entry.title).replace(/(`+)([^`]+)\1/g, '<code>$2</code>')
 
   div
     className: 'changelog-entry'

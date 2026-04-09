@@ -2,7 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import NotificationJson from 'interfaces/notification-json';
-import { camelCase, forEach } from 'lodash';
+import camelCase from 'lodash/camelCase';
+import forEach from 'lodash/forEach';
 import { computed, makeObservable, observable } from 'mobx';
 import NotificationDetails, { newEmptyNotificationDetails } from 'models/notification-details';
 import { Name } from 'models/notification-type';

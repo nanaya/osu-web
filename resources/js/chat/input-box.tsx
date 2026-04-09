@@ -5,7 +5,7 @@ import { ChatMessageSendAction } from 'actions/chat-message-send-action';
 import { dispatch } from 'app-dispatcher';
 import BigButton from 'components/big-button';
 import TextareaAutosize from 'components/textarea-autosize';
-import { trim } from 'lodash';
+import trim from 'lodash/trim';
 import { action, autorun, computed, makeObservable, reaction } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import { maxMessageLength } from 'models/chat/channel';

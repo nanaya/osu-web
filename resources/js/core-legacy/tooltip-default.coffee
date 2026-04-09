@@ -2,7 +2,7 @@
 # See the LICENCE file in the repository root for full licence text.
 
 import { qtipPosition } from 'utils/qtip-helper'
-import { presence } from 'utils/string'
+import { presence, present } from 'utils/string'
 
 export default class TooltipDefault
   constructor: ->
@@ -18,7 +18,7 @@ export default class TooltipDefault
     el.removeAttribute 'title'
     htmlTitle = presence(el.dataset.htmlTitle)
 
-    return if _.size(title) == 0 && !htmlTitle?
+    return if !present(title) && !htmlTitle?
 
     isTime = el.classList.contains('js-timeago') || el.classList.contains('js-tooltip-time')
 

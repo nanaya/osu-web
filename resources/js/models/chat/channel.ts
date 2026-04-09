@@ -5,7 +5,8 @@ import { markAsRead, getChannel, getChannelUsers, getMessages } from 'chat/chat-
 import ChannelJson, { ChannelType, SupportedChannelType, supportedTypeLookup } from 'interfaces/chat/channel-json';
 import MessageJson from 'interfaces/chat/message-json';
 import UserJson from 'interfaces/user-json';
-import { sortBy, throttle } from 'lodash';
+import sortBy from 'lodash/sortBy';
+import throttle from 'lodash/throttle';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import User from 'models/user';
 import core from 'osu-core-singleton';

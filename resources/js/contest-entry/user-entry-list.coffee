@@ -38,7 +38,7 @@ export class UserEntryList extends React.Component
         contest_id: @state.contest.id,
         locked: !entryOpen
 
-    return null if not entryOpen and _.isEmpty(userEntries)
+    return null if not entryOpen and userEntries.length == 0
 
     div className: 'contest-userentry-list',
       entries

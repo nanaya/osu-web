@@ -4,7 +4,11 @@
 import LazyLoadContext, { Props as ContextProps, Snapshot } from 'components/lazy-load-context';
 import UserProfileContainer from 'components/user-profile-container';
 import { ProfileExtraPage } from 'interfaces/user-extended-json';
-import { pull, last, first, throttle, debounce } from 'lodash';
+import debounce from 'lodash/debounce';
+import first from 'lodash/first';
+import last from 'lodash/last';
+import pull from 'lodash/pull';
+import throttle from 'lodash/throttle';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';

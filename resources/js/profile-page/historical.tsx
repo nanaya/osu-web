@@ -4,7 +4,8 @@
 import LazyLoad from 'components/lazy-load';
 import ProfilePageExtraSectionTitle from 'components/profile-page-extra-section-title';
 import ShowMoreLink from 'components/show-more-link';
-import { sortBy, times } from 'lodash';
+import sortBy from 'lodash/sortBy';
+import times from 'lodash/times';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as moment from 'moment';

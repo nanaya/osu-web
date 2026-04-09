@@ -11,7 +11,7 @@ import BeatmapsetPanel, { beatmapsetCardSizes } from 'beatmapset-panel';
 import Img2x from 'components/img2x';
 import StringWithComponent from 'components/string-with-component';
 import { route } from 'laroute';
-import { chunk } from 'lodash';
+import chunk from 'lodash/chunk';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';

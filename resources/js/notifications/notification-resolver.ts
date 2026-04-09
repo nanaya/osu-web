@@ -4,7 +4,7 @@
 import { dispatch } from 'app-dispatcher';
 import { NotificationBundleJson } from 'interfaces/notification-json';
 import { route } from 'laroute';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { action, makeObservable } from 'mobx';
 import Notification from 'models/notification';
 import NotificationDeletable from 'notifications/notification-deletable';

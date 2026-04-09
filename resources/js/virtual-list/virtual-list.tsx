@@ -4,7 +4,7 @@
 // This is a port of https://github.com/developerdizzle/react-virtual-list updated for React 18
 // using typescript and mobx with other unnecessary parts removed.
 
-import { throttle } from 'lodash';
+import throttle from 'lodash/throttle';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';

@@ -19,7 +19,7 @@ import {
   select,
   Selection,
 } from 'd3';
-import { clamp } from 'lodash';
+import clamp from 'lodash/clamp';
 import core from 'osu-core-singleton';
 import { classWithModifiers, Modifiers } from 'utils/css';
 import { fadeIn, fadeOut } from 'utils/fade';

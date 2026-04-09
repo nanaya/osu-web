@@ -1,6 +1,9 @@
 # Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 # See the LICENCE file in the repository root for full licence text.
 
+import isEqual from 'lodash/isEqual'
+import last from 'lodash/last'
+
 export default class FancyChart
   constructor: (area) ->
     @options = scales:
@@ -42,7 +45,7 @@ export default class FancyChart
 
 
   loadData: (data) =>
-    return if _.isEqual data, @data
+    return if isEqual data, @data
 
     @data = data ? []
     @svgLine.datum @data
@@ -76,7 +79,7 @@ export default class FancyChart
       .x (d) => @options.scales.x d.x
       .y (d) => @options.scales.y d.y
 
-    lastPoint = _.last(@data)
+    lastPoint = last(@data)
 
     if lastPoint?
       @svgEndCircle

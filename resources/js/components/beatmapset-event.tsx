@@ -9,7 +9,7 @@ import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
 import BeatmapsetEventJson from 'interfaces/beatmapset-event-json';
 import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash/kebabCase';
 import { deletedUser, deletedUserJson } from 'models/user';
 import * as React from 'react';
 import { makeUrl } from 'utils/beatmapset-discussion-helper';

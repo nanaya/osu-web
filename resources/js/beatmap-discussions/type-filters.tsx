@@ -1,7 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { kebabCase, snakeCase } from 'lodash';
+import kebabCase from 'lodash/kebabCase';
+import snakeCase from 'lodash/snakeCase';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';

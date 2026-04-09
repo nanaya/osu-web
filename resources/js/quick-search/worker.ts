@@ -5,7 +5,7 @@ import BeatmapsetJson from 'interfaces/beatmapset-json';
 import TeamJson from 'interfaces/team-json';
 import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { action, computed, makeObservable, observable } from 'mobx';
 
 const SECTIONS = [

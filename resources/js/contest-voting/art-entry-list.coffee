@@ -6,6 +6,7 @@ import { BaseEntryList } from './base-entry-list'
 import { VoteSummary } from './vote-summary'
 import * as React from 'react'
 import { div, span } from 'react-dom-factories'
+import partition from 'lodash/partition'
 el = React.createElement
 
 export class ArtEntryList extends BaseEntryList
@@ -32,7 +33,7 @@ export class ArtEntryList extends BaseEntryList
         waitingForResponse: @state.waitingForResponse,
 
     if @state.contest.show_votes
-      partitions = _.partition entries, (i) ->
+      partitions = partition entries, (i) ->
         i != null && i.props.index < 3
 
     div className: 'contest__art-list',

@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { SupportedChannelType, supportedChannelTypes } from 'interfaces/chat/channel-json';
-import { chunk } from 'lodash';
+import chunk from 'lodash/chunk';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';

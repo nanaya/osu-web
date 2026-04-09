@@ -1,9 +1,11 @@
 # Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 # See the LICENCE file in the repository root for full licence text.
 
+import debounce from 'lodash/debounce'
+
 export default class Search
   constructor: ->
-    @debouncedSubmitInput = _.debounce @submitInput, 500
+    @debouncedSubmitInput = debounce @submitInput, 500
 
     $(document).on 'click', '.js-search--forum-options-reset', @forumPostReset
     $(document).on 'input', '.js-search--input', @debouncedSubmitInput

@@ -3,7 +3,6 @@
 
 import Reportable from 'interfaces/reportable';
 import UserJson from 'interfaces/user-json';
-import * as _ from 'lodash';
 import { autorun, makeObservable, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import { userNotFoundJson } from 'models/user';
@@ -114,7 +113,8 @@ function onMouseOver(event: JQuery.TriggeredEvent<Document, unknown, HTMLElement
   const userId = presence(el.dataset.userId);
   if (userId == null) return;
   // don't show cards for blocked users
-  if (_.find(core.currentUser?.blocks ?? [], { target_id: parseInt(userId, 10) })) return;
+  const targetId = parseInt(userId, 10);
+  if ((core.currentUser?.blocks ?? []).some((u) => u.target_id === targetId)) return;
 
   if (el._tooltip == null) {
     return createTooltip(el);

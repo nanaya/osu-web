@@ -8,7 +8,7 @@ import { PlaylistItemJsonForMultiplayerEvent } from 'interfaces/playlist-item-js
 import RealtimeRoomEventJson from 'interfaces/realtime-room-event-json';
 import RoomJson from 'interfaces/room-json';
 import UserJson from 'interfaces/user-json';
-import { last } from 'lodash';
+import last from 'lodash/last';
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';

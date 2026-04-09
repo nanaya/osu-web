@@ -59,7 +59,7 @@ export class StoreCheckout
     # errors from they jquery deferred will propagate here.
     if error.getResponseHeader # check if 4xx ujs_redirect
       type = error.getResponseHeader('Content-Type')
-      return if _.startsWith(type, 'application/javascript')
+      return if type.startsWith('application/javascript')
 
     # TODO: less unknown error, disable button
     # TODO: handle error.message

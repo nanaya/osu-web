@@ -4,7 +4,7 @@
 import ProfilePageExtraSectionTitle from 'components/profile-page-extra-section-title';
 import AchievementJson from 'interfaces/achievement-json';
 import UserAchievementJson from 'interfaces/user-achievement-json';
-import { keyBy } from 'lodash';
+import keyBy from 'lodash/keyBy';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';

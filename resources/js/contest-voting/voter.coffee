@@ -40,7 +40,7 @@ export class Voter extends React.Component
       @sendVote()
 
   isSelected: =>
-    _.includes @props.selected, @props.entry.id
+    @props.selected.includes @props.entry.id
 
   render: ->
     votingOver = moment(@props.contest.voting_ends_at).diff() <= 0

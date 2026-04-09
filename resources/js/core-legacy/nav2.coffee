@@ -96,6 +96,6 @@ export default class Nav2
 
 
   showMenuBg: (_e, currentMenu) =>
-    shown = _.startsWith(currentMenu, 'nav2-menu-popup-')
+    shown = (currentMenu ? '').startsWith('nav2-menu-popup-')
 
     fadeToggle @menuBg[0], shown

@@ -3,7 +3,8 @@
 
 import TrackPreview from 'components/track-preview'
 import UserLink from 'components/user-link'
-import { includes, round } from 'lodash'
+import includes from 'lodash/includes'
+import round from 'lodash/round'
 import { route } from 'laroute'
 import * as React from 'react'
 import { a, i, div, span } from 'react-dom-factories'

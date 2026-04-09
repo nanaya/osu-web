@@ -4,6 +4,7 @@
 import { route } from 'laroute'
 import { trans } from 'utils/lang'
 import { toggleCart } from 'utils/store-cart'
+import debounce from 'lodash/debounce'
 
 preventUsernameSubmission = ->
   toggleCart(false)
@@ -32,7 +33,7 @@ checkUsernameValidity = ->
       .trigger 'ajax:error', [xhr, status]
       .one 'click', checkUsernameValidity
 
-debouncedCheckUsernameValidity = _.debounce checkUsernameValidity, 300
+debouncedCheckUsernameValidity = debounce checkUsernameValidity, 300
 
 $(document).on 'input', '.js-username-change-input', (e) ->
   input = e.currentTarget

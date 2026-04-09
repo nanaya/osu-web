@@ -3,6 +3,7 @@
 
 import UserLink from 'components/user-link'
 import * as React from 'react'
+import round from 'lodash/round'
 import { div, span, a, i } from 'react-dom-factories'
 import { classWithModifiers, urlPresence } from 'utils/css'
 import { formatNumber } from 'utils/html'
@@ -28,7 +29,7 @@ export class ArtEntry extends React.Component
     if showVotes
       place = @props.index + 1
       top3 = place <= 3
-      usersVotedPercentage = _.round((@props.entry.results.votes / @props.contest.users_voted_count)*100, 2)
+      usersVotedPercentage = round((@props.entry.results.votes / @props.contest.users_voted_count)*100, 2)
 
     entryLinkProps =
       className: "#{bn}__thumbnail-link"

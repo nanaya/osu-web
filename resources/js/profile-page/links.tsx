@@ -6,7 +6,7 @@ import StringWithComponent, { Props as StringWithComponentProps } from 'componen
 import TimeWithTooltip from 'components/time-with-tooltip';
 import UserExtendedJson from 'interfaces/user-extended-json';
 import { route } from 'laroute';
-import { compact } from 'lodash';
+import compact from 'lodash/compact';
 import * as moment from 'moment';
 import core from 'osu-core-singleton';
 import * as React from 'react';

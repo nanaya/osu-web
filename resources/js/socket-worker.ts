@@ -6,7 +6,7 @@ import SocketMessageSendAction from 'actions/socket-message-send-action';
 import SocketStateChangedAction from 'actions/socket-state-changed-action';
 import { dispatch, dispatchListener } from 'app-dispatcher';
 import { route } from 'laroute';
-import { forEach } from 'lodash';
+import forEach from 'lodash/forEach';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { NotificationEventLogoutJson, NotificationEventVerifiedJson } from 'notifications/notification-events';
 import core from 'osu-core-singleton';

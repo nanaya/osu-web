@@ -3,7 +3,7 @@
 
 import { UserCard } from 'components/user-card';
 import UserJson from 'interfaces/user-json';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { action, autorun, computed, makeObservable, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import { userNotFoundJson } from 'models/user';

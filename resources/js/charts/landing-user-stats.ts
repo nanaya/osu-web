@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import * as d3 from 'd3';
-import { maxBy } from 'lodash';
+import maxBy from 'lodash/maxBy';
 import { formatNumber } from 'utils/html';
 import { parseJson } from 'utils/json';
 import { trans } from 'utils/lang';

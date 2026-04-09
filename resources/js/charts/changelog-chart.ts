@@ -2,7 +2,11 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import * as d3 from 'd3';
-import { first, groupBy, keyBy, last, map } from 'lodash';
+import first from 'lodash/first';
+import groupBy from 'lodash/groupBy';
+import keyBy from 'lodash/keyBy';
+import last from 'lodash/last';
+import map from 'lodash/map';
 import moment from 'moment';
 import { fadeIn, fadeOut } from 'utils/fade';
 import { formatNumber } from 'utils/html';
