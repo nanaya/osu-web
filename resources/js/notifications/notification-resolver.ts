@@ -8,12 +8,18 @@ import { debounce } from 'lodash';
 import { action, makeObservable } from 'mobx';
 import Notification from 'models/notification';
 import NotificationDeletable from 'notifications/notification-deletable';
-import { NotificationIdentity, resolveIdentityType, toJson, toString } from 'notifications/notification-identity';
+import { NotificationIdentity, NotificationIdentityJson, resolveIdentityType, toJson, toString } from 'notifications/notification-identity';
 import NotificationReadable from 'notifications/notification-readable';
 import { NotificationContextData } from 'notifications-context';
 import { onError } from 'utils/ajax';
 import { NotificationCursor } from './notification-cursor';
 import { NotificationEventDelete, NotificationEventMoreLoaded, NotificationEventRead } from './notification-events';
+
+type MarkReadDataJson = {
+  identities: NotificationIdentityJson[];
+} | {
+  notifications: NotificationIdentityJson[];
+};
 
 // I don't know what to name this
 export class NotificationResolver {
@@ -120,7 +126,7 @@ export class NotificationResolver {
       .always(action(() => notifications.forEach((notification) => notification.isDeleting = false)));
   }
 
-  private sendMarkAsReadRequest(data: any) {
+  private sendMarkAsReadRequest(data: MarkReadDataJson) {
     const xhr = $.ajax({
       data,
       dataType: 'json',
