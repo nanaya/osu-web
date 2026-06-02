@@ -2,12 +2,13 @@
 // See the LICENCE file in the repository root for full licence text.
 
 .artist-track {
+  --bg: hsl(var(--hsl-b4));
   --bg-hover: hsl(var(--hsl-b3));
   --cover-play-opacity: 0;
   --cover-size: 35px;
   .default-box-shadow();
   .default-border-radius();
-  background-color: hsl(var(--hsl-b4));
+  background-color: var(--bg);
   font-size: @font-size--normal;
 
   width: 100%;
@@ -25,6 +26,10 @@
   &:hover {
     background-color: var(--bg-hover);
     --cover-play-opacity: 1;
+  }
+
+  &:target {
+    --bg: hsl(var(--hsl-b3));
   }
 
   &[data-audio-state="loading"],
@@ -146,6 +151,11 @@
 
   &__title {
     font-size: @font-size--title-small-3;
+    color: hsl(var(--hsl-c1));
+
+    .link-hover({
+      color: hsl(var(--hsl-c1));
+    });
   }
 
   &__version {

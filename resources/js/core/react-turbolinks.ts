@@ -147,11 +147,16 @@ export default class ReactTurbolinks {
 
     if (!newVisit || this.scrolled) return;
 
-    const targetId = decodeURIComponent(currentUrl().hash.substr(1));
+    const hash = currentUrl().hash;
+    if (hash.length < 2) return;
 
-    if (targetId === '') return;
-
-    document.getElementById(targetId)?.scrollIntoView();
+    const targetId = decodeURIComponent(hash.slice(1));
+    const target = document.getElementById(targetId);
+    if (target != null) {
+      const link = document.createElement('a');
+      link.href = hash;
+      link.click();
+    }
   };
 
   private setNewUrl() {

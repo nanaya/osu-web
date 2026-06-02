@@ -18,15 +18,12 @@ type TrackJson = {
 };
 
 type Props = {
+  anchor?: boolean;
   modifiers?: Modifiers;
-  showAlbum: boolean;
+  showAlbum?: boolean;
 } & TrackJson;
 
 export default class TracklistTrack extends React.PureComponent<Props> {
-  static readonly defaultProps = {
-    showAlbum: false,
-  };
-
   private get artist() {
     if ('artist' in this.props) {
       return this.props.track.artist ?? this.props.artist;
@@ -40,7 +37,11 @@ export default class TracklistTrack extends React.PureComponent<Props> {
     blockClass += ' js-audio--player';
 
     return (
-      <div className={blockClass} data-audio-url={this.props.track.preview}>
+      <div
+        className={blockClass}
+        data-audio-url={this.props.track.preview}
+        id={this.props.anchor ? `track-${this.props.track.id}` : undefined}
+      >
         <div
           className='artist-track__col artist-track__col--preview'
           style={{
@@ -54,7 +55,10 @@ export default class TracklistTrack extends React.PureComponent<Props> {
 
 
         <div className='artist-track__col artist-track__col--names'>
-          <div className='artist-track__title u-ellipsis-overflow'>
+          <a
+            className='artist-track__title u-ellipsis-overflow'
+            href={`${route('artists.show', { artist: this.artist.id })}#track-${this.props.track.id}`}
+          >
             {this.props.track.title}
             {present(this.props.track.version) && (
               <>
@@ -64,7 +68,7 @@ export default class TracklistTrack extends React.PureComponent<Props> {
                 </span>
               </>
             )}
-          </div>
+          </a>
           <div className='artist-track__info'>
             <a href={route('artists.show', { artist: this.artist.id })}>
               {this.artist.name}

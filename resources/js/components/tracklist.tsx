@@ -22,6 +22,7 @@ export default class Tracklist extends React.PureComponent<Props> {
         {this.props.tracks.map((track) => (
           <TracklistTrack
             key={track.id}
+            anchor
             artist={this.props.artist}
             track={track}
           />
