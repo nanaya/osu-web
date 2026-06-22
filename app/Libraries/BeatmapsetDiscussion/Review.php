@@ -132,6 +132,12 @@ class Review
         switch ($block['type']) {
             case 'embed':
                 if ($this->isUpdate && isset($block['discussion_id'])) {
+                    // ensure referenced embeds belong to this discussion
+                    $embed = BeatmapDiscussion::find($block['discussion_id']);
+                    if ($embed === null || $embed->parent_id !== $this->discussion->getKey()) {
+                        throw new InvariantException(osu_trans('beatmap_discussions.review.validation.external_references'));
+                    }
+
                     $childId = $block['discussion_id'];
                 } else {
                     if (!isset($block['discussion_type'])) {
@@ -204,12 +210,6 @@ class Review
                     json_encode($output)
                 );
             } else {
-                // ensure all referenced embeds belong to this discussion
-                $externalEmbeds = BeatmapDiscussion::whereIn('id', $childIds)->where('parent_id', '<>', $this->discussion->getKey())->count();
-                if ($externalEmbeds > 0) {
-                    throw new InvariantException(osu_trans('beatmap_discussions.review.validation.external_references'));
-                }
-
                 // update the review post
                 $post = $this->discussion->startingPost;
                 $post['message'] = json_encode($output);
