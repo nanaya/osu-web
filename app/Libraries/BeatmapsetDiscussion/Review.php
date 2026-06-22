@@ -133,12 +133,10 @@ class Review
             case 'embed':
                 if ($this->isUpdate && isset($block['discussion_id'])) {
                     // ensure referenced embeds belong to this discussion
-                    $embed = BeatmapDiscussion::find($block['discussion_id']);
-                    if ($embed === null || $embed->parent_id !== $this->discussion->getKey()) {
+                    $embeddedDiscussion = BeatmapDiscussion::find($block['discussion_id']);
+                    if ($embeddedDiscussion === null || $embeddedDiscussion->parent_id !== $this->discussion->getKey()) {
                         throw new InvariantException(osu_trans('beatmap_discussions.review.validation.external_references'));
                     }
-
-                    $childId = $block['discussion_id'];
                 } else {
                     if (!isset($block['discussion_type'])) {
                         throw new InvariantException(osu_trans('beatmap_discussions.review.validation.invalid_discussion_type'));
@@ -150,13 +148,11 @@ class Review
                         $block['beatmap_id'] ?? null,
                         $block['timestamp'] ?? null
                     );
-
-                    $childId = $embeddedDiscussion->getKey();
                 }
 
                 return [
                     'type' => 'embed',
-                    'discussion_id' => $childId,
+                    'discussion_id' => $embeddedDiscussion->getKey(),
                 ];
 
             case 'paragraph':
