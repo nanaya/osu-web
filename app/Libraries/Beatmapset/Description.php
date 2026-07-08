@@ -24,14 +24,7 @@ class Description
     {
     }
 
-    public static function removeMetadataText(?string $text): string
-    {
-        // TODO: see if can be combined with description extraction thingy without
-        // exploding
-        return preg_replace('/^(.*?)-{15}/s', '', $text ?? '');
-    }
-
-    private static function splitText(Forum\Post $post): array
+    public static function splitText(Forum\Post $post): array
     {
         return explode(static::SEPARATOR, $post->post_text ?? '', 2);
     }

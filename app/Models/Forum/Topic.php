@@ -321,6 +321,13 @@ class Topic extends Model implements AfterCommit
         });
     }
 
+    public function isBeatmapsetThread(): bool
+    {
+        return array_key_exists('beatmapset_exists', $this->attributes)
+            ? (bool) $this->attributes['beatmapset_exists']
+            : $this->beatmapset !== null;
+    }
+
     public function isValid()
     {
         $this->validationErrors()->reset();

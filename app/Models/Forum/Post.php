@@ -172,7 +172,10 @@ class Post extends Model implements AfterCommit, Indexable, Traits\ReportableInt
         // unescape html entities
         // strip remaining bbcode
         // strip any html tags left
-        $text = BeatmapsetDescription::removeMetadataText($this->post_text);
+        $text = $this->post_text;
+        if ($this->isBeatmapsetDescription()) {
+            $text = trim(BeatmapsetDescription::splitText($text)[1] ?? '');
+        }
         $text = BBCodeFromDB::removeBlockQuotes($text);
         $text = html_entity_decode_better($text);
         $text = BBCodeFromDB::removeBBCodeTags($text);
@@ -204,6 +207,13 @@ class Post extends Model implements AfterCommit, Indexable, Traits\ReportableInt
         }
 
         return $unreadPostId;
+    }
+
+    public function isBeatmapsetDescription(): bool
+    {
+        return $this->topic !== null
+            && $this->topic->isBeatmapsetThread()
+            && $this->topic->topic_first_post_id === $this->getKey();
     }
 
     public function normalizeUser($user)

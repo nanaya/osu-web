@@ -20,7 +20,10 @@ trait ForumPostSearch
     {
         $forumIds = Forum::where('enable_indexing', 1)->pluck('forum_id');
 
-        return static::withoutGlobalScopes()->whereIn('forum_id', $forumIds)->with('forum')->with('topic');
+        return static::withoutGlobalScopes()
+            ->whereIn('forum_id', $forumIds)
+            ->with('forum')
+            ->with(['topic' => fn ($q) => $q->withExists('beatmapset')]);
     }
 
     public static function esSchemaFile()
