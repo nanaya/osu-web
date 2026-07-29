@@ -17,6 +17,13 @@ export default function MatchmakingTierBadge(props: Props) {
       {props.tier === 'Lustrous' &&
         <div className={classWithModifiers('matchmaking-tier-badge__lustrous-rank', `rank-${props.rank}`)} />
       }
+      {props.tier === 'Lustrous1' &&
+        <div className='matchmaking-tier-badge__lustrous-rank-val-container'>
+          <span className='matchmaking-tier-badge__lustrous-rank-val'>
+            {props.rank}
+          </span>
+        </div>
+      }
     </div>
   );
 }

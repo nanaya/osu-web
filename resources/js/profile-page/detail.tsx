@@ -1,6 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+import MatchmakingTierBadge from 'components/matchmaking-tier-badge';
 import ProfileTournamentBanner from 'components/profile-tournament-banner';
 import StringWithComponent from 'components/string-with-component';
 import { observer } from 'mobx-react';
@@ -44,6 +45,11 @@ export default class Detail extends React.Component<Props> {
             <DetailStats user={user} />
 
             {this.renderScoresNotice()}
+
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <MatchmakingTierBadge rank={40} rulesetId={0} tier='Lustrous' />
+              <MatchmakingTierBadge rank={40} rulesetId={0} tier='Lustrous1' />
+            </div>
           </div>
         )}
 
