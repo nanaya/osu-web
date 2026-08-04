@@ -179,9 +179,7 @@ class ScoreSearch extends RecordSearch
         if (isset($modsSubQuery)) {
             $excludedMods = array_values(array_diff($allMods->toArray(), $allSearchMods));
             if (count($excludedMods) > 0) {
-                foreach ($excludedMods as $excludedMod) {
-                    $modsSubQuery->mustNot(['term' => ['mods' => $excludedMod]]);
-                }
+                $modsSubQuery->mustNot(['terms' => ['mods' => $excludedMods]]);
             }
         }
 
