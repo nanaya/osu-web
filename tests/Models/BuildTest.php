@@ -43,7 +43,7 @@ class BuildTest extends TestCase
             'repository' => ['full_name' => $repository->name],
             'release' => [
                 'created_at' => json_time(new \DateTime()),
-                'tag_name' => '2020.101.0',
+                'tag_name' => '2020.101.0-teststream',
             ],
         ]);
 

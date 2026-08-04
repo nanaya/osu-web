@@ -11,7 +11,6 @@ namespace App\Models;
  * @property \Carbon\Carbon|null $created_at
  * @property string|null $default_category
  * @property int $id
- * @property UpdateStream $mainUpdateStream
  * @property string $name
  * @property int|null $stream_id
  * @property \Carbon\Carbon|null $updated_at
@@ -30,11 +29,6 @@ class Repository extends Model
     public static function updateStreamBridgeTable(): string
     {
         return $GLOBALS['cfg']['database']['connections']['mysql']['database'].'.repository_update_stream';
-    }
-
-    public function mainUpdateStream()
-    {
-        return $this->belongsTo(UpdateStream::class, 'stream_id');
     }
 
     public function updateStreams()

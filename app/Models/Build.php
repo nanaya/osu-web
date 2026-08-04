@@ -66,10 +66,14 @@ class Build extends Model implements CommentableInterface
         }
 
         if (!isset($stream)) {
-            $stream = $repository->mainUpdateStream;
-        }
+            log_error(
+                new \Exception('Failed to find update stream for the new release'),
+                [
+                    'stream_name' => $streamName,
+                    'version' => $version,
+                ],
+            );
 
-        if (!isset($stream)) {
             return;
         }
 
