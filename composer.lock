@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ff162f31bb41b208bbd00e5475bb048",
+    "content-hash": "2b096e52babc237fbb8d22652ea859a7",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -4551,28 +4551,28 @@
         },
         {
             "name": "mariuzzo/laravel-js-localization",
-            "version": "v1.11.2",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rmariuzzo/Laravel-JS-Localization.git",
-                "reference": "1ea310be42d3a4f09c38a0d97b8d5bd4683c7026"
+                "reference": "1bbb5849a97d4ab244f25f17dfacc3f3e9a91fe4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rmariuzzo/Laravel-JS-Localization/zipball/1ea310be42d3a4f09c38a0d97b8d5bd4683c7026",
-                "reference": "1ea310be42d3a4f09c38a0d97b8d5bd4683c7026",
+                "url": "https://api.github.com/repos/rmariuzzo/Laravel-JS-Localization/zipball/1bbb5849a97d4ab244f25f17dfacc3f3e9a91fe4",
+                "reference": "1bbb5849a97d4ab244f25f17dfacc3f3e9a91fe4",
                 "shasum": ""
             },
             "require": {
-                "illuminate/config": "^4.2 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
-                "illuminate/console": "^4.2 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
-                "illuminate/filesystem": "^4.2 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
-                "php": "^5.4 || ^7.0 || ^8.0",
+                "illuminate/config": "^11.0|^12.0|^13.0",
+                "illuminate/console": "^11.0|^12.0|^13.0",
+                "illuminate/filesystem": "^11.0|^12.0|^13.0",
+                "php": "^8.2",
                 "tedivm/jshrink": "~1.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^2.2 || ^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0"
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^3.7|^4.0"
             },
             "type": "library",
             "extra": {
@@ -4584,7 +4584,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Mariuzzo\\LaravelJsLocalization\\": "src/Mariuzzo/LaravelJsLocalization/"
+                    "Mariuzzo\\LaravelJsLocalization\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4633,14 +4633,15 @@
                 "javascript",
                 "lang",
                 "laravel",
-                "laravel 5",
+                "laravel 12",
+                "laravel 13",
                 "localization"
             ],
             "support": {
                 "issues": "https://github.com/rmariuzzo/laravel-js-localization/issues",
                 "source": "https://github.com/rmariuzzo/laravel-js-localization"
             },
-            "time": "2024-12-24T15:43:00+00:00"
+            "time": "2026-03-26T03:51:50+00:00"
         },
         {
             "name": "matomo/device-detector",
@@ -7298,31 +7299,32 @@
         },
         {
             "name": "reedware/laravel-relation-joins",
-            "version": "v6.0.1",
+            "version": "v8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tylernathanreed/laravel-relation-joins.git",
-                "reference": "fcac3e9391e36388a5570f9f3dee869cf07bf8e2"
+                "reference": "ad4e1878c1f397e2606865c3953ce2269f76124c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tylernathanreed/laravel-relation-joins/zipball/fcac3e9391e36388a5570f9f3dee869cf07bf8e2",
-                "reference": "fcac3e9391e36388a5570f9f3dee869cf07bf8e2",
+                "url": "https://api.github.com/repos/tylernathanreed/laravel-relation-joins/zipball/ad4e1878c1f397e2606865c3953ce2269f76124c",
+                "reference": "ad4e1878c1f397e2606865c3953ce2269f76124c",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^10.0|^11.0",
-                "illuminate/database": "^10.0|^11.0",
-                "illuminate/support": "^10.0|^11.0",
-                "php": ">=8.1"
+                "illuminate/contracts": "^11.0|^12.0",
+                "illuminate/database": "^11.0|^12.0",
+                "illuminate/support": "^11.0|^12.0",
+                "php": ">=8.2"
             },
             "require-dev": {
-                "illuminate/container": "^10.0|^11.0",
+                "illuminate/container": "^11.0|^12.0",
+                "larastan/larastan": "^2.9",
                 "laravel/pint": "^1.5",
                 "mockery/mockery": "^1.6.6",
                 "php-coveralls/php-coveralls": "^2.4",
-                "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^10.5",
+                "reedware/sail-lite": "^1.2",
                 "symfony/var-dumper": "^6.4.4|^7.0"
             },
             "type": "library",
@@ -7358,9 +7360,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tylernathanreed/laravel-relation-joins/issues",
-                "source": "https://github.com/tylernathanreed/laravel-relation-joins/tree/v6.0.1"
+                "source": "https://github.com/tylernathanreed/laravel-relation-joins/tree/v8.1.0"
             },
-            "time": "2024-03-20T17:04:54+00:00"
+            "time": "2026-03-19T20:51:48+00:00"
         },
         {
             "name": "romanzipp/laravel-turnstile",
