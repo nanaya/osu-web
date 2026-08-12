@@ -60,7 +60,7 @@ class RouteScopesHelper
 
         /** @var \Illuminate\Routing\Route $route */
         foreach (Route::getRoutes() as $route) {
-            if (!starts_with($route->uri, 'api/')) {
+            if (!str_starts_with($route->uri, 'api/')) {
                 continue;
             }
 
@@ -81,7 +81,7 @@ class RouteScopesHelper
             $scopes = [];
 
             foreach ($middlewares as $middleware) {
-                if (is_string($middleware) && starts_with($middleware, static::$requireScopesPrefix)) {
+                if (is_string($middleware) && str_starts_with($middleware, static::$requireScopesPrefix)) {
                     $scopes = array_merge($scopes, explode(',', substr($middleware, strlen(static::$requireScopesPrefix))));
                 }
             }

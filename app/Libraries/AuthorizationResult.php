@@ -35,7 +35,7 @@ class AuthorizationResult
     public function requireLogin()
     {
         return $this->rawMessage() === 'require_login' ||
-            ends_with($this->rawMessage(), '.require_login');
+            str_ends_with($this->rawMessage(), '.require_login');
     }
 
     public function requireVerification()

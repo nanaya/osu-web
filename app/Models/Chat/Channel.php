@@ -372,7 +372,7 @@ class Channel extends Model
 
     public function isBanchoMultiplayerChat()
     {
-        return $this->type === static::TYPES['temporary'] && starts_with($this->name, ['#mp_', '#spect_']);
+        return $this->type === static::TYPES['temporary'] && \Str::startsWith($this->name, ['#mp_', '#spect_']);
     }
 
     public function isValid()

@@ -359,7 +359,7 @@ class OsuMarkdown
             Link::class => [
                 'class' => static fn (Link $node) => class_with_modifiers(
                     "{$blockClass}__link",
-                    ['mailto' => starts_with($node->getUrl(), 'mailto:')],
+                    ['mailto' => str_starts_with($node->getUrl(), 'mailto:')],
                 ),
             ],
             ListBlock::class => [

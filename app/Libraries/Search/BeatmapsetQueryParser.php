@@ -258,7 +258,7 @@ class BeatmapsetQueryParser
         }
 
         foreach (Beatmapset::STATES as $string => $int) {
-            if (starts_with($string, $value)) {
+            if (str_starts_with($string, $value)) {
                 return $int;
             }
         }

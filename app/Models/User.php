@@ -1154,7 +1154,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
 
     public function trashed()
     {
-        return starts_with($this->username, 'DeletedUser_');
+        return str_starts_with($this->username, 'DeletedUser_');
     }
 
     /**

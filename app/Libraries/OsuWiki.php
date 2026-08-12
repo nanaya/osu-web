@@ -34,8 +34,8 @@ class OsuWiki
         return collect(static::getTree()['tree'])
             ->filter(function ($item) {
                 return $item['type'] === 'blob'
-                    && starts_with($item['path'], 'wiki/')
-                    && ends_with($item['path'], '.md');
+                    && str_starts_with($item['path'], 'wiki/')
+                    && str_ends_with($item['path'], '.md');
             })
             ->pluck('path');
     }
@@ -58,7 +58,7 @@ class OsuWiki
     {
         $matches = [];
 
-        if (starts_with($path, 'wiki/')) {
+        if (str_starts_with($path, 'wiki/')) {
             if ($path === 'wiki/redirect.yaml') {
                 return ['type' => 'redirect'];
             }
@@ -79,7 +79,7 @@ class OsuWiki
                     ];
                 }
             }
-        } elseif (starts_with($path, 'news/')) {
+        } elseif (str_starts_with($path, 'news/')) {
             $found = preg_match('/^(?:news\/)(?:\d{4}\/)?(.*)\.md$/', $path, $matches);
 
             if ($found > 0) {
@@ -150,7 +150,7 @@ class OsuWiki
 
             if ($e->getCode() === 404) {
                 throw new GitHubNotFoundException($message);
-            } elseif (starts_with($message, 'This API returns blobs up to 1 MB in size.')) {
+            } elseif (str_starts_with($message, 'This API returns blobs up to 1 MB in size.')) {
                 throw new GitHubTooLargeException($message);
             }
 

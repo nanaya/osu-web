@@ -319,8 +319,8 @@ class SanityTest extends DuskTestCase
 
                     // ignore missing non-critical assets
                     if (
-                        ($returnCode === 403 || $returnCode === 404) && starts_with($url, ['https://assets.ppy.sh', 'https://i.ppy.sh']) ||
-                        ($returnCode < 500 && starts_with($url, $appUrl))
+                        ($returnCode === 403 || $returnCode === 404) && \Str::startsWith($url, ['https://assets.ppy.sh', 'https://i.ppy.sh']) ||
+                        ($returnCode < 500 && str_starts_with($url, $appUrl))
                     ) {
                         continue;
                     }
@@ -369,7 +369,7 @@ class SanityTest extends DuskTestCase
         $data = [];
 
         foreach (app()->routes->get('GET') as $uri => $route) {
-            if (starts_with($uri, $bypass)) {
+            if (\Str::startsWith($uri, $bypass)) {
                 continue;
             }
 
@@ -541,7 +541,7 @@ class SanityTest extends DuskTestCase
     {
         $adminRestricted = ['forum.topics.logs.index', 'user-cover-presets.index'];
 
-        if (starts_with($route->uri, 'admin') || in_array($route->getName(), $adminRestricted, true)) {
+        if (str_starts_with($route->uri, 'admin') || in_array($route->getName(), $adminRestricted, true)) {
             // TODO: retry and check page as admin? (will affect subsequent tests though, so figure out how to deal with that..)
             $browser->assertSee("You shouldn't be here.");
         } else {

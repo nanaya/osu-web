@@ -108,7 +108,7 @@ class DocumentProcessor
         $src = $this->node->getUrl();
 
         if (preg_match(',^(#|/|https?://|mailto:),', $src) !== 1) {
-            if (starts_with($src, './')) {
+            if (str_starts_with($src, './')) {
                 $src = substr($src, 2);
             }
 
@@ -211,7 +211,7 @@ class DocumentProcessor
             $this->galleryId ??= (string) rand();
             $imageUrl = $image->getUrl();
 
-            if (starts_with($imageUrl, route('wiki.show', [], false))) {
+            if (str_starts_with($imageUrl, route('wiki.show', [], false))) {
                 $imageUrl = $GLOBALS['cfg']['app']['url'].$imageUrl;
             }
 
@@ -257,7 +257,7 @@ class DocumentProcessor
                 $locale ??= $this->wikiLocale ?? $GLOBALS['cfg']['app']['fallback_locale'];
                 $url = wiki_url($path, $locale, false, false);
 
-                if (starts_with($url, $this->wikiAbsoluteRootPath)) {
+                if (str_starts_with($url, $this->wikiAbsoluteRootPath)) {
                     $url = $this->wikiPathToRoot.substr($url, strlen($this->wikiAbsoluteRootPath));
                 }
             }
@@ -321,7 +321,7 @@ class DocumentProcessor
 
         $this->wikiAbsoluteRootPath = route('wiki.show', ['locale' => $this->wikiLocale], false).'/';
 
-        if (starts_with($this->relativeUrlRoot, $this->wikiAbsoluteRootPath)) {
+        if (str_starts_with($this->relativeUrlRoot, $this->wikiAbsoluteRootPath)) {
             $relativeFromBase = substr($this->relativeUrlRoot, strlen($this->wikiAbsoluteRootPath));
             $slashes = substr_count($relativeFromBase, '/');
 

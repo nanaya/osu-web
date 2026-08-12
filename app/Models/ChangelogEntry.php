@@ -97,7 +97,7 @@ class ChangelogEntry extends Model
                 continue;
             }
 
-            if (starts_with($lowerName, $ignoredPrefixes)) {
+            if (\Str::startsWith($lowerName, $ignoredPrefixes)) {
                 continue;
             }
 

@@ -1169,7 +1169,7 @@ function wiki_url($path = null, $locale = null, $api = null, $fullUrl = true)
             return route('wiki.sitemap', $params['locale'], $fullUrl);
         }
 
-        if (starts_with("{$path}/", 'Legal/')) {
+        if (str_starts_with("{$path}/", 'Legal/')) {
             $path = ltrim(substr($path, strlen('Legal')), '/');
             $route = 'legal';
         } else {

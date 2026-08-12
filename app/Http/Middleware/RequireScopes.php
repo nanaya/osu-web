@@ -26,7 +26,7 @@ class RequireScopes
     {
         $path = "{$request->decodedPath()}/";
 
-        return $request->isMethod('GET') && starts_with($path, static::NO_TOKEN_REQUIRED);
+        return $request->isMethod('GET') && \Str::startsWith($path, static::NO_TOKEN_REQUIRED);
     }
 
     public function handle($request, Closure $next, ...$scopes)
@@ -77,7 +77,7 @@ class RequireScopes
     private function containsScoped(Request $request)
     {
         foreach ($request->route()->gatherMiddleware() as $middleware) {
-            if (is_string($middleware) && starts_with($middleware, 'require-scopes:')) {
+            if (is_string($middleware) && str_starts_with($middleware, 'require-scopes:')) {
                 return true;
             }
         }

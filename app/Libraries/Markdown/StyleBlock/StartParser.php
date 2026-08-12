@@ -16,7 +16,7 @@ class StartParser implements BlockStartParserInterface
     {
         $currentLine = $cursor->getLine();
 
-        if (!starts_with($currentLine, ':::')) {
+        if (!str_starts_with($currentLine, ':::')) {
             return BlockStart::none();
         }
 

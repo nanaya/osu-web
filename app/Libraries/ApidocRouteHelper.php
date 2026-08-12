@@ -44,7 +44,7 @@ class ApidocRouteHelper
     {
         return !(
             in_array('GET', $route['methods'], true)
-            && starts_with("{$route['uri']}/", RequireScopes::NO_TOKEN_REQUIRED)
+            && \Str::startsWith("{$route['uri']}/", RequireScopes::NO_TOKEN_REQUIRED)
         );
     }
 

@@ -144,7 +144,7 @@ class LoginAttempt extends Model
         if ($state !== null) {
             $key .= $state;
 
-            if (!ends_with($state, ':')) {
+            if (!str_ends_with($state, ':')) {
                 $key .= ')';
             }
         }
