@@ -39,6 +39,7 @@ class AuthServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        Passport::$clientUuids = false;
         Passport::tokensExpireIn(Carbon::now()->addDays(1));
         Passport::refreshTokensExpireIn(Carbon::now()->addMonths(3));
 

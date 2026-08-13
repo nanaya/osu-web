@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\QueryException;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Request;
@@ -209,7 +210,7 @@ use Request;
  * @method static Builder eagerloadForListing()
  * @method static Builder online()
  */
-class User extends Model implements AfterCommit, AuthenticatableContract, HasLocalePreference, Indexable, Traits\ReportableInterface
+class User extends Model implements AfterCommit, AuthenticatableContract, HasLocalePreference, Indexable, OAuthenticatable, Traits\ReportableInterface
 {
     use Authenticatable, HasApiTokens, Memoizes, Traits\Es\UserSearch, Traits\Reportable, Traits\UserScoreable, Traits\UserStore, Validatable;
 
