@@ -19,6 +19,7 @@ use App\Libraries\Uploader;
 use App\Libraries\User\AvatarHelper;
 use App\Libraries\User\Cover;
 use App\Libraries\User\DatadogLoginAttempt;
+use App\Libraries\User\OsuBcryptHasher;
 use App\Libraries\User\ProfileCount;
 use App\Libraries\User\UsernamesForDbLookup;
 use App\Libraries\UsernameValidation;
@@ -30,7 +31,6 @@ use Cache;
 use Carbon\Carbon;
 use DB;
 use Ds\Set;
-use Hash;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -2017,7 +2017,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
 
     public function checkPassword($password)
     {
-        return Hash::check($password, $this->getAuthPassword());
+        return OsuBcryptHasher::check($password, $this->getAuthPassword());
     }
 
     public function validatePasswordConfirmation()
@@ -2300,7 +2300,7 @@ class User extends Model implements AfterCommit, AuthenticatableContract, HasLoc
             }
 
             if ($this->validationErrors()->isEmpty()) {
-                $this->user_password = Hash::make($this->password);
+                $this->user_password = OsuBcryptHasher::make($this->password);
                 $this->user_passchg = Carbon::now();
             }
         }
