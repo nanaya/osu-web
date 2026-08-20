@@ -5,27 +5,17 @@
 
 namespace Tests\Hashing;
 
-use App\Hashing\OsuBcryptHasher;
-use Illuminate\Contracts\Hashing\Hasher;
+use App\Libraries\User\OsuBcryptHasher;
 use PHPUnit\Framework\TestCase;
 
 class OsuBcryptHasherTest extends TestCase
 {
     public function testBasicHashing()
     {
-        $hasher = new OsuBcryptHasher();
-        $value = $hasher->make('password');
+        $value = OsuBcryptHasher::make('password');
         $this->assertNotSame('password', $value);
         $this->assertNotSame(md5('password'), $value);
 
-        $this->assertTrue($hasher->check('password', $value));
-        $this->assertFalse($hasher->needsRehash($value));
-        $this->assertTrue($hasher->needsRehash($value, ['rounds' => 4]));
-    }
-
-    public function testImplementsHasher()
-    {
-        $hasher = new OsuBcryptHasher();
-        $this->assertInstanceOf(Hasher::class, $hasher);
+        $this->assertTrue(OsuBcryptHasher::check('password', $value));
     }
 }
