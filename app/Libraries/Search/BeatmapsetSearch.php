@@ -409,10 +409,13 @@ class BeatmapsetSearch extends RecordSearch
             $searchFields[] = $field;
             $searchFields[] = "{$field}.*";
 
-            $subQuery->should(['term' => ["{$field}.raw" => ['value' => $value, 'boost' => 100]]]);
+            $valueWithoutQuotes = preg_replace('/^"\s*(.*)\s*"$/', '\1', $value);
+            $subQuery->should(['term' => ["{$field}.raw" => ['value' => $valueWithoutQuotes, 'boost' => 100]]]);
         }
 
-        $subQuery->should(QueryHelper::queryString($value, $searchFields, 'and'));
+        if (preg_match('/^".*"$/', $value) !== 1) {
+            $subQuery->should(QueryHelper::queryString($value, $searchFields, 'and'));
+        }
 
         $query->must($subQuery);
     }

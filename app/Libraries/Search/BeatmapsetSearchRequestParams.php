@@ -187,9 +187,26 @@ class BeatmapsetSearchRequestParams extends BeatmapsetSearchParams
         return present($this->requestQuery);
     }
 
+    private function isRelevanceSearch(): bool
+    {
+        if (present($this->queryString)) {
+            return true;
+        }
+
+        foreach (['artist', 'creator', 'title', 'source'] as $field) {
+            $value = $this->$field;
+
+            if (present($value) && preg_match('/^".*"$/', $value) !== 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function getDefaultSortField(): string
     {
-        if (present($this->queryString) || present($this->artist) || present($this->creator) || present($this->title) || present($this->source)) {
+        if ($this->isRelevanceSearch()) {
             return 'relevance';
         }
 

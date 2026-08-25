@@ -17,7 +17,7 @@ class TitleFilterTest extends TestCase
             [['q' => 'title=best'], [0, 1, 2]],
             [['q' => 'title="best beatmap"'], [1, 2]],
             [['q' => 'title="the beatmap"'], [1, 2]],
-            [['q' => 'title=""best beatmap""'], [1, 2]],
+            [['q' => 'title=""the best beatmap""'], [1]],
             [['q' => 'title=""the beatmap""'], []],
         ];
     }
