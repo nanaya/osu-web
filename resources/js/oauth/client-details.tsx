@@ -55,17 +55,19 @@ export class ClientDetails extends React.Component<Props, State> {
             {
               this.isSecretVisible
                 ? this.props.client.secret
-                : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+                : `*****${this.props.client.secretHint}`
             }
           </div>
           <div className='oauth-client-details__buttons'>
-            <button
-              className='btn-osu-big'
-              onClick={this.handleToggleSecret}
-              type='button'
-            >
-              {trans(`oauth.client.secret_visible.${this.isSecretVisible}`)}
-            </button>
+            {this.props.client.secret != null &&
+              <button
+                className='btn-osu-big'
+                onClick={this.handleToggleSecret}
+                type='button'
+              >
+                {trans(`oauth.client.secret_visible.${this.isSecretVisible}`)}
+              </button>
+            }
             <button
               className='btn-osu-big btn-osu-big--danger'
               disabled={this.props.client.isResetting || this.props.client.revoked}
@@ -75,6 +77,7 @@ export class ClientDetails extends React.Component<Props, State> {
               {this.props.client.isResetting ? <Spinner /> : trans('oauth.client.reset')}
             </button>
           </div>
+          {this.renderSecretVisibilityInfo()}
         </div>
 
         <label className='oauth-client-details__group'>
@@ -169,4 +172,14 @@ export class ClientDetails extends React.Component<Props, State> {
       this.errors.clear();
     }).catch(this.errors.handleResponse);
   };
+
+  private renderSecretVisibilityInfo() {
+    let message = trans('oauth.own_clients.secret.visible_once');
+    message += ' ';
+    message += this.props.client.secret == null
+      ? trans('oauth.own_clients.secret.generate_new')
+      : trans('oauth.own_clients.secret.copy');
+
+    return <p>{message}</p>;
+  }
 }
