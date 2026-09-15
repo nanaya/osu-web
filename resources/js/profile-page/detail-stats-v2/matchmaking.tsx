@@ -10,7 +10,7 @@ import Controller from 'profile-page/controller';
 import { ProfilePageMatchmakingStatsJson } from 'profile-page/extra-page-props';
 import { getHighestRankStats, tier } from 'profile-page/matchmaking';
 import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
+import { classWithModifiers, mergeModifiers } from 'utils/css';
 import { fail } from 'utils/fail';
 import { formatNumber, htmlElementOrNull } from 'utils/html';
 import { trans } from 'utils/lang';
@@ -77,10 +77,11 @@ export default class Matchmaking extends React.PureComponent<Props> {
       return null;
     }
 
+    const provisional = stats.is_rating_provisional;
     const [rankValue, tierData] = stats.rank === -1
       ? ['-', null]
       : [`#${formatNumber(stats.rank)}`, tier(stats)];
-    const rankValueStyle = tierData == null
+    const rankValueStyle = provisional || tierData == null
       ? undefined
       : {
         '--colour': `var(--level-tier-${tierData.colour})`,
@@ -92,6 +93,7 @@ export default class Matchmaking extends React.PureComponent<Props> {
           {tierData != null &&
             <div className='profile-detail-stats-card__matchmaking-tier-badge'>
               <MatchmakingTierBadge
+                provisional={provisional}
                 rank={stats.rank}
                 rulesetId={stats.pool.ruleset_id}
                 tier={tierData.title}
@@ -110,7 +112,7 @@ export default class Matchmaking extends React.PureComponent<Props> {
           <div className='profile-detail-stats-card__values profile-detail-stats-card__values--matchmaking-rating'>
             <ValueDisplay
               label={trans('users.show.matchmaking.rank')}
-              modifiers='rank'
+              modifiers={mergeModifiers('rank', { provisional })}
               value={
                 <div
                   className={classWithModifiers('rank-value', tierData?.colour ?? 'base')}
@@ -123,12 +125,12 @@ export default class Matchmaking extends React.PureComponent<Props> {
             <div />
             <ValueDisplay
               label={trans('users.show.matchmaking.rating')}
-              modifiers='rank rank-small'
+              modifiers={mergeModifiers('rank rank-small', { provisional })}
               value={formatNumber(stats.rating)}
             />
             <ValueDisplay
               label={trans('users.show.matchmaking.tier')}
-              modifiers='rank rank-small'
+              modifiers={mergeModifiers('rank rank-small', { provisional })}
               value={tierData?.title ?? '-'}
             />
           </div>
