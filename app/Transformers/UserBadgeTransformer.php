@@ -19,6 +19,7 @@ class UserBadgeTransformer extends TransformerAbstract
             'description' => $badge->description,
             'image@2x_url' => $image2xUrl,
             'image_url' => $imageUrl,
+            'name' => $badge->image,
             'url' => $badge->url,
         ];
     }

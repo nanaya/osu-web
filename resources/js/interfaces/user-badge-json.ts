@@ -6,5 +6,6 @@ export default interface UserBadgeJson {
   description: string;
   'image@2x_url': string;
   image_url: string;
+  name: string;
   url: string;
 }
