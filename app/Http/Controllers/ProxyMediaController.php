@@ -31,6 +31,6 @@ class ProxyMediaController extends Controller
         }
 
         // Tell browser to cache redirect url for a while.
-        return redirect(proxy_media($url))->header('Cache-Control', 'max-age=86400');
+        return redirect(proxy_media($url))->header('Cache-Control', 'max-age=86400, public');
     }
 }
